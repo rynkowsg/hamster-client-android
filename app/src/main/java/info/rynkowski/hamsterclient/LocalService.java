@@ -11,6 +11,9 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import org.freedesktop.dbus.DBusConnection;
+import org.freedesktop.dbus.exceptions.DBusException;
+
 public class LocalService extends Service {
     public class LocalBinder extends Binder {
         LocalService getService() {
@@ -28,6 +31,7 @@ public class LocalService extends Service {
         super.onCreate();
         Log.d(TAG, "onCreate()");
         initNotification();
+        openDbusConnection();
     }
 
     @Override
@@ -40,6 +44,7 @@ public class LocalService extends Service {
     @Override
     public void onDestroy() {
         Log.d(TAG, "onDestroy()");
+        closeDbusConnection();
         cancelNotification();
         super.onDestroy();
     }
@@ -73,7 +78,32 @@ public class LocalService extends Service {
         notificationManager.cancel(NOTIFICATION_ID);
     }
 
+    private void openDbusConnection() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                openDbusConnectionInside();
+            }
+        }).start();
+    }
+
+    private void openDbusConnectionInside() {
+        try {
+            dBusConnection = DBusConnection.getConnection("tcp:host=192.168.1.3,port=55555");
+        } catch (DBusException e) {
+            e.printStackTrace();
+            throw new RuntimeException();
+            // TODO: send information to activity
+            // http://android-coding.blogspot.in/2011/11/pass-data-from-service-to-activity.html
+        }
+    }
+
+    private void closeDbusConnection() {
+        dBusConnection = null;
+    }
+
     private final String TAG = this.getClass().getSimpleName();
     private final IBinder mBinder = new LocalBinder();
     private static final int NOTIFICATION_ID = 1;
+    private DBusConnection dBusConnection = null;
 }
