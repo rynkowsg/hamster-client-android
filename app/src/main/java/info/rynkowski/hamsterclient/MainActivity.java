@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 
 public class MainActivity extends Activity {
@@ -20,16 +19,11 @@ public class MainActivity extends Activity {
             Log.d(TAG, "LocalServiceConnection.onServiceConnected()");
             LocalService.LocalBinder binder = (LocalService.LocalBinder) service;
             mBoundService = binder.getService();
-
-            Toast.makeText(getApplicationContext(), "LocalService connected",
-                    Toast.LENGTH_SHORT).show();
         }
 
         public void onServiceDisconnected(ComponentName className) {
             Log.d(TAG, "LocalServiceConnection.onServiceDisconnected()");
             mBoundService = null;
-            Toast.makeText(getApplicationContext(),  "LocalService disconnected",
-                    Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -130,6 +124,7 @@ public class MainActivity extends Activity {
             // Detach our existing connection.
             unbindService(mServiceConnection);
             mIsServiceBound = false;
+            mBoundService = null;
         }
     }
 
