@@ -10,6 +10,7 @@ import android.os.IBinder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 
@@ -53,7 +54,7 @@ public class MainActivity extends Activity {
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart()");
-        //doStartService();
+        doStartService();
         doBindService();
     }
 
@@ -146,6 +147,16 @@ public class MainActivity extends Activity {
     private void doStopService(Intent serviceIntent) {
         Log.d(TAG, "doStopService()");
         stopService(serviceIntent);
+    }
+
+    // button methods
+    public void bStartService(View view) {
+        doStartService();
+        doBindService();
+    }
+    public void bStopService(View view) {
+        doUnbindService();
+        doStopService();
     }
 
     private final String TAG = this.getClass().getSimpleName();
