@@ -7,12 +7,20 @@ import android.app.Service;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import org.freedesktop.Notifications;
 import org.freedesktop.dbus.DBusConnection;
+import org.freedesktop.dbus.UInt32;
+import org.freedesktop.dbus.Variant;
 import org.freedesktop.dbus.exceptions.DBusException;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
 public class LocalService extends Service {
     public class LocalBinder extends Binder {
@@ -104,6 +112,32 @@ public class LocalService extends Service {
     private void closeDbusConnection() {
         Log.d(TAG, "closeDbusConnection()");
         dBusConnection = null;
+    }
+
+    public void dbusNotify() {
+        dbusNotify("", "", "Message1", "Message 2");
+    }
+
+    public void dbusNotify(final String... messages) {
+        Log.d(TAG, "dbusNotify()");
+        if (dBusConnection != null) {
+            Log.d(TAG, "dBusConnection != null");
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Notifications notify = (Notifications) dBusConnection.getRemoteObject("org.freedesktop.Notifications", "/org/freedesktop/Notifications");
+                        Map<String, Variant<Byte>> hints = new HashMap<String, Variant<Byte>>();
+                        hints.put("urgency", new Variant<Byte>((byte) 0));
+                        notify.Notify(messages[0], new UInt32(0), messages[1], messages[2], messages[3], new LinkedList<String>(), hints, 5);
+                    } catch (DBusException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        } else {
+            Log.d(TAG, "dBusConnection == null");
+        }
     }
 
     private final String TAG = this.getClass().getSimpleName();

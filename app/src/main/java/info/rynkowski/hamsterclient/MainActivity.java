@@ -20,12 +20,11 @@ public class MainActivity extends Activity {
             LocalService.LocalBinder binder = (LocalService.LocalBinder) service;
             mBoundService = binder.getService();
         }
-
         public void onServiceDisconnected(ComponentName className) {
             Log.d(TAG, "LocalServiceConnection.onServiceDisconnected()");
             mBoundService = null;
         }
-    };
+    }
 
     public MainActivity() {
         Log.d(TAG, "MainActivity()");
@@ -152,6 +151,14 @@ public class MainActivity extends Activity {
     public void bStopService(View view) {
         doUnbindService();
         doStopService();
+    }
+
+    public void bDbusNotify(View view) {
+        Log.d(TAG, "Called dbusNotify() method");
+        if (mIsServiceBound) {
+            mBoundService.dbusNotify("nic", "nic", "raz", "dwa");
+        } else
+            Log.d(TAG, "myService == null");
     }
 
     private final String TAG = this.getClass().getSimpleName();
