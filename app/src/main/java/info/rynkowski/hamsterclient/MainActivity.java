@@ -1,13 +1,36 @@
 package info.rynkowski.hamsterclient;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.PersistableBundle;
+import android.os.IBinder;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 
 public class MainActivity extends Activity {
+    private class LocalServiceConnection implements ServiceConnection {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            LocalService.LocalBinder binder = (LocalService.LocalBinder) service;
+            mBoundService = binder.getService();
+
+            Toast.makeText(getApplicationContext(), "LocalService connected",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        public void onServiceDisconnected(ComponentName className) {
+            mBoundService = null;
+            Toast.makeText(getApplicationContext(),  "LocalService disconnected",
+                    Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    public MainActivity() {
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +46,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
+        doStartService();
+        doBindService();
     }
 
     @Override
@@ -42,6 +67,8 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onStop() {
+        doUnbindService();
+        doStopService();
         super.onStop();
     }
 
@@ -72,4 +99,38 @@ public class MainActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    void doBindService() {
+        doBindService(new Intent(this, LocalService.class));
+    }
+    void doBindService(Intent serviceIntent) {
+        bindService(serviceIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
+        mIsServiceBound = true;
+    }
+
+    void doUnbindService() {
+        if (mIsServiceBound) {
+            // Detach our existing connection.
+            unbindService(mServiceConnection);
+            mIsServiceBound = false;
+        }
+    }
+
+    private void doStartService() {
+        doStartService(new Intent(this, LocalService.class));
+    }
+    private void doStartService(Intent serviceIntent) {
+        startService(serviceIntent);
+    }
+
+    private void doStopService() {
+        doStopService(new Intent(this, LocalService.class));
+    }
+    private void doStopService(Intent serviceIntent) {
+        stopService(serviceIntent);
+    }
+
+    private LocalService mBoundService = null;
+    private LocalServiceConnection mServiceConnection = new LocalServiceConnection();
+    private boolean mIsServiceBound;
 }
