@@ -57,6 +57,7 @@ public class LocalService extends Service {
 
     // https://developer.android.com/guide/topics/ui/notifiers/notifications.html#SimpleNotification
     private void initNotification() {
+        Log.d(TAG, "initNotification()");
         Intent clickNotification = new Intent(this, MainActivity.class);
         PendingIntent resultPendingIntent = TaskStackBuilder.create(this)
                 .addParentStack(MainActivity.class)
@@ -74,11 +75,13 @@ public class LocalService extends Service {
     }
 
     private void cancelNotification() {
+        Log.d(TAG, "cancelNotification()");
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(NOTIFICATION_ID);
     }
 
     private void openDbusConnection() {
+        Log.d(TAG, "openDbusConnection()");
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -99,6 +102,7 @@ public class LocalService extends Service {
     }
 
     private void closeDbusConnection() {
+        Log.d(TAG, "closeDbusConnection()");
         dBusConnection = null;
     }
 
