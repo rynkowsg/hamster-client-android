@@ -53,7 +53,7 @@ public class MainActivity extends Activity {
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart()");
-        doStartService();
+        //doStartService();
         doBindService();
     }
 
@@ -79,7 +79,7 @@ public class MainActivity extends Activity {
     protected void onStop() {
         Log.d(TAG, "onStop()");
         doUnbindService();
-        doStopService();
+        //doStopService();
         super.onStop();
     }
 
