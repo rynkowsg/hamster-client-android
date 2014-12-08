@@ -11,6 +11,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 public class MainActivity extends Activity {
@@ -159,6 +165,22 @@ public class MainActivity extends Activity {
             mBoundService.dbusNotify("nic", "nic", "raz", "dwa");
         } else
             Log.d(TAG, "myService == null");
+    }
+    public void bFillTodayFactsList(View view) {
+        // http://www.vogella.com/tutorials/AndroidListView/article.html
+        final ListView listview = (ListView) findViewById(R.id.listOfTodayFacts);
+        String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
+                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
+                "Linux", "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux",
+                "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux", "OS/2",
+                "Android", "iPhone", "WindowsMobile" };
+
+        final ArrayList<String> list = new ArrayList<String>();
+        for (int i = 0; i < values.length; ++i) {
+            list.add(values[i]);
+        }
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
+        listview.setAdapter(adapter);
     }
 
     private final String TAG = this.getClass().getSimpleName();
