@@ -7,7 +7,6 @@ import android.app.Service;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
@@ -100,7 +99,7 @@ public class LocalService extends Service {
 
     private void openDbusConnectionInside() {
         try {
-            dBusConnection = DBusConnection.getConnection("tcp:host=192.168.1.3,port=55555");
+            dBusConnection = DBusConnection.getConnection("tcp:host=10.0.0.103,port=55555");
         } catch (DBusException e) {
             e.printStackTrace();
             throw new RuntimeException();
