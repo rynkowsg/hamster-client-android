@@ -6,7 +6,7 @@ import java.util.List;
 // used in:
 //     public List<Struct7> GetFacts(UInt32 start_date, UInt32 end_date, String search_terms, UInt32 limit, boolean asc_by_date);
 
-class AdapterStruct5 {
+public class AdapterStruct5 {
     AdapterStruct5(Struct5 object) { this.object = object; }
     public int          id()            { return object.a; }
     public int          start_time()    { return object.b; }

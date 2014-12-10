@@ -6,7 +6,7 @@ import java.util.List;
 // used in:
 //     public Struct4 GetFact(int fact_id);
 
-class AdapterStruct4 {
+public class AdapterStruct4 {
     AdapterStruct4(Struct4 object) { this.object = object; }
     public int          id()            { return object.a; }
     public int          start_time()    { return object.b; }
