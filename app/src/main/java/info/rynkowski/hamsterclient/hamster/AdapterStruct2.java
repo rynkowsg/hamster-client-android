@@ -6,10 +6,42 @@ import org.gnome.Struct2;
 //     public List<Struct2> GetCategoryActivities(int category_id);
 
 public class AdapterStruct2 {
-    AdapterStruct2(Struct2 object) { this.object = object; }
-    public int      id()            { return object.a; }
-    public String   name()          { return object.b; }
-    public int      category_id()   { return object.c; }
-    public String   category() { return object.d; }
-    public Struct2 object;
+    private Struct2 object;
+
+    AdapterStruct2(Struct2 object) {
+        this.object = object;
+
+    }
+
+    public int id() {
+        return id(object);
+    }
+
+    public String name() {
+        return name(object);
+    }
+
+    public int category_id() {
+        return category_id(object);
+    }
+
+    public String category() {
+        return category(object);
+    }
+
+    public static int id(Struct2 object) {
+        return object.a;
+    }
+
+    public static String name(Struct2 object) {
+        return object.b;
+    }
+
+    public static int category_id(Struct2 object) {
+        return object.c;
+    }
+
+    public static String category(Struct2 object) {
+        return object.d;
+    }
 }
