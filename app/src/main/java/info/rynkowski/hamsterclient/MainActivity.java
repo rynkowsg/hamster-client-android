@@ -12,7 +12,12 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import org.gnome.Struct5;
+
 import java.util.ArrayList;
+import java.util.List;
+
+import info.rynkowski.hamsterclient.hamster.AdapterStruct5;
 
 
 public class MainActivity extends Activity {
@@ -23,6 +28,9 @@ public class MainActivity extends Activity {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
+                case HamsterService.MSG_TODAY_FACTS:
+                    fillListTodayFacts((List<Struct5>) msg.obj);
+                    break;
                 default:
                     super.handleMessage(msg);
             }
@@ -117,7 +125,7 @@ public class MainActivity extends Activity {
                 sendRequest(HamsterService.MSG_NOTIFY);
                 break;
             case R.id.btnFillTodayFactsList:
-                fillListExampleData();
+                sendRequest(HamsterService.MSG_TODAY_FACTS);
                 break;
             default:
                 ;
@@ -144,6 +152,17 @@ public class MainActivity extends Activity {
         final ArrayList<String> list = new ArrayList<String>();
         for (int i = 0; i < values.length; ++i) {
             list.add(values[i]);
+        }
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
+        listview.setAdapter(adapter);
+    }
+
+    public void fillListTodayFacts(List<Struct5> listOfFacts) {
+        Log.i(TAG, "fillListTodayFacts");
+        final ListView listview = (ListView) findViewById(R.id.listOfTodayFacts);
+        ArrayList<String> list = new ArrayList<String>();
+        for (Struct5 row : listOfFacts) {
+            list.add(AdapterStruct5.name(row));
         }
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
         listview.setAdapter(adapter);

@@ -14,9 +14,12 @@ import org.freedesktop.dbus.DBusConnection;
 import org.freedesktop.dbus.UInt32;
 import org.freedesktop.dbus.Variant;
 import org.freedesktop.dbus.exceptions.DBusException;
+import org.gnome.Hamster;
+import org.gnome.Struct5;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class HamsterService extends AbstractService {
@@ -51,6 +54,9 @@ public class HamsterService extends AbstractService {
         switch (msg.what) {
             case (MSG_NOTIFY):
                 dbusNotify();
+                break;
+            case (MSG_TODAY_FACTS):
+                getTodaysFacts();
                 break;
             default:
                 break;
@@ -126,6 +132,27 @@ public class HamsterService extends AbstractService {
                         Map<String, Variant<Byte>> hints = new HashMap<String, Variant<Byte>>();
                         hints.put("urgency", new Variant<Byte>((byte) 0));
                         notify.Notify(messages[0], new UInt32(0), messages[1], messages[2], messages[3], new LinkedList<String>(), hints, 5);
+                    } catch (DBusException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        } else {
+            Log.d(TAG, "dBusConnection == null");
+        }
+    }
+
+    public void getTodaysFacts() {
+        Log.d(TAG, "dbusNotify()");
+        if (dBusConnection != null) {
+            Log.d(TAG, "dBusConnection != null");
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Hamster hamster = (Hamster) dBusConnection.getRemoteObject("org.gnome.Hamster", "/org/gnome/Hamster");
+                        List<Struct5> lista = hamster.GetTodaysFacts();
+                        send(Message.obtain(null, MSG_TODAY_FACTS, lista));
                     } catch (DBusException e) {
                         e.printStackTrace();
                     }
