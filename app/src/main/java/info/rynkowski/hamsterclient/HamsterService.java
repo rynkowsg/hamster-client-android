@@ -3,12 +3,10 @@ package info.rynkowski.hamsterclient;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Binder;
-import android.os.IBinder;
+import android.os.Message;
 import android.util.Log;
 
 import org.freedesktop.Notifications;
@@ -21,45 +19,42 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class LocalService extends Service {
-    public class LocalBinder extends Binder {
-        LocalService getService() {
-            Log.d(TAG, "LocalBinder.getService()");
-            return LocalService.this;
-        }
-    }
+public class HamsterService extends AbstractService {
+    private final String TAG = "HamsterService";
+    private static final int NOTIFICATION_ID = 1;
+    private DBusConnection dBusConnection = null;
 
-    public LocalService() {
-        Log.d(TAG, "LocalService()");
+
+    static final int MSG_NOTIFY = 2;
+    static final int MSG_TODAY_FACTS = 3;
+
+    public HamsterService() {
+        Log.d(TAG, "HamsterService()");
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-        Log.d(TAG, "onCreate()");
+    public void onStartService() {
+        Log.d(TAG, "onStartService()");
         initNotification();
         openDbusConnection();
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        super.onStartCommand(intent, flags, startId);
-        Log.d(TAG, "onStartCommand()");
-        return Service.START_STICKY;
-    }
-
-    @Override
-    public void onDestroy() {
+    public void onStopService() {
         Log.d(TAG, "onDestroy()");
         closeDbusConnection();
         cancelNotification();
-        super.onDestroy();
     }
 
     @Override
-    public IBinder onBind(Intent intent) {
-        Log.d(TAG, "onBind()");
-        return mBinder;
+    public void onReceiveMessage(Message msg) {
+        switch (msg.what) {
+            case (MSG_NOTIFY):
+                dbusNotify();
+                break;
+            default:
+                break;
+        }
     }
 
     // https://developer.android.com/guide/topics/ui/notifiers/notifications.html#SimpleNotification
@@ -102,6 +97,8 @@ public class LocalService extends Service {
             dBusConnection = DBusConnection.getConnection("tcp:host=10.0.0.103,port=55555");
         } catch (DBusException e) {
             e.printStackTrace();
+            Log.i(TAG, "dbusConnection = " + dBusConnection);
+            dBusConnection = null;
             throw new RuntimeException();
             // TODO: send information to activity
             // http://android-coding.blogspot.in/2011/11/pass-data-from-service-to-activity.html
@@ -138,9 +135,4 @@ public class LocalService extends Service {
             Log.d(TAG, "dBusConnection == null");
         }
     }
-
-    private final String TAG = this.getClass().getSimpleName();
-    private final IBinder mBinder = new LocalBinder();
-    private static final int NOTIFICATION_ID = 1;
-    private DBusConnection dBusConnection = null;
 }

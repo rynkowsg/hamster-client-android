@@ -20,7 +20,7 @@
         </activity>
 
         <service
-            android:name="info.rynkowski.hamsterclient.LocalService"
+            android:name=".HamsterService"
             android:enabled="true"
             android:exported="false" >
         </service>

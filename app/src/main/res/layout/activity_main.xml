@@ -15,7 +15,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:onClick="bStartService" />
+        android:onClick="onClickButton" />
 
     <Button
         android:layout_width="wrap_content"
@@ -27,7 +27,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:onClick="bStopService" />
+        android:onClick="onClickButton" />
 
     <Button
         android:layout_width="wrap_content"
@@ -39,7 +39,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:onClick="bDbusNotify" />
+        android:onClick="onClickButton" />
 
     <Button
         android:layout_width="wrap_content"
@@ -51,7 +51,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:onClick="bFillTodayFactsList" />
+        android:onClick="onClickButton" />
 
     <ListView
         android:layout_width="wrap_content"

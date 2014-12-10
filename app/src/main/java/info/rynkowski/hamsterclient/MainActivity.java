@@ -1,12 +1,10 @@
 package info.rynkowski.hamsterclient;
 
 import android.app.Activity;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
+import android.os.Handler;
+import android.os.Message;
+import android.os.RemoteException;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,25 +13,20 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 
 public class MainActivity extends Activity {
-    private class LocalServiceConnection implements ServiceConnection {
-        public void onServiceConnected(ComponentName className, IBinder service) {
-            Log.d(TAG, "LocalServiceConnection.onServiceConnected()");
-            LocalService.LocalBinder binder = (LocalService.LocalBinder) service;
-            mBoundService = binder.getService();
-        }
-        public void onServiceDisconnected(ComponentName className) {
-            Log.d(TAG, "LocalServiceConnection.onServiceDisconnected()");
-            mBoundService = null;
-        }
-    }
+    private final String TAG = "MainActivity";
+    private ServiceManager service;
 
-    public MainActivity() {
-        Log.d(TAG, "MainActivity()");
+    private class LocalHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                default:
+                    super.handleMessage(msg);
+            }
+        }
     }
 
     @Override
@@ -41,6 +34,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
         setContentView(R.layout.activity_main);
+        this.service = new ServiceManager(this, HamsterService.class, new LocalHandler());
     }
 
     @Override
@@ -53,8 +47,7 @@ public class MainActivity extends Activity {
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart()");
-        doStartService();
-        doBindService();
+        service.start();
     }
 
     @Override
@@ -78,17 +71,15 @@ public class MainActivity extends Activity {
     @Override
     protected void onStop() {
         Log.d(TAG, "onStop()");
-        doUnbindService();
-        //doStopService();
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
         Log.d(TAG, "onDestroy()");
+        service.unbind();
         super.onDestroy();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -114,66 +105,41 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    void doBindService() {
-        doBindService(new Intent(this, LocalService.class));
-    }
-    void doBindService(Intent serviceIntent) {
-        Log.d(TAG, "doBindService()");
-        bindService(serviceIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
-        mIsServiceBound = true;
-    }
-
-    void doUnbindService() {
-        Log.d(TAG, "doUnbindService()");
-        if (mIsServiceBound) {
-            // Detach our existing connection.
-            unbindService(mServiceConnection);
-            mIsServiceBound = false;
-            mBoundService = null;
+    public void onClickButton(View view) {
+        switch (view.getId()) {
+            case R.id.btnStartService:
+                service.start();
+                break;
+            case R.id.btnStopService:
+                service.stop();
+                break;
+            case R.id.btnDbusNotify:
+                sendRequest(HamsterService.MSG_NOTIFY);
+                break;
+            case R.id.btnFillTodayFactsList:
+                fillListExampleData();
+                break;
+            default:
+                ;
         }
     }
 
-    private void doStartService() {
-        doStartService(new Intent(this, LocalService.class));
-    }
-    private void doStartService(Intent serviceIntent) {
-        Log.d(TAG, "doStartService()");
-        startService(serviceIntent);
-    }
-
-    private void doStopService() {
-        doStopService(new Intent(this, LocalService.class));
-    }
-    private void doStopService(Intent serviceIntent) {
-        Log.d(TAG, "doStopService()");
-        stopService(serviceIntent);
+    void sendRequest(int what) {
+        try {
+            service.send(Message.obtain(null, what));
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
-    // button methods
-    public void bStartService(View view) {
-        doStartService();
-        doBindService();
-    }
-    public void bStopService(View view) {
-        doUnbindService();
-        doStopService();
-    }
-
-    public void bDbusNotify(View view) {
-        Log.d(TAG, "Called dbusNotify() method");
-        if (mIsServiceBound) {
-            mBoundService.dbusNotify("nic", "nic", "raz", "dwa");
-        } else
-            Log.d(TAG, "myService == null");
-    }
-    public void bFillTodayFactsList(View view) {
+    public void fillListExampleData() {
         // http://www.vogella.com/tutorials/AndroidListView/article.html
         final ListView listview = (ListView) findViewById(R.id.listOfTodayFacts);
-        String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
+        String[] values = new String[]{"Android", "iPhone", "WindowsMobile",
                 "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
                 "Linux", "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux",
                 "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux", "OS/2",
-                "Android", "iPhone", "WindowsMobile" };
+                "Android", "iPhone", "WindowsMobile"};
 
         final ArrayList<String> list = new ArrayList<String>();
         for (int i = 0; i < values.length; ++i) {
@@ -182,9 +148,4 @@ public class MainActivity extends Activity {
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
         listview.setAdapter(adapter);
     }
-
-    private final String TAG = this.getClass().getSimpleName();
-    private LocalService mBoundService = null;
-    private LocalServiceConnection mServiceConnection = new LocalServiceConnection();
-    private boolean mIsServiceBound;
 }
