@@ -27,8 +27,10 @@ public class HamsterService extends AbstractService {
     private static final int NOTIFICATION_ID = 1;
     private DBusConnection dBusConnection = null;
 
+    // messages to HamsterService
     static final int MSG_NOTIFY = 2;
     static final int MSG_TODAY_FACTS = 3;
+    // messages from HamsterService
     static final int MSG_EXCEPTION = 4;
 
     public HamsterService() {
@@ -100,6 +102,7 @@ public class HamsterService extends AbstractService {
 
     private void openDbusConnectionInside() {
         Log.i(TAG, "Before get dbus connection");
+        long startTime = System.currentTimeMillis();
         try {
             dBusConnection = DBusConnection.getConnection("tcp:host=10.0.0.103,port=55555");
         } catch (DBusException e) {
@@ -108,7 +111,8 @@ public class HamsterService extends AbstractService {
             dBusConnection = null;
             send(Message.obtain(null, MSG_EXCEPTION, e));
         }
-        Log.i(TAG, "After get dbus connection");
+        long difference = System.currentTimeMillis() - startTime;
+        Log.i(TAG, "After get dbus connection: it takes " + difference/1000 + " seconds");
     }
 
     private void closeDbusConnection() {
