@@ -1,6 +1,8 @@
 package info.rynkowski.hamsterclient;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,8 +14,11 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import org.freedesktop.dbus.exceptions.DBusException;
 import org.gnome.Struct5;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +34,12 @@ public class MainActivity extends Activity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case HamsterService.MSG_TODAY_FACTS:
+                    Log.i(TAG, "Handled message: HamsterService.MSG_TODAY_FACTS");
                     fillListTodayFacts((List<Struct5>) msg.obj);
+                    break;
+                case HamsterService.MSG_EXCEPTION:
+                    Log.i(TAG, "Handled message: HamsterService.MSG_CONNECTION_PROBLEM");
+                    showExceptionDialog((DBusException) msg.obj);
                     break;
                 default:
                     super.handleMessage(msg);
@@ -166,5 +176,21 @@ public class MainActivity extends Activity {
         }
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
         listview.setAdapter(adapter);
+    }
+
+    public void showExceptionDialog(Exception e) {
+        // https://stackoverflow.com/questions/17738768/android-print-full-exception
+        // Converts the stack trace into a string.
+        StringWriter errors = new StringWriter();
+        e.printStackTrace(new PrintWriter(errors));
+        // Create and show AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle(R.string.exception)
+                .setMessage("Exception: \n" + e.toString() + "\n\nStackTrace:\n" + errors.toString())
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+        builder.create().show();
     }
 }

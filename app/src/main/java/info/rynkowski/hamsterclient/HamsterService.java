@@ -27,9 +27,9 @@ public class HamsterService extends AbstractService {
     private static final int NOTIFICATION_ID = 1;
     private DBusConnection dBusConnection = null;
 
-
     static final int MSG_NOTIFY = 2;
     static final int MSG_TODAY_FACTS = 3;
+    static final int MSG_EXCEPTION = 4;
 
     public HamsterService() {
         Log.d(TAG, "HamsterService()");
@@ -99,16 +99,16 @@ public class HamsterService extends AbstractService {
     }
 
     private void openDbusConnectionInside() {
+        Log.i(TAG, "Before get dbus connection");
         try {
             dBusConnection = DBusConnection.getConnection("tcp:host=10.0.0.103,port=55555");
         } catch (DBusException e) {
             e.printStackTrace();
-            Log.i(TAG, "dbusConnection = " + dBusConnection);
+            Log.i(TAG, "dBusConnection is not established, dbusConnection = " + dBusConnection);
             dBusConnection = null;
-            throw new RuntimeException();
-            // TODO: send information to activity
-            // http://android-coding.blogspot.in/2011/11/pass-data-from-service-to-activity.html
+            send(Message.obtain(null, MSG_EXCEPTION, e));
         }
+        Log.i(TAG, "After get dbus connection");
     }
 
     private void closeDbusConnection() {
@@ -134,6 +134,7 @@ public class HamsterService extends AbstractService {
                         notify.Notify(messages[0], new UInt32(0), messages[1], messages[2], messages[3], new LinkedList<String>(), hints, 5);
                     } catch (DBusException e) {
                         e.printStackTrace();
+                        send(Message.obtain(null, MSG_EXCEPTION, e));
                     }
                 }
             }).start();
@@ -155,6 +156,7 @@ public class HamsterService extends AbstractService {
                         send(Message.obtain(null, MSG_TODAY_FACTS, lista));
                     } catch (DBusException e) {
                         e.printStackTrace();
+                        send(Message.obtain(null, MSG_EXCEPTION, e));
                     }
                 }
             }).start();
