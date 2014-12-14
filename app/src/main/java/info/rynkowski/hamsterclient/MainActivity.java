@@ -38,7 +38,9 @@ public class MainActivity extends Activity {
                     fillListTodayFacts((List<Struct5>) msg.obj);
                     break;
                 case HamsterService.MSG_EXCEPTION:
-                    Log.i(TAG, "Handled message: HamsterService.MSG_CONNECTION_PROBLEM");
+                    showExceptionDialog((Exception) msg.obj);
+                    break;
+                case HamsterService.MSG_DBUS_EXCEPTION:
                     showExceptionDialog((DBusException) msg.obj);
                     break;
                 default:

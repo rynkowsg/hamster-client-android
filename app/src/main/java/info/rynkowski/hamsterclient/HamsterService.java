@@ -32,6 +32,7 @@ public class HamsterService extends AbstractService {
     static final int MSG_TODAY_FACTS = 3;
     // messages from HamsterService
     static final int MSG_EXCEPTION = 4;
+    static final int MSG_DBUS_EXCEPTION = 5;
 
     public HamsterService() {
         Log.d(TAG, "HamsterService()");
@@ -104,7 +105,7 @@ public class HamsterService extends AbstractService {
         Log.i(TAG, "Before get dbus connection");
         long startTime = System.currentTimeMillis();
         try {
-            dBusConnection = DBusConnection.getConnection("tcp:host=10.0.0.103,port=55555");
+            dBusConnection = DBusConnection.getConnection("tcp:host=10.0.0.101,port=55555");
         } catch (DBusException e) {
             e.printStackTrace();
             Log.i(TAG, "dBusConnection is not established, dbusConnection = " + dBusConnection);
@@ -132,11 +133,16 @@ public class HamsterService extends AbstractService {
                 @Override
                 public void run() {
                     try {
-                        Notifications notify = (Notifications) dBusConnection.getRemoteObject("org.freedesktop.Notifications", "/org/freedesktop/Notifications");
+                        Notifications notify = (Notifications) dBusConnection.getRemoteObject("org.freedesktop.Notifications", "/org/freedesktop/Notifications", Notifications.class);
+                        Log.i(TAG, "notify = " + notify);
                         Map<String, Variant<Byte>> hints = new HashMap<String, Variant<Byte>>();
                         hints.put("urgency", new Variant<Byte>((byte) 0));
                         notify.Notify(messages[0], new UInt32(0), messages[1], messages[2], messages[3], new LinkedList<String>(), hints, 5);
                     } catch (DBusException e) {
+                        e.printStackTrace();
+                        send(Message.obtain(null, MSG_DBUS_EXCEPTION, e));
+                    }
+                    catch (Exception e) {
                         e.printStackTrace();
                         send(Message.obtain(null, MSG_EXCEPTION, e));
                     }
@@ -160,7 +166,7 @@ public class HamsterService extends AbstractService {
                         send(Message.obtain(null, MSG_TODAY_FACTS, lista));
                     } catch (DBusException e) {
                         e.printStackTrace();
-                        send(Message.obtain(null, MSG_EXCEPTION, e));
+                        send(Message.obtain(null, MSG_DBUS_EXCEPTION, e));
                     }
                 }
             }).start();
