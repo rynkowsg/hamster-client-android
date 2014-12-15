@@ -6,5 +6,6 @@
     <string name="ok">OK</string>
     <string name="exception">Exception</string>
     <string name="action_add_fact">Add a fact</string>
+    <string name="action_refresh">Refresh</string>
 
 </resources>

@@ -28,8 +28,9 @@ public class HamsterService extends AbstractService {
     private DBusConnection dBusConnection = null;
 
     // messages to HamsterService
-    static final int MSG_NOTIFY = 2;
-    static final int MSG_TODAY_FACTS = 3;
+    static final int MSG_NOTIFY = 1;
+    static final int MSG_TODAY_FACTS = 2;
+    static final int MSG_REFRESH = 3;
     // messages from HamsterService
     static final int MSG_EXCEPTION = 4;
     static final int MSG_DBUS_EXCEPTION = 5;
@@ -61,6 +62,8 @@ public class HamsterService extends AbstractService {
                 break;
             case (MSG_TODAY_FACTS):
                 getTodaysFacts();
+                break;
+            case (MSG_REFRESH):
                 break;
             default:
                 break;
