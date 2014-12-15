@@ -3,6 +3,7 @@ package info.rynkowski.hamsterclient;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -28,6 +29,8 @@ import info.rynkowski.hamsterclient.hamster.AdapterStruct5;
 public class MainActivity extends Activity {
     private final String TAG = "MainActivity";
     private ServiceManager service;
+
+    static final int PICK_FACT_DATA = 1;
 
     //----------------  Message handling and sending  --------------------------------------------//
     private class LocalHandler extends Handler {
@@ -116,7 +119,7 @@ public class MainActivity extends Activity {
         super.onDestroy();
     }
 
-    //----------------  ActionBar buttons  -------------------------------------------------------//
+    //----------------  Activity' methods  -------------------------------------------------------//
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.d(TAG, "onCreateOptionsMenu()");
@@ -133,11 +136,24 @@ public class MainActivity extends Activity {
                 sendRequest(HamsterService.MSG_REFRESH);
                 return true;
             case R.id.action_add_fact:
+                runAddFactActivity();
                 return true;
             case R.id.action_settings:
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case (PICK_FACT_DATA):
+                if (resultCode == RESULT_OK)
+                    // Do something with the intent data
+                break;
+            default:
+                break;
         }
     }
 
@@ -189,5 +205,10 @@ public class MainActivity extends Activity {
                     }
                 });
         builder.create().show();
+    }
+
+    private void runAddFactActivity() {
+        Intent pickFactData = new Intent(MainActivity.this, AddFactActivity.class);
+        startActivityForResult(pickFactData, PICK_FACT_DATA);
     }
 }
