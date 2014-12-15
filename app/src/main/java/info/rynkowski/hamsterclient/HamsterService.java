@@ -161,7 +161,7 @@ public class HamsterService extends AbstractService {
                 @Override
                 public void run() {
                     try {
-                        Hamster hamster = (Hamster) dBusConnection.getRemoteObject("org.gnome.Hamster", "/org/gnome/Hamster");
+                        Hamster hamster = (Hamster) dBusConnection.getRemoteObject("org.gnome.Hamster", "/org/gnome/Hamster", Hamster.class);
                         List<Struct5> lista = hamster.GetTodaysFacts();
                         send(Message.obtain(null, MSG_TODAY_FACTS, lista));
                     } catch (DBusException e) {
