@@ -29,6 +29,7 @@ public class MainActivity extends Activity {
     private final String TAG = "MainActivity";
     private ServiceManager service;
 
+    //----------------  Message handling and sending  --------------------------------------------//
     private class LocalHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
@@ -49,6 +50,20 @@ public class MainActivity extends Activity {
         }
     }
 
+    void sendRequest(int what) {
+        sendMessage(Message.obtain(null, what));
+    }
+
+    void sendMessage(Message msg) {
+        try {
+            service.send(msg);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            showExceptionDialog((RemoteException) msg.obj);
+        }
+    }
+
+    //----------------  Activity' lifecycle methods  ---------------------------------------------//
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +116,7 @@ public class MainActivity extends Activity {
         super.onDestroy();
     }
 
+    //----------------  ActionBar buttons  -------------------------------------------------------//
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.d(TAG, "onCreateOptionsMenu()");
@@ -122,6 +138,7 @@ public class MainActivity extends Activity {
         }
     }
 
+    //----------------  Buttons  -----------------------------------------------------------------//
     public void onClickButton(View view) {
         switch (view.getId()) {
             case R.id.btnStartService:
@@ -138,14 +155,6 @@ public class MainActivity extends Activity {
                 break;
             default:
                 ;
-        }
-    }
-
-    void sendRequest(int what) {
-        try {
-            service.send(Message.obtain(null, what));
-        } catch (RemoteException e) {
-            e.printStackTrace();
         }
     }
 
@@ -177,6 +186,7 @@ public class MainActivity extends Activity {
         listview.setAdapter(adapter);
     }
 
+    //----------------  Other  -------------------------------------------------------------------//
     public void showExceptionDialog(Exception e) {
         // https://stackoverflow.com/questions/17738768/android-print-full-exception
         // Converts the stack trace into a string.
