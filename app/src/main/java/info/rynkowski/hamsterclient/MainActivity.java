@@ -161,23 +161,8 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void fillListExampleData() {
-        // http://www.vogella.com/tutorials/AndroidListView/article.html
-        final ListView listview = (ListView) findViewById(R.id.listOfTodayFacts);
-        String[] values = new String[]{"Android", "iPhone", "WindowsMobile",
-                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-                "Linux", "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux",
-                "OS/2", "Ubuntu", "Windows7", "Max OS X", "Linux", "OS/2",
-                "Android", "iPhone", "WindowsMobile"};
-
-        final ArrayList<String> list = new ArrayList<String>();
-        for (int i = 0; i < values.length; ++i) {
-            list.add(values[i]);
-        }
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
-        listview.setAdapter(adapter);
-    }
-
+    //----------------  Methods used by view components  -----------------------------------------//
+    //----------------     - TodayFacts list             -----------------------------------------//
     public void fillListTodayFacts(List<Struct5> listOfFacts) {
         Log.i(TAG, "fillListTodayFacts");
         final ListView listview = (ListView) findViewById(R.id.listOfTodayFacts);
@@ -189,7 +174,7 @@ public class MainActivity extends Activity {
         listview.setAdapter(adapter);
     }
 
-    //----------------  Other  -------------------------------------------------------------------//
+    //----------------     - dialog with information about exception  ----------------------------//
     public void showExceptionDialog(Exception e) {
         // https://stackoverflow.com/questions/17738768/android-print-full-exception
         // Converts the stack trace into a string.
