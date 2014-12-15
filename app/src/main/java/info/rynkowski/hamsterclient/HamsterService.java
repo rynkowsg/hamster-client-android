@@ -38,6 +38,7 @@ public class HamsterService extends AbstractService {
         Log.d(TAG, "HamsterService()");
     }
 
+    //----------------  Overridden methods of AbstractService  -----------------------------------//
     @Override
     public void onStartService() {
         Log.d(TAG, "onStartService()");
@@ -66,6 +67,7 @@ public class HamsterService extends AbstractService {
         }
     }
 
+    //----------------  Android Notifications  ---------------------------------------------------//
     // https://developer.android.com/guide/topics/ui/notifiers/notifications.html#SimpleNotification
     private void initNotification() {
         Log.d(TAG, "initNotification()");
@@ -91,6 +93,7 @@ public class HamsterService extends AbstractService {
         notificationManager.cancel(NOTIFICATION_ID);
     }
 
+    //----------------  DBUS connection  ---------------------------------------------------------//
     private void openDbusConnection() {
         Log.d(TAG, "openDbusConnection()");
         new Thread(new Runnable() {
@@ -121,6 +124,7 @@ public class HamsterService extends AbstractService {
         dBusConnection = null;
     }
 
+    //---------------- DBUS - operations on the Notifications object  ----------------------------//
     public void dbusNotify() {
         dbusNotify("", "", "Message1", "Message 2");
     }
@@ -153,6 +157,7 @@ public class HamsterService extends AbstractService {
         }
     }
 
+    //---------------- DBUS - operations on the Hamster object  ----------------------------------//
     public void getTodaysFacts() {
         Log.d(TAG, "dbusNotify()");
         if (dBusConnection != null) {
