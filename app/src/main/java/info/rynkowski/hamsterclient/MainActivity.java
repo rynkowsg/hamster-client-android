@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.freedesktop.dbus.exceptions.DBusException;
 import org.gnome.Struct5;
@@ -47,6 +48,19 @@ public class MainActivity extends Activity {
                 case HamsterService.MSG_DBUS_EXCEPTION:
                     showExceptionDialog((DBusException) msg.obj);
                     break;
+                case HamsterService.SIGNAL_ACTIVITIES_CHANGED:
+                    Toast.makeText(getApplicationContext(), "SIGNAL_ACTIVITIES_CHANGED", Toast.LENGTH_LONG).show();
+                    break;
+                case HamsterService.SIGNAL_FACTS_CHANGED:
+                    Toast.makeText(getApplicationContext(), "SIGNAL_FACTS_CHANGED", Toast.LENGTH_LONG).show();
+                    break;
+                case HamsterService.SIGNAL_TAGS_CHANGED:
+                    Toast.makeText(getApplicationContext(), "SIGNAL_TAGS_CHANGED", Toast.LENGTH_LONG).show();
+                    break;
+                case HamsterService.SIGNAL_TOGGLE_CHANGED:
+                    Toast.makeText(getApplicationContext(), "SIGNAL_TOGGLE_CHANGED", Toast.LENGTH_LONG).show();
+                    break;
+
                 default:
                     super.handleMessage(msg);
             }
