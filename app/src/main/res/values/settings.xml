@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="host">10.0.2.5</string>
+    <!--<string name="host">192.168.43.108</string>-->
+    <string name="port">55555</string>
+</resources>

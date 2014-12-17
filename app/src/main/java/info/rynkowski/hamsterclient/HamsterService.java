@@ -6,13 +6,14 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.freedesktop.Notifications;
 import org.freedesktop.dbus.DBusConnection;
 import org.freedesktop.dbus.DBusSigHandler;
-import org.freedesktop.dbus.DBusSignal;
 import org.freedesktop.dbus.UInt32;
 import org.freedesktop.dbus.Variant;
 import org.freedesktop.dbus.exceptions.DBusException;
@@ -52,6 +53,7 @@ public class HamsterService extends AbstractService {
         Log.d(TAG, "onStartService()");
         initNotification();
         openDbusConnection();
+        PreferenceManager.setDefaultValues(HamsterService.this, R.xml.preferences, false);
     }
 
     @Override
@@ -118,8 +120,11 @@ public class HamsterService extends AbstractService {
         Log.i(TAG, "Before get dbus connection");
         long startTime = System.currentTimeMillis();
         try {
-            //dBusConnection = DBusConnection.getConnection("tcp:host=10.0.2.5,port=55555");
-            dBusConnection = DBusConnection.getConnection("tcp:host=192.168.43.108,port=55555");
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(HamsterService.this);
+            String host = prefs.getString("host", getResources().getString(R.string.host));
+            String port = prefs.getString("port", getResources().getString(R.string.port));
+            String dbus_address = "tcp:host=" + host + ",port=" + port;
+            dBusConnection = DBusConnection.getConnection(dbus_address);
             registerSignals();
         } catch (DBusException e) {
             e.printStackTrace();

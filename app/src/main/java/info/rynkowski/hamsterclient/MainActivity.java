@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -153,6 +155,7 @@ public class MainActivity extends Activity {
                 runAddFactActivity();
                 return true;
             case R.id.action_settings:
+                runSettingsActivity();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -164,7 +167,7 @@ public class MainActivity extends Activity {
         switch (requestCode) {
             case (PICK_FACT_DATA):
                 if (resultCode == RESULT_OK)
-                    // Do something with the intent data
+                    ;// Do something with the intent data
                 break;
             default:
                 break;
@@ -186,13 +189,16 @@ public class MainActivity extends Activity {
             case R.id.btnFillTodayFactsList:
                 sendRequest(HamsterService.MSG_TODAY_FACTS);
                 break;
+            case R.id.btnShowPrefs:
+                displaySettings();
+                break;
             default:
                 ;
         }
     }
 
-    //----------------  Methods used by view components  -----------------------------------------//
-    //----------------     - TodayFacts list             -----------------------------------------//
+    //--- Methods used by view components  -------------------------------------------------------//
+    //---  - TodayFacts list
     public void fillListTodayFacts(List<Struct5> listOfFacts) {
         Log.i(TAG, "fillListTodayFacts");
         final ListView listview = (ListView) findViewById(R.id.listOfTodayFacts);
@@ -204,7 +210,7 @@ public class MainActivity extends Activity {
         listview.setAdapter(adapter);
     }
 
-    //----------------     - dialog with information about exception  ----------------------------//
+    //---  - dialog with information about exception
     public void showExceptionDialog(Exception e) {
         // https://stackoverflow.com/questions/17738768/android-print-full-exception
         // Converts the stack trace into a string.
@@ -221,8 +227,24 @@ public class MainActivity extends Activity {
         builder.create().show();
     }
 
+    //---  - run activity to adding new Fact
     private void runAddFactActivity() {
         Intent pickFactData = new Intent(MainActivity.this, AddFactActivity.class);
         startActivityForResult(pickFactData, PICK_FACT_DATA);
+    }
+
+    //---  - run activity with application' settings
+    private void runSettingsActivity() {
+        Intent intent = new Intent(MainActivity.this, PrefsActivity.class);
+        startActivity(intent);
+    }
+
+    //---  - toast the settings
+    private void displaySettings() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        String server_ip = prefs.getString("host", getResources().getString(R.string.host));
+        String server_port = prefs.getString("port", getResources().getString(R.string.port));
+        String message = "DBus address: " + server_ip + ":" + server_port + "\n";
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
 }
