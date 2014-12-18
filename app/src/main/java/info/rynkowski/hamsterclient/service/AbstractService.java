@@ -1,4 +1,4 @@
-package info.rynkowski.hamsterclient;
+package info.rynkowski.hamsterclient.service;
 
 import android.app.Service;
 import android.content.Intent;
@@ -13,8 +13,8 @@ import java.util.ArrayList;
 
 public abstract class AbstractService extends Service {
     private final String TAG = "AbstractService";
-    static final int MSG_REGISTER_CLIENT = 9991;
-    static final int MSG_UNREGISTER_CLIENT = 9992;
+    public static final int MSG_REGISTER_CLIENT = 9991;
+    public static final int MSG_UNREGISTER_CLIENT = 9992;
 
     private ArrayList<Messenger> mClients = new ArrayList<Messenger>(); // Keeps track of all current registered clients.
     private final Messenger mMessenger = new Messenger(new LocalHandler()); // Target we publish for clients to send messages to IncomingHandler.

@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import info.rynkowski.hamsterclient.hamster.AdapterStruct5;
+import info.rynkowski.hamsterclient.service.HamsterService;
 
 
 public class MainActivity extends Activity {

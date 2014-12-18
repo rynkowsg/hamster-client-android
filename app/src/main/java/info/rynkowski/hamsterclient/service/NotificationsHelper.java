@@ -1,4 +1,4 @@
-package info.rynkowski.hamsterclient;
+package info.rynkowski.hamsterclient.service;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -7,6 +7,9 @@ import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+
+import info.rynkowski.hamsterclient.MainActivity;
+import info.rynkowski.hamsterclient.R;
 
 public class NotificationsHelper {
     public static final int ONGOING_NOTIFICATION = 1;

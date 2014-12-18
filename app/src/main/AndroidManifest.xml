@@ -28,7 +28,7 @@
         </activity>
 
         <service
-            android:name=".HamsterService"
+            android:name=".service.HamsterService"
             android:enabled="true"
             android:exported="false"></service>
 

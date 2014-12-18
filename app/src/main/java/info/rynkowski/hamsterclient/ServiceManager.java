@@ -12,6 +12,7 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
 
+import info.rynkowski.hamsterclient.service.AbstractService;
 
 public class ServiceManager {
     private static final String TAG = "ServiceManager";
