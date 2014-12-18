@@ -1,11 +1,5 @@
 package info.rynkowski.hamsterclient;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Message;
 import android.preference.PreferenceManager;
@@ -27,7 +21,8 @@ import java.util.Map;
 
 public class HamsterService extends AbstractService {
     private final String TAG = "HamsterService";
-    private static final int NOTIFICATION_ID = 1;
+
+    private NotificationsHelper notificationsHelper;
     private DBusConnection dBusConnection = null;
 
     // messages to HamsterService
@@ -51,7 +46,8 @@ public class HamsterService extends AbstractService {
     @Override
     public void onStartService() {
         Log.d(TAG, "onStartService()");
-        initNotification();
+        notificationsHelper = new NotificationsHelper(this);
+        notificationsHelper.setOngoingNotification(MainActivity.class);
         openDbusConnection();
         PreferenceManager.setDefaultValues(HamsterService.this, R.xml.preferences, false);
     }
@@ -60,7 +56,7 @@ public class HamsterService extends AbstractService {
     public void onStopService() {
         Log.d(TAG, "onDestroy()");
         closeDbusConnection();
-        cancelNotification();
+        notificationsHelper.cancelOngoingNotification();
     }
 
     @Override
@@ -77,32 +73,6 @@ public class HamsterService extends AbstractService {
             default:
                 break;
         }
-    }
-
-    //----------------  Android Notifications  ---------------------------------------------------//
-    // https://developer.android.com/guide/topics/ui/notifiers/notifications.html#SimpleNotification
-    private void initNotification() {
-        Log.d(TAG, "initNotification()");
-        Intent clickNotification = new Intent(this, MainActivity.class);
-        PendingIntent resultPendingIntent = TaskStackBuilder.create(this)
-                .addParentStack(MainActivity.class)
-                .addNextIntent(clickNotification)
-                .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-        Notification notification = new Notification.Builder(this)
-                .setSmallIcon(R.drawable.hamster_time_tracker)
-                .setContentTitle("Hamster Time Tracker")
-                .setContentText("It works!")
-                .setContentIntent(resultPendingIntent)
-                .setOngoing(true)
-                .build();
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(NOTIFICATION_ID, notification);
-    }
-
-    private void cancelNotification() {
-        Log.d(TAG, "cancelNotification()");
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancel(NOTIFICATION_ID);
     }
 
     //----------------  DBUS connection  ---------------------------------------------------------//
