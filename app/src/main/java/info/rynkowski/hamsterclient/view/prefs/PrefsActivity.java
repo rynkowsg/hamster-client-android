@@ -1,4 +1,4 @@
-package info.rynkowski.hamsterclient.view;
+package info.rynkowski.hamsterclient.view.prefs;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;

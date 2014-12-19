@@ -29,6 +29,7 @@ import java.util.List;
 import info.rynkowski.hamsterclient.R;
 import info.rynkowski.hamsterclient.hamster.AdapterStruct5;
 import info.rynkowski.hamsterclient.service.HamsterService;
+import info.rynkowski.hamsterclient.view.prefs.PrefsActivity;
 
 
 public class MainActivity extends Activity {
