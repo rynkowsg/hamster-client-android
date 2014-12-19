@@ -30,11 +30,10 @@
         <service
             android:name=".service.HamsterService"
             android:enabled="true"
-            android:exported="false"></service>
-
+            android:exported="false" />
         <activity
             android:name=".view.prefs.PrefsActivity"
-            android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Black.NoTitleBar" />
     </application>
 
 </manifest>
