@@ -158,10 +158,11 @@ public class MainActivity extends Activity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.i(TAG, "resultCode = " + resultCode);
         switch (requestCode) {
             case (PICK_FACT_DATA):
                 if (resultCode == RESULT_OK)
-                    ;// Do something with the intent data
+                    Toast.makeText(this, "New fact data received", Toast.LENGTH_LONG).show();
                 break;
             default:
                 break;

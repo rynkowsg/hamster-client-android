@@ -26,7 +26,7 @@ public class AddFactActivity extends Activity {
                 Bundle data = new Bundle();
                 data.putString("fact" , null);
                 intent.putExtras(data);
-                AddFactActivity.this.setResult(0 , intent);
+                AddFactActivity.this.setResult(RESULT_OK , intent);
                 AddFactActivity.this.finish();
             }
         });
