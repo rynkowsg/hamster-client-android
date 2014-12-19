@@ -12,7 +12,7 @@ import info.rynkowski.hamsterclient.view.MainActivity;
 import info.rynkowski.hamsterclient.R;
 
 public class NotificationsHelper {
-    public static final int ONGOING_NOTIFICATION = 1;
+    protected static final int ONGOING_NOTIFICATION = 1;
 
     private static final String TAG = "NotificationManager";
     private Context context;
@@ -22,7 +22,7 @@ public class NotificationsHelper {
     }
 
     // https://developer.android.com/guide/topics/ui/notifiers/notifications.html#SimpleNotification
-    public void setOngoingNotification(Class activity) {
+    protected void setOngoingNotification(Class activity) {
         Log.d(TAG, "initNotification()");
         Intent clickNotification = new Intent(context, activity);
         PendingIntent resultPendingIntent = TaskStackBuilder.create(context)
@@ -40,7 +40,7 @@ public class NotificationsHelper {
         notificationManager.notify(ONGOING_NOTIFICATION, notification);
     }
 
-    public void cancelOngoingNotification() {
+    protected void cancelOngoingNotification() {
         Log.d(TAG, "cancelNotification()");
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(ONGOING_NOTIFICATION);

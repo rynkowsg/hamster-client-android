@@ -31,7 +31,7 @@ public class DbusHelper {
     }
 
     //----------------  DBUS connection  ---------------------------------------------------------//
-    public void openConnection() {
+    protected void openConnection() {
         Log.d(TAG, "openDbusConnection()");
         new Thread(new Runnable() {
             @Override
@@ -61,7 +61,7 @@ public class DbusHelper {
         Log.i(TAG, "After get dbus connection: it takes " + difference / 1000 + " seconds");
     }
 
-    public void closeConnection() {
+    protected void closeConnection() {
         Log.d(TAG, "closeDbusConnection()");
         dBusConnection = null;
     }
@@ -125,11 +125,11 @@ public class DbusHelper {
     }
 
     //---------------- DBUS - operations on the Notifications object  ----------------------------//
-    public void dbusNotify() {
+    protected void dbusNotify() {
         dbusNotify("", "", "Message1", "Message 2");
     }
 
-    public void dbusNotify(final String... messages) {
+    protected void dbusNotify(final String... messages) {
         Log.d(TAG, "dbusNotify()");
         if (dBusConnection != null) {
             Log.d(TAG, "dBusConnection != null");
@@ -156,7 +156,7 @@ public class DbusHelper {
         }
     }
 
-    public void getTodaysFacts() {
+    protected void getTodaysFacts() {
         Log.d(TAG, "dbusNotify()");
         if (dBusConnection != null) {
             Log.d(TAG, "dBusConnection != null");
