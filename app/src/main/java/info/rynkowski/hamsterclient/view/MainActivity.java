@@ -1,40 +1,30 @@
 package info.rynkowski.hamsterclient.view;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import org.freedesktop.dbus.exceptions.DBusException;
 import org.gnome.Struct5;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 import info.rynkowski.hamsterclient.R;
-import info.rynkowski.hamsterclient.hamster.AdapterStruct5;
 import info.rynkowski.hamsterclient.service.HamsterService;
-import info.rynkowski.hamsterclient.view.prefs.PrefsActivity;
 
 
 public class MainActivity extends Activity {
     private final String TAG = "MainActivity";
     private ServiceManager service;
+    private MainActivityHelper helper;
 
     static final int PICK_FACT_DATA = 1;
 
@@ -45,13 +35,13 @@ public class MainActivity extends Activity {
             switch (msg.what) {
                 case HamsterService.MSG_TODAY_FACTS:
                     Log.i(TAG, "Handled message: HamsterService.MSG_TODAY_FACTS");
-                    fillListTodayFacts((List<Struct5>) msg.obj);
+                    helper.fillListTodayFacts((List<Struct5>) msg.obj);
                     break;
                 case HamsterService.MSG_EXCEPTION:
-                    showExceptionDialog((Exception) msg.obj);
+                    helper.showExceptionDialog((Exception) msg.obj);
                     break;
                 case HamsterService.MSG_DBUS_EXCEPTION:
-                    showExceptionDialog((DBusException) msg.obj);
+                    helper.showExceptionDialog((DBusException) msg.obj);
                     break;
                 case HamsterService.SIGNAL_ACTIVITIES_CHANGED:
                     Toast.makeText(getApplicationContext(), "SIGNAL_ACTIVITIES_CHANGED", Toast.LENGTH_LONG).show();
@@ -81,7 +71,7 @@ public class MainActivity extends Activity {
             service.send(msg);
         } catch (RemoteException e) {
             e.printStackTrace();
-            showExceptionDialog((RemoteException) msg.obj);
+            helper.showExceptionDialog((RemoteException) msg.obj);
         }
     }
 
@@ -91,7 +81,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
         setContentView(R.layout.activity_main);
-        this.service = new ServiceManager(this, HamsterService.class, new LocalHandler());
+        this.service = new ServiceManager(MainActivity.this, HamsterService.class, new LocalHandler());
+        this.helper = new MainActivityHelper(MainActivity.this);
     }
 
     @Override
@@ -138,7 +129,7 @@ public class MainActivity extends Activity {
         super.onDestroy();
     }
 
-    //----------------  Activity' methods  -------------------------------------------------------//
+    //----------------  other Activity' methods  -------------------------------------------------//
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.d(TAG, "onCreateOptionsMenu()");
@@ -155,10 +146,10 @@ public class MainActivity extends Activity {
                 sendRequest(HamsterService.MSG_REFRESH);
                 return true;
             case R.id.action_add_fact:
-                runAddFactActivity();
+                helper.runAddFactActivity();
                 return true;
             case R.id.action_settings:
-                runSettingsActivity();
+                helper.runSettingsActivity();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -193,61 +184,10 @@ public class MainActivity extends Activity {
                 sendRequest(HamsterService.MSG_TODAY_FACTS);
                 break;
             case R.id.btnShowPrefs:
-                displaySettings();
+                helper.displaySettings();
                 break;
             default:
                 ;
         }
-    }
-
-    //--- Methods used by view components  -------------------------------------------------------//
-    //---  - TodayFacts list
-    public void fillListTodayFacts(List<Struct5> listOfFacts) {
-        Log.i(TAG, "fillListTodayFacts");
-        final ListView listview = (ListView) findViewById(R.id.listOfTodayFacts);
-        ArrayList<String> list = new ArrayList<String>();
-        for (Struct5 row : listOfFacts) {
-            list.add(AdapterStruct5.name(row));
-        }
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
-        listview.setAdapter(adapter);
-    }
-
-    //---  - dialog with information about exception
-    public void showExceptionDialog(Exception e) {
-        // https://stackoverflow.com/questions/17738768/android-print-full-exception
-        // Converts the stack trace into a string.
-        StringWriter errors = new StringWriter();
-        e.printStackTrace(new PrintWriter(errors));
-        // Create and show AlertDialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setTitle(R.string.exception)
-                .setMessage("Exception: \n" + e.toString() + "\n\nStackTrace:\n" + errors.toString())
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
-                });
-        builder.create().show();
-    }
-
-    //---  - run activity to adding new Fact
-    private void runAddFactActivity() {
-        Intent pickFactData = new Intent(MainActivity.this, AddFactActivity.class);
-        startActivityForResult(pickFactData, PICK_FACT_DATA);
-    }
-
-    //---  - run activity with application' settings
-    private void runSettingsActivity() {
-        Intent intent = new Intent(MainActivity.this, PrefsActivity.class);
-        startActivity(intent);
-    }
-
-    //---  - toast the settings
-    private void displaySettings() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-        String server_ip = prefs.getString("host", getResources().getString(R.string.host));
-        String server_port = prefs.getString("port", getResources().getString(R.string.port));
-        String message = "DBus address: " + server_ip + ":" + server_port + "\n";
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
 }
