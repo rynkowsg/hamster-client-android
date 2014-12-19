@@ -3,7 +3,7 @@ package info.rynkowski.hamsterclient.service;
 import android.os.Message;
 import android.preference.PreferenceManager;
 
-import info.rynkowski.hamsterclient.MainActivity;
+import info.rynkowski.hamsterclient.view.MainActivity;
 import info.rynkowski.hamsterclient.R;
 
 public class HamsterService extends AbstractService {

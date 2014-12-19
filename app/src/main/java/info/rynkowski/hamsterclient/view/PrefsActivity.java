@@ -1,8 +1,10 @@
-package info.rynkowski.hamsterclient;
+package info.rynkowski.hamsterclient.view;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+
+import info.rynkowski.hamsterclient.R;
 
 public class PrefsActivity extends PreferenceActivity {
 

@@ -1,4 +1,4 @@
-package info.rynkowski.hamsterclient;
+package info.rynkowski.hamsterclient.view;
 
 import android.app.Activity;
 import android.content.Intent;

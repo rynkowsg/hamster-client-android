@@ -1,4 +1,4 @@
-package info.rynkowski.hamsterclient;
+package info.rynkowski.hamsterclient.view;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -26,6 +26,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import info.rynkowski.hamsterclient.R;
 import info.rynkowski.hamsterclient.hamster.AdapterStruct5;
 import info.rynkowski.hamsterclient.service.HamsterService;
 

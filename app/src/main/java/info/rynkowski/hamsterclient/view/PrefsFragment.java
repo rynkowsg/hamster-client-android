@@ -1,7 +1,9 @@
-package info.rynkowski.hamsterclient;
+package info.rynkowski.hamsterclient.view;
 
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+
+import info.rynkowski.hamsterclient.R;
 
 public class PrefsFragment extends PreferenceFragment {
     @Override
