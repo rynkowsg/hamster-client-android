@@ -1,6 +1,5 @@
 package info.rynkowski.hamsterclient.view;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -11,6 +10,7 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.Menu;
@@ -28,7 +28,7 @@ import info.rynkowski.hamsterclient.R;
 import info.rynkowski.hamsterclient.service.HamsterService;
 
 
-public class MainActivity extends Activity implements InterfaceMainActivity {
+public class MainActivity extends ActionBarActivity implements InterfaceMainActivity {
     public static final int PICK_FACT_DATA = 1;
     private static final String TAG = "MainActivity";
     private ServiceManager service;
@@ -131,8 +131,8 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         // enabling action bar app icon and behaving it as toggle button
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         mDrawerToggle = new ActionBarDrawerToggle(MainActivity.this, mDrawerLayout,
 //                R.drawable.ic_drawer, //nav menu toggle icon
@@ -142,7 +142,7 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
             @Override
             public void onDrawerClosed(View drawerView) {
 //                super.onDrawerClosed(drawerView);
-                getActionBar().setTitle(mTitle);
+                getSupportActionBar().setTitle(mTitle);
                 // calling onPrepareOptionsMenu() to show action bar icons
                 invalidateOptionsMenu();
             }
@@ -150,7 +150,7 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
             @Override
             public void onDrawerOpened(View drawerView) {
 //                super.onDrawerOpened(drawerView);
-                getActionBar().setTitle(mDrawerTitle);
+                getSupportActionBar().setTitle(mDrawerTitle);
                 // calling onPrepareOptionsMenu() to hide action bar icons
                 invalidateOptionsMenu();
             }
@@ -336,6 +336,6 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
-        getActionBar().setTitle(mTitle);
+        getSupportActionBar().setTitle(mTitle);
     }
 }
