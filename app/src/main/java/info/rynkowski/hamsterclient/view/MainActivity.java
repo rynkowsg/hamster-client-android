@@ -2,6 +2,7 @@ package info.rynkowski.hamsterclient.view;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,12 +19,12 @@ import info.rynkowski.hamsterclient.R;
 import info.rynkowski.hamsterclient.service.HamsterService;
 
 
-public class MainActivity extends Activity implements MainFragment.FragmentInterface {
+public class MainActivity extends Activity implements InterfaceMainActivity {
+    public static final int PICK_FACT_DATA = 1;
     private final String TAG = "MainActivity";
     private ServiceManager service;
     private MainActivityHelper helper;
-
-    static final int PICK_FACT_DATA = 1;
+    private Fragment fragment;
 
     //----------------  Message handling and sending  --------------------------------------------//
     private class LocalHandler extends Handler {
@@ -49,10 +50,10 @@ public class MainActivity extends Activity implements MainFragment.FragmentInter
                     Toast.makeText(getApplicationContext(), "SIGNAL_TOGGLE_CHANGED", Toast.LENGTH_LONG).show();
                     break;
                 default:
-                    Fragment fragment = getFragmentManager().findFragmentById(R.id.mainFragment);
-                    if(fragment != null && fragment instanceof MainFragment) {
-                        MainFragment mainFragment = (MainFragment) fragment;
-                        mainFragment.handleMessage(msg);
+                    if (fragment != null && fragment instanceof InterfaceFragment) {
+                        Handler handler = ((InterfaceFragment) fragment).getHandler();
+                        if (handler != null)
+                            handler.handleMessage(msg);
                     }
                     super.handleMessage(msg);
             }
@@ -67,6 +68,11 @@ public class MainActivity extends Activity implements MainFragment.FragmentInter
         setContentView(R.layout.activity_main);
         this.service = new ServiceManager(MainActivity.this, HamsterService.class, new LocalHandler());
         this.helper = new MainActivityHelper(MainActivity.this);
+
+        if (savedInstanceState == null) {
+            // on first time display view for first nav item
+            displayView(0);
+        }
     }
 
     @Override
@@ -143,7 +149,7 @@ public class MainActivity extends Activity implements MainFragment.FragmentInter
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    // TryMainFragment.FragmentInterface
+    // InterfaceMainFragment - to communicate with MainFragment
     @Override
     public void startService() {
         service.start();
@@ -165,6 +171,30 @@ public class MainActivity extends Activity implements MainFragment.FragmentInter
         } catch (RemoteException e) {
             e.printStackTrace();
             helper.showExceptionDialog((RemoteException) msg.obj);
+        }
+    }
+
+    /**
+     * Diplaying fragment view
+     * */
+    private void displayView(int position) {
+        // update the main content by replacing fragments
+        fragment = null;
+        switch (position) {
+            case 0:
+                fragment = new MainFragment();
+                break;
+            default:
+                break;
+        }
+
+        if (fragment != null) {
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.frame_container, fragment).commit();
+        } else {
+            // error in creating fragment
+            Log.e(TAG, "Error in creating fragment");
         }
     }
 }

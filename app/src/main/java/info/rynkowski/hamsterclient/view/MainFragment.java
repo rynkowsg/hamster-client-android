@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,24 +22,34 @@ import java.util.List;
 import info.rynkowski.hamsterclient.R;
 import info.rynkowski.hamsterclient.service.HamsterService;
 
-public class MainFragment extends Fragment implements View.OnClickListener {
+public class MainFragment extends Fragment implements View.OnClickListener, InterfaceFragment {
     private final String TAG = "MainFragment";
-    private FragmentInterface listener;
+    private InterfaceMainActivity listener;
     private MainFragmentHelper helper;
+    protected LocalHandler handler;
 
-    public interface FragmentInterface {
-        public void startService();
-        public void stopService();
-        public void sendRequestToService(int what);
+    private class LocalHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case HamsterService.MSG_TODAY_FACTS:
+                    Log.i(TAG, "Handled message: HamsterService.MSG_TODAY_FACTS");
+                    helper.fillListTodayFacts((List<Struct5>) msg.obj);
+                    break;
+                default:
+                    super.handleMessage(msg);
+                    break;
+            }
+        }
     }
 
-    public void handleMessage(Message msg) {
-        switch (msg.what) {
-            case HamsterService.MSG_TODAY_FACTS:
-                Log.i(TAG, "Handled message: HamsterService.MSG_TODAY_FACTS");
-                helper.fillListTodayFacts((List<Struct5>) msg.obj);
-                break;
-        }
+    @Override
+    public Handler getHandler() {
+        return handler;
+    }
+
+    public MainFragment() {
+        this.handler = new LocalHandler();
     }
 
     // Lifecycle
@@ -46,11 +57,11 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     public void onAttach(Activity activity) {
         Log.d(TAG, "onAttach()");
         super.onAttach(activity);
-        if (activity instanceof FragmentInterface) {
-            listener = (FragmentInterface) activity;
+        if (activity instanceof InterfaceMainActivity) {
+            listener = (InterfaceMainActivity) activity;
         } else {
             throw new ClassCastException(activity.toString()
-                    + " must implemenet TryMainFragment.FragmentInterface");
+                    + " must implemenet InterfaceMainActivity");
         }
     }
 
