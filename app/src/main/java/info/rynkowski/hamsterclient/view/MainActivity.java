@@ -95,7 +95,7 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
 
         if (savedInstanceState == null) {
             // on first time display view for first nav item
-            displayView(FragmentType.TEST);
+            displayView(0);
         }
     }
 
@@ -201,11 +201,11 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
     /**
      * Diplaying fragment view
      * */
-    private void displayView(FragmentType type) {
+    private void displayView(int type) {
         // update the main content by replacing fragments
         fragment = null;
         switch (type) {
-            case TEST:
+            case 0:
                 fragment = new TestFragment();
                 break;
             default:
