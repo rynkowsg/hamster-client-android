@@ -2,19 +2,21 @@ package info.rynkowski.hamsterclient.view;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
+import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -33,10 +35,6 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
     private MainActivityHelper helper;
     private Fragment fragment;
 
-//    private DrawerLayout dLayout;
-//    private ListView dListView;
-//    private ArrayAdapter<String> dAdapter;
-
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -52,7 +50,6 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
     private TypedArray navMenuIcons;
 
     private ArrayList<NavDrawerItem> navDrawerItems;
-    private NavDrawerListAdapter adapter;
 
     //----------------  Message handling and sending  --------------------------------------------//
     private class LocalHandler extends Handler {
@@ -97,21 +94,6 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
         this.service = new ServiceManager(MainActivity.this, HamsterService.class, new LocalHandler());
         this.helper = new MainActivityHelper(MainActivity.this);
 
-//        final String[] titles = getResources().getStringArray(R.array.nav_drawer_items);
-//        dLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        dListView = (ListView) findViewById(R.id.left_drawer);
-//        dAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, titles);
-//        dListView.setAdapter(dAdapter);
-//        dListView.setSelector(android.R.color.holo_blue_dark);
-//        dListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> arg0, View v, int position, long id) {
-//                dLayout.closeDrawers();
-//                Toast.makeText(getApplicationContext(), titles[position] + " picked", Toast.LENGTH_SHORT).show();
-//                displayView(FragmentFactory.getType(position));
-//            }
-//        });
-
         mTitle = mDrawerTitle = getTitle();
 
         // load slide menu items
@@ -142,9 +124,11 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
         // Recycle the typed array
         navMenuIcons.recycle();
 
-        // setting the nav drawer list adapter
-        adapter = new NavDrawerListAdapter(getApplicationContext(), navDrawerItems);
-        mDrawerList.setAdapter(adapter);
+        // Set the adapter for the list view
+        mDrawerList.setAdapter(new NavDrawerListAdapter(getApplicationContext(), navDrawerItems));
+
+        // Set the list's click listener
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         // enabling action bar app icon and behaving it as toggle button
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -175,8 +159,15 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
 
         if (savedInstanceState == null) {
             // on first time display view for first nav item
-            displayView(0);
+            selectItem(0);
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart()");
+        service.start();
     }
 
     @Override
@@ -185,11 +176,11 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
         Log.d(TAG, "onRestoreInstanceState()");
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart()");
-        service.start();
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        Log.d(TAG, "onPostCreate()");
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
     }
 
     @Override
@@ -234,9 +225,15 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "onOptionsItemSelected()");
+        Log.d(TAG, "onOptionsItemSelected(), item.getItemId() = " + item.getItemId());
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
         switch (item.getItemId()) {
-            case R.id.action_add_fact:
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        case R.id.action_add_fact:
                 helper.runAddFactActivity();
                 return true;
             case R.id.action_settings:
@@ -278,13 +275,11 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
         }
     }
 
-    /**
-     * Diplaying fragment view
-     * */
-    private void displayView(int type) {
+    /** Swaps fragments in the main content view */
+    private void selectItem(int position) {
         // update the main content by replacing fragments
         fragment = null;
-        switch (type) {
+        switch (position) {
             case 0:
                 fragment = new TestFragment();
                 break;
@@ -296,12 +291,43 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
         }
 
         if (fragment != null) {
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.frame_container, fragment).commit();
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frame_container, fragment)
+                    .commit();
+            // update selected item and title, then close the drawer
+            mDrawerList.setItemChecked(position, true);
+            mDrawerList.setSelection(position);
+            setTitle(navMenuTitles[position]);
+            mDrawerLayout.closeDrawer(mDrawerList);
         } else {
             // error in creating fragment
             Log.e(TAG, "Error in creating fragment");
         }
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        getActionBar().setTitle(mTitle);
+    }
+
+    /**
+     * Slide menu item click listener
+     */
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            // display view for selected nav drawer item
+            selectItem(position);
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Log.d(TAG, "onConfigurationChanged()");
+        // Pass any configuration change to the drawer toggls
+        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 }

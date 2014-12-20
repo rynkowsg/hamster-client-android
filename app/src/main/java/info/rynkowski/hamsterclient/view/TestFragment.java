@@ -149,7 +149,7 @@ public class TestFragment extends Fragment implements View.OnClickListener, Inte
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "onOptionsItemSelected()");
+        Log.d(TAG, "onOptionsItemSelected(), item.getItemId() = " + item.getItemId());
         switch (item.getItemId()) {
             case R.id.action_refresh:
                 listener.sendRequestToService(HamsterService.MSG_REFRESH);
