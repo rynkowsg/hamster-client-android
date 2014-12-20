@@ -8,9 +8,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import org.freedesktop.dbus.exceptions.DBusException;
@@ -25,6 +30,10 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
     private ServiceManager service;
     private MainActivityHelper helper;
     private Fragment fragment;
+
+    private DrawerLayout dLayout;
+    private ListView dList;
+    private ArrayAdapter<String> dAdapter;
 
     //----------------  Message handling and sending  --------------------------------------------//
     private class LocalHandler extends Handler {
@@ -68,6 +77,33 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
         setContentView(R.layout.activity_main);
         this.service = new ServiceManager(MainActivity.this, HamsterService.class, new LocalHandler());
         this.helper = new MainActivityHelper(MainActivity.this);
+
+        final String[] menuList = getResources().getStringArray(R.array.nav_drawer_items);
+        dLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        dList = (ListView) findViewById(R.id.left_drawer);
+        dAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, menuList);
+        dList.setAdapter(dAdapter);
+        dList.setSelector(android.R.color.holo_blue_dark);
+
+
+//        mPlanetTitles = getResources().getStringArray(R.array.planets_array);
+//        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+//
+//        // Set the adapter for the list view
+//        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+//                R.layout.drawer_list_item, mPlanetTitles));
+//        // Set the list's click listener
+//        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+
+        dList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View v, int position, long id) {
+                dLayout.closeDrawers();
+                Toast.makeText(getApplicationContext(), menuList[position] + " picked", Toast.LENGTH_SHORT).show();
+                displayView(FragmentType.get(position));
+            }
+        });
 
         if (savedInstanceState == null) {
             // on first time display view for first nav item
