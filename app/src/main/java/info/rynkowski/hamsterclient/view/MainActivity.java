@@ -2,7 +2,6 @@ package info.rynkowski.hamsterclient.view;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,7 +31,7 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
     private Fragment fragment;
 
     private DrawerLayout dLayout;
-    private ListView dList;
+    private ListView dListView;
     private ArrayAdapter<String> dAdapter;
 
     //----------------  Message handling and sending  --------------------------------------------//
@@ -78,36 +77,24 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
         this.service = new ServiceManager(MainActivity.this, HamsterService.class, new LocalHandler());
         this.helper = new MainActivityHelper(MainActivity.this);
 
-        final String[] menuList = getResources().getStringArray(R.array.nav_drawer_items);
+        final String[] titles = getResources().getStringArray(R.array.nav_drawer_items);
         dLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        dList = (ListView) findViewById(R.id.left_drawer);
-        dAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, menuList);
-        dList.setAdapter(dAdapter);
-        dList.setSelector(android.R.color.holo_blue_dark);
-
-
-//        mPlanetTitles = getResources().getStringArray(R.array.planets_array);
-//        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        mDrawerList = (ListView) findViewById(R.id.left_drawer);
-//
-//        // Set the adapter for the list view
-//        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-//                R.layout.drawer_list_item, mPlanetTitles));
-//        // Set the list's click listener
-//        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-        dList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        dListView = (ListView) findViewById(R.id.left_drawer);
+        dAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, titles);
+        dListView.setAdapter(dAdapter);
+        dListView.setSelector(android.R.color.holo_blue_dark);
+        dListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View v, int position, long id) {
                 dLayout.closeDrawers();
-                Toast.makeText(getApplicationContext(), menuList[position] + " picked", Toast.LENGTH_SHORT).show();
-                displayView(FragmentType.get(position));
+                Toast.makeText(getApplicationContext(), titles[position] + " picked", Toast.LENGTH_SHORT).show();
+                displayView(FragmentFactory.getType(position));
             }
         });
 
         if (savedInstanceState == null) {
             // on first time display view for first nav item
-            displayView(FragmentType.TEST);
+            displayView(FragmentFactory.Type.TEST);
         }
     }
 
@@ -212,22 +199,16 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
 
     /**
      * Diplaying fragment view
-     * */
-    private void displayView(FragmentType type) {
+     */
+    private void displayView(FragmentFactory.Type type) {
+        Log.d(TAG, "displayView(), type = " + type);
         // update the main content by replacing fragments
-        fragment = null;
-        switch (type) {
-            case TEST:
-                fragment = new TestFragment();
-                break;
-            default:
-                break;
-        }
-
+        fragment = FragmentFactory.get(type);
         if (fragment != null) {
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.frame_container, fragment).commit();
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frame_container, fragment)
+                    .commit();
         } else {
             // error in creating fragment
             Log.e(TAG, "Error in creating fragment");
