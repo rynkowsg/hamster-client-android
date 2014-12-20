@@ -103,7 +103,7 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
         navMenuIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
         navDrawerItems = new ArrayList<NavDrawerItem>();
 
@@ -115,11 +115,11 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
         // History
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
         // Stats
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, "22"));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
         // Edit tables
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
         // About
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1), true, "50+"));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
 
         // Recycle the typed array
         navMenuIcons.recycle();
@@ -214,7 +214,7 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
         super.onDestroy();
     }
 
-    //----------------  other Activity' methods  -------------------------------------------------//
+    //----------------  Menu related methods  ----------------------------------------------------//
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.d(TAG, "onCreateOptionsMenu()");
@@ -242,6 +242,15 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    //----------------  other Activity' methods  -------------------------------------------------//
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Log.d(TAG, "onConfigurationChanged()");
+        // Pass any configuration change to the drawer toggls
+        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -275,6 +284,17 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
         }
     }
 
+    /**
+     * Slide menu item click listener
+     */
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            // display view for selected nav drawer item
+            selectItem(position);
+        }
+    }
+
     /** Swaps fragments in the main content view */
     private void selectItem(int position) {
         // update the main content by replacing fragments
@@ -286,7 +306,14 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
             case 1:
                 fragment = new HomeFragment();
                 break;
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+                String msg = "Fragment have not implemented yet.";
+                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
             default:
+                Log.e(TAG, "Error in creating fragmentl;");
                 break;
         }
 
@@ -310,24 +337,5 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
     public void setTitle(CharSequence title) {
         mTitle = title;
         getActionBar().setTitle(mTitle);
-    }
-
-    /**
-     * Slide menu item click listener
-     */
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            // display view for selected nav drawer item
-            selectItem(position);
-        }
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        Log.d(TAG, "onConfigurationChanged()");
-        // Pass any configuration change to the drawer toggls
-        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 }
