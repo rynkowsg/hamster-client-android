@@ -208,6 +208,9 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
             case 0:
                 fragment = new TestFragment();
                 break;
+            case 1:
+                fragment = new HomeFragment();
+                break;
             default:
                 break;
         }
