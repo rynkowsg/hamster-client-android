@@ -16,11 +16,11 @@ import java.util.List;
 import info.rynkowski.hamsterclient.R;
 import info.rynkowski.hamsterclient.hamster.AdapterStruct5;
 
-public class MainFragmentHelper {
-    private final String TAG = "MainActivityHelper";
+public class TestFragmentHelper {
+    private static final String TAG = "MainActivityHelper";
     private Fragment fragment;
 
-    MainFragmentHelper(Fragment fragment) {
+    TestFragmentHelper(Fragment fragment) {
         this.fragment = fragment;
     }
 

@@ -21,7 +21,7 @@ import info.rynkowski.hamsterclient.service.HamsterService;
 
 public class MainActivity extends Activity implements InterfaceMainActivity {
     public static final int PICK_FACT_DATA = 1;
-    private final String TAG = "MainActivity";
+    private static final String TAG = "MainActivity";
     private ServiceManager service;
     private MainActivityHelper helper;
     private Fragment fragment;
@@ -149,7 +149,7 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    // InterfaceMainFragment - to communicate with MainFragment
+    // InterfaceMainActivity methods - fragments use those methods to communicate with MainActivity
     @Override
     public void startService() {
         service.start();
@@ -177,12 +177,12 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
     /**
      * Diplaying fragment view
      * */
-    private void displayView(int position) {
+    private void displayView(int type) {
         // update the main content by replacing fragments
         fragment = null;
-        switch (position) {
+        switch (type) {
             case 0:
-                fragment = new MainFragment();
+                fragment = new TestFragment();
                 break;
             default:
                 break;

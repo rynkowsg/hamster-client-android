@@ -22,10 +22,10 @@ import java.util.List;
 import info.rynkowski.hamsterclient.R;
 import info.rynkowski.hamsterclient.service.HamsterService;
 
-public class MainFragment extends Fragment implements View.OnClickListener, InterfaceFragment {
-    private final String TAG = "MainFragment";
+public class TestFragment extends Fragment implements View.OnClickListener, InterfaceFragment {
+    private static final String TAG = "TestFragment";
     private InterfaceMainActivity listener;
-    private MainFragmentHelper helper;
+    private TestFragmentHelper helper;
     protected LocalHandler handler;
 
     private class LocalHandler extends Handler {
@@ -48,7 +48,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Inte
         return handler;
     }
 
-    public MainFragment() {
+    public TestFragment() {
         this.handler = new LocalHandler();
     }
 
@@ -70,13 +70,13 @@ public class MainFragment extends Fragment implements View.OnClickListener, Inte
         Log.d(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        this.helper = new MainFragmentHelper(MainFragment.this);
+        this.helper = new TestFragmentHelper(TestFragment.this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView()");
-        return inflater.inflate(R.layout.fragment_main, container, false);
+        return inflater.inflate(R.layout.fragment_test, container, false);
     }
 
     @Override
@@ -143,7 +143,7 @@ public class MainFragment extends Fragment implements View.OnClickListener, Inte
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         Log.d(TAG, "onCreateOptionsMenu()");
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_main_fragment, menu);
+        inflater.inflate(R.menu.menu_test_fragment, menu);
 
     }
 

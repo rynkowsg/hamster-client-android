@@ -23,7 +23,7 @@ import info.rynkowski.hamsterclient.hamster.AdapterStruct5;
 import info.rynkowski.hamsterclient.view.prefs.PrefsActivity;
 
 public class MainActivityHelper {
-    private final String TAG = "MainActivityHelper";
+    private static final String TAG = "MainActivityHelper";
     private Activity activity;
 
     MainActivityHelper(Activity activity) {
