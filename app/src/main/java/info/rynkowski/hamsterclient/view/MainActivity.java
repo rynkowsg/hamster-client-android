@@ -2,6 +2,7 @@ package info.rynkowski.hamsterclient.view;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -94,7 +95,7 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
 
         if (savedInstanceState == null) {
             // on first time display view for first nav item
-            displayView(FragmentFactory.Type.TEST);
+            displayView(FragmentType.TEST);
         }
     }
 
@@ -199,16 +200,22 @@ public class MainActivity extends Activity implements InterfaceMainActivity {
 
     /**
      * Diplaying fragment view
-     */
-    private void displayView(FragmentFactory.Type type) {
-        Log.d(TAG, "displayView(), type = " + type);
+     * */
+    private void displayView(FragmentType type) {
         // update the main content by replacing fragments
-        fragment = FragmentFactory.get(type);
+        fragment = null;
+        switch (type) {
+            case TEST:
+                fragment = new TestFragment();
+                break;
+            default:
+                break;
+        }
+
         if (fragment != null) {
-            getFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.frame_container, fragment)
-                    .commit();
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.frame_container, fragment).commit();
         } else {
             // error in creating fragment
             Log.e(TAG, "Error in creating fragment");
