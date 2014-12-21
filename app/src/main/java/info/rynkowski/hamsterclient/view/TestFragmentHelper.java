@@ -1,8 +1,8 @@
 package info.rynkowski.hamsterclient.view;
 
-import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
