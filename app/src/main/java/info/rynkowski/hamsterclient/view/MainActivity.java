@@ -222,9 +222,9 @@ public class MainActivity extends ActionBarActivity implements InterfaceMainActi
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d(TAG, "onOptionsItemSelected(), item.getItemId() = " + item.getItemId());
-//        if (mDrawerToggle.onOptionsItemSelected(item)) {
-//            return true;
-//        }
+        if (drawerFragment.onOptionsItemSelected(item)) {
+            return true;
+        }
         switch (item.getItemId()) {
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);

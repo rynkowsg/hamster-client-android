@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -66,6 +67,15 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "onOptionsItemSelected(), item.getItemId() = " + item.getItemId());
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     public void setUp(DrawerLayout drawerLayout, final Toolbar toolbar) {
 //        mTitle = mDrawerTitle = toolbar.getTitle();
 
@@ -106,14 +116,14 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerList.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mDrawerList.setSelection(position);
+                mDrawerList.setItemChecked(position, true);
                 // display view for selected nav drawer item
                 if(listener.onNavDrawerItemSelected(position) == Listener.Result.SUCCESS) {
                     // update selected item and title, then close the drawer
-                    mDrawerList.setItemChecked(position, true);
-                    mDrawerList.setSelection(position);
                     toolbar.setTitle(/*mTitle = */navMenuTitles[position]);
+                    mDrawerLayout.closeDrawer(getActivity().findViewById(R.id.fragment_navigation_drawer));
                 }
-                mDrawerLayout.closeDrawer(getActivity().findViewById(R.id.fragment_navigation_drawer));
             }
         });
 

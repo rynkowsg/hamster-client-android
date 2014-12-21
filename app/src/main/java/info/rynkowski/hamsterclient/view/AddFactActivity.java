@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import info.rynkowski.hamsterclient.R;
 
 public class AddFactActivity extends ActionBarActivity {
+    private static final String TAG = "AddFactActivity";
     Toolbar toolbar;
 
     @Override
@@ -37,12 +39,13 @@ public class AddFactActivity extends ActionBarActivity {
         setSupportActionBar(toolbar);
 
         // enabling action bar app icon and behaving it as toggle button
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_add_fact, menu);
         return super.onCreateOptionsMenu(menu);
@@ -50,6 +53,7 @@ public class AddFactActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "onOptionsItemSelected(), item.getItemId() = " + item.getItemId());
         switch (item.getItemId()) {
             case (R.id.action_settings):
                 return true;
