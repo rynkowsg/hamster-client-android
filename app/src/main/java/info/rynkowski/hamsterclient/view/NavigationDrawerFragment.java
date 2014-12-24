@@ -76,10 +76,8 @@ public class NavigationDrawerFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setUp(DrawerLayout drawerLayout, final Toolbar toolbar) {
+    public void setUp(final Toolbar toolbar) {
 //        mTitle = mDrawerTitle = toolbar.getTitle();
-
-        mDrawerLayout = drawerLayout;
 
         // load slide menu items
         navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
@@ -87,7 +85,7 @@ public class NavigationDrawerFragment extends Fragment {
         // nav drawer icons from resources
         TypedArray navMenuIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
 
-//        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) getActivity().findViewById(R.id.list_drawer);
 
         ArrayList<NavDrawerItem> navDrawerItems = new ArrayList<NavDrawerItem>();
@@ -129,7 +127,7 @@ public class NavigationDrawerFragment extends Fragment {
 
 
 
-        mDrawerToggle = new ActionBarDrawerToggle(getActivity(), drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
+        mDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
