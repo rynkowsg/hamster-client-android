@@ -24,22 +24,22 @@ import info.rynkowski.hamsterclient.view.prefs.PrefsActivity;
 
 public class MainActivityHelper {
     private static final String TAG = "MainActivityHelper";
-    private Activity activity;
+    private Activity mActivity;
 
     MainActivityHelper(Activity activity) {
-        this.activity = activity;
+        this.mActivity = activity;
     }
 
     //--- Methods used by view components  -------------------------------------------------------//
     //---  - TodayFacts list
     protected void fillListTodayFacts(List<Struct5> listOfFacts) {
         Log.i(TAG, "fillListTodayFacts");
-        final ListView listview = (ListView) activity.findViewById(R.id.listOfTodayFacts);
+        final ListView listview = (ListView) mActivity.findViewById(R.id.listOfTodayFacts);
         ArrayList<String> list = new ArrayList<String>();
         for (Struct5 row : listOfFacts) {
             list.add(AdapterStruct5.name(row));
         }
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, list);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(mActivity, android.R.layout.simple_list_item_1, list);
         listview.setAdapter(adapter);
     }
 
@@ -50,7 +50,7 @@ public class MainActivityHelper {
         StringWriter errors = new StringWriter();
         e.printStackTrace(new PrintWriter(errors));
         // Create and show AlertDialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity)
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity)
                 .setTitle(R.string.exception)
                 .setMessage("Exception: \n" + e.toString() + "\n\nStackTrace:\n" + errors.toString())
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -60,24 +60,24 @@ public class MainActivityHelper {
         builder.create().show();
     }
 
-    //---  - run activity to adding new Fact
+    //---  - run mActivity to adding new Fact
     protected void runAddFactActivity() {
-        Intent pickFactData = new Intent(activity, AddFactActivity.class);
-        activity.startActivityForResult(pickFactData, MainActivity.PICK_FACT_DATA);
+        Intent pickFactData = new Intent(mActivity, AddFactActivity.class);
+        mActivity.startActivityForResult(pickFactData, MainActivity.PICK_FACT_DATA);
     }
 
-    //---  - run activity with application' settings
+    //---  - run mActivity with application' settings
     protected void runSettingsActivity() {
-        Intent intent = new Intent(activity, PrefsActivity.class);
-        activity.startActivity(intent);
+        Intent intent = new Intent(mActivity, PrefsActivity.class);
+        mActivity.startActivity(intent);
     }
 
     //---  - toast the settings
     protected void displaySettings() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
-        String server_ip = prefs.getString("host", activity.getResources().getString(R.string.host));
-        String server_port = prefs.getString("port", activity.getResources().getString(R.string.port));
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivity);
+        String server_ip = prefs.getString("host", mActivity.getResources().getString(R.string.host));
+        String server_port = prefs.getString("port", mActivity.getResources().getString(R.string.port));
         String message = "DBus address: " + server_ip + ":" + server_port + "\n";
-        Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_LONG).show();
+        Toast.makeText(mActivity.getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
 }

@@ -26,7 +26,7 @@ public class TestFragment extends Fragment implements View.OnClickListener, Inte
     private static final String TAG = "TestFragment";
     private InterfaceMainActivity listener;
     private TestFragmentHelper helper;
-    protected LocalHandler handler;
+    private LocalHandler handler;
 
     private class LocalHandler extends Handler {
         @Override

@@ -2,6 +2,6 @@ package info.rynkowski.hamsterclient.view;
 
 import android.os.Handler;
 
-public interface InterfaceFragment {
+public interface IFragment {
     public Handler getHandler();
 }
