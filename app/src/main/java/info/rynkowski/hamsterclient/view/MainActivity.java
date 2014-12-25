@@ -1,13 +1,16 @@
 package info.rynkowski.hamsterclient.view;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -18,6 +21,7 @@ import org.freedesktop.dbus.exceptions.DBusException;
 
 import info.rynkowski.hamsterclient.R;
 import info.rynkowski.hamsterclient.service.HamsterService;
+import info.rynkowski.hamsterclient.view.navigation.DrawerToggle;
 
 
 public class MainActivity extends ActionBarActivity
@@ -28,8 +32,11 @@ public class MainActivity extends ActionBarActivity
     private MainActivityHelper helper;
     private Fragment fragment;
 
-    Toolbar toolbar;
-    NavigationDrawerFragment drawerFragment;
+    private Toolbar mToolbar;
+    private DrawerLayout mDrawerLayout;
+    private NavigationDrawerFragment drawerFragment;
+    private ActionBarDrawerToggle mDrawerToggle;
+
 
     //----------------  Message handling and sending  --------------------------------------------//
     private class LocalHandler extends Handler {
@@ -74,15 +81,20 @@ public class MainActivity extends ActionBarActivity
         this.service = new ServiceManager(MainActivity.this, HamsterService.class, new LocalHandler());
         this.helper = new MainActivityHelper(MainActivity.this);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
+        if (mToolbar != null) {
+            setSupportActionBar(mToolbar);
         }
 
-        drawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
-        drawerFragment.setUp(toolbar);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerToggle = new DrawerToggle(this, mDrawerLayout, mToolbar,
+                R.string.drawer_open, R.string.drawer_close);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-//        // enabling action bar app icon and behaving it as toggle button
+        drawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
+        drawerFragment.setup(mToolbar, mDrawerLayout);
+
+        // enabling action bar app icon and behaving it as toggle button
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(true);
 
@@ -90,6 +102,13 @@ public class MainActivity extends ActionBarActivity
             // on first time display view for first nav item
             openFragment(new TestFragment());
         }
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        Log.d(TAG, "onPostCreate()");
+        mDrawerToggle.syncState();
     }
 
     @Override
@@ -146,9 +165,17 @@ public class MainActivity extends ActionBarActivity
     }
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Log.d(TAG, "onConfigurationChanged()");
+        // Pass any configuration change to the drawer toggls
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d(TAG, "onOptionsItemSelected(), item.getItemId() = " + item.getItemId());
-        if (drawerFragment.onOptionsItemSelected(item)) {
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         switch (item.getItemId()) {

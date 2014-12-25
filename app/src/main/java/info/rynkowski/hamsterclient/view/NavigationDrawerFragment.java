@@ -2,17 +2,14 @@ package info.rynkowski.hamsterclient.view;
 
 
 import android.app.Activity;
-import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -25,18 +22,80 @@ import info.rynkowski.hamsterclient.R;
 public class NavigationDrawerFragment extends Fragment {
     private static final String TAG = "NavigationDrawerFragment";
 
-    private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
+    private Toolbar mToolbar;
+    private ArrayList<NavDrawerItem> mItemsList;
+
+    private OnItemClickListener mActivityListener;
 
 //    // nav drawer title
 //    private CharSequence mDrawerTitle;
 //    // used to store app title
 //    private CharSequence mTitle;
-    // slide menu items
-    private String[] navMenuTitles;
 
-    private OnItemClickListener listener;
+    @Override
+    public void onAttach(Activity activity) {
+        Log.d(TAG, "onAttach()");
+        super.onAttach(activity);
+        if (activity instanceof OnItemClickListener) {
+            mActivityListener = (OnItemClickListener) activity;
+        } else {
+            throw new ClassCastException(activity.toString()
+                    + " must implemenet NavigationDrawerFragment.Listener");
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(
+                R.layout.fragment_navigation_drawer, container, false);
+    }
+
+    /**
+     * Initialize the navigation drawer.
+     *
+     * @param toolbar      The reference to object of Toolbar.
+     * @param drawerLayout The reference to object of DrawerLayout.
+     */
+    public void setup(Toolbar toolbar, DrawerLayout drawerLayout) {
+//        mTitle = mDrawerTitle = mToolbar.getTitle();
+        Activity activity = getActivity();
+
+        mToolbar = toolbar;
+        mDrawerLayout = drawerLayout;
+
+        // Drawer list view is found here, not at activity. Why?
+        // I think that it is better place, because fragment drawer' layout contains this list.
+        // Other fragment drawer could have other layout with different components.
+        mDrawerList = (ListView) activity.findViewById(R.id.list_drawer);
+
+        mItemsList = prepareItemsList();
+        mDrawerList.setAdapter(new NavDrawerListAdapter(activity, mItemsList));
+        mDrawerList.setOnItemClickListener(new OnDrawerItemClickListener());
+    }
+
+    private ArrayList<NavDrawerItem> prepareItemsList() {
+        ArrayList<NavDrawerItem> items = new ArrayList<>();
+
+        // load slide menu items' titles
+        String[] titles = getResources().getStringArray(R.array.nav_drawer_items);
+
+        // nav drawer icons from resources
+        TypedArray icons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
+
+        // adding nav drawer items to array
+        items.add(new NavDrawerItem(titles[0], icons.getResourceId(0, -1)));    // Test
+        items.add(new NavDrawerItem(titles[1], icons.getResourceId(1, -1)));    // Home
+        items.add(new NavDrawerItem(titles[2], icons.getResourceId(2, -1)));    // History
+        items.add(new NavDrawerItem(titles[3], icons.getResourceId(3, -1)));    // Stats
+        items.add(new NavDrawerItem(titles[4], icons.getResourceId(4, -1)));    // Edit tables
+        items.add(new NavDrawerItem(titles[5], icons.getResourceId(5, -1)));    // About
+
+        return items;
+    }
 
     /**
      * Interface definition for a callback to be invoked when an item in this
@@ -53,123 +112,25 @@ public class NavigationDrawerFragment extends Fragment {
         public void onDrawerItemClick(int position);
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        Log.d(TAG, "onAttach()");
-        super.onAttach(activity);
-        if (activity instanceof OnItemClickListener) {
-            listener = (OnItemClickListener) activity;
-        } else {
-            throw new ClassCastException(activity.toString() + " must implemenet NavigationDrawerFragment.Listener");
+    private class OnDrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Log.d(TAG, "onItemClick()");
+
+            // update selected item
+            mDrawerList.setSelection(position);
+            mDrawerList.setItemChecked(position, true);
+
+            // update mToolbar title
+            String title = mItemsList.get(position).getTitle();
+            mToolbar.setTitle(title);
+
+            // close the drawer
+            mDrawerLayout.closeDrawer(getView());
+
+            // run the callback method at containing view (e.g. replace fragment)
+            mActivityListener.onDrawerItemClick(position);
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        Log.d(TAG, "onConfigurationChanged()");
-        // Pass any configuration change to the drawer toggls
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "onOptionsItemSelected(), item.getItemId() = " + item.getItemId());
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void setUp(final Toolbar toolbar) {
-//        mTitle = mDrawerTitle = toolbar.getTitle();
-
-        // load slide menu items
-        navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
-
-        // nav drawer icons from resources
-        TypedArray navMenuIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
-
-        mDrawerLayout = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) getActivity().findViewById(R.id.list_drawer);
-
-        ArrayList<NavDrawerItem> navDrawerItems = new ArrayList<NavDrawerItem>();
-
-        // adding nav drawer items to array
-        // Test
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
-        // Home
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
-        // History
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
-        // Stats
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
-        // Edit tables
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
-        // About
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
-
-        // Recycle the typed array
-        navMenuIcons.recycle();
-
-        // Set the adapter for the list view
-        mDrawerList.setAdapter(new NavDrawerListAdapter(getActivity(), navDrawerItems));
-
-        // Set the list's click listener
-        mDrawerList.setOnItemClickListener(new ListView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "onItemClick()");
-                // update selected item and title
-                mDrawerList.setSelection(position);
-                mDrawerList.setItemChecked(position, true);
-                toolbar.setTitle(/*mTitle = */navMenuTitles[position]);
-                // close the drawer
-                mDrawerLayout.closeDrawer(getActivity().findViewById(R.id.fragment_navigation_drawer));
-                // run the callback method at containing view (e.g. replace fragment)
-                listener.onDrawerItemClick(position);
-            }
-        });
-
-
-
-        mDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                Log.d(TAG, "onDrawerOpened()");
-                //toolbar.setTitle(mDrawerTitle);
-                // redraw the menu
-                getActivity().invalidateOptionsMenu();
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-                Log.d(TAG, "onDrawerClosed()");
-                //toolbar.setTitle(mTitle);
-                // redraw the menu
-                getActivity().invalidateOptionsMenu();
-            }
-
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-                super.onDrawerSlide(drawerView, slideOffset);
-//                toolbar.setAlpha(1 - slideOffset / 5);
-            }
-        };
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-        mDrawerLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mDrawerToggle.syncState();
-            }
-        });
     }
 }
 
