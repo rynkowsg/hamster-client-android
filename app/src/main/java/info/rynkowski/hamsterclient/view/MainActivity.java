@@ -25,7 +25,7 @@ import info.rynkowski.hamsterclient.view.navigation.NavigationDrawer;
 
 
 public class MainActivity extends ActionBarActivity
-        implements InterfaceMainActivity, NavigationDrawer.OnItemClickListener {
+        implements IMainActivity, NavigationDrawer.OnItemClickListener {
     public static final int PICK_FACT_DATA = 1;
     private static final String TAG = "MainActivity";
     private ServiceManager service;
@@ -62,8 +62,8 @@ public class MainActivity extends ActionBarActivity
                     Toast.makeText(getApplicationContext(), "SIGNAL_TOGGLE_CHANGED", Toast.LENGTH_LONG).show();
                     break;
                 default:
-                    if (fragment != null && fragment instanceof InterfaceFragment) {
-                        Handler handler = ((InterfaceFragment) fragment).getHandler();
+                    if (fragment != null && fragment instanceof IFragment) {
+                        Handler handler = ((IFragment) fragment).getHandler();
                         if (handler != null)
                             handler.handleMessage(msg);
                     }

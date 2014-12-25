@@ -22,9 +22,9 @@ import java.util.List;
 import info.rynkowski.hamsterclient.R;
 import info.rynkowski.hamsterclient.service.HamsterService;
 
-public class TestFragment extends Fragment implements View.OnClickListener, InterfaceFragment {
+public class TestFragment extends Fragment implements View.OnClickListener, IFragment {
     private static final String TAG = "TestFragment";
-    private InterfaceMainActivity listener;
+    private IMainActivity listener;
     private TestFragmentHelper helper;
     private LocalHandler handler;
 
@@ -57,8 +57,8 @@ public class TestFragment extends Fragment implements View.OnClickListener, Inte
     public void onAttach(Activity activity) {
         Log.d(TAG, "onAttach()");
         super.onAttach(activity);
-        if (activity instanceof InterfaceMainActivity) {
-            listener = (InterfaceMainActivity) activity;
+        if (activity instanceof IMainActivity) {
+            listener = (IMainActivity) activity;
         } else {
             throw new ClassCastException(activity.toString()
                     + " must implemenet InterfaceMainActivity");
