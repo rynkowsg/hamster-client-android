@@ -36,19 +36,29 @@ public class NavigationDrawerFragment extends Fragment {
     // slide menu items
     private String[] navMenuTitles;
 
-    protected interface Listener {
-        enum Result {SUCCESS, FAILED};
-        public Result onNavDrawerItemSelected(int position);
-    }
+    private OnItemClickListener listener;
 
-    private Listener listener;
+    /**
+     * Interface definition for a callback to be invoked when an item in this
+     * NavigationDrawerFragment has been clicked.
+     */
+    public interface OnItemClickListener {
+
+        /**
+         * Callback method to be invoked when an item in this
+         * NavigationDrawerFragment has been clicked.
+         *
+         * @param position The position of the item in the navigation drawer.
+         */
+        public void onDrawerItemClick(int position);
+    }
 
     @Override
     public void onAttach(Activity activity) {
         Log.d(TAG, "onAttach()");
         super.onAttach(activity);
-        if (activity instanceof Listener) {
-            listener = (Listener) activity;
+        if (activity instanceof OnItemClickListener) {
+            listener = (OnItemClickListener) activity;
         } else {
             throw new ClassCastException(activity.toString() + " must implemenet NavigationDrawerFragment.Listener");
         }
@@ -114,14 +124,15 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerList.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "onItemClick()");
+                // update selected item and title
                 mDrawerList.setSelection(position);
                 mDrawerList.setItemChecked(position, true);
-                // display view for selected nav drawer item
-                if(listener.onNavDrawerItemSelected(position) == Listener.Result.SUCCESS) {
-                    // update selected item and title, then close the drawer
-                    toolbar.setTitle(/*mTitle = */navMenuTitles[position]);
-                    mDrawerLayout.closeDrawer(getActivity().findViewById(R.id.fragment_navigation_drawer));
-                }
+                toolbar.setTitle(/*mTitle = */navMenuTitles[position]);
+                // close the drawer
+                mDrawerLayout.closeDrawer(getActivity().findViewById(R.id.fragment_navigation_drawer));
+                // run the callback method at containing view (e.g. replace fragment)
+                listener.onDrawerItemClick(position);
             }
         });
 
@@ -131,6 +142,7 @@ public class NavigationDrawerFragment extends Fragment {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+                Log.d(TAG, "onDrawerOpened()");
                 //toolbar.setTitle(mDrawerTitle);
                 // redraw the menu
                 getActivity().invalidateOptionsMenu();
@@ -139,6 +151,7 @@ public class NavigationDrawerFragment extends Fragment {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
+                Log.d(TAG, "onDrawerClosed()");
                 //toolbar.setTitle(mTitle);
                 // redraw the menu
                 getActivity().invalidateOptionsMenu();

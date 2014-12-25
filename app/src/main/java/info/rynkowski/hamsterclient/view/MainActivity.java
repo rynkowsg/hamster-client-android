@@ -20,7 +20,8 @@ import info.rynkowski.hamsterclient.R;
 import info.rynkowski.hamsterclient.service.HamsterService;
 
 
-public class MainActivity extends ActionBarActivity implements InterfaceMainActivity, NavigationDrawerFragment.Listener {
+public class MainActivity extends ActionBarActivity
+        implements InterfaceMainActivity, NavigationDrawerFragment.OnItemClickListener {
     public static final int PICK_FACT_DATA = 1;
     private static final String TAG = "MainActivity";
     private ServiceManager service;
@@ -87,7 +88,7 @@ public class MainActivity extends ActionBarActivity implements InterfaceMainActi
 
         if (savedInstanceState == null) {
             // on first time display view for first nav item
-            onNavDrawerItemSelected(0);
+            openFragment(new TestFragment());
         }
     }
 
@@ -198,7 +199,7 @@ public class MainActivity extends ActionBarActivity implements InterfaceMainActi
     }
 
     @Override
-    public Result onNavDrawerItemSelected(int position) {
+    public void onDrawerItemClick(int position) {
         // update the main content by replacing fragments
         fragment = null;
         switch (position) {
@@ -218,17 +219,17 @@ public class MainActivity extends ActionBarActivity implements InterfaceMainActi
                 Log.e(TAG, "Error in creating fragmentl;");
                 break;
         }
+        openFragment(fragment);
+    }
 
+    private void openFragment(Fragment fragment) throws RuntimeException {
         if (fragment != null) {
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.frame_container, fragment)
                     .commit();
-            return Result.SUCCESS;
         } else {
-            // error in creating fragment
-            Log.e(TAG, "Error in creating fragment");
-            return Result.FAILED;
+            throw new RuntimeException("fragment should contain reference to object (it can not be null)");
         }
     }
 }
