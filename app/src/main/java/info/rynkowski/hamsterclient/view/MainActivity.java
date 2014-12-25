@@ -82,8 +82,8 @@ public class MainActivity extends ActionBarActivity implements InterfaceMainActi
         drawerFragment.setUp(toolbar);
 
 //        // enabling action bar app icon and behaving it as toggle button
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-//        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         if (savedInstanceState == null) {
             // on first time display view for first nav item
