@@ -1,6 +1,5 @@
 package info.rynkowski.hamsterclient.view.navigation;
 
-
 import android.app.Activity;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -19,8 +18,12 @@ import java.util.ArrayList;
 
 import info.rynkowski.hamsterclient.R;
 
+/**
+ * NavigationDrawer is a fragment responsible for supporting navigation drawer.
+ * It provides methods to preparing navigation drawer.
+ */
 public class NavigationDrawer extends Fragment {
-    private static final String TAG = "NavigationDrawerFragment";
+    private static final String TAG = "NavigationDrawer";
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -110,8 +113,6 @@ public class NavigationDrawer extends Fragment {
     private class OnDrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Log.d(TAG, "onItemClick()");
-
             // update selected item
             mDrawerList.setSelection(position);
             mDrawerList.setItemChecked(position, true);
