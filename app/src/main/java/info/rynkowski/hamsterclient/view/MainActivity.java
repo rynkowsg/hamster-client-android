@@ -21,7 +21,6 @@ import org.freedesktop.dbus.exceptions.DBusException;
 
 import info.rynkowski.hamsterclient.R;
 import info.rynkowski.hamsterclient.service.HamsterService;
-import info.rynkowski.hamsterclient.view.navigation.DrawerToggle;
 
 
 public class MainActivity extends ActionBarActivity
@@ -87,7 +86,7 @@ public class MainActivity extends ActionBarActivity
         }
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new DrawerToggle(this, mDrawerLayout, mToolbar,
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,
                 R.string.drawer_open, R.string.drawer_close);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 

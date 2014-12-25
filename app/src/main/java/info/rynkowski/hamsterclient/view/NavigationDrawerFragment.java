@@ -29,11 +29,6 @@ public class NavigationDrawerFragment extends Fragment {
 
     private OnItemClickListener mActivityListener;
 
-//    // nav drawer title
-//    private CharSequence mDrawerTitle;
-//    // used to store app title
-//    private CharSequence mTitle;
-
     @Override
     public void onAttach(Activity activity) {
         Log.d(TAG, "onAttach()");
