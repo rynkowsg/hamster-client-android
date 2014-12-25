@@ -1,4 +1,4 @@
-package info.rynkowski.hamsterclient.view;
+package info.rynkowski.hamsterclient.view.navigation;
 
 
 import android.app.Activity;
@@ -19,13 +19,13 @@ import java.util.ArrayList;
 
 import info.rynkowski.hamsterclient.R;
 
-public class NavigationDrawerFragment extends Fragment {
+public class NavigationDrawer extends Fragment {
     private static final String TAG = "NavigationDrawerFragment";
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private Toolbar mToolbar;
-    private ArrayList<NavDrawerItem> mItemsList;
+    private ArrayList<DrawerItem> mItemsList;
 
     private OnItemClickListener mActivityListener;
 
@@ -68,12 +68,12 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerList = (ListView) activity.findViewById(R.id.list_drawer);
 
         mItemsList = prepareItemsList();
-        mDrawerList.setAdapter(new NavDrawerListAdapter(activity, mItemsList));
+        mDrawerList.setAdapter(new DrawerListAdapter(activity, mItemsList));
         mDrawerList.setOnItemClickListener(new OnDrawerItemClickListener());
     }
 
-    private ArrayList<NavDrawerItem> prepareItemsList() {
-        ArrayList<NavDrawerItem> items = new ArrayList<>();
+    private ArrayList<DrawerItem> prepareItemsList() {
+        ArrayList<DrawerItem> items = new ArrayList<>();
 
         // load slide menu items' titles
         String[] titles = getResources().getStringArray(R.array.nav_drawer_items);
@@ -82,12 +82,12 @@ public class NavigationDrawerFragment extends Fragment {
         TypedArray icons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
 
         // adding nav drawer items to array
-        items.add(new NavDrawerItem(titles[0], icons.getResourceId(0, -1)));    // Test
-        items.add(new NavDrawerItem(titles[1], icons.getResourceId(1, -1)));    // Home
-        items.add(new NavDrawerItem(titles[2], icons.getResourceId(2, -1)));    // History
-        items.add(new NavDrawerItem(titles[3], icons.getResourceId(3, -1)));    // Stats
-        items.add(new NavDrawerItem(titles[4], icons.getResourceId(4, -1)));    // Edit tables
-        items.add(new NavDrawerItem(titles[5], icons.getResourceId(5, -1)));    // About
+        items.add(new DrawerItem(titles[0], icons.getResourceId(0, -1)));    // Test
+        items.add(new DrawerItem(titles[1], icons.getResourceId(1, -1)));    // Home
+        items.add(new DrawerItem(titles[2], icons.getResourceId(2, -1)));    // History
+        items.add(new DrawerItem(titles[3], icons.getResourceId(3, -1)));    // Stats
+        items.add(new DrawerItem(titles[4], icons.getResourceId(4, -1)));    // Edit tables
+        items.add(new DrawerItem(titles[5], icons.getResourceId(5, -1)));    // About
 
         return items;
     }

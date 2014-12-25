@@ -24,7 +24,7 @@
         <!-- The navigation drawer -->
         <fragment
             android:id="@+id/fragment_navigation_drawer"
-            android:name="info.rynkowski.hamsterclient.view.NavigationDrawerFragment"
+            android:name="info.rynkowski.hamsterclient.view.navigation.NavigationDrawer"
             android:layout_width="@dimen/navigation_drawer_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"

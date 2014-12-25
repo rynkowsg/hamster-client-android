@@ -1,4 +1,4 @@
-package info.rynkowski.hamsterclient.view;
+package info.rynkowski.hamsterclient.view.navigation;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,24 +13,24 @@ import java.util.ArrayList;
 
 import info.rynkowski.hamsterclient.R;
 
-public class NavDrawerListAdapter extends BaseAdapter {
+public class DrawerListAdapter extends BaseAdapter {
 
     private Context context;
-    private ArrayList<NavDrawerItem> navDrawerItems;
+    private ArrayList<DrawerItem> drawerItems;
 
-    public NavDrawerListAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems) {
+    public DrawerListAdapter(Context context, ArrayList<DrawerItem> drawerItems) {
         this.context = context;
-        this.navDrawerItems = navDrawerItems;
+        this.drawerItems = drawerItems;
     }
 
     @Override
     public int getCount() {
-        return navDrawerItems.size();
+        return drawerItems.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return navDrawerItems.get(position);
+        return drawerItems.get(position);
     }
 
     @Override
@@ -50,13 +50,13 @@ public class NavDrawerListAdapter extends BaseAdapter {
         TextView txtTitle = (TextView) convertView.findViewById(R.id.title);
         TextView txtCount = (TextView) convertView.findViewById(R.id.counter);
 
-        imgIcon.setImageResource(navDrawerItems.get(position).getIcon());
-        txtTitle.setText(navDrawerItems.get(position).getTitle());
+        imgIcon.setImageResource(drawerItems.get(position).getIcon());
+        txtTitle.setText(drawerItems.get(position).getTitle());
 
         // displaying count
         // check whether it set visible or not
-        if (navDrawerItems.get(position).getCounterVisibility()) {
-            txtCount.setText(navDrawerItems.get(position).getCount());
+        if (drawerItems.get(position).getCounterVisibility()) {
+            txtCount.setText(drawerItems.get(position).getCount());
         } else {
             // hide the counter view
             txtCount.setVisibility(View.GONE);
