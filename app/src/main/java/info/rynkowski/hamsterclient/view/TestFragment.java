@@ -52,7 +52,6 @@ public class TestFragment extends Fragment implements View.OnClickListener, IFra
         this.handler = new LocalHandler();
     }
 
-    // Lifecycle
     @Override
     public void onAttach(Activity activity) {
         Log.d(TAG, "onAttach()");
@@ -138,7 +137,6 @@ public class TestFragment extends Fragment implements View.OnClickListener, IFra
         super.onDestroy();
     }
 
-    // Menu
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         Log.d(TAG, "onCreateOptionsMenu()");
@@ -159,7 +157,6 @@ public class TestFragment extends Fragment implements View.OnClickListener, IFra
         }
     }
 
-    //----------------  Buttons OnClick  ---------------------------------------------------------//
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

@@ -38,7 +38,6 @@ public class MainActivity extends ActionBarActivity
     private NavigationDrawer drawerFragment;
     private ActionBarDrawerToggle mDrawerToggle;
 
-
     //----------------  Message handling and sending  --------------------------------------------//
     private class LocalHandler extends Handler {
         @Override
@@ -210,7 +209,7 @@ public class MainActivity extends ActionBarActivity
         super.onBackPressed();
     }
 
-    // InterfaceMainActivity methods - fragments use those methods to communicate with MainActivity
+    // IMainActivity methods - fragments use those methods to communicate with MainActivity
     @Override
     public void startService() {
         service.start();
@@ -235,6 +234,7 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
+    // NavigationDrawer.OnItemClickListener
     @Override
     public void onDrawerItemClick(int position) {
         // update the main content by replacing fragments
