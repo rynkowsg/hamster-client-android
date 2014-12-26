@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--http://developer.xamarin.com/guides/android/platform_features/android_l/material_theme/#4.using-custom-themes-->
+    <!--https://developer.android.com/training/material/theme.html#StatusBar-->
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="AppTheme.Base">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">#212121</item>
-        <item name="colorPrimaryDark">#000000</item>
+    <style name="AppTheme.Base" />
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     </style>
 
-    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
-    </style>
+    <style name="Toolbar.Base" parent="AppTheme" />
 
-    <style name="Toolbar" parent="">
-        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+    <style name="Toolbar" parent="Toolbar.Base">
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-        <item name="android:background">@color/background_material_dark</item>
+        <item name="android:background">?attr/colorPrimary</item>
     </style>
 
 </resources>
