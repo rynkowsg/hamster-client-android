@@ -247,6 +247,8 @@ public class MainActivity extends ActionBarActivity
                 fragment = new HomeFragment();
                 break;
             case 2:
+                fragment = new HistoryFragment();
+                break;
             case 3:
             case 4:
             case 5:
