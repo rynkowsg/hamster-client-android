@@ -9,4 +9,9 @@
     <color name="nav_list_divider">#476C9B</color>
     <color name="nav_counter_text_bg">#626262</color>
     <color name="nav_counter_text_color">#c5c4c4</color>
+
+    <color name="history_list_item_title">#fff</color>
+    <color name="history_list_background">#E8DDB5</color>
+    <color name="history_list_background_pressed">#992416</color>
+    <color name="history_list_divider">#476C9B</color>
 </resources>

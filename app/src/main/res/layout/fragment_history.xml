@@ -4,4 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <ListView
+        android:id="@+id/history_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="@color/history_list_background"
+        android:choiceMode="singleChoice"
+        android:divider="@color/history_list_divider"
+        android:dividerHeight="1dp"
+        android:listSelector="@drawable/history_list_selector" />
 </LinearLayout>
