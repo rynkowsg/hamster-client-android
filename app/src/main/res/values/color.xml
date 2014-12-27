@@ -3,10 +3,10 @@
     <color name="colorPrimary">#ff51699f</color>
     <color name="colorPrimaryDark">#283853</color>
 
-    <color name="list_item_title">#fff</color>
-    <color name="list_background">#de547ab1</color>
-    <color name="list_background_pressed">#992416</color>
-    <color name="list_divider">#476C9B</color>
-    <color name="counter_text_bg">#626262</color>
-    <color name="counter_text_color">#c5c4c4</color>
+    <color name="nav_list_item_title">#fff</color>
+    <color name="nav_list_background">#de547ab1</color>
+    <color name="nav_list_background_pressed">#992416</color>
+    <color name="nav_list_divider">#476C9B</color>
+    <color name="nav_counter_text_bg">#626262</color>
+    <color name="nav_counter_text_color">#c5c4c4</color>
 </resources>
