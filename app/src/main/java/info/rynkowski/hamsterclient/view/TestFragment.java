@@ -142,7 +142,6 @@ public class TestFragment extends Fragment implements View.OnClickListener, IFra
         Log.d(TAG, "onCreateOptionsMenu()");
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_test_fragment, menu);
-
     }
 
     @Override
