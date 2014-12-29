@@ -22,6 +22,7 @@ import org.freedesktop.dbus.exceptions.DBusException;
 
 import info.rynkowski.hamsterclient.R;
 import info.rynkowski.hamsterclient.service.HamsterService;
+import info.rynkowski.hamsterclient.view.history.HistoryFragment;
 import info.rynkowski.hamsterclient.view.navigation.NavigationDrawer;
 
 

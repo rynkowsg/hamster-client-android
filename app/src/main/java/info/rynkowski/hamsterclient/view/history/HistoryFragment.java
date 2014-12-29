@@ -1,4 +1,4 @@
-package info.rynkowski.hamsterclient.view;
+package info.rynkowski.hamsterclient.view.history;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +19,7 @@ import java.util.List;
 import info.rynkowski.hamsterclient.R;
 import info.rynkowski.hamsterclient.hamster.AdapterStruct5;
 import info.rynkowski.hamsterclient.service.HamsterService;
+import info.rynkowski.hamsterclient.view.IFragment;
 
 public class HistoryFragment extends Fragment implements IFragment {
     private static final String TAG = "HistoryFragment";
