@@ -15,22 +15,22 @@ import info.rynkowski.hamsterclient.R;
 
 public class DrawerListAdapter extends BaseAdapter {
 
-    private Context context;
-    private ArrayList<DrawerItem> drawerItems;
+    private Context mContext;
+    private ArrayList<DrawerItem> mDrawerItems;
 
     public DrawerListAdapter(Context context, ArrayList<DrawerItem> drawerItems) {
-        this.context = context;
-        this.drawerItems = drawerItems;
+        mContext = context;
+        mDrawerItems = drawerItems;
     }
 
     @Override
     public int getCount() {
-        return drawerItems.size();
+        return mDrawerItems.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return drawerItems.get(position);
+        return mDrawerItems.get(position);
     }
 
     @Override
@@ -39,29 +39,42 @@ public class DrawerListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
+    public View getView(int position, View rowView, ViewGroup parent) {
+        ViewHolder viewHolder;
+
+        // reuse views
+        if (rowView == null) {
             LayoutInflater mInflater = (LayoutInflater)
-                    context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            convertView = mInflater.inflate(R.layout.nav_drawer_list_item, null);
+                    mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+            rowView = mInflater.inflate(R.layout.nav_drawer_list_item, parent, false);
+            // configure view holder
+            viewHolder = new ViewHolder();
+            viewHolder.image = (ImageView) rowView.findViewById(R.id.icon);
+            viewHolder.title = (TextView) rowView.findViewById(R.id.title);
+            viewHolder.counter = (TextView) rowView.findViewById(R.id.counter);
+            rowView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) rowView.getTag();
         }
 
-        ImageView imgIcon = (ImageView) convertView.findViewById(R.id.icon);
-        TextView txtTitle = (TextView) convertView.findViewById(R.id.title);
-        TextView txtCount = (TextView) convertView.findViewById(R.id.counter);
-
-        imgIcon.setImageResource(drawerItems.get(position).getIcon());
-        txtTitle.setText(drawerItems.get(position).getTitle());
-
+        // fill data
+        viewHolder.image.setImageResource(mDrawerItems.get(position).getIcon());
+        viewHolder.title.setText(mDrawerItems.get(position).getTitle());
         // displaying count
         // check whether it set visible or not
-        if (drawerItems.get(position).getCounterVisibility()) {
-            txtCount.setText(drawerItems.get(position).getCount());
+        if (mDrawerItems.get(position).getCounterVisibility()) {
+            viewHolder.counter.setText(mDrawerItems.get(position).getCount());
         } else {
             // hide the counter view
-            txtCount.setVisibility(View.GONE);
+            viewHolder.counter.setVisibility(View.GONE);
         }
 
-        return convertView;
+        return rowView;
+    }
+
+    private static class ViewHolder {
+        public ImageView image;
+        public TextView title;
+        public TextView counter;
     }
 }
