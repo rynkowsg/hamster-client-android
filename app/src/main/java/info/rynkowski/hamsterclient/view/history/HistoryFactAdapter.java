@@ -45,7 +45,7 @@ public class HistoryFactAdapter extends BaseAdapter {
         if (rowView == null) {
             LayoutInflater mInflater = (LayoutInflater)
                     mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            rowView = mInflater.inflate(R.layout.nav_drawer_list_item, parent, false);
+            rowView = mInflater.inflate(R.layout.history_list_item, parent, false);
             // configure view holder
             viewHolder = new ViewHolder();
             rowView.setTag(viewHolder);
