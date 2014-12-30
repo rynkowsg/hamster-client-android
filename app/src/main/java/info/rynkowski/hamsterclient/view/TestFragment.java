@@ -60,7 +60,7 @@ public class TestFragment extends Fragment implements View.OnClickListener, IFra
             listener = (IMainActivity) activity;
         } else {
             throw new ClassCastException(activity.toString()
-                    + " must implemenet InterfaceMainActivity");
+                    + " must implemenet IMainActivity");
         }
     }
 

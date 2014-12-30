@@ -1,5 +1,6 @@
 package info.rynkowski.hamsterclient.view.history;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,13 +21,27 @@ import info.rynkowski.hamsterclient.R;
 import info.rynkowski.hamsterclient.hamster.AdapterStruct5;
 import info.rynkowski.hamsterclient.service.HamsterService;
 import info.rynkowski.hamsterclient.view.IFragment;
+import info.rynkowski.hamsterclient.view.IMainActivity;
 
 public class HistoryFragment extends Fragment implements IFragment {
     private static final String TAG = "HistoryFragment";
-    private LocalHandler handler;
+    private LocalHandler mEventHandler;
+    private IMainActivity mActivityListener;
 
     public HistoryFragment() {
-        this.handler = new LocalHandler();
+        this.mEventHandler = new LocalHandler();
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        Log.d(TAG, "onAttach()");
+        super.onAttach(activity);
+        if (activity instanceof IMainActivity) {
+            mActivityListener = (IMainActivity) activity;
+        } else {
+            throw new ClassCastException(activity.toString()
+                    + " must implemenet IMainActivity");
+        }
     }
 
     @Override
@@ -36,7 +51,7 @@ public class HistoryFragment extends Fragment implements IFragment {
 
     @Override
     public Handler getHandler() {
-        return handler;
+        return mEventHandler;
     }
 
     private class LocalHandler extends Handler {
