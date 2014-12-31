@@ -1,4 +1,4 @@
-package info.rynkowski.hamsterclient.view;
+package info.rynkowski.hamsterclient.ui;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import info.rynkowski.hamsterclient.R;
-import info.rynkowski.hamsterclient.hamster.AdapterStruct5;
+import info.rynkowski.hamsterclient.model.AdapterStruct5;
 
 public class TestFragmentHelper {
     private static final String TAG = "MainActivityHelper";

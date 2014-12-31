@@ -1,4 +1,4 @@
-package info.rynkowski.hamsterclient.view;
+package info.rynkowski.hamsterclient.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

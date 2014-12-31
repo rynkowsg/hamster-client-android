@@ -13,5 +13,5 @@
         android:choiceMode="singleChoice"
         android:divider="@color/nav_list_divider"
         android:dividerHeight="1dp"
-        android:listSelector="@drawable/nav_list_selector" />
+        android:listSelector="@drawable/navdrawer_list_selector" />
 </LinearLayout>

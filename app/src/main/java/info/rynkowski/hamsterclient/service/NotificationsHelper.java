@@ -8,7 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import info.rynkowski.hamsterclient.view.MainActivity;
+import info.rynkowski.hamsterclient.ui.MainActivity;
 import info.rynkowski.hamsterclient.R;
 
 public class NotificationsHelper {

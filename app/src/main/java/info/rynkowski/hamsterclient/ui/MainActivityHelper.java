@@ -1,4 +1,4 @@
-package info.rynkowski.hamsterclient.view;
+package info.rynkowski.hamsterclient.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -19,8 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import info.rynkowski.hamsterclient.R;
-import info.rynkowski.hamsterclient.hamster.AdapterStruct5;
-import info.rynkowski.hamsterclient.view.prefs.PrefsActivity;
+import info.rynkowski.hamsterclient.model.AdapterStruct5;
 
 public class MainActivityHelper {
     private static final String TAG = "MainActivityHelper";
@@ -68,7 +67,7 @@ public class MainActivityHelper {
 
     //---  - run mActivity with application' settings
     protected void runSettingsActivity() {
-        Intent intent = new Intent(mActivity, PrefsActivity.class);
+        Intent intent = new Intent(mActivity, SettingsActivity.class);
         mActivity.startActivity(intent);
     }
 

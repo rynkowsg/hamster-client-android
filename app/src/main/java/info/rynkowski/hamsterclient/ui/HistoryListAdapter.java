@@ -1,4 +1,4 @@
-package info.rynkowski.hamsterclient.view.history;
+package info.rynkowski.hamsterclient.ui;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,11 +13,11 @@ import java.util.List;
 
 import info.rynkowski.hamsterclient.R;
 
-public class HistoryFactAdapter extends BaseAdapter {
+public class HistoryListAdapter extends BaseAdapter {
     private Context mContext;
     private List<Struct5> mFacts;
 
-    HistoryFactAdapter(Context context, List<Struct5> facts) {
+    HistoryListAdapter(Context context, List<Struct5> facts) {
         mContext = context;
         mFacts = facts;
     }

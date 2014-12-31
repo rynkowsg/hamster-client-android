@@ -1,4 +1,4 @@
-package info.rynkowski.hamsterclient.hamster;
+package info.rynkowski.hamsterclient.model;
 
 import org.gnome.Struct7;
 

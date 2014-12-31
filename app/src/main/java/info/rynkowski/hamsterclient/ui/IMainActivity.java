@@ -1,4 +1,4 @@
-package info.rynkowski.hamsterclient.view;
+package info.rynkowski.hamsterclient.ui;
 
 public interface IMainActivity {
     public void startService();

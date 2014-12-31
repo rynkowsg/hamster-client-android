@@ -1,4 +1,4 @@
-package info.rynkowski.hamsterclient.view.history;
+package info.rynkowski.hamsterclient.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -17,8 +17,6 @@ import java.util.List;
 
 import info.rynkowski.hamsterclient.R;
 import info.rynkowski.hamsterclient.service.HamsterService;
-import info.rynkowski.hamsterclient.view.IFragment;
-import info.rynkowski.hamsterclient.view.IMainActivity;
 
 public class HistoryFragment extends Fragment implements IFragment {
     private static final String TAG = "HistoryFragment";
@@ -75,7 +73,7 @@ public class HistoryFragment extends Fragment implements IFragment {
     protected void fillListTodayFacts(List<Struct5> listOfFacts) {
         Log.d(TAG, "fillListTodayFacts");
         final ListView listview = (ListView) getActivity().findViewById(R.id.history_list);
-        listview.setAdapter(new HistoryFactAdapter(getActivity(), listOfFacts));
+        listview.setAdapter(new HistoryListAdapter(getActivity(), listOfFacts));
     }
 
 }

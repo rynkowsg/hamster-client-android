@@ -1,4 +1,4 @@
-package info.rynkowski.hamsterclient.view;
+package info.rynkowski.hamsterclient.ui;
 
 import android.app.ActivityManager;
 import android.content.ComponentName;

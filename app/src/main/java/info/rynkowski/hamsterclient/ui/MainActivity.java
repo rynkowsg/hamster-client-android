@@ -1,4 +1,4 @@
-package info.rynkowski.hamsterclient.view;
+package info.rynkowski.hamsterclient.ui;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -22,12 +22,10 @@ import org.freedesktop.dbus.exceptions.DBusException;
 
 import info.rynkowski.hamsterclient.R;
 import info.rynkowski.hamsterclient.service.HamsterService;
-import info.rynkowski.hamsterclient.view.history.HistoryFragment;
-import info.rynkowski.hamsterclient.view.navigation.NavigationDrawer;
 
 
 public class MainActivity extends ActionBarActivity
-        implements IMainActivity, NavigationDrawer.OnItemClickListener {
+        implements IMainActivity, NavDrawerFragment.OnItemClickListener {
     public static final int PICK_FACT_DATA = 1;
     private static final String TAG = "MainActivity";
     private ServiceManager service;
@@ -36,7 +34,7 @@ public class MainActivity extends ActionBarActivity
 
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
-    private NavigationDrawer drawerFragment;
+    private NavDrawerFragment drawerFragment;
     private ActionBarDrawerToggle mDrawerToggle;
 
     //----------------  Message handling and sending  --------------------------------------------//
@@ -92,7 +90,7 @@ public class MainActivity extends ActionBarActivity
                 R.string.drawer_open, R.string.drawer_close);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        drawerFragment = (NavigationDrawer) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
+        drawerFragment = (NavDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navdrawer);
         drawerFragment.setup(mToolbar, mDrawerLayout);
 
         // enabling action bar app icon and behaving it as toggle button

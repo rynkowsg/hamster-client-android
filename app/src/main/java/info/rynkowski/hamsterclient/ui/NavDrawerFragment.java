@@ -1,4 +1,4 @@
-package info.rynkowski.hamsterclient.view.navigation;
+package info.rynkowski.hamsterclient.ui;
 
 import android.app.Activity;
 import android.content.res.TypedArray;
@@ -22,13 +22,13 @@ import info.rynkowski.hamsterclient.R;
  * NavigationDrawer is a fragment responsible for supporting navigation drawer.
  * It provides methods to preparing navigation drawer.
  */
-public class NavigationDrawer extends Fragment {
+public class NavDrawerFragment extends Fragment {
     private static final String TAG = "NavigationDrawer";
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private Toolbar mToolbar;
-    private ArrayList<DrawerItem> mItemsList;
+    private ArrayList<NavDrawerItem> mItemsList;
 
     private OnItemClickListener mActivityListener;
 
@@ -49,7 +49,7 @@ public class NavigationDrawer extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(
-                R.layout.fragment_navigation_drawer, container, false);
+                R.layout.fragment_navdrawer, container, false);
     }
 
     /**
@@ -71,12 +71,12 @@ public class NavigationDrawer extends Fragment {
         mDrawerList = (ListView) activity.findViewById(R.id.list_drawer);
 
         mItemsList = prepareItemsList();
-        mDrawerList.setAdapter(new DrawerListAdapter(activity, mItemsList));
+        mDrawerList.setAdapter(new NavDrawerListAdapter(activity, mItemsList));
         mDrawerList.setOnItemClickListener(new OnDrawerItemClickListener());
     }
 
-    private ArrayList<DrawerItem> prepareItemsList() {
-        ArrayList<DrawerItem> items = new ArrayList<>();
+    private ArrayList<NavDrawerItem> prepareItemsList() {
+        ArrayList<NavDrawerItem> items = new ArrayList<>();
 
         // load slide menu items' titles
         String[] titles = getResources().getStringArray(R.array.nav_drawer_items);
@@ -85,12 +85,12 @@ public class NavigationDrawer extends Fragment {
         TypedArray icons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
 
         // adding nav drawer items to array
-        items.add(new DrawerItem(titles[0], icons.getResourceId(0, -1)));    // Test
-        items.add(new DrawerItem(titles[1], icons.getResourceId(1, -1)));    // Home
-        items.add(new DrawerItem(titles[2], icons.getResourceId(2, -1)));    // History
-        items.add(new DrawerItem(titles[3], icons.getResourceId(3, -1)));    // Stats
-        items.add(new DrawerItem(titles[4], icons.getResourceId(4, -1)));    // Edit tables
-        items.add(new DrawerItem(titles[5], icons.getResourceId(5, -1)));    // About
+        items.add(new NavDrawerItem(titles[0], icons.getResourceId(0, -1)));    // Test
+        items.add(new NavDrawerItem(titles[1], icons.getResourceId(1, -1)));    // Home
+        items.add(new NavDrawerItem(titles[2], icons.getResourceId(2, -1)));    // History
+        items.add(new NavDrawerItem(titles[3], icons.getResourceId(3, -1)));    // Stats
+        items.add(new NavDrawerItem(titles[4], icons.getResourceId(4, -1)));    // Edit tables
+        items.add(new NavDrawerItem(titles[5], icons.getResourceId(5, -1)));    // About
 
         return items;
     }

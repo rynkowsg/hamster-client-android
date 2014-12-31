@@ -23,12 +23,12 @@
 
         <!-- The navigation drawer -->
         <fragment
-            android:id="@+id/fragment_navigation_drawer"
-            android:name="info.rynkowski.hamsterclient.view.navigation.NavigationDrawer"
-            android:layout_width="@dimen/navigation_drawer_width"
+            android:id="@+id/fragment_navdrawer"
+            android:name="info.rynkowski.hamsterclient.ui.NavDrawerFragment"
+            android:layout_width="@dimen/navdrawer_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            app:layout="@layout/fragment_navigation_drawer"
-            tools:layout="@layout/fragment_navigation_drawer" />
+            app:layout="@layout/fragment_navdrawer"
+            tools:layout="@layout/fragment_navdrawer" />
     </android.support.v4.widget.DrawerLayout>
 </LinearLayout>

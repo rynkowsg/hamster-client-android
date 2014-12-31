@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".view.MainActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,12 +19,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.AddFactActivity"
+            android:name=".ui.AddFactActivity"
             android:label="@string/title_activity_add_fact"
-            android:parentActivityName=".view.MainActivity">
+            android:parentActivityName=".ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.MainActivity" />
+                android:value=".ui.MainActivity" />
         </activity>
 
         <service
@@ -32,7 +32,7 @@
             android:enabled="true"
             android:exported="false" />
         <activity
-            android:name=".view.prefs.PrefsActivity"
+            android:name=".ui.SettingsActivity"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
     </application>
 

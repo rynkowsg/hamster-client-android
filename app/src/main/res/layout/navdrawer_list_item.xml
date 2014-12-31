@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:background="@drawable/nav_list_selector"
+    android:background="@drawable/navdrawer_list_selector"
     android:minHeight="48dp"
     android:orientation="horizontal">
 
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"
         android:layout_marginRight="8dp"
-        android:background="@drawable/nav_counter_bg"
+        android:background="@drawable/navdrawer_counter_bg"
         android:textColor="@color/nav_counter_text_color" />
 
 </LinearLayout>

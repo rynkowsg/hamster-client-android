@@ -1,4 +1,4 @@
-package info.rynkowski.hamsterclient.view.navigation;
+package info.rynkowski.hamsterclient.ui;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,24 +13,24 @@ import java.util.ArrayList;
 
 import info.rynkowski.hamsterclient.R;
 
-public class DrawerListAdapter extends BaseAdapter {
+public class NavDrawerListAdapter extends BaseAdapter {
 
     private Context mContext;
-    private ArrayList<DrawerItem> mDrawerItems;
+    private ArrayList<NavDrawerItem> mNavDrawerItems;
 
-    public DrawerListAdapter(Context context, ArrayList<DrawerItem> drawerItems) {
+    public NavDrawerListAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems) {
         mContext = context;
-        mDrawerItems = drawerItems;
+        mNavDrawerItems = navDrawerItems;
     }
 
     @Override
     public int getCount() {
-        return mDrawerItems.size();
+        return mNavDrawerItems.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mDrawerItems.get(position);
+        return mNavDrawerItems.get(position);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class DrawerListAdapter extends BaseAdapter {
         if (rowView == null) {
             LayoutInflater mInflater = (LayoutInflater)
                     mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            rowView = mInflater.inflate(R.layout.nav_drawer_list_item, parent, false);
+            rowView = mInflater.inflate(R.layout.navdrawer_list_item, parent, false);
             // configure view holder
             viewHolder = new ViewHolder();
             viewHolder.image = (ImageView) rowView.findViewById(R.id.icon);
@@ -58,12 +58,12 @@ public class DrawerListAdapter extends BaseAdapter {
         }
 
         // fill data
-        viewHolder.image.setImageResource(mDrawerItems.get(position).getIcon());
-        viewHolder.title.setText(mDrawerItems.get(position).getTitle());
+        viewHolder.image.setImageResource(mNavDrawerItems.get(position).getIcon());
+        viewHolder.title.setText(mNavDrawerItems.get(position).getTitle());
         // displaying count
         // check whether it set visible or not
-        if (mDrawerItems.get(position).getCounterVisibility()) {
-            viewHolder.counter.setText(mDrawerItems.get(position).getCount());
+        if (mNavDrawerItems.get(position).getCounterVisibility()) {
+            viewHolder.counter.setText(mNavDrawerItems.get(position).getCount());
         } else {
             // hide the counter view
             viewHolder.counter.setVisibility(View.GONE);

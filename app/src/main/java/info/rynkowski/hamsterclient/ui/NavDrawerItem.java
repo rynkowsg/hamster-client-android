@@ -1,6 +1,6 @@
-package info.rynkowski.hamsterclient.view.navigation;
+package info.rynkowski.hamsterclient.ui;
 
-public class DrawerItem {
+public class NavDrawerItem {
 
     private String title;
     private int icon;
@@ -8,12 +8,12 @@ public class DrawerItem {
     // boolean to set visiblity of the counter
     private boolean isCounterVisible = false;
 
-    public DrawerItem(String title, int icon) {
+    public NavDrawerItem(String title, int icon) {
         this.title = title;
         this.icon = icon;
     }
 
-    public DrawerItem(String title, int icon, boolean isCounterVisible, String count) {
+    public NavDrawerItem(String title, int icon, boolean isCounterVisible, String count) {
         this.title = title;
         this.icon = icon;
         this.isCounterVisible = isCounterVisible;
