@@ -22,12 +22,12 @@ import java.util.Map;
 import info.rynkowski.hamsterclient.R;
 
 public class DbusHelper {
-    private final String TAG = "HamsterService";
-    HamsterService hamsterService;
-    private DBusConnection dBusConnection = null;
+    private static final String TAG = DbusHelper.class.getName();
+    HamsterService mHamsterService;
+    private DBusConnection mDbusConnection = null;
 
     DbusHelper(HamsterService hamsterService) {
-        this.hamsterService = hamsterService;
+        this.mHamsterService = hamsterService;
     }
 
     //----------------  DBUS connection  ---------------------------------------------------------//
@@ -45,17 +45,17 @@ public class DbusHelper {
         Log.i(TAG, "Before get dbus connection");
         long startTime = System.currentTimeMillis();
         try {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(hamsterService);
-            String host = prefs.getString("host", hamsterService.getResources().getString(R.string.host));
-            String port = prefs.getString("port", hamsterService.getResources().getString(R.string.port));
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mHamsterService);
+            String host = prefs.getString("host", mHamsterService.getResources().getString(R.string.host));
+            String port = prefs.getString("port", mHamsterService.getResources().getString(R.string.port));
             String dbus_address = "tcp:host=" + host + ",port=" + port;
-            dBusConnection = DBusConnection.getConnection(dbus_address);
+            mDbusConnection = DBusConnection.getConnection(dbus_address);
             registerSignals();
         } catch (DBusException e) {
             e.printStackTrace();
-            Log.i(TAG, "dBusConnection is not established, dbusConnection = " + dBusConnection);
-            dBusConnection = null;
-            hamsterService.send(Message.obtain(null, hamsterService.MSG_EXCEPTION, e));
+            Log.i(TAG, "dBusConnection is not established, mDbusConnection = " + mDbusConnection);
+            mDbusConnection = null;
+            mHamsterService.send(Message.obtain(null, mHamsterService.MSG_EXCEPTION, e));
         }
         long difference = System.currentTimeMillis() - startTime;
         Log.i(TAG, "After get dbus connection: it takes " + difference / 1000 + " seconds");
@@ -63,7 +63,7 @@ public class DbusHelper {
 
     protected void closeConnection() {
         Log.d(TAG, "closeDbusConnection()");
-        dBusConnection = null;
+        mDbusConnection = null;
     }
 
     //---------------- DBUS - operations on the Hamster object  ----------------------------------//
@@ -80,35 +80,35 @@ public class DbusHelper {
 
     private void registerSignals() {
         Log.d(TAG, "registerSignals()");
-        if (dBusConnection != null) {
+        if (mDbusConnection != null) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        Hamster hamster = dBusConnection.getRemoteObject("org.gnome.Hamster", "/org/gnome/Hamster", Hamster.class);
-                        dBusConnection.addSigHandler(Hamster.ActivitiesChanged.class, new DBusSigHandler<Hamster.ActivitiesChanged>() {
+                        Hamster hamster = mDbusConnection.getRemoteObject("org.gnome.Hamster", "/org/gnome/Hamster", Hamster.class);
+                        mDbusConnection.addSigHandler(Hamster.ActivitiesChanged.class, new DBusSigHandler<Hamster.ActivitiesChanged>() {
                             @Override
                             public void handle(Hamster.ActivitiesChanged s) {
-                                hamsterService.send(Message.obtain(null, HamsterService.SIGNAL_ACTIVITIES_CHANGED));
+                                mHamsterService.send(Message.obtain(null, HamsterService.SIGNAL_ACTIVITIES_CHANGED));
                             }
                         });
-                        dBusConnection.addSigHandler(Hamster.FactsChanged.class, new DBusSigHandler<Hamster.FactsChanged>() {
+                        mDbusConnection.addSigHandler(Hamster.FactsChanged.class, new DBusSigHandler<Hamster.FactsChanged>() {
                             @Override
                             public void handle(Hamster.FactsChanged s) {
-                                hamsterService.send(Message.obtain(null, HamsterService.SIGNAL_FACTS_CHANGED));
+                                mHamsterService.send(Message.obtain(null, HamsterService.SIGNAL_FACTS_CHANGED));
                                 getTodaysFacts();
                             }
                         });
-                        dBusConnection.addSigHandler(Hamster.TagsChanged.class, new DBusSigHandler<Hamster.TagsChanged>() {
+                        mDbusConnection.addSigHandler(Hamster.TagsChanged.class, new DBusSigHandler<Hamster.TagsChanged>() {
                             @Override
                             public void handle(Hamster.TagsChanged s) {
-                                hamsterService.send(Message.obtain(null, HamsterService.SIGNAL_TAGS_CHANGED));
+                                mHamsterService.send(Message.obtain(null, HamsterService.SIGNAL_TAGS_CHANGED));
                             }
                         });
-                        dBusConnection.addSigHandler(Hamster.ToggleCalled.class, new DBusSigHandler<Hamster.ToggleCalled>() {
+                        mDbusConnection.addSigHandler(Hamster.ToggleCalled.class, new DBusSigHandler<Hamster.ToggleCalled>() {
                             @Override
                             public void handle(Hamster.ToggleCalled s) {
-                                hamsterService.send(Message.obtain(null, HamsterService.SIGNAL_TOGGLE_CHANGED));
+                                mHamsterService.send(Message.obtain(null, HamsterService.SIGNAL_TOGGLE_CHANGED));
                             }
                         });
 //                        dBusConnection.addSigHandler(Hamster.ActivitiesChanged.class, new LocalDBusSigHandler<Hamster.ActivitiesChanged>());
@@ -117,7 +117,7 @@ public class DbusHelper {
 //                        dBusConnection.addSigHandler(Hamster.ToggleCalled.class, new LocalDBusSigHandler<Hamster.ToggleCalled>());
                     } catch (DBusException e) {
                         e.printStackTrace();
-                        hamsterService.send(Message.obtain(null, HamsterService.MSG_DBUS_EXCEPTION, e));
+                        mHamsterService.send(Message.obtain(null, HamsterService.MSG_DBUS_EXCEPTION, e));
                     }
                 }
             }).start();
@@ -131,50 +131,50 @@ public class DbusHelper {
 
     protected void dbusNotify(final String... messages) {
         Log.d(TAG, "dbusNotify()");
-        if (dBusConnection != null) {
-            Log.d(TAG, "dBusConnection != null");
+        if (mDbusConnection != null) {
+            Log.d(TAG, "mDbusConnection != null");
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        Notifications notify = (Notifications) dBusConnection.getRemoteObject("org.freedesktop.Notifications", "/org/freedesktop/Notifications", Notifications.class);
+                        Notifications notify = (Notifications) mDbusConnection.getRemoteObject("org.freedesktop.Notifications", "/org/freedesktop/Notifications", Notifications.class);
                         Log.i(TAG, "notify = " + notify);
                         Map<String, Variant<Byte>> hints = new HashMap<String, Variant<Byte>>();
                         hints.put("urgency", new Variant<Byte>((byte) 0));
                         notify.Notify(messages[0], new UInt32(0), messages[1], messages[2], messages[3], new LinkedList<String>(), hints, 5);
                     } catch (DBusException e) {
                         e.printStackTrace();
-                        hamsterService.send(Message.obtain(null, HamsterService.MSG_DBUS_EXCEPTION, e));
+                        mHamsterService.send(Message.obtain(null, HamsterService.MSG_DBUS_EXCEPTION, e));
                     } catch (Exception e) {
                         e.printStackTrace();
-                        hamsterService.send(Message.obtain(null, HamsterService.MSG_EXCEPTION, e));
+                        mHamsterService.send(Message.obtain(null, HamsterService.MSG_EXCEPTION, e));
                     }
                 }
             }).start();
         } else {
-            Log.d(TAG, "dBusConnection == null");
+            Log.d(TAG, "mDbusConnection == null");
         }
     }
 
     protected void getTodaysFacts() {
         Log.d(TAG, "dbusNotify()");
-        if (dBusConnection != null) {
-            Log.d(TAG, "dBusConnection != null");
+        if (mDbusConnection != null) {
+            Log.d(TAG, "mDbusConnection != null");
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        Hamster hamster = (Hamster) dBusConnection.getRemoteObject("org.gnome.Hamster", "/org/gnome/Hamster", Hamster.class);
+                        Hamster hamster = (Hamster) mDbusConnection.getRemoteObject("org.gnome.Hamster", "/org/gnome/Hamster", Hamster.class);
                         List<Struct5> lista = hamster.GetTodaysFacts();
-                        hamsterService.send(Message.obtain(null, HamsterService.MSG_TODAY_FACTS, lista));
+                        mHamsterService.send(Message.obtain(null, HamsterService.MSG_TODAY_FACTS, lista));
                     } catch (DBusException e) {
                         e.printStackTrace();
-                        hamsterService.send(Message.obtain(null, HamsterService.MSG_DBUS_EXCEPTION, e));
+                        mHamsterService.send(Message.obtain(null, HamsterService.MSG_DBUS_EXCEPTION, e));
                     }
                 }
             }).start();
         } else {
-            Log.d(TAG, "dBusConnection == null");
+            Log.d(TAG, "mDbusConnection == null");
         }
     }
 }

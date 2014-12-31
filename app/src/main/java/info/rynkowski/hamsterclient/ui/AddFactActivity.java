@@ -13,8 +13,8 @@ import android.widget.Button;
 import info.rynkowski.hamsterclient.R;
 
 public class AddFactActivity extends ActionBarActivity {
-    private static final String TAG = "AddFactActivity";
-    Toolbar toolbar;
+    private static final String TAG = AddFactActivity.class.getName();
+    Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,15 +28,15 @@ public class AddFactActivity extends ActionBarActivity {
             public void onClick(View v) {
                 Intent intent = getIntent();
                 Bundle data = new Bundle();
-                data.putString("fact" , null);
+                data.putString("fact", null);
                 intent.putExtras(data);
-                AddFactActivity.this.setResult(RESULT_OK , intent);
+                AddFactActivity.this.setResult(RESULT_OK, intent);
                 AddFactActivity.this.finish();
             }
         });
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
+        setSupportActionBar(mToolbar);
 
         // enabling action bar app icon and behaving it as toggle button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

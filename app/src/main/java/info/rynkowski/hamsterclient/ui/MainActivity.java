@@ -27,49 +27,17 @@ import info.rynkowski.hamsterclient.service.HamsterService;
 public class MainActivity extends ActionBarActivity
         implements IMainActivity, NavDrawerFragment.OnItemClickListener {
     public static final int PICK_FACT_DATA = 1;
-    private static final String TAG = "MainActivity";
-    private ServiceManager service;
-    private MainActivityHelper helper;
-    private Fragment fragment;
 
+    private static final String TAG = MainActivity.class.getName();
+
+    private ServiceManager mServiceManger;
+    private MainActivityHelper mHelper;
+
+    private Fragment mFragment;
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
     private NavDrawerFragment drawerFragment;
     private ActionBarDrawerToggle mDrawerToggle;
-
-    //----------------  Message handling and sending  --------------------------------------------//
-    private class LocalHandler extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case HamsterService.MSG_EXCEPTION:
-                    helper.showExceptionDialog((Exception) msg.obj);
-                    break;
-                case HamsterService.MSG_DBUS_EXCEPTION:
-                    helper.showExceptionDialog((DBusException) msg.obj);
-                    break;
-                case HamsterService.SIGNAL_ACTIVITIES_CHANGED:
-                    Toast.makeText(getApplicationContext(), "SIGNAL_ACTIVITIES_CHANGED", Toast.LENGTH_LONG).show();
-                    break;
-                case HamsterService.SIGNAL_FACTS_CHANGED:
-                    Toast.makeText(getApplicationContext(), "SIGNAL_FACTS_CHANGED", Toast.LENGTH_LONG).show();
-                    break;
-                case HamsterService.SIGNAL_TAGS_CHANGED:
-                    Toast.makeText(getApplicationContext(), "SIGNAL_TAGS_CHANGED", Toast.LENGTH_LONG).show();
-                    break;
-                case HamsterService.SIGNAL_TOGGLE_CHANGED:
-                    Toast.makeText(getApplicationContext(), "SIGNAL_TOGGLE_CHANGED", Toast.LENGTH_LONG).show();
-                    break;
-                default:
-                    if (fragment != null && fragment instanceof IFragment) {
-                        Handler handler = ((IFragment) fragment).getHandler();
-                        if (handler != null)
-                            handler.handleMessage(msg);
-                    }
-                    super.handleMessage(msg);
-            }
-        }
-    }
 
     //----------------  Activity' lifecycle methods  ---------------------------------------------//
     @Override
@@ -77,8 +45,8 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
         setContentView(R.layout.activity_main);
-        this.service = new ServiceManager(MainActivity.this, HamsterService.class, new LocalHandler());
-        this.helper = new MainActivityHelper(MainActivity.this);
+        this.mServiceManger = new ServiceManager(MainActivity.this, HamsterService.class, new LocalHandler());
+        this.mHelper = new MainActivityHelper(MainActivity.this);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         if (mToolbar != null) {
@@ -114,7 +82,7 @@ public class MainActivity extends ActionBarActivity
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart()");
-        service.start();
+        mServiceManger.start();
     }
 
     @Override
@@ -150,7 +118,7 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onDestroy() {
         Log.d(TAG, "onDestroy()");
-        service.unbind();
+        mServiceManger.unbind();
         super.onDestroy();
     }
 
@@ -181,11 +149,11 @@ public class MainActivity extends ActionBarActivity
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
-        case R.id.action_add_fact:
-                helper.runAddFactActivity();
+            case R.id.action_add_fact:
+                mHelper.runAddFactActivity();
                 return true;
             case R.id.action_settings:
-                helper.runSettingsActivity();
+                mHelper.runSettingsActivity();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -211,12 +179,12 @@ public class MainActivity extends ActionBarActivity
     // IMainActivity methods - fragments use those methods to communicate with MainActivity
     @Override
     public void startService() {
-        service.start();
+        mServiceManger.start();
     }
 
     @Override
     public void stopService() {
-        service.stop();
+        mServiceManger.stop();
     }
 
     @Override
@@ -226,10 +194,10 @@ public class MainActivity extends ActionBarActivity
 
     private void sendMessageToService(Message msg) {
         try {
-            service.send(msg);
+            mServiceManger.send(msg);
         } catch (RemoteException e) {
             e.printStackTrace();
-            helper.showExceptionDialog((RemoteException) msg.obj);
+            mHelper.showExceptionDialog((RemoteException) msg.obj);
         }
     }
 
@@ -237,16 +205,16 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onDrawerItemClick(int position) {
         // update the main content by replacing fragments
-        fragment = null;
+        mFragment = null;
         switch (position) {
             case 0:
-                fragment = new TestFragment();
+                mFragment = new TestFragment();
                 break;
             case 1:
-                fragment = new HomeFragment();
+                mFragment = new HomeFragment();
                 break;
             case 2:
-                fragment = new HistoryFragment();
+                mFragment = new HistoryFragment();
                 break;
             case 3:
             case 4:
@@ -257,7 +225,7 @@ public class MainActivity extends ActionBarActivity
                 Log.e(TAG, "Error in creating fragmentl;");
                 break;
         }
-        openFragment(fragment);
+        openFragment(mFragment);
     }
 
     private void openFragment(Fragment fragment) throws RuntimeException {
@@ -268,6 +236,40 @@ public class MainActivity extends ActionBarActivity
                     .commit();
         } else {
             throw new RuntimeException("fragment should contain reference to object (it can not be null)");
+        }
+    }
+
+    //----------------  Message handling and sending  --------------------------------------------//
+    private class LocalHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case HamsterService.MSG_EXCEPTION:
+                    mHelper.showExceptionDialog((Exception) msg.obj);
+                    break;
+                case HamsterService.MSG_DBUS_EXCEPTION:
+                    mHelper.showExceptionDialog((DBusException) msg.obj);
+                    break;
+                case HamsterService.SIGNAL_ACTIVITIES_CHANGED:
+                    Toast.makeText(getApplicationContext(), "SIGNAL_ACTIVITIES_CHANGED", Toast.LENGTH_LONG).show();
+                    break;
+                case HamsterService.SIGNAL_FACTS_CHANGED:
+                    Toast.makeText(getApplicationContext(), "SIGNAL_FACTS_CHANGED", Toast.LENGTH_LONG).show();
+                    break;
+                case HamsterService.SIGNAL_TAGS_CHANGED:
+                    Toast.makeText(getApplicationContext(), "SIGNAL_TAGS_CHANGED", Toast.LENGTH_LONG).show();
+                    break;
+                case HamsterService.SIGNAL_TOGGLE_CHANGED:
+                    Toast.makeText(getApplicationContext(), "SIGNAL_TOGGLE_CHANGED", Toast.LENGTH_LONG).show();
+                    break;
+                default:
+                    if (mFragment != null && mFragment instanceof IFragment) {
+                        Handler handler = ((IFragment) mFragment).getHandler();
+                        if (handler != null)
+                            handler.handleMessage(msg);
+                    }
+                    super.handleMessage(msg);
+            }
         }
     }
 }

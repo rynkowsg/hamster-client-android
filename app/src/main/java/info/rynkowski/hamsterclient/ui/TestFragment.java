@@ -23,33 +23,13 @@ import info.rynkowski.hamsterclient.R;
 import info.rynkowski.hamsterclient.service.HamsterService;
 
 public class TestFragment extends Fragment implements View.OnClickListener, IFragment {
-    private static final String TAG = "TestFragment";
-    private IMainActivity listener;
-    private TestFragmentHelper helper;
-    private LocalHandler handler;
-
-    private class LocalHandler extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case HamsterService.MSG_TODAY_FACTS:
-                    Log.i(TAG, "Handled message: HamsterService.MSG_TODAY_FACTS");
-                    helper.fillListTodayFacts((List<Struct5>) msg.obj);
-                    break;
-                default:
-                    super.handleMessage(msg);
-                    break;
-            }
-        }
-    }
-
-    @Override
-    public Handler getHandler() {
-        return handler;
-    }
+    private static final String TAG = TestFragment.class.getName();
+    private IMainActivity mActivityListener;
+    private TestFragmentHelper mHelper;
+    private LocalHandler mEventHandler;
 
     public TestFragment() {
-        this.handler = new LocalHandler();
+        this.mEventHandler = new LocalHandler();
     }
 
     @Override
@@ -57,7 +37,7 @@ public class TestFragment extends Fragment implements View.OnClickListener, IFra
         Log.d(TAG, "onAttach()");
         super.onAttach(activity);
         if (activity instanceof IMainActivity) {
-            listener = (IMainActivity) activity;
+            mActivityListener = (IMainActivity) activity;
         } else {
             throw new ClassCastException(activity.toString()
                     + " must implemenet IMainActivity");
@@ -69,7 +49,7 @@ public class TestFragment extends Fragment implements View.OnClickListener, IFra
         Log.d(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        this.helper = new TestFragmentHelper(TestFragment.this);
+        this.mHelper = new TestFragmentHelper(TestFragment.this);
     }
 
     @Override
@@ -149,7 +129,7 @@ public class TestFragment extends Fragment implements View.OnClickListener, IFra
         Log.d(TAG, "onOptionsItemSelected(), item.getItemId() = " + item.getItemId());
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                listener.sendRequestToService(HamsterService.MSG_REFRESH);
+                mActivityListener.sendRequestToService(HamsterService.MSG_REFRESH);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -160,19 +140,19 @@ public class TestFragment extends Fragment implements View.OnClickListener, IFra
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnStartService:
-                listener.startService();
+                mActivityListener.startService();
                 break;
             case R.id.btnStopService:
-                listener.stopService();
+                mActivityListener.stopService();
                 break;
             case R.id.btnDbusNotify:
-                listener.sendRequestToService(HamsterService.MSG_NOTIFY);
+                mActivityListener.sendRequestToService(HamsterService.MSG_NOTIFY);
                 break;
             case R.id.btnFillTodayFactsList:
-                listener.sendRequestToService(HamsterService.MSG_TODAY_FACTS);
+                mActivityListener.sendRequestToService(HamsterService.MSG_TODAY_FACTS);
                 break;
             case R.id.btnShowPrefs:
-                helper.displaySettings();
+                mHelper.displaySettings();
                 break;
             default:
                 ;
@@ -190,6 +170,26 @@ public class TestFragment extends Fragment implements View.OnClickListener, IFra
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public Handler getHandler() {
+        return mEventHandler;
+    }
+
+    private class LocalHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case HamsterService.MSG_TODAY_FACTS:
+                    Log.i(TAG, "Handled message: HamsterService.MSG_TODAY_FACTS");
+                    mHelper.fillListTodayFacts((List<Struct5>) msg.obj);
+                    break;
+                default:
+                    super.handleMessage(msg);
+                    break;
+            }
         }
     }
 }

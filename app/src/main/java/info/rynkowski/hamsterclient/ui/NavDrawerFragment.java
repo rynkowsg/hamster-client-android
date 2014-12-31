@@ -23,7 +23,7 @@ import info.rynkowski.hamsterclient.R;
  * It provides methods to preparing navigation drawer.
  */
 public class NavDrawerFragment extends Fragment {
-    private static final String TAG = "NavigationDrawer";
+    private static final String TAG = NavDrawerFragment.class.getName();
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;

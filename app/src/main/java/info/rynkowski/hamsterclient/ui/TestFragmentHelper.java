@@ -17,32 +17,32 @@ import info.rynkowski.hamsterclient.R;
 import info.rynkowski.hamsterclient.model.AdapterStruct5;
 
 public class TestFragmentHelper {
-    private static final String TAG = "MainActivityHelper";
-    private Fragment fragment;
+    private static final String TAG = MainActivityHelper.class.getName();
+    private Fragment mFragment;
 
     TestFragmentHelper(Fragment fragment) {
-        this.fragment = fragment;
+        this.mFragment = fragment;
     }
 
     //--- Methods used by view components  -------------------------------------------------------//
     //---  - TodayFacts list
     protected void fillListTodayFacts(List<Struct5> listOfFacts) {
         Log.d(TAG, "fillListTodayFacts");
-        final ListView listview = (ListView) fragment.getActivity().findViewById(R.id.listOfTodayFacts);
+        final ListView listview = (ListView) mFragment.getActivity().findViewById(R.id.listOfTodayFacts);
         ArrayList<String> list = new ArrayList<String>();
         for (Struct5 row : listOfFacts) {
             list.add(AdapterStruct5.name(row));
         }
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(fragment.getActivity(), android.R.layout.simple_list_item_1, list);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(mFragment.getActivity(), android.R.layout.simple_list_item_1, list);
         listview.setAdapter(adapter);
     }
 
     //---  - toast the settings
     protected void displaySettings() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(fragment.getActivity());
-        String server_ip = prefs.getString("host", fragment.getActivity().getResources().getString(R.string.host));
-        String server_port = prefs.getString("port", fragment.getActivity().getResources().getString(R.string.port));
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mFragment.getActivity());
+        String server_ip = prefs.getString("host", mFragment.getActivity().getResources().getString(R.string.host));
+        String server_port = prefs.getString("port", mFragment.getActivity().getResources().getString(R.string.port));
         String message = "DBus address: " + server_ip + ":" + server_port + "\n";
-        Toast.makeText(fragment.getActivity().getApplicationContext(), message, Toast.LENGTH_LONG).show();
+        Toast.makeText(mFragment.getActivity().getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
 }

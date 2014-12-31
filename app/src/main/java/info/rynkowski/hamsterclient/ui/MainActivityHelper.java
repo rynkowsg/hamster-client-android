@@ -22,7 +22,7 @@ import info.rynkowski.hamsterclient.R;
 import info.rynkowski.hamsterclient.model.AdapterStruct5;
 
 public class MainActivityHelper {
-    private static final String TAG = "MainActivityHelper";
+    private static final String TAG = MainActivityHelper.class.getName();
     private Activity mActivity;
 
     MainActivityHelper(Activity activity) {

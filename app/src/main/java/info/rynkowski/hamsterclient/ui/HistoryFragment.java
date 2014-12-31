@@ -19,7 +19,8 @@ import info.rynkowski.hamsterclient.R;
 import info.rynkowski.hamsterclient.service.HamsterService;
 
 public class HistoryFragment extends Fragment implements IFragment {
-    private static final String TAG = "HistoryFragment";
+    private static final String TAG = HistoryFragment.class.getName();
+
     private LocalHandler mEventHandler;
     private IMainActivity mActivityListener;
 
@@ -45,6 +46,18 @@ public class HistoryFragment extends Fragment implements IFragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        mActivityListener.sendRequestToService(HamsterService.MSG_TODAY_FACTS);
+    }
+
+    private void fillListTodayFacts(List<Struct5> listOfFacts) {
+        Log.d(TAG, "fillListTodayFacts");
+        final ListView listview = (ListView) getActivity().findViewById(R.id.history_list);
+        listview.setAdapter(new HistoryListAdapter(getActivity(), listOfFacts));
+    }
+
+    @Override
     public Handler getHandler() {
         return mEventHandler;
     }
@@ -62,18 +75,6 @@ public class HistoryFragment extends Fragment implements IFragment {
                     break;
             }
         }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mActivityListener.sendRequestToService(HamsterService.MSG_TODAY_FACTS);
-    }
-
-    protected void fillListTodayFacts(List<Struct5> listOfFacts) {
-        Log.d(TAG, "fillListTodayFacts");
-        final ListView listview = (ListView) getActivity().findViewById(R.id.history_list);
-        listview.setAdapter(new HistoryListAdapter(getActivity(), listOfFacts));
     }
 
 }

@@ -25,32 +25,52 @@ public class ServiceManager {
     private Messenger mLocalMessenger;
 
 
-    private class LocalHandler extends Handler {
-        private static final String TAG = "ServiceManagerHandler";
+    public ServiceManager(Context context, Class<? extends AbstractService> serviceClass, Handler activityHandler) {
+        this.mActivity = context;
+        this.mActivityHandler = activityHandler;
+        this.mServiceClass = serviceClass;
+        this.mConnection = new LocalServiceConnection();
+        this.mIsBound = false;
+        this.mServiceMessenger = null;
+        this.mLocalMessenger = new Messenger(new LocalHandler());
 
-        @Override
-        public void handleMessage(Message msg) {
-            if (mActivityHandler != null) {
-                Log.i(TAG, "Incoming message. Passing to handler: " + msg);
-                mActivityHandler.handleMessage(msg);
-            }
+        if (isRunning()) {
+            doBindService();
         }
     }
 
-    private class LocalServiceConnection implements ServiceConnection {
-        private static final String TAG = "LocalServiceConnection";
+    public void start() {
+        doStartService();
+        doBindService();
+    }
 
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder binder) {
-            mServiceMessenger = new Messenger(binder);
-            Log.i(TAG, "Connected.");
-            registerServiceClient();
+    public void stop() {
+        doUnbindService();
+        doStopService();
+    }
+
+    /**
+     * Use with caution (only in Activity.onDestroy())!
+     */
+    public void unbind() {
+        doUnbindService();
+    }
+
+    public boolean isRunning() {
+        ActivityManager manager = (ActivityManager) mActivity.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (mServiceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
         }
+        return false;
+    }
 
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
-            mServiceMessenger = null;
-            Log.i(TAG, "Disconnected.");
+    public void send(Message msg) throws RemoteException {
+        if (mIsBound) {
+            if (mServiceMessenger != null) {
+                mServiceMessenger.send(msg);
+            }
         }
     }
 
@@ -103,53 +123,32 @@ public class ServiceManager {
         }
     }
 
-    public ServiceManager(Context context, Class<? extends AbstractService> serviceClass, Handler activityHandler) {
-        this.mActivity = context;
-        this.mActivityHandler = activityHandler;
-        this.mServiceClass = serviceClass;
-        this.mConnection = new LocalServiceConnection();
-        this.mIsBound = false;
-        this.mServiceMessenger = null;
-        this.mLocalMessenger = new Messenger(new LocalHandler());
+    private class LocalHandler extends Handler {
+        private static final String TAG = "ServiceManagerHandler";
 
-
-        if (isRunning()) {
-            doBindService();
-        }
-    }
-
-    public void start() {
-        doStartService();
-        doBindService();
-    }
-
-    public void stop() {
-        doUnbindService();
-        doStopService();
-    }
-
-    /**
-     * Use with caution (only in Activity.onDestroy())!
-     */
-    public void unbind() {
-        doUnbindService();
-    }
-
-    public boolean isRunning() {
-        ActivityManager manager = (ActivityManager) mActivity.getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (mServiceClass.getName().equals(service.service.getClassName())) {
-                return true;
+        @Override
+        public void handleMessage(Message msg) {
+            if (mActivityHandler != null) {
+                Log.i(TAG, "Incoming message. Passing to handler: " + msg);
+                mActivityHandler.handleMessage(msg);
             }
         }
-        return false;
     }
 
-    public void send(Message msg) throws RemoteException {
-        if (mIsBound) {
-            if (mServiceMessenger != null) {
-                mServiceMessenger.send(msg);
-            }
+    private class LocalServiceConnection implements ServiceConnection {
+        private static final String TAG = "LocalServiceConnection";
+
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder binder) {
+            mServiceMessenger = new Messenger(binder);
+            Log.i(TAG, "Connected.");
+            registerServiceClient();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            mServiceMessenger = null;
+            Log.i(TAG, "Disconnected.");
         }
     }
 }
