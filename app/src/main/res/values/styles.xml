@@ -2,20 +2,32 @@
 <resources>
     <!--http://developer.xamarin.com/guides/android/platform_features/android_l/material_theme/#4.using-custom-themes-->
     <!--https://developer.android.com/training/material/theme.html#StatusBar-->
+    <!--https://github.com/google/iosched/blob/master/android/src/main/res/values/styles.xml-->
 
-    <style name="AppTheme.Base" />
+    <!-- Root styles that vary by API level -->
+    <!-- Disable RTL support on older devices -->
+    <!-- Prevents crash on certain devices to namespace conflict -->
+    <style name="FrameworkRoot.Theme" parent="Theme.AppCompat.Light.NoActionBar" />
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <!-- Immediate parent theme to specify base values for custom attributes -->
+    <style name="Theme" parent="FrameworkRoot.Theme">
+        <!-- Only needed for pre-L -->
+        <!--<item name="android:editTextBackground">@drawable/edit_text</item>-->
+        <!--<item name="android:editTextStyle">@style/Widget.IOSched.EditText</item>-->
     </style>
 
-    <style name="Toolbar.Base" parent="AppTheme" />
+    <style name="Theme.Hamster.Base" parent="Theme">
+        <item name="colorPrimary">@color/theme_primary</item>
+        <item name="colorPrimaryDark">@color/theme_primary_dark</item>
+    </style>
+
+    <style name="Theme.Hamster" parent="Theme.Hamster.Base" />
+
+    <style name="Toolbar.Base" parent="Theme.Hamster" />
 
     <style name="Toolbar" parent="Toolbar.Base">
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="android:background">?attr/colorPrimary</item>
     </style>
-
 </resources>

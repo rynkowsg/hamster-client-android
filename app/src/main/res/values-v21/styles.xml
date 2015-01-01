@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- doesn't contain the pre-L code from the values/styles.xml -->
+    <style name="Theme" parent="FrameworkRoot.Theme" />
+
+    <style name="Theme.Hamster" parent="Theme.Hamster.Base">
+    </style>
+</resources>
