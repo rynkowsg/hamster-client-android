@@ -4,6 +4,7 @@
     <!--https://developer.android.com/training/material/theme.html#StatusBar-->
     <!--https://github.com/google/iosched/blob/master/android/src/main/res/values/styles.xml-->
 
+    <!-- [General application styles] -->
     <!-- Root styles that vary by API level -->
     <!-- Disable RTL support on older devices -->
     <!-- Prevents crash on certain devices to namespace conflict -->
@@ -23,11 +24,17 @@
 
     <style name="Theme.Hamster" parent="Theme.Hamster.Base" />
 
-    <style name="Toolbar.Base" parent="Theme.Hamster" />
 
-    <style name="Toolbar" parent="Toolbar.Base">
-        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+    <!-- [ActionBar] -->
+    <style name="ActionBarThemeOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="ActionBarPopupThemeOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="ActionBar.Base" parent="Theme.Hamster">
+        <item name="popupTheme">@style/ActionBarPopupThemeOverlay</item>
+        <item name="theme">@style/ActionBarThemeOverlay</item>
         <item name="android:background">?attr/colorPrimary</item>
     </style>
+
+    <style name="ActionBar" parent="ActionBar.Base" />
 </resources>
