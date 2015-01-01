@@ -6,7 +6,7 @@
 
     <include
         android:id="@+id/toolbar_actionbar"
-        layout="@layout/toolbar_default"
+        layout="@layout/toolbar_actionbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
