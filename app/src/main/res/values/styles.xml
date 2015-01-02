@@ -30,11 +30,16 @@
 
     <style name="ActionBarPopupThemeOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="ActionBar.TitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title" />
+
     <style name="ActionBar.Base" parent="Theme.Hamster">
         <item name="popupTheme">@style/ActionBarPopupThemeOverlay</item>
         <item name="theme">@style/ActionBarThemeOverlay</item>
         <item name="android:background">?attr/colorPrimary</item>
+        <item name="elevation">@dimen/toolbar_elevation</item>
+        <item name="android:textAppearance">@style/ActionBar.TitleText</item>
     </style>
 
     <style name="ActionBar" parent="ActionBar.Base" />
+
 </resources>

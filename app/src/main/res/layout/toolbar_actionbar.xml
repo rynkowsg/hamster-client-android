@@ -3,5 +3,4 @@
     android:id="@+id/toolbar_actionbar"
     style="@style/ActionBar"
     android:layout_width="match_parent"
-    android:layout_height="?actionBarSize"
-    android:minHeight="@dimen/abc_action_bar_default_height_material" />
+    android:layout_height="?attr/actionBarSize" />
