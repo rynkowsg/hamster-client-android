@@ -40,6 +40,7 @@
 
     <!-- Other -->
     <string name="title_activity_add_fact">AddFactActivity</string>
+    <string name="title_settings">Settings</string>
 
     <string name="action_add_fact">Add a fact</string>
     <string name="action_refresh">Refresh</string>

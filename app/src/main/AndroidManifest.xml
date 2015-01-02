@@ -33,7 +33,13 @@
             android:exported="false" />
         <activity
             android:name=".ui.SettingsActivity"
-            android:theme="@android:style/Theme.Black.NoTitleBar" />
+            android:label="@string/title_settings"
+            android:parentActivityName=".ui.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MainActivity" />
+        </activity>
+
     </application>
 
 </manifest>
