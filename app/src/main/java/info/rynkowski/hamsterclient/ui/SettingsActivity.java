@@ -33,6 +33,11 @@ public class SettingsActivity extends ActionBarActivity {
         @Override
         public void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            setupPreferencesScreen();
+        }
+
+        private void setupPreferencesScreen() {
+            // Add 'general' preferences.
             addPreferencesFromResource(R.xml.preferences);
             PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
         }
