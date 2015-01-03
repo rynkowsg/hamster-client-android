@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import info.rynkowski.hamsterclient.R;
 
-public class BaseActivity extends ActionBarActivity implements NavDrawerFragment.OnItemClickListener {
+public abstract class BaseActivity extends ActionBarActivity implements NavDrawerFragment.OnItemClickListener {
     private static final String TAG = MainActivity.class.getName();
 
     // symbols for navdrawer items (indices must correspond to array below). This is
