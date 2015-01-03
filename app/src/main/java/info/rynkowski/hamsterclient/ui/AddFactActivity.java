@@ -2,8 +2,7 @@ package info.rynkowski.hamsterclient.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,15 +11,13 @@ import android.widget.Button;
 
 import info.rynkowski.hamsterclient.R;
 
-public class AddFactActivity extends ActionBarActivity {
+public class AddFactActivity extends BaseActivity {
     private static final String TAG = AddFactActivity.class.getName();
-    Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_fact);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Button button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new Button.OnClickListener() {
@@ -35,12 +32,12 @@ public class AddFactActivity extends ActionBarActivity {
             }
         });
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
-        setSupportActionBar(mToolbar);
-
         // enabling action bar app icon and behaving it as toggle button
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
+        }
     }
 
     @Override

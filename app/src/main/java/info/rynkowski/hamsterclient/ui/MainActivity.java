@@ -9,9 +9,8 @@ import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -24,7 +23,7 @@ import info.rynkowski.hamsterclient.R;
 import info.rynkowski.hamsterclient.service.HamsterService;
 
 
-public class MainActivity extends ActionBarActivity
+public class MainActivity extends BaseActivity
         implements IMainActivity, NavDrawerFragment.OnItemClickListener {
     public static final int PICK_FACT_DATA = 1;
 
@@ -34,7 +33,6 @@ public class MainActivity extends ActionBarActivity
     private MainActivityHelper mHelper;
 
     private Fragment mFragment;
-    private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
     private NavDrawerFragment drawerFragment;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -48,22 +46,20 @@ public class MainActivity extends ActionBarActivity
         this.mServiceManger = new ServiceManager(MainActivity.this, HamsterService.class, new LocalHandler());
         this.mHelper = new MainActivityHelper(MainActivity.this);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
-        if (mToolbar != null) {
-            setSupportActionBar(mToolbar);
-        }
-
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, getActionBarToolbar(),
                 R.string.drawer_open, R.string.drawer_close);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         drawerFragment = (NavDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navdrawer);
-        drawerFragment.setup(mToolbar, mDrawerLayout);
+        drawerFragment.setup(getActionBarToolbar(), mDrawerLayout);
 
         // enabling action bar app icon and behaving it as toggle button
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(false);
+            actionBar.setHomeButtonEnabled(true);
+        }
 
         if (savedInstanceState == null) {
             // on first time display view for first nav item
