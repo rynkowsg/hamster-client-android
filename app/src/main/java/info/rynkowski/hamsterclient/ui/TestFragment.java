@@ -181,6 +181,7 @@ public class TestFragment extends Fragment implements View.OnClickListener, IFra
     private class LocalHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
+            Log.d(TAG, "handleMessage()");
             switch (msg.what) {
                 case HamsterService.MSG_TODAY_FACTS:
                     Log.i(TAG, "Handled message: HamsterService.MSG_TODAY_FACTS");

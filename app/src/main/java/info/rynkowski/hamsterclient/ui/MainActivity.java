@@ -1,18 +1,14 @@
 package info.rynkowski.hamsterclient.ui;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -24,18 +20,13 @@ import info.rynkowski.hamsterclient.service.HamsterService;
 
 
 public class MainActivity extends BaseActivity
-        implements IMainActivity, NavDrawerFragment.OnItemClickListener {
+        implements IMainActivity {
     public static final int PICK_FACT_DATA = 1;
 
     private static final String TAG = MainActivity.class.getName();
 
     private ServiceManager mServiceManger;
     private MainActivityHelper mHelper;
-
-    private Fragment mFragment;
-    private DrawerLayout mDrawerLayout;
-    private NavDrawerFragment drawerFragment;
-    private ActionBarDrawerToggle mDrawerToggle;
 
     //----------------  Activity' lifecycle methods  ---------------------------------------------//
     @Override
@@ -45,14 +36,6 @@ public class MainActivity extends BaseActivity
         setContentView(R.layout.activity_main);
         this.mServiceManger = new ServiceManager(MainActivity.this, HamsterService.class, new LocalHandler());
         this.mHelper = new MainActivityHelper(MainActivity.this);
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, getActionBarToolbar(),
-                R.string.drawer_open, R.string.drawer_close);
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-        drawerFragment = (NavDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navdrawer);
-        drawerFragment.setup(getActionBarToolbar(), mDrawerLayout);
 
         // enabling action bar app icon and behaving it as toggle button
         ActionBar actionBar = getSupportActionBar();
@@ -71,7 +54,6 @@ public class MainActivity extends BaseActivity
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         Log.d(TAG, "onPostCreate()");
-        mDrawerToggle.syncState();
     }
 
     @Override
@@ -128,19 +110,8 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        Log.d(TAG, "onConfigurationChanged()");
-        // Pass any configuration change to the drawer toggls
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d(TAG, "onOptionsItemSelected(), item.getItemId() = " + item.getItemId());
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
         switch (item.getItemId()) {
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
@@ -161,15 +132,6 @@ public class MainActivity extends BaseActivity
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d(TAG, "onActivityResult(), requestCode = " + requestCode + ", resultCode = " + resultCode);
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(Gravity.START | Gravity.LEFT)) {
-            mDrawerLayout.closeDrawers();
-            return;
-        }
-        super.onBackPressed();
     }
 
     // IMainActivity methods - fragments use those methods to communicate with MainActivity
@@ -197,49 +159,11 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    // NavigationDrawer.OnItemClickListener
-    @Override
-    public void onDrawerItemClick(int position) {
-        // update the main content by replacing fragments
-        Fragment fragment = null;
-        switch (position) {
-            case 0:
-                fragment = new TestFragment();
-                break;
-            case 1:
-                fragment = new HomeFragment();
-                break;
-            case 2:
-                fragment = new HistoryFragment();
-                break;
-            case 3:
-            case 4:
-            case 5:
-                String msg = "Fragment have not implemented yet.";
-                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-            default:
-                Log.e(TAG, "Error in creating fragmentl;");
-                break;
-        }
-        openFragment(fragment);
-    }
-
-    private void openFragment(Fragment fragment) throws RuntimeException {
-        if (fragment != null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.frame_container, fragment)
-                    .commit();
-        } else {
-            throw new RuntimeException("fragment should contain reference to object (it can not be null)");
-        }
-        mFragment = fragment;
-    }
-
     //----------------  Message handling and sending  --------------------------------------------//
     private class LocalHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
+            Log.d(TAG, "handleMessage()");
             switch (msg.what) {
                 case HamsterService.MSG_EXCEPTION:
                     mHelper.showExceptionDialog((Exception) msg.obj);
@@ -260,10 +184,16 @@ public class MainActivity extends BaseActivity
                     Toast.makeText(getApplicationContext(), "SIGNAL_TOGGLE_CHANGED", Toast.LENGTH_LONG).show();
                     break;
                 default:
-                    if (mFragment != null && mFragment instanceof IFragment) {
-                        Handler handler = ((IFragment) mFragment).getHandler();
-                        if (handler != null)
+                    Fragment currentFragment = getCurrentFragment();
+                    Log.i(TAG, "currentFragment = " + currentFragment);
+                    if (currentFragment != null && currentFragment instanceof IFragment) {
+                        Handler handler = ((IFragment) currentFragment).getHandler();
+                        if (handler != null) {
+                            Log.i(TAG, "handler != null");
                             handler.handleMessage(msg);
+                        } else {
+                            Log.i(TAG, "handler == null");
+                        }
                     }
                     super.handleMessage(msg);
             }
