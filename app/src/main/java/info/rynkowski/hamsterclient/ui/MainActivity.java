@@ -201,16 +201,16 @@ public class MainActivity extends BaseActivity
     @Override
     public void onDrawerItemClick(int position) {
         // update the main content by replacing fragments
-        mFragment = null;
+        Fragment fragment = null;
         switch (position) {
             case 0:
-                mFragment = new TestFragment();
+                fragment = new TestFragment();
                 break;
             case 1:
-                mFragment = new HomeFragment();
+                fragment = new HomeFragment();
                 break;
             case 2:
-                mFragment = new HistoryFragment();
+                fragment = new HistoryFragment();
                 break;
             case 3:
             case 4:
@@ -221,7 +221,7 @@ public class MainActivity extends BaseActivity
                 Log.e(TAG, "Error in creating fragmentl;");
                 break;
         }
-        openFragment(mFragment);
+        openFragment(fragment);
     }
 
     private void openFragment(Fragment fragment) throws RuntimeException {
@@ -233,6 +233,7 @@ public class MainActivity extends BaseActivity
         } else {
             throw new RuntimeException("fragment should contain reference to object (it can not be null)");
         }
+        mFragment = fragment;
     }
 
     //----------------  Message handling and sending  --------------------------------------------//
