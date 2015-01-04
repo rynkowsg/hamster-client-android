@@ -12,4 +12,12 @@
     <color name="history_list_background">#E8DDB5</color>
     <color name="history_list_background_pressed">#992416</color>
     <color name="history_list_divider">#476C9B</color>
+
+    <color name="body_text_1">#de000000</color>
+
+    <color name="navdrawer_background">#ffffffff</color>
+    <color name="navdrawer_text_color">@color/body_text_1</color>
+    <color name="navdrawer_text_color_selected">@color/theme_primary</color>
+    <color name="navdrawer_icon_tint">#888</color>
+    <color name="navdrawer_icon_tint_selected">@color/theme_primary</color>
 </resources>
