@@ -12,6 +12,5 @@
         android:background="@color/navdrawer_background"
         android:choiceMode="singleChoice"
         android:divider="#e5e5e5"
-        android:dividerHeight="1dp"
-        android:listSelector="@drawable/navdrawer_list_selector" />
+        android:dividerHeight="1dp" />
 </LinearLayout>
