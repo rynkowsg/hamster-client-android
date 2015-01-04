@@ -51,7 +51,6 @@ public class NavDrawerListAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             viewHolder.image = (ImageView) rowView.findViewById(R.id.icon);
             viewHolder.title = (TextView) rowView.findViewById(R.id.title);
-            viewHolder.counter = (TextView) rowView.findViewById(R.id.counter);
             rowView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) rowView.getTag();
@@ -60,14 +59,6 @@ public class NavDrawerListAdapter extends BaseAdapter {
         // fill data
         viewHolder.image.setImageResource(mNavDrawerItems.get(position).getIcon());
         viewHolder.title.setText(mNavDrawerItems.get(position).getTitle());
-        // displaying count
-        // check whether it set visible or not
-        if (mNavDrawerItems.get(position).getCounterVisibility()) {
-            viewHolder.counter.setText(mNavDrawerItems.get(position).getCount());
-        } else {
-            // hide the counter view
-            viewHolder.counter.setVisibility(View.GONE);
-        }
 
         return rowView;
     }
@@ -75,6 +66,5 @@ public class NavDrawerListAdapter extends BaseAdapter {
     private static class ViewHolder {
         public ImageView image;
         public TextView title;
-        public TextView counter;
     }
 }
