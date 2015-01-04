@@ -113,10 +113,6 @@ public class NavDrawerFragment extends Fragment {
     private class OnDrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            // update selected item
-            mDrawerList.setSelection(position);
-            mDrawerList.setItemChecked(position, true);
-
             // update mToolbar title
             String title = mItemsList.get(position).getTitle();
             mToolbar.setTitle(title);
@@ -129,5 +125,3 @@ public class NavDrawerFragment extends Fragment {
         }
     }
 }
-
-
