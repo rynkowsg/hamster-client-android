@@ -46,7 +46,7 @@ public class NavDrawerListAdapter extends BaseAdapter {
         if (rowView == null) {
             LayoutInflater mInflater = (LayoutInflater)
                     mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            rowView = mInflater.inflate(R.layout.navdrawer_list_item, parent, false);
+            rowView = mInflater.inflate(R.layout.navdrawer_item, parent, false);
             // configure view holder
             viewHolder = new ViewHolder();
             viewHolder.image = (ImageView) rowView.findViewById(R.id.icon);
