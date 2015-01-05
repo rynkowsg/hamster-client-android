@@ -26,5 +26,4 @@
         android:textColor="@color/navdrawer_item_text_selector"
         android:textSize="14sp"
         android:textStyle="bold" />
-
 </LinearLayout>

@@ -76,5 +76,4 @@ public class HistoryFragment extends Fragment implements IFragment {
             }
         }
     }
-
 }
