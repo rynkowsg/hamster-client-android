@@ -11,6 +11,6 @@
         android:layout_gravity="start"
         android:background="@color/navdrawer_background"
         android:choiceMode="singleChoice"
-        android:divider="#e5e5e5"
+        android:divider="@color/navdrawer_divider"
         android:dividerHeight="1dp" />
 </LinearLayout>
