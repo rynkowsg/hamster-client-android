@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Navigation Drawer Menu Items -->
+    <string-array name="navdrawer_titles">
+        <item>Test</item>
+        <item>Home</item>
+        <item>History</item>
+        <item>Statistics</item>
+        <item>Database Editor</item>
+        <item>Settings</item>
+        <item>About</item>
+    </string-array>
+
+    <!-- Navigation Drawer List Item Icons -->
+    <!-- Keep them in order as the titles above -->
+    <array name="navdrawer_icons">
+        <item>@drawable/ic_star_white_24dp</item>
+        <item>@drawable/ic_home_white_24dp</item>
+        <item>@drawable/ic_history_white_24dp</item>
+        <item>@drawable/ic_equalizer_white_24dp</item>
+        <item>@drawable/ic_edit_white_24dp</item>
+        <item>@drawable/ic_settings_white_24dp</item>
+        <item>@drawable/ic_person_white_24dp</item>
+    </array>
+
+    <!-- Navigation drawer' item highlighted at default -->
+    <integer name="navdrawer_default_pick">0</integer>
+</resources>

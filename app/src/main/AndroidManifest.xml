@@ -19,7 +19,7 @@
         </activity>
         <activity
             android:name=".ui.AddFactActivity"
-            android:label="@string/title_activity_add_fact"
+            android:label="@string/title_add_fact"
             android:parentActivityName=".ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

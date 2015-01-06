@@ -79,8 +79,8 @@ public class NavDrawerFragment extends Fragment implements ListView.OnItemClickL
     }
 
     private ArrayList<NavDrawerItem> prepareItemsList() {
-        String[] titles = getResources().getStringArray(R.array.nav_drawer_items);
-        TypedArray icons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
+        String[] titles = getResources().getStringArray(R.array.navdrawer_titles);
+        TypedArray icons = getResources().obtainTypedArray(R.array.navdrawer_icons);
 
         ArrayList<NavDrawerItem> items = new ArrayList<>();
         items.add(new NavDrawerItem(titles[0], icons.getResourceId(0, -1)));    // Test
