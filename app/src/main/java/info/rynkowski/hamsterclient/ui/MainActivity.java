@@ -46,7 +46,7 @@ public class MainActivity extends BaseActivity
 
         if (savedInstanceState == null) {
             // on first time display view for first nav item
-            openFragment(new TestFragment());
+            onDrawerItemClick(getResources().getInteger(R.integer.navdrawer_default_pick));
         }
     }
 

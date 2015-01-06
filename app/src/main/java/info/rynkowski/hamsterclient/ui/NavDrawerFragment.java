@@ -22,7 +22,7 @@ import info.rynkowski.hamsterclient.R;
  * NavigationDrawer is a fragment responsible for supporting navigation drawer.
  * It provides methods to preparing navigation drawer.
  */
-public class NavDrawerFragment extends Fragment {
+public class NavDrawerFragment extends Fragment implements ListView.OnItemClickListener {
     private static final String TAG = NavDrawerFragment.class.getName();
 
     private DrawerLayout mDrawerLayout;
@@ -72,19 +72,17 @@ public class NavDrawerFragment extends Fragment {
 
         mItemsList = prepareItemsList();
         mDrawerList.setAdapter(new NavDrawerListAdapter(activity, mItemsList));
-        mDrawerList.setOnItemClickListener(new OnDrawerItemClickListener());
+        mDrawerList.setOnItemClickListener(this);
+
+        // activate default item on the list
+        mDrawerList.setItemChecked(getResources().getInteger(R.integer.navdrawer_default_pick), true);
     }
 
     private ArrayList<NavDrawerItem> prepareItemsList() {
-        ArrayList<NavDrawerItem> items = new ArrayList<>();
-
-        // load slide menu items' titles
         String[] titles = getResources().getStringArray(R.array.nav_drawer_items);
-
-        // nav drawer icons from resources
         TypedArray icons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
 
-        // adding nav drawer items to array
+        ArrayList<NavDrawerItem> items = new ArrayList<>();
         items.add(new NavDrawerItem(titles[0], icons.getResourceId(0, -1)));    // Test
         items.add(new NavDrawerItem(titles[1], icons.getResourceId(1, -1)));    // Home
         items.add(new NavDrawerItem(titles[2], icons.getResourceId(2, -1)));    // History
@@ -92,8 +90,20 @@ public class NavDrawerFragment extends Fragment {
         items.add(new NavDrawerItem(titles[4], icons.getResourceId(4, -1)));    // Edit tables
         items.add(new NavDrawerItem(titles[5], icons.getResourceId(5, -1)));    // Settings
         items.add(new NavDrawerItem(titles[6], icons.getResourceId(6, -1)));    // About
-
         return items;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        // update mToolbar title
+        String title = mItemsList.get(position).getTitle();
+        mToolbar.setTitle(title);
+
+        // close the drawer
+        mDrawerLayout.closeDrawer(getView());
+
+        // run the callback method at containing view (e.g. replace fragment)
+        mActivityListener.onDrawerItemClick(position);
     }
 
     /**
@@ -109,20 +119,5 @@ public class NavDrawerFragment extends Fragment {
          * @param position The position of the item in the navigation drawer.
          */
         public void onDrawerItemClick(int position);
-    }
-
-    private class OnDrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            // update mToolbar title
-            String title = mItemsList.get(position).getTitle();
-            mToolbar.setTitle(title);
-
-            // close the drawer
-            mDrawerLayout.closeDrawer(getView());
-
-            // run the callback method at containing view (e.g. replace fragment)
-            mActivityListener.onDrawerItemClick(position);
-        }
     }
 }

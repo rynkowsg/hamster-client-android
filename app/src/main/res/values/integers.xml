@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Navigation drawer' item highlighted at default -->
+    <integer name="navdrawer_default_pick">0</integer>
+</resources>
