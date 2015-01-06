@@ -131,7 +131,6 @@ public abstract class BaseActivity extends ActionBarActivity implements NavDrawe
     @Override
     public void onDrawerItemClick(int position) {
         // update the main content by replacing fragments
-        Fragment fragment = null;
         switch (position) {
             case 0:
                 openFragment(new TestFragment());
@@ -143,8 +142,8 @@ public abstract class BaseActivity extends ActionBarActivity implements NavDrawe
                 openFragment(new HistoryFragment());
                 break;
             case 5:
-                Intent intent = new Intent(getCurrentFragment().getActivity(), SettingsActivity.class);
-                getCurrentFragment().getActivity().startActivity(intent);
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
                 break;
             case 3:
             case 4:
