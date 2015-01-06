@@ -1,5 +1,6 @@
 package info.rynkowski.hamsterclient.ui;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -133,24 +134,27 @@ public abstract class BaseActivity extends ActionBarActivity implements NavDrawe
         Fragment fragment = null;
         switch (position) {
             case 0:
-                fragment = new TestFragment();
+                openFragment(new TestFragment());
                 break;
             case 1:
-                fragment = new HomeFragment();
+                openFragment(new HomeFragment());
                 break;
             case 2:
-                fragment = new HistoryFragment();
+                openFragment(new HistoryFragment());
+                break;
+            case 5:
+                Intent intent = new Intent(getCurrentFragment().getActivity(), SettingsActivity.class);
+                getCurrentFragment().getActivity().startActivity(intent);
                 break;
             case 3:
             case 4:
-            case 5:
+            case 6:
                 String msg = "Fragment have not implemented yet.";
                 Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
             default:
-                Log.e(TAG, "Error in creating fragmentl;");
+                Log.e(TAG, "Error in creating fragment.");
                 break;
         }
-        openFragment(fragment);
     }
 
     protected void openFragment(Fragment fragment) throws RuntimeException {

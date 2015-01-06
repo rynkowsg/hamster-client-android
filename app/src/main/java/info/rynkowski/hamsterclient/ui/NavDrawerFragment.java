@@ -90,7 +90,8 @@ public class NavDrawerFragment extends Fragment {
         items.add(new NavDrawerItem(titles[2], icons.getResourceId(2, -1)));    // History
         items.add(new NavDrawerItem(titles[3], icons.getResourceId(3, -1)));    // Stats
         items.add(new NavDrawerItem(titles[4], icons.getResourceId(4, -1)));    // Edit tables
-        items.add(new NavDrawerItem(titles[5], icons.getResourceId(5, -1)));    // About
+        items.add(new NavDrawerItem(titles[5], icons.getResourceId(5, -1)));    // Settings
+        items.add(new NavDrawerItem(titles[6], icons.getResourceId(6, -1)));    // About
 
         return items;
     }

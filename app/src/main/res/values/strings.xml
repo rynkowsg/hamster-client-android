@@ -8,20 +8,22 @@
         <item>Test</item>
         <item>Home</item>
         <item>History</item>
-        <item>Stats</item>
-        <item>Edit tables</item>
+        <item>Statistics</item>
+        <item>Database Editor</item>
+        <item>Settings</item>
         <item>About</item>
     </string-array>
 
     <!-- Nav Drawer List Item Icons -->
     <!-- Keep them in order as the titles are in -->
     <array name="nav_drawer_icons">
-        <item>@drawable/ic_action_new</item>
-        <item>@drawable/ic_action_new</item>
-        <item>@drawable/ic_action_new</item>
-        <item>@drawable/ic_action_new</item>
-        <item>@drawable/ic_action_new</item>
-        <item>@drawable/ic_action_new</item>
+        <item>@drawable/ic_star_white_24dp</item>
+        <item>@drawable/ic_home_white_24dp</item>
+        <item>@drawable/ic_history_white_24dp</item>
+        <item>@drawable/ic_equalizer_white_24dp</item>
+        <item>@drawable/ic_edit_white_24dp</item>
+        <item>@drawable/ic_settings_white_24dp</item>
+        <item>@drawable/ic_person_white_24dp</item>
     </array>
 
     <!-- Content Description -->
