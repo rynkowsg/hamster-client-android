@@ -8,7 +8,7 @@ import org.gnome.Struct3;
 public class AdapterStruct3 {
     private Struct3 object;
 
-    AdapterStruct3(Struct3 object) {
+    public AdapterStruct3(Struct3 object) {
         this.object = object;
     }
 

@@ -10,7 +10,7 @@ import java.util.List;
 class AdapterStruct7 {
     private Struct7 object;
 
-    AdapterStruct7(Struct7 object) {
+    public AdapterStruct7(Struct7 object) {
         this.object = object;
     }
 
