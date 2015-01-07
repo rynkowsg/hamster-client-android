@@ -13,14 +13,13 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/startTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="StartTime"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
-            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -29,7 +28,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/endTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="EndTime"
@@ -40,12 +39,12 @@
         android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayout"
+        android:layout_below="@id/linearLayout"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/activityName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Activity"
@@ -61,7 +60,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/categoryName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Category"
@@ -69,10 +68,10 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/tags"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/linearLayout2"
+        android:layout_above="@id/linearLayout2"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:text="tag1, tag2, tag3"
