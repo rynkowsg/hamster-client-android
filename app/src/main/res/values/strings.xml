@@ -20,6 +20,7 @@
     <!-- Other -->
     <string name="ok">OK</string>
     <string name="exception">Exception</string>
+    <string name="now">now</string>
 
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
