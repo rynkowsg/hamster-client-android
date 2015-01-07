@@ -3,13 +3,14 @@ package info.rynkowski.hamsterclient.service;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
-import info.rynkowski.hamsterclient.ui.MainActivity;
 import info.rynkowski.hamsterclient.R;
+import info.rynkowski.hamsterclient.ui.MainActivity;
 
 public class NotificationsHelper {
 
@@ -31,7 +32,7 @@ public class NotificationsHelper {
                 .addParentStack(MainActivity.class)
                 .addNextIntent(clickNotification)
                 .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-        Notification notification = new Notification.Builder(mContext)
+        Notification notification = new NotificationCompat.Builder(mContext)
                 .setSmallIcon(R.drawable.hamster_time_tracker)
                 .setContentTitle("Hamster Time Tracker")
                 .setContentText("It works!")
