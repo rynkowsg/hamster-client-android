@@ -27,7 +27,6 @@ public class NavDrawerFragment extends Fragment implements ListView.OnItemClickL
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
-    private Toolbar mToolbar;
     private ArrayList<NavDrawerItem> mItemsList;
 
     private OnItemClickListener mActivityListener;
@@ -59,10 +58,8 @@ public class NavDrawerFragment extends Fragment implements ListView.OnItemClickL
      * @param drawerLayout The reference to object of DrawerLayout.
      */
     public void setup(Toolbar toolbar, DrawerLayout drawerLayout) {
-//        mTitle = mDrawerTitle = mToolbar.getTitle();
         Activity activity = getActivity();
 
-        mToolbar = toolbar;
         mDrawerLayout = drawerLayout;
 
         // Drawer list view is found here, not at activity. Why?
@@ -95,10 +92,6 @@ public class NavDrawerFragment extends Fragment implements ListView.OnItemClickL
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        // update mToolbar title
-        String title = mItemsList.get(position).getTitle();
-        mToolbar.setTitle(title);
-
         // close the drawer
         mDrawerLayout.closeDrawer(getView());
 

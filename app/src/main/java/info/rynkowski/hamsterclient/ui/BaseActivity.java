@@ -134,12 +134,15 @@ public abstract class BaseActivity extends ActionBarActivity implements NavDrawe
         switch (position) {
             case 0:
                 openFragment(new TestFragment());
+                changeActionBarTitle(position);
                 break;
             case 1:
                 openFragment(new HomeFragment());
+                changeActionBarTitle(position);
                 break;
             case 2:
                 openFragment(new HistoryFragment());
+                changeActionBarTitle(position);
                 break;
             case 5:
                 Intent intent = new Intent(this, SettingsActivity.class);
@@ -166,5 +169,10 @@ public abstract class BaseActivity extends ActionBarActivity implements NavDrawe
             throw new RuntimeException("fragment should contain reference to object (it can not be null)");
         }
         mFragment = fragment;
+    }
+
+    private void changeActionBarTitle(int position) {
+        String[] titles = getResources().getStringArray(R.array.navdrawer_titles);
+        mActionBarToolbar.setTitle(titles[position]);
     }
 }
