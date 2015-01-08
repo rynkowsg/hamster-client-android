@@ -9,7 +9,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -18,20 +17,14 @@ import info.rynkowski.hamsterclient.R;
 public abstract class BaseActivity extends ActionBarActivity implements NavDrawerFragment.OnItemClickListener {
     private static final String TAG = MainActivity.class.getName();
 
-    // symbols for navdrawer items (indices must correspond to array below). This is
-    // not a list of items that are necessarily *present* in the Nav Drawer; rather,
-    // it's a list of all possible items.
-    protected static final int NAVDRAWER_ITEM_INVALID = -1;
-
-    // Navigation drawer:
-    private DrawerLayout mDrawerLayout;
-
     private ActionBarDrawerToggle mDrawerToggle;
 
     // Primary toolbar
     private Toolbar mActionBarToolbar;
 
     private Fragment mFragment;
+
+    private NavDrawerFragment mDrawerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +67,8 @@ public abstract class BaseActivity extends ActionBarActivity implements NavDrawe
 
     @Override
     public void onBackPressed() {
-        if (mDrawerLayout != null && mDrawerLayout.isDrawerOpen(Gravity.START | Gravity.LEFT)) {
-            mDrawerLayout.closeDrawers();
+        if (mDrawerFragment.isNavDrawerOpen()) {
+            mDrawerFragment.closeNavDrawer();
             return;
         }
         super.onBackPressed();
@@ -99,32 +92,20 @@ public abstract class BaseActivity extends ActionBarActivity implements NavDrawe
     }
 
     /**
-     * Returns the navigation drawer item that corresponds to this Activity. Subclasses
-     * of BaseActivity override this to indicate what nav drawer item corresponds to them
-     * Return NAVDRAWER_ITEM_INVALID to mean that this Activity should not have a Nav Drawer.
-     */
-    protected int getSelfNavDrawerItem() {
-        return NAVDRAWER_ITEM_INVALID;
-    }
-
-    /**
-     * Sets up the navigation drawer as appropriate. Note that the nav drawer will be
-     * different depending on whether the attendee indicated that they are attending the
-     * event on-site vs. attending remotely.
+     * Sets up the navigation drawer as appropriate.
      */
     private void setupNavDrawer() {
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (mDrawerLayout == null) {
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawerLayout == null) {
             return;
         }
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, getActionBarToolbar(),
+        mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, getActionBarToolbar(),
                 R.string.drawer_open, R.string.drawer_close);
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        drawerLayout.setDrawerListener(mDrawerToggle);
 
-        NavDrawerFragment drawerFragment = (NavDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navdrawer);
-        drawerFragment.setup(getActionBarToolbar(), mDrawerLayout);
+        mDrawerFragment = (NavDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_navdrawer);
+        mDrawerFragment.setup(getActionBarToolbar(), drawerLayout);
     }
 
     // NavigationDrawer.OnItemClickListener

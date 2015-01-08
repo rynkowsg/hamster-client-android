@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,13 +91,30 @@ public class NavDrawerFragment extends Fragment implements ListView.OnItemClickL
         return items;
     }
 
+    /**
+     * Callback method invoked when an item in this AdapterView has been clicked.
+     */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        // close the drawer
-        mDrawerLayout.closeDrawer(getView());
-
+        closeNavDrawer();
         // run the callback method at containing view (e.g. replace fragment)
         mActivityListener.onDrawerItemClick(position);
+    }
+
+    /**
+     * Enables to check whether navigation drawer is opened.
+     */
+    protected boolean isNavDrawerOpen() {
+        return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(Gravity.START);
+    }
+
+    /**
+     * Closes the navigation drawer.
+     */
+    protected void closeNavDrawer() {
+        if (mDrawerLayout != null) {
+            mDrawerLayout.closeDrawer(Gravity.START);
+        }
     }
 
     /**
