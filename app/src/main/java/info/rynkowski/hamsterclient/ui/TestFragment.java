@@ -13,7 +13,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import org.gnome.Struct5;
 
@@ -163,14 +162,6 @@ public class TestFragment extends Fragment implements View.OnClickListener, IFra
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d(TAG, "onActivityResult(), requestCode = " + requestCode + ", resultCode = " + resultCode);
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case (MainActivity.PICK_FACT_DATA):
-                if (resultCode == Activity.RESULT_OK)
-                    Toast.makeText(getActivity(), "New fact data received", Toast.LENGTH_LONG).show();
-                break;
-            default:
-                break;
-        }
     }
 
     @Override

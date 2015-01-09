@@ -131,7 +131,15 @@ public class MainActivity extends BaseActivity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d(TAG, "onActivityResult(), requestCode = " + requestCode + ", resultCode = " + resultCode);
-        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case (MainActivity.PICK_FACT_DATA):
+                if (resultCode == RESULT_OK) {
+                    Toast.makeText(this, "New fact data received", Toast.LENGTH_LONG).show();
+                }
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     // IMainActivity methods - fragments use those methods to communicate with MainActivity
