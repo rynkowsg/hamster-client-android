@@ -7,7 +7,7 @@ import java.util.List;
 // used in:
 //     public List<Struct5> GetTodaysFacts();
 
-class AdapterStruct7 {
+public class AdapterStruct7 {
     private Struct7 object;
 
     public AdapterStruct7(Struct7 object) {
