@@ -16,6 +16,7 @@ import android.widget.Toast;
 import org.freedesktop.dbus.exceptions.DBusException;
 
 import info.rynkowski.hamsterclient.R;
+import info.rynkowski.hamsterclient.model.Fact;
 import info.rynkowski.hamsterclient.service.HamsterService;
 
 
@@ -135,6 +136,8 @@ public class MainActivity extends BaseActivity
             case (MainActivity.PICK_FACT_DATA):
                 if (resultCode == RESULT_OK) {
                     Toast.makeText(this, "New fact data received", Toast.LENGTH_LONG).show();
+                    Fact fact = (Fact) data.getSerializableExtra("fact");
+                    sendMessageToService(Message.obtain(null, HamsterService.MSG_ADD_FACT, fact));
                 }
                 break;
             default:

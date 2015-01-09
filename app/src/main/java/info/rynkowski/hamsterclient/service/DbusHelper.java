@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import info.rynkowski.hamsterclient.R;
+import info.rynkowski.hamsterclient.model.Fact;
 
 public class DbusHelper {
     private static final String TAG = DbusHelper.class.getName();
@@ -159,7 +160,6 @@ public class DbusHelper {
     protected void getTodaysFacts() {
         Log.d(TAG, "dbusNotify()");
         if (mDbusConnection != null) {
-            Log.d(TAG, "mDbusConnection != null");
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -167,6 +167,25 @@ public class DbusHelper {
                         Hamster hamster = (Hamster) mDbusConnection.getRemoteObject("org.gnome.Hamster", "/org/gnome/Hamster", Hamster.class);
                         List<Struct5> lista = hamster.GetTodaysFacts();
                         mHamsterService.send(Message.obtain(null, HamsterService.MSG_TODAY_FACTS, lista));
+                    } catch (DBusException e) {
+                        e.printStackTrace();
+                        mHamsterService.send(Message.obtain(null, HamsterService.MSG_DBUS_EXCEPTION, e));
+                    }
+                }
+            }).start();
+        } else {
+            Log.d(TAG, "mDbusConnection == null");
+        }
+    }
+
+    protected void addFact(final Fact fact) {
+        if (mDbusConnection != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Hamster hamster = (Hamster) mDbusConnection.getRemoteObject("org.gnome.Hamster", "/org/gnome/Hamster", Hamster.class);
+                        hamster.AddFact(fact.serialized_name(), fact.getStartTime(), fact.getEndTime(), false);
                     } catch (DBusException e) {
                         e.printStackTrace();
                         mHamsterService.send(Message.obtain(null, HamsterService.MSG_DBUS_EXCEPTION, e));
