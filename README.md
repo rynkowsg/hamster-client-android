@@ -14,8 +14,8 @@
 3. **libmatthew-java** *(required by dbus-java)*
 
 		wget http://www.java2s.com/Code/JarDownload/libmatthew/libmatthew-0.8-x86_64-sources.jar.zip
-		unzip libmatthew-0.8-x86_64-sources.jar.zip & rm libmatthew-0.8-x86_64-sources.jar.zip
-		unzip libmatthew-0.8-x86_64-sources.jar -d libmatthew-0.8-x86_64-sources & rm libmatthew-0.8-x86_64-sources.jar
+		unzip libmatthew-0.8-x86_64-sources.jar.zip && rm libmatthew-0.8-x86_64-sources.jar.zip
+		unzip libmatthew-0.8-x86_64-sources.jar -d libmatthew-0.8-x86_64-sources && rm libmatthew-0.8-x86_64-sources.jar
 
 ### Project Setup ###
 
@@ -23,9 +23,9 @@
 1. Download sources.
 2. Make links:
 		
-		ln -s dbus-java\src\main\java\org\freedesktop\dbus      hamster-client-android\app\src\main\java\org\freedesktop\dbus      
-		ln -s dbus-java\src\main\java\org\freedesktop\DBus.java hamster-client-android\app\src\main\java\org\freedesktop\DBus.java
-		ln -s libmatthew-0.8-x86_64-sources\cx                  hamster-client-android\app\src\main\java\cx
+		ln -s `pwd`/dbus-java/src/main/java/org/freedesktop/dbus      hamster-client-android/app/src/main/java/org/freedesktop/dbus
+		ln -s `pwd`/dbus-java/src/main/java/org/freedesktop/DBus.java hamster-client-android/app/src/main/java/org/freedesktop/DBus.java
+		ln -s `pwd`/libmatthew-0.8-x86_64-sources/cx                  hamster-client-android/app/src/main/java/cx
 
 
 3. Import project in the Android Studio.
