@@ -21,13 +21,17 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import info.rynkowski.hamsterclient.R;
 import info.rynkowski.hamsterclient.model.Fact;
 
 public class AddFactActivity extends BaseActivity {
     private static final String TAG = AddFactActivity.class.getName();
 
-    private EditText mInputStartTime;
+    @InjectView(R.id.editStartTime)
+    EditText mInputStartTime;
+    //EditText mInputStartTime;
     private EditText mInputEndTime;
     private EditText mInputActivity;
     private EditText mInputCategory;
@@ -38,8 +42,9 @@ public class AddFactActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_fact);
+        ButterKnife.inject(this);
 
-        mInputStartTime = (EditText) findViewById(R.id.editStartTime);
+//        mInputStartTime = (EditText) findViewById(R.id.editStartTime);
         mInputEndTime = (EditText) findViewById(R.id.editEndTime);
         mInputActivity = (EditText) findViewById(R.id.editActivity);
         mInputCategory = (EditText) findViewById(R.id.editCategory);
