@@ -29,13 +29,22 @@ public class Fact implements Serializable {
         this.endTime = struct.end_time();
     }
 
-    public Fact(String activity, String category, String description, List<String> tags, int start_time, int end_time) {
+    public Fact(String activity, String category, String description, List<String> tags, int startTime, int endTime) {
         this.activity = activity;
         this.category = category;
         this.description = description;
         this.tags = tags;
-        this.startTime = start_time;
-        this.endTime = end_time;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
+    private Fact(Builder b) {
+        this.activity = b.activity;
+        this.category = b.category;
+        this.description = b.description;
+        this.tags = b.tags;
+        this.startTime = b.startTime;
+        this.endTime = b.endTime;
     }
 
     public int getStartTime() {
@@ -84,5 +93,61 @@ public class Fact implements Serializable {
             res += "#" + StringUtils.join(tags, '#');
         }
         return res;
+    }
+
+    public static class Builder {
+        private String activity;
+        private String category;
+        private String description;
+        private List<String> tags;
+        private int startTime;
+        private int endTime;
+
+        public Builder() {
+        }
+
+        public Builder(String activity, String category, String description, List<String> tags,
+                       int startTime, int endTime) {
+            this.activity = activity;
+            this.category = category;
+            this.description = description;
+            this.tags = tags;
+            this.startTime = startTime;
+            this.endTime = endTime;
+        }
+
+        public Builder activity(String activity) {
+            this.activity = activity;
+            return this;
+        }
+
+        public Builder category(String category) {
+            this.category = category;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder tags(List<String> tags) {
+            this.tags = tags;
+            return this;
+        }
+
+        public Builder startTime(int startTime) {
+            this.startTime = startTime;
+            return this;
+        }
+
+        public Builder endTime(int endTime) {
+            this.endTime = endTime;
+            return this;
+        }
+
+        public Fact build() {
+            return new Fact(this);
+        }
     }
 }

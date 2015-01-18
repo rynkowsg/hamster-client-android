@@ -111,14 +111,14 @@ public class AddFactActivity extends BaseActivity {
     }
 
     private Fact readFactFields() {
-        Fact fact = new Fact();
-        fact.setStartTime(getTimestamp(mStartTime.getText().toString()));
-        fact.setEndTime(getTimestamp(mEndTime.getText().toString()));
-        fact.setActivity(mActivity.getText().toString());
-        fact.setActivity(mActivity.getText().toString());
-        fact.setCategory(mCategory.getText().toString());
-        fact.setTags(getTags(mTags.getText().toString()));
-        fact.setDescription(mDescription.getText().toString());
+        Fact fact = new Fact.Builder()
+                .activity(mActivity.getText().toString())
+                .category(mCategory.getText().toString())
+                .description(mDescription.getText().toString())
+                .tags(getTags(mTags.getText().toString()))
+                .startTime(getTimestamp(mStartTime.getText().toString()))
+                .endTime(getTimestamp(mEndTime.getText().toString()))
+                .build();
         Log.i(TAG, "fact = " + fact);
         Log.i(TAG, "fact.serialized_name() = " + fact.serialized_name());
         return fact;
