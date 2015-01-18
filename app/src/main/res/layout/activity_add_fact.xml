@@ -19,7 +19,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/editStartTime"
+                android:id="@+id/start_time"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -29,7 +29,7 @@
                 android:inputType="time" />
 
             <EditText
-                android:id="@+id/editEndTime"
+                android:id="@+id/end_time"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -44,7 +44,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/editActivity"
+                android:id="@+id/activity"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -61,7 +61,7 @@
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <EditText
-                android:id="@+id/editCategory"
+                android:id="@+id/category"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -71,21 +71,21 @@
 
 
         <EditText
-            android:id="@+id/editTags"
+            android:id="@+id/tags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:hint="Tags" />
 
         <EditText
-            android:id="@+id/editDescription"
+            android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:hint="Description" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/ok" />
