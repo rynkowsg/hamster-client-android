@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import org.apache.commons.lang3.StringUtils;
 import org.gnome.Struct5;
 
 import java.util.Calendar;
@@ -53,11 +52,8 @@ public class HistoryListAdapter extends BaseAdapter {
             rowView = mInflater.inflate(R.layout.history_list_item, parent, false);
             // configure view holder
             viewHolder = new ViewHolder();
-            viewHolder.startTime = (TextView) rowView.findViewById(R.id.startTime);
-            viewHolder.endTime = (TextView) rowView.findViewById(R.id.endTime);
-            viewHolder.tags = (TextView) rowView.findViewById(R.id.tags);
-            viewHolder.activityName = (TextView) rowView.findViewById(R.id.activityName);
-            viewHolder.categoryName = (TextView) rowView.findViewById(R.id.categoryName);
+            viewHolder.timePeriod = (TextView) rowView.findViewById(R.id.time_period);
+            viewHolder.activity = (TextView) rowView.findViewById(R.id.activity);
             rowView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) rowView.getTag();
@@ -65,14 +61,8 @@ public class HistoryListAdapter extends BaseAdapter {
 
         // fill data
         AdapterStruct5 data = new AdapterStruct5(mFacts.get(position));
-
-        viewHolder.startTime.setText(getTime(data.start_time()));
-        viewHolder.endTime.setText(getTime(data.end_time()));
-
-        viewHolder.tags.setText(StringUtils.join(data.tags(), ", "));
-
-        viewHolder.activityName.setText(data.name());
-        viewHolder.categoryName.setText(data.category());
+        viewHolder.timePeriod.setText(getTime(data.start_time()) + " - " + getTime(data.end_time()));
+        viewHolder.activity.setText(data.name());
 
         return rowView;
     }
@@ -87,10 +77,7 @@ public class HistoryListAdapter extends BaseAdapter {
     }
 
     private static class ViewHolder {
-        TextView startTime;
-        TextView endTime;
-        TextView tags;
-        TextView activityName;
-        TextView categoryName;
+        TextView timePeriod;
+        TextView activity;
     }
 }

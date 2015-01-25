@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<screen>
+    <_content layout="@layout/history_list_item">
+        <activity text="World domination" />
+        <time text="10:00 - 12:00" />
+    </_content>
+</screen>

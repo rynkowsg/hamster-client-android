@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<screen>
+    <_content layout="@layout/fragment_history">
+        <history_list>
+            <items layout="@layout/history_list_item">
+                <_item>
+                    <activity text="Breakfast" />
+                    <time_period text="7:00 - 7:30" />
+                </_item>
+                <_item>
+                    <activity text="Cooking" />
+                    <time_period text="8:00 - 9:30" />
+                </_item>
+                <_item>
+                    <activity text="World domination" />
+                    <time_period text="10:00 - 12:00" />
+                </_item>
+                <_item>
+                    <activity text="Dinner" />
+                    <time_period text="13:00 - 13:30" />
+                </_item>
+                <_item>
+                    <activity text="Hamster Time Tracker publishing" />
+                    <time_period text="16:00 - 18:00" />
+                </_item>
+                <_item>
+                    <activity text="Homework" />
+                    <time_period text="18:00 - 19:00" />
+                </_item>
+                <_item>
+                    <activity text="Reading" />
+                    <time_period text="21:00 - 22:00" />
+                </_item>
+            </items>
+        </history_list>
+    </_content>
+</screen>

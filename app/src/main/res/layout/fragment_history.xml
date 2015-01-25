@@ -12,6 +12,6 @@
         android:background="@color/history_list_background"
         android:choiceMode="singleChoice"
         android:divider="@color/history_list_divider"
-        android:dividerHeight="1dp"
+        android:dividerHeight="0dp"
         android:listSelector="@drawable/history_list_selector" />
 </LinearLayout>
