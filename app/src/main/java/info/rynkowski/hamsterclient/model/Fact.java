@@ -1,9 +1,17 @@
 package info.rynkowski.hamsterclient.model;
 
+import android.content.Context;
+import android.content.Intent;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.List;
+
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
  * It is partial java implementation of python class Fact from project Hamster.
@@ -95,6 +103,8 @@ public class Fact implements Serializable {
         return res;
     }
 
+    @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
+    @Setter @Accessors(fluent = true, chain = true)
     public static class Builder {
         private String activity;
         private String category;
@@ -102,49 +112,6 @@ public class Fact implements Serializable {
         private List<String> tags;
         private int startTime;
         private int endTime;
-
-        public Builder() {
-        }
-
-        public Builder(String activity, String category, String description, List<String> tags,
-                       int startTime, int endTime) {
-            this.activity = activity;
-            this.category = category;
-            this.description = description;
-            this.tags = tags;
-            this.startTime = startTime;
-            this.endTime = endTime;
-        }
-
-        public Builder activity(String activity) {
-            this.activity = activity;
-            return this;
-        }
-
-        public Builder category(String category) {
-            this.category = category;
-            return this;
-        }
-
-        public Builder description(String description) {
-            this.description = description;
-            return this;
-        }
-
-        public Builder tags(List<String> tags) {
-            this.tags = tags;
-            return this;
-        }
-
-        public Builder startTime(int startTime) {
-            this.startTime = startTime;
-            return this;
-        }
-
-        public Builder endTime(int endTime) {
-            this.endTime = endTime;
-            return this;
-        }
 
         public Fact build() {
             return new Fact(this);
