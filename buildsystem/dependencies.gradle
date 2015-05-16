@@ -14,9 +14,10 @@ ext {
   //Libraries
   supportV4Version = '22.1.1'
   appcompatV7Version = '22.1.1'
-  commonsLang3Version = '3.3.2'
+  commonsLang3Version = '3.4'
   butterKnifeVersion = '6.1.0'
-  lombokVersion = '1.16.0'
+  lombokVersion = '1.16.4'
+  javaxAnnotationVersion = '10.0-b28'
 
   //Testing
 
@@ -25,6 +26,7 @@ ext {
       appcompatV7:        "com.android.support:appcompat-v7:${appcompatV7Version}",
       commonsLang3:       "org.apache.commons:commons-lang3:${commonsLang3Version}",
       butterKnife:        "com.jakewharton:butterknife:${butterKnifeVersion}",
-      lombok:             "org.projectlombok:lombok:${lombokVersion}"
+      lombok:             "org.projectlombok:lombok:${lombokVersion}",
+      javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}"
   ]
 }

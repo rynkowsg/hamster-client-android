@@ -43,6 +43,7 @@ dependencies {
   compile appDependencies.commonsLang3
   compile appDependencies.butterKnife
   provided appDependencies.lombok
+  provided appDependencies.javaxAnnotation
 
   compile fileTree(include: ['*.jar'], dir: 'libs')
 }
