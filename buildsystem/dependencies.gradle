@@ -1,0 +1,30 @@
+allprojects {
+  repositories {
+    jcenter()
+  }
+}
+
+ext {
+  //Android
+  androidBuildToolsVersion = "22.0.1"
+  androidCompileSdkVersion = 22
+  androidMinSdkVersion = 15
+  androidTargetSdkVersion = 22
+
+  //Libraries
+  supportV4Version = '22.1.1'
+  appcompatV7Version = '22.1.1'
+  commonsLang3Version = '3.3.2'
+  butterKnifeVersion = '6.1.0'
+  lombokVersion = '1.16.0'
+
+  //Testing
+
+  appDependencies = [
+      supportV4:          "com.android.support:support-v4:${supportV4Version}",
+      appcompatV7:        "com.android.support:appcompat-v7:${appcompatV7Version}",
+      commonsLang3:       "org.apache.commons:commons-lang3:${commonsLang3Version}",
+      butterKnife:        "com.jakewharton:butterknife:${butterKnifeVersion}",
+      lombok:             "org.projectlombok:lombok:${lombokVersion}"
+  ]
+}
