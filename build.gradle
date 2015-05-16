@@ -16,4 +16,11 @@ allprojects {
   repositories {
     jcenter()
   }
+
+  // Add "-Xlint:unchecked", "-Xlint:deprecation" - http://stackoverflow.com/a/22183825
+//  gradle.projectsEvaluated {
+//    tasks.withType(JavaCompile) {
+//      options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+//    }
+//  }
 }
