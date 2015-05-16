@@ -1,6 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
-apply plugin: 'maven'
 
 android {
   compileSdkVersion 21
@@ -20,16 +18,12 @@ android {
     }
   }
   compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
+    sourceCompatibility JavaVersion.VERSION_1_7
+    targetCompatibility JavaVersion.VERSION_1_7
   }
   lintOptions {
     disable 'InvalidPackage'
   }
-}
-
-repositories {
-
 }
 
 dependencies {
