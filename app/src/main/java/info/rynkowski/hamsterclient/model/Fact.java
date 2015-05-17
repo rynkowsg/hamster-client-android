@@ -1,8 +1,6 @@
 package info.rynkowski.hamsterclient.model;
 
-import android.content.Context;
-import android.content.Intent;
-
+import info.rynkowski.hamsterclient.data.dbus.adapters.AdapterStruct5;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;

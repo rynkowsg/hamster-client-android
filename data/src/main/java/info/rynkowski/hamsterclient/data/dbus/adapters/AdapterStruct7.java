@@ -1,16 +1,16 @@
-package info.rynkowski.hamsterclient.model;
+package info.rynkowski.hamsterclient.data.dbus.adapters;
 
-import org.gnome.Struct4;
+import org.gnome.Struct7;
 
 import java.util.List;
 
 // used in:
-//     public Struct4 GetFact(int fact_id);
+//     public List<Struct5> GetTodaysFacts();
 
-public class AdapterStruct4 {
-    private Struct4 object;
+public class AdapterStruct7 {
+    private Struct7 object;
 
-    public AdapterStruct4(Struct4 object) {
+    public AdapterStruct7(Struct7 object) {
         this.object = object;
     }
 
@@ -58,47 +58,47 @@ public class AdapterStruct4 {
         return exported(object);
     }
 
-    public static int id(Struct4 object) {
+    public static int id(Struct7 object) {
         return object.a;
     }
 
-    public static int start_time(Struct4 object) {
+    public static int start_time(Struct7 object) {
         return object.b;
     }
 
-    public static int end_time(Struct4 object) {
+    public static int end_time(Struct7 object) {
         return object.c;
     }
 
-    public static String description(Struct4 object) {
+    public static String description(Struct7 object) {
         return object.d;
     }
 
-    public static String name(Struct4 object) {
+    public static String name(Struct7 object) {
         return object.e;
     }
 
-    public static int activity_id(Struct4 object) {
+    public static int activity_id(Struct7 object) {
         return object.f;
     }
 
-    public static String category(Struct4 object) {
+    public static String category(Struct7 object) {
         return object.g;
     }
 
-    public static List<String> tags(Struct4 object) {
+    public static List<String> tags(Struct7 object) {
         return object.h;
     }
 
-    public static int date(Struct4 object) {
+    public static int date(Struct7 object) {
         return object.i;
     }
 
-    public static int delta(Struct4 object) {
+    public static int delta(Struct7 object) {
         return object.j;
     }
 
-    public static boolean exported(Struct4 object) {
+    public static boolean exported(Struct7 object) {
         return object.k;
     }
 }

@@ -1,4 +1,4 @@
-package info.rynkowski.hamsterclient.model;
+package info.rynkowski.hamsterclient.data.dbus.adapters;
 
 import org.gnome.Struct3;
 

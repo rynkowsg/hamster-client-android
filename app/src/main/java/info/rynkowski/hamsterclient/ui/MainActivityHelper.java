@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import info.rynkowski.hamsterclient.R;
-import info.rynkowski.hamsterclient.model.AdapterStruct5;
+import info.rynkowski.hamsterclient.data.dbus.adapters.AdapterStruct5;
 
 public class MainActivityHelper {
     private static final String TAG = MainActivityHelper.class.getName();
