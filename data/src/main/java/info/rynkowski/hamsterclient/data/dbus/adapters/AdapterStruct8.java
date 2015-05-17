@@ -6,17 +6,25 @@ import org.gnome.Struct8;
 //   public List<Struct8> GetActivities(String search)
 
 public class AdapterStruct8 {
+  private Struct8 object;
+
   public AdapterStruct8(Struct8 object) {
     this.object = object;
   }
 
   public String name() {
-    return object.a;
+    return name(object);
   }
 
   public String category() {
-    return object.b;
+    return category(object);
   }
 
-  public Struct8 object;
+  public static String name(Struct8 object) {
+    return object.a;
+  }
+
+  public static String category(Struct8 object) {
+    return object.b;
+  }
 }
