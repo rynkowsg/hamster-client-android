@@ -25,6 +25,7 @@ dependencies {
   compile project(':domain')
 
   def dataDependencies = rootProject.ext.dataDependencies
+  compile dataDependencies.commonsLang3
 
   compile fileTree(dir: 'libs', include: ['*.jar'])
 }

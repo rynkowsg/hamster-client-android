@@ -30,7 +30,9 @@ ext {
       javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}"
   ]
 
-  dataDependencies = []
+  dataDependencies = [
+      commonsLang3:       "org.apache.commons:commons-lang3:${commonsLang3Version}",
+  ]
 
   domainDependencies = [
       lombok:             "org.projectlombok:lombok:${lombokVersion}"
