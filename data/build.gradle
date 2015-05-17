@@ -22,6 +22,8 @@ android {
 }
 
 dependencies {
+  compile project(':domain')
+
   def dataDependencies = rootProject.ext.dataDependencies
 
   compile fileTree(dir: 'libs', include: ['*.jar'])
