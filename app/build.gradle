@@ -36,14 +36,13 @@ android {
 }
 
 dependencies {
-  def appDependencies = rootProject.ext.appDependencies
+  compile project(':data')
 
+  def appDependencies = rootProject.ext.appDependencies
   compile appDependencies.supportV4
   compile appDependencies.appcompatV7
   compile appDependencies.commonsLang3
   compile appDependencies.butterKnife
   provided appDependencies.lombok
   provided appDependencies.javaxAnnotation
-
-  compile fileTree(include: ['*.jar'], dir: 'libs')
 }
