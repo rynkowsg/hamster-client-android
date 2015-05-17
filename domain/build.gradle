@@ -15,4 +15,5 @@ sourceSets {
 
 dependencies {
   def domainDependencies = rootProject.ext.domainDependencies
+  provided domainDependencies.lombok
 }
