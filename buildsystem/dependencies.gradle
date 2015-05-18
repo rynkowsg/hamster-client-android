@@ -32,6 +32,7 @@ ext {
 
   dataDependencies = [
       commonsLang3:       "org.apache.commons:commons-lang3:${commonsLang3Version}",
+      lombok:             "org.projectlombok:lombok:${lombokVersion}"
   ]
 
   domainDependencies = [
