@@ -4,18 +4,23 @@ import info.rynkowski.hamsterclient.data.dbus.adapters.AdapterStruct4;
 import info.rynkowski.hamsterclient.data.dbus.adapters.AdapterStruct5;
 import info.rynkowski.hamsterclient.data.dbus.adapters.AdapterStruct7;
 import java.util.List;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
 import org.gnome.Struct4;
 import org.gnome.Struct5;
 import org.gnome.Struct7;
 
 public class FactEntity {
-  private String activity;
-  private String category;
-  private String description;
-  private List<String> tags;
-  private int startTime;
-  private int endTime;
+  @Getter private String activity;
+  @Getter private String category;
+  @Getter private String description;
+  @Getter private List<String> tags;
+  @Getter private long startTime;
+  @Getter private long endTime;
 
   public FactEntity(Struct4 struct) {
     this.activity = AdapterStruct4.name(struct);
@@ -69,51 +74,26 @@ public class FactEntity {
     return res;
   }
 
-  public String getActivity() {
-    return activity;
+  private FactEntity(Builder b) {
+    this.activity = b.activity;
+    this.category = b.category;
+    this.tags = b.tags;
+    this.description = b.description;
+    this.startTime = b.startTime;
+    this.endTime = b.endTime;
   }
 
-  public void setActivity(String activity) {
-    this.activity = activity;
-  }
-
-  public String getCategory() {
-    return category;
-  }
-
-  public void setCategory(String category) {
-    this.category = category;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  public List<String> getTags() {
-    return tags;
-  }
-
-  public void setTags(List<String> tags) {
-    this.tags = tags;
-  }
-
-  public int getStartTime() {
-    return startTime;
-  }
-
-  public void setStartTime(int startTime) {
-    this.startTime = startTime;
-  }
-
-  public int getEndTime() {
-    return endTime;
-  }
-
-  public void setEndTime(int endTime) {
-    this.endTime = endTime;
+  @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
+  @Setter @Accessors(fluent = true, chain = true)
+  public static class Builder {
+    private String activity;
+    private String category;
+    private List<String> tags;
+    private String description;
+    private long startTime;
+    private long endTime;
+    public FactEntity build() {
+      return new FactEntity(this);
+    }
   }
 }

@@ -3,7 +3,6 @@ import java.util.List;
 import java.util.Map;
 import org.freedesktop.dbus.DBusInterface;
 import org.freedesktop.dbus.DBusSignal;
-import org.freedesktop.dbus.UInt32;
 import org.freedesktop.dbus.Variant;
 import org.freedesktop.dbus.exceptions.DBusException;
 public interface Hamster extends DBusInterface
@@ -53,7 +52,7 @@ public interface Hamster extends DBusInterface
   public int UpdateFact(int fact_id, String fact, int start_time, int end_time, boolean temporary, boolean exported);
   public void RemoveFact(int fact_id);
   public void UpdateActivity(int id, String name, int category_id);
-  public List<Struct7> GetFacts(UInt32 start_date, UInt32 end_date, String search_terms, UInt32 limit, boolean asc_by_date);
+  public List<Struct7> GetFacts(long start_date, long end_date, String search_terms, long limit, boolean asc_by_date);
   public int AddCategory(String name);
   public void RemoveActivity(int id);
   public void RemoveCategory(int id);
