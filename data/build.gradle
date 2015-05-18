@@ -39,6 +39,7 @@ dependencies {
   compile dataDependencies.commonsLang3
   provided dataDependencies.lombok
   apt dataDependencies.lombok
+  provided dataDependencies.javaxAnnotation
 
 
   compile fileTree(dir: 'libs', include: ['*.jar'])
