@@ -1,4 +1,4 @@
-package com.github.rynkowsg.hamsterclient.data;
+package info.rynkowski.hamsterclient.data;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
