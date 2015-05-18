@@ -40,4 +40,6 @@ ext {
       lombok:             "org.projectlombok:lombok:${lombokVersion}",
       javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}"
   ]
+
+  presentationDependencies = []
 }
