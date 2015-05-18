@@ -19,6 +19,7 @@ ext {
   lombokVersion = '1.16.4'
   javaxAnnotationVersion = '10.0-b28'
 
+
   //Testing
 
   appDependencies = [
@@ -27,19 +28,21 @@ ext {
       commonsLang3:       "org.apache.commons:commons-lang3:${commonsLang3Version}",
       butterKnife:        "com.jakewharton:butterknife:${butterKnifeVersion}",
       lombok:             "org.projectlombok:lombok:${lombokVersion}",
-      javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}"
+      javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
   ]
 
   dataDependencies = [
       commonsLang3:       "org.apache.commons:commons-lang3:${commonsLang3Version}",
       lombok:             "org.projectlombok:lombok:${lombokVersion}",
-      javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}"
+      javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
   ]
 
   domainDependencies = [
       lombok:             "org.projectlombok:lombok:${lombokVersion}",
-      javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}"
+      javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
   ]
 
-  presentationDependencies = []
+  presentationDependencies = [
+      butterKnife:        "com.jakewharton:butterknife:${butterKnifeVersion}",
+  ]
 }

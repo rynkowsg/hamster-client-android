@@ -25,6 +25,10 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
   }
+
+  lintOptions {
+    disable 'InvalidPackage'
+  }
 }
 
 dependencies {
@@ -32,4 +36,5 @@ dependencies {
   compile project(':data')
 
   def presentationDependencies = rootProject.ext.presentationDependencies
+  compile presentationDependencies.butterKnife
 }
