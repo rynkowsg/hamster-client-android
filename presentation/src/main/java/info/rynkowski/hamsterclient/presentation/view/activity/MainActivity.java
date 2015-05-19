@@ -1,7 +1,6 @@
 package info.rynkowski.hamsterclient.presentation.view.activity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -10,7 +9,7 @@ import info.rynkowski.hamsterclient.presentation.R;
 
 public class MainActivity extends BaseActivity {
 
-  @InjectView(R.id.btn_AddFact) Button btnAddFact;
+  @InjectView(R.id.btn_open_fact_form) Button btnOpenFactForm;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -18,8 +17,9 @@ public class MainActivity extends BaseActivity {
     ButterKnife.inject(this);
   }
 
-  @OnClick(R.id.btn_AddFact)
-  void navigateToAddFact() {
-    this.navigator.navigateToAddFact(this);
+  @OnClick(R.id.btn_open_fact_form)
+  void navigateToFactForm() {
+    this.navigator.navigateToFactForm(this);
+  }
   }
 }

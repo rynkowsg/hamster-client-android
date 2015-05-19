@@ -1,11 +1,14 @@
 <resources>
-  <string name="app_name">Presentation</string>
-  <string name="title_activity_main">MainActivity</string>
-  <string name="title_activity_add_fact">AddFactActivity</string>
-  <string name="add_fact">Add Fact</string>
-  <string name="description">Description</string>
-  <string name="activity">Activity</string>
-  <string name="category">Category</string>
-  <string name="tags">Tags</string>
-  <string name="ok">Ok</string>
+    <string name="app_name">Presentation</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_fact_form">Fact Form</string>
+    <string name="description">Description</string>
+    <string name="activity">Activity</string>
+    <string name="category">Category</string>
+    <string name="tags">Tags</string>
+    <string name="ok">Ok</string>
+    <string name="open_fact_form">Open fact form</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 </resources>

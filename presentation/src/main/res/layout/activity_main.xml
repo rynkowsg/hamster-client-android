@@ -14,8 +14,9 @@
     <Button
         android:layout_width="258dp"
         android:layout_height="wrap_content"
-        android:text="@string/add_fact"
-        android:id="@+id/btn_AddFact"
+        android:text="@string/open_fact_form"
+        android:id="@+id/btn_open_fact_form"
+        android:layout_gravity="center_horizontal"
         android:layout_gravity="center_horizontal"
         />
 </LinearLayout>
