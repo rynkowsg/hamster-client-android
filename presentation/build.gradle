@@ -44,7 +44,7 @@ android {
   }
 
   lintOptions {
-    // ButterKnife: https://github.com/JakeWharton/butterknife/issues/110
+    // Lombok, ButterKnife: https://github.com/JakeWharton/butterknife/issues/110
     disable 'InvalidPackage'
   }
 
@@ -59,4 +59,5 @@ dependencies {
 
   def presentationDependencies = rootProject.ext.presentationDependencies
   compile presentationDependencies.butterKnife
+  provided presentationDependencies.lombok
 }
