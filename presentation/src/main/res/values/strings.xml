@@ -3,4 +3,9 @@
   <string name="title_activity_main">MainActivity</string>
   <string name="title_activity_add_fact">AddFactActivity</string>
   <string name="add_fact">Add Fact</string>
+  <string name="description">Description</string>
+  <string name="activity">Activity</string>
+  <string name="category">Category</string>
+  <string name="tags">Tags</string>
+  <string name="ok">Ok</string>
 </resources>

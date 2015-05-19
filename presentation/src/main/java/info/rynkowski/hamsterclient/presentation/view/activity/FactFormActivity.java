@@ -4,19 +4,23 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
+import butterknife.ButterKnife;
 import info.rynkowski.hamsterclient.presentation.R;
+import info.rynkowski.hamsterclient.presentation.view.fragment.FactFormFragment;
 
-public class AddFactActivity extends Activity {
+public class FactFormActivity extends Activity implements FactFormFragment.FactFormListener {
 
   public static Intent getCallingIntent(Context context) {
-    return new Intent(context, AddFactActivity.class);
+    return new Intent(context, FactFormActivity.class);
   }
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_add_fact);
+    setContentView(R.layout.activity_fact_form);
+    ButterKnife.inject(this);
+  }
+
+  @Override public void onFactPrepared() {
   }
 }

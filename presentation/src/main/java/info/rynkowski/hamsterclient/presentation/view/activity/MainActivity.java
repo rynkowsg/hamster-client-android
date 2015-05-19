@@ -10,7 +10,7 @@ import info.rynkowski.hamsterclient.presentation.R;
 
 public class MainActivity extends BaseActivity {
 
-  @InjectView(R.id.btn_AddFact) Button btn_AddFact;
+  @InjectView(R.id.btn_AddFact) Button btnAddFact;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

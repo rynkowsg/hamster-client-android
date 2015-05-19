@@ -2,13 +2,13 @@ package info.rynkowski.hamsterclient.presentation.navigation;
 
 import android.content.Context;
 import android.content.Intent;
-import info.rynkowski.hamsterclient.presentation.view.activity.AddFactActivity;
+import info.rynkowski.hamsterclient.presentation.view.activity.FactFormActivity;
 
 public class Navigator {
 
   public void navigateToAddFact(Context context) {
     if (context != null) {
-      Intent intentToLaunch = AddFactActivity.getCallingIntent(context);
+      Intent intentToLaunch = FactFormActivity.getCallingIntent(context);
       context.startActivity(intentToLaunch);
     }
   }
