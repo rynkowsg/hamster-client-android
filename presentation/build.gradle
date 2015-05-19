@@ -47,6 +47,10 @@ android {
     // ButterKnife: https://github.com/JakeWharton/butterknife/issues/110
     disable 'InvalidPackage'
   }
+
+  dexOptions {
+    incremental true         // http://stackoverflow.com/a/30322882
+  }
 }
 
 dependencies {

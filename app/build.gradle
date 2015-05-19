@@ -44,12 +44,12 @@ android {
   }
 
   lintOptions {
-    // lombok, ButterKnife: https://github.com/JakeWharton/butterknife/issues/110
+    // Lombok, ButterKnife: https://github.com/JakeWharton/butterknife/issues/110
     disable 'InvalidPackage'
   }
 
   dexOptions {
-    incremental false
+    incremental true         // http://stackoverflow.com/a/30322882
   }
 }
 

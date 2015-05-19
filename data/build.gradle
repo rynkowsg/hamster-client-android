@@ -43,9 +43,13 @@ android {
     }
   }
 
-  // http://developer.android.com/tools/debugging/improving-w-lint.html#studio
   lintOptions {
-    disable 'InvalidPackage'  // lombok has issue with this
+    // Lombok has issue with this
+    disable 'InvalidPackage'
+  }
+
+  dexOptions {
+    incremental true         // http://stackoverflow.com/a/30322882
   }
 }
 
@@ -57,7 +61,6 @@ dependencies {
   provided dataDependencies.lombok
   apt dataDependencies.lombok
   provided dataDependencies.javaxAnnotation
-
 
   compile fileTree(dir: 'libs', include: ['*.jar'])
 }
