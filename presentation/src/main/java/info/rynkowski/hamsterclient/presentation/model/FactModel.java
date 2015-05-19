@@ -1,5 +1,6 @@
 package info.rynkowski.hamsterclient.presentation.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import lombok.AccessLevel;
@@ -7,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-public class FactModel {
+public class FactModel implements Serializable {
 
   private int factId;
   private String activity;

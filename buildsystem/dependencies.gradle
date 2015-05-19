@@ -45,5 +45,6 @@ ext {
   presentationDependencies = [
       butterKnife:        "com.jakewharton:butterknife:${butterKnifeVersion}",
       lombok:             "org.projectlombok:lombok:${lombokVersion}",
+      commonsLang3:       "org.apache.commons:commons-lang3:${commonsLang3Version}",
   ]
 }
