@@ -15,3 +15,6 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+# https://github.com/evant/gradle-retrolambda#user-content-proguard
+-dontwarn java.lang.invoke.*
