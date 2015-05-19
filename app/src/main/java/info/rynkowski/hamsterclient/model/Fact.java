@@ -1,15 +1,13 @@
 package info.rynkowski.hamsterclient.model;
 
 import info.rynkowski.hamsterclient.data.dbus.adapters.AdapterStruct5;
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.Serializable;
 import java.util.List;
-
 import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * It is partial java implementation of python class Fact from project Hamster.
@@ -101,9 +99,11 @@ public class Fact implements Serializable {
         return res;
     }
 
-    @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
-    @Setter @Accessors(fluent = true, chain = true)
+    @NoArgsConstructor(access = AccessLevel.PUBLIC)
+    @Setter
+    @Accessors(fluent = true, chain = true)
     public static class Builder {
+
         private String activity;
         private String category;
         private String description;

@@ -6,7 +6,7 @@ import info.rynkowski.hamsterclient.data.dbus.adapters.AdapterStruct7;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
@@ -83,15 +83,18 @@ public class FactEntity {
     this.endTime = b.endTime;
   }
 
-  @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
-  @Setter @Accessors(fluent = true, chain = true)
+  @NoArgsConstructor(access = AccessLevel.PUBLIC)
+  @Setter
+  @Accessors(fluent = true, chain = true)
   public static class Builder {
+
     private String activity;
     private String category;
     private List<String> tags;
     private String description;
     private long startTime;
     private long endTime;
+
     public FactEntity build() {
       return new FactEntity(this);
     }

@@ -1,22 +1,25 @@
-package info.rynkowski.hamsterclient.domain.entities;
+package info.rynkowski.hamsterclient.presentation.model;
 
 import java.util.Date;
 import java.util.List;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-public class Fact {
-  @Getter @Setter private Activity activity;
-  @Getter @Setter private Date startTime;
-  @Getter @Setter private Date endTime;
-  @Getter @Setter private List<String> tags;
-  @Getter @Setter private String description;
+public class FactModel {
 
-  private Fact(Builder b) {
+  private int factId;
+  private String activity;
+  private String category;
+  private List<String> tags;
+  private String description;
+  private Date startTime;
+  private Date endTime;
+
+  private FactModel(Builder b) {
     this.activity = b.activity;
+    this.category = b.category;
     this.description = b.description;
     this.tags = b.tags;
     this.startTime = b.startTime;
@@ -28,14 +31,15 @@ public class Fact {
   @Accessors(fluent = true, chain = true)
   public static class Builder {
 
-    private Activity activity;
+    private String activity;
+    private String category;
+    private String description;
+    private List<String> tags;
     private Date startTime;
     private Date endTime;
-    private List<String> tags;
-    private String description;
 
-    public Fact build() {
-      return new Fact(this);
+    public FactModel build() {
+      return new FactModel(this);
     }
   }
 }
