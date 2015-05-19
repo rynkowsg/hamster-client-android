@@ -22,6 +22,11 @@
             android:label="@string/title_activity_fact_form">
         </activity>
 
+        <activity
+            android:name=".view.activity.FactsListActivity"
+            android:label="@string/title_activity_facts_list">
+        </activity>
+
     </application>
 
 </manifest>

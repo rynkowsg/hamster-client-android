@@ -8,6 +8,8 @@
     <string name="tags">Tags</string>
     <string name="ok">Ok</string>
     <string name="open_fact_form">Open fact form</string>
+    <string name="open_facts_list">Open facts list</string>
+    <string name="title_activity_facts_list">Facts List</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>

@@ -10,6 +10,7 @@ import info.rynkowski.hamsterclient.presentation.R;
 public class MainActivity extends BaseActivity {
 
   @InjectView(R.id.btn_open_fact_form) Button btnOpenFactForm;
+  @InjectView(R.id.btn_open_facts_list) Button btnOpenFactsList;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -21,5 +22,9 @@ public class MainActivity extends BaseActivity {
   void navigateToFactForm() {
     this.navigator.navigateToFactForm(this);
   }
+
+  @OnClick(R.id.btn_open_facts_list)
+  void navigateToFactsList() {
+    this.navigator.navigateToFactsList(this);
   }
 }
