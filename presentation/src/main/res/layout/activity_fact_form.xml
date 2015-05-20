@@ -4,6 +4,8 @@
     android:orientation="vertical"
     >
 
+    <include layout="@layout/toolbar_actionbar"/>
+
     <fragment
         android:name="info.rynkowski.hamsterclient.presentation.view.fragment.FactFormFragment"
         android:id="@+id/fragment"

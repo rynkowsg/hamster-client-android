@@ -6,7 +6,6 @@
     <!-- Disable RTL support on older devices -->
     <!-- Prevents crash on certain devices to namespace conflict -->
     <style name="FrameworkRoot.Theme" parent="Root.Theme" />
-    <style name="FrameworkRoot.Widget" parent="Theme.AppCompat" />
 
     <!-- Immediate parent theme to specify base values for custom attributes -->
     <style name="Theme" parent="FrameworkRoot.Theme">
@@ -18,7 +17,7 @@
 
 
     <style name="Theme.HamsterClient.Base" parent="Theme">
-        <!--<item name="actionBarIconColor">@color/white</item>-->
+        <item name="actionBarIconColor">@color/white</item>
         <!--<item name="actionBarInsetStart">@dimen/keyline_2</item>-->
         <!--<item name="homeAsUpIndicator">@drawable/ic_up</item>-->
         <!--<item name="spinnerBarInsetStart">@dimen/keyline_2_minus_16dp</item>-->
@@ -36,9 +35,9 @@
 
         <!--<item name="android:textColorLink">@color/theme_accent_2</item>-->
 
-        <!--<item name="android:windowNoTitle">true</item>-->
+        <item name="windowNoTitle">true</item>
         <!--We will be using the toolbar so no need to show ActionBar-->
-        <!--<item name="windowActionBar">false</item>-->
+        <item name="windowActionBar">false</item>
 
         <!--<item name="android:windowContentOverlay">@null</item>-->
         <!--<item name="android:windowBackground">@android:color/white</item>-->
@@ -53,5 +52,14 @@
     </style>
 
     <style name="Theme.HamsterClient" parent="Theme.HamsterClient.Base" />
+
+
+    <style name="ToolbarThemeOverlay" parent="">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorControlNormal">?actionBarIconColor</item>
+        <item name="colorControlHighlight">#3fff</item>
+    </style>
+
+    <style name="ToolbarPopupThemeOverlay" parent="Root.Theme" />
 
 </resources>
