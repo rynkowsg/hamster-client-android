@@ -1,16 +1,13 @@
 <resources>
-    <string name="app_name">Presentation</string>
+    <string name="app_name">Hamster Client</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_fact_form">Fact Form</string>
     <string name="description">Description</string>
     <string name="activity">Activity</string>
     <string name="category">Category</string>
     <string name="tags">Tags</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="open_fact_form">Open fact form</string>
     <string name="open_facts_list">Open facts list</string>
     <string name="title_activity_facts_list">Facts List</string>
-
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
 </resources>

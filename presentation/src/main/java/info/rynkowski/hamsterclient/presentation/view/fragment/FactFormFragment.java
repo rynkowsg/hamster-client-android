@@ -24,7 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * Fragment that allows to provide new fact attributes.
  */
-public class FactFormFragment extends Fragment {
+public class FactFormFragment extends BaseFragment {
 
   @InjectView(R.id.et_activity) EditText activity;
   @InjectView(R.id.et_category) EditText category;

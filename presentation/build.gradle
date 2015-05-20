@@ -49,7 +49,7 @@ android {
   }
 
   dexOptions {
-    incremental true         // http://stackoverflow.com/a/30322882
+//    incremental true         // http://stackoverflow.com/a/30322882
   }
 }
 
