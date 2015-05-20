@@ -4,19 +4,20 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
 public class FactModel implements Serializable {
 
-  private int factId;
-  private String activity;
-  private String category;
-  private List<String> tags;
-  private String description;
-  private Date startTime;
-  private Date endTime;
+  @Getter private int factId;
+  @Getter private String activity;
+  @Getter private String category;
+  @Getter private List<String> tags;
+  @Getter private String description;
+  @Getter private Date startTime;
+  @Getter private Date endTime;
 
   private FactModel(Builder b) {
     this.activity = b.activity;

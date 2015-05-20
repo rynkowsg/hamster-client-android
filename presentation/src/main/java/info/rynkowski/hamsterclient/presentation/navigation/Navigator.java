@@ -15,11 +15,10 @@ public class Navigator {
     }
   }
 
-  public void navigateToFactFormForResult(Activity activityContext) {
+  public void navigateToFactFormForResult(Activity activityContext, int requestCode) {
     if (activityContext != null) {
       Intent intentToLaunch = FactFormActivity.getCallingIntent(activityContext);
-      activityContext.startActivityForResult(intentToLaunch,
-          FactFormActivity.REQUEST_CODE_PICK_FACT);
+      activityContext.startActivityForResult(intentToLaunch, requestCode);
     }
   }
 }

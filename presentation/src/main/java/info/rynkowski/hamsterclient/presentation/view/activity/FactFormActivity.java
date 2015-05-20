@@ -7,8 +7,6 @@ import info.rynkowski.hamsterclient.presentation.R;
 
 public class FactFormActivity extends BaseActivity {
 
-  public static final int REQUEST_CODE_PICK_FACT = 1;
-
   public static Intent getCallingIntent(Context context) {
     return new Intent(context, FactFormActivity.class);
   }

@@ -1,5 +1,6 @@
 package info.rynkowski.hamsterclient.presentation.view.fragment;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -93,7 +94,7 @@ public class FactFormFragment extends BaseFragment {
     // TODO: Rewrite below lines.
     Intent intent = getActivity().getIntent();
     intent.putExtra("fact", readFact());
-    getActivity().setResult(1, intent);
+    getActivity().setResult(Activity.RESULT_OK, intent);
     getActivity().finish();
   }
 
