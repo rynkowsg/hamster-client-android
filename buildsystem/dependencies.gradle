@@ -46,5 +46,6 @@ ext {
       butterKnife:        "com.jakewharton:butterknife:${butterKnifeVersion}",
       lombok:             "org.projectlombok:lombok:${lombokVersion}",
       commonsLang3:       "org.apache.commons:commons-lang3:${commonsLang3Version}",
+      appcompatV7:        "com.android.support:appcompat-v7:${appcompatV7Version}",
   ]
 }

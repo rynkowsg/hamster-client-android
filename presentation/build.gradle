@@ -61,4 +61,5 @@ dependencies {
   compile presentationDependencies.butterKnife
   provided presentationDependencies.lombok
   compile presentationDependencies.commonsLang3
+  compile presentationDependencies.appcompatV7
 }
