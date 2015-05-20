@@ -10,4 +10,13 @@
     tools:context="info.rynkowski.hamsterclient.presentation.view.activity.FactListActivity"
     >
 
+    <include layout="@layout/toolbar_actionbar"/>
+
+    <fragment
+        android:name="info.rynkowski.hamsterclient.presentation.view.fragment.FactListFragment"
+        android:id="@+id/fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
 </LinearLayout>

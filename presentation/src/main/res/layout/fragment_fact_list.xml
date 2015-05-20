@@ -1,0 +1,15 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="info.rynkowski.hamsterclient.presentation.view.fragment.FactListFragment">
+
+    <Button
+        android:layout_width="258dp"
+        android:layout_height="wrap_content"
+        android:text="@string/open_fact_form"
+        android:id="@+id/btn_open_fact_form"
+        android:layout_gravity="center_horizontal"
+        />
+
+</FrameLayout>
