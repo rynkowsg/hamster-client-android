@@ -1,8 +1,57 @@
 <resources>
 
-  <!-- Base application theme. -->
-  <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-    <!-- Customize your theme here. -->
-  </style>
+    <style name="Root.Theme" parent="Theme.AppCompat.Light.DarkActionBar" />
+
+    <!-- Root styles that vary by API level -->
+    <!-- Disable RTL support on older devices -->
+    <!-- Prevents crash on certain devices to namespace conflict -->
+    <style name="FrameworkRoot.Theme" parent="Root.Theme" />
+    <style name="FrameworkRoot.Widget" parent="Theme.AppCompat" />
+
+    <!-- Immediate parent theme to specify base values for custom attributes -->
+    <style name="Theme" parent="FrameworkRoot.Theme">
+        <!-- Only needed for pre-L -->
+        <!-- TODO: Check what is about that edit_text -->
+        <!--<item name="android:editTextBackground">@drawable/edit_text</item>
+        <item name="android:editTextStyle">@style/Widget.IOSched.EditText</item>-->
+    </style>
+
+
+    <style name="Theme.HamsterClient.Base" parent="Theme">
+        <!--<item name="actionBarIconColor">@color/white</item>-->
+        <!--<item name="actionBarInsetStart">@dimen/keyline_2</item>-->
+        <!--<item name="homeAsUpIndicator">@drawable/ic_up</item>-->
+        <!--<item name="spinnerBarInsetStart">@dimen/keyline_2_minus_16dp</item>-->
+        <!--<item name="popupItemBackground">?android:selectableItemBackground</item>-->
+        <!--<item name="photoItemForeground">?android:selectableItemBackground</item>-->
+        <!--<item name="photoItemForegroundBorderless">?android:selectableItemBackground</item>-->
+
+        <!-- Set theme colors from http://www.google.com/design/spec/style/color.html#color-color-palette-->
+        <!-- colorPrimary is used for the default action bar background -->
+        <item name="colorPrimary">@color/theme_primary</item>
+        <!-- colorPrimaryDark is used for the status bar -->
+        <item name="colorPrimaryDark">@color/theme_primary_dark</item>
+
+        <!--<item name="colorAccent">@color/theme_accent_2</item>-->
+
+        <!--<item name="android:textColorLink">@color/theme_accent_2</item>-->
+
+        <!--<item name="android:windowNoTitle">true</item>-->
+        <!--We will be using the toolbar so no need to show ActionBar-->
+        <!--<item name="windowActionBar">false</item>-->
+
+        <!--<item name="android:windowContentOverlay">@null</item>-->
+        <!--<item name="android:windowBackground">@android:color/white</item>-->
+        <!--<item name="android:homeAsUpIndicator">@drawable/ic_up</item>-->
+
+        <!--<item name="android:popupMenuStyle">@style/Widget.IOSched.PopupMenu</item>-->
+        <!--<item name="android:listPopupWindowStyle">@style/Widget.IOSched.PopupMenu</item>-->
+        <!--<item name="android:dropDownListViewStyle">@style/Widget.IOSched.ListView.DropDown</item>-->
+        <!--<item name="android:textAppearanceLargePopupMenu">@style/TextAppearance.LargePopupMenu</item>-->
+
+        <!--<item name="searchViewStyle">@style/Widget.IOSched.SearchView</item>-->
+    </style>
+
+    <style name="Theme.HamsterClient" parent="Theme.HamsterClient.Base" />
 
 </resources>
