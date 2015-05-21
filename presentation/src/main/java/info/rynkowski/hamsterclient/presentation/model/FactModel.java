@@ -1,7 +1,7 @@
 package info.rynkowski.hamsterclient.presentation.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -16,8 +16,8 @@ public class FactModel implements Serializable {
   @Getter private String category;
   @Getter private List<String> tags;
   @Getter private String description;
-  @Getter private Date startTime;
-  @Getter private Date endTime;
+  @Getter private Calendar startTime;
+  @Getter private Calendar endTime;
 
   private FactModel(Builder b) {
     this.activity = b.activity;
@@ -37,8 +37,8 @@ public class FactModel implements Serializable {
     private String category;
     private String description;
     private List<String> tags;
-    private Date startTime;
-    private Date endTime;
+    private Calendar startTime;
+    private Calendar endTime;
 
     public FactModel build() {
       return new FactModel(this);

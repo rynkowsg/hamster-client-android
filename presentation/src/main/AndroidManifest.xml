@@ -24,7 +24,7 @@
 
         <activity
             android:name=".view.activity.FactListActivity"
-            android:label="@string/title_activity_facts_list">
+            android:label="@string/title_activity_fact_list">
         </activity>
 
     </application>

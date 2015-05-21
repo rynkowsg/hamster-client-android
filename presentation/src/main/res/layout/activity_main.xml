@@ -14,7 +14,7 @@
     <Button
         android:layout_width="258dp"
         android:layout_height="wrap_content"
-        android:text="@string/open_facts_list"
+        android:text="@string/open_fact_list"
         android:id="@+id/btn_open_facts_list"
         android:layout_gravity="center_horizontal"
         />

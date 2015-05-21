@@ -1,6 +1,5 @@
 package info.rynkowski.hamsterclient.presentation.view.activity;
 
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import info.rynkowski.hamsterclient.presentation.navigation.Navigator;
 

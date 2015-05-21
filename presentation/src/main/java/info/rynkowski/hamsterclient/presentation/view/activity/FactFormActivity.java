@@ -13,9 +13,11 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import info.rynkowski.hamsterclient.presentation.R;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -23,12 +25,18 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class FactFormActivity extends BaseActivity {
 
-  @InjectView(R.id.et_activity) EditText activity;
-  @InjectView(R.id.et_category) EditText category;
-  @InjectView(R.id.et_tags) EditText tags;
-  @InjectView(R.id.et_start_time) EditText startTime;
-  @InjectView(R.id.et_end_time) EditText endTime;
-  @InjectView(R.id.et_description) EditText description;
+  public static final String EXTRAS_KEY_FACT = "EXTRAS_KEY_FACT";
+
+  @InjectView(R.id.et_activity) EditText editTextActivity;
+  @InjectView(R.id.et_category) EditText editTextCategory;
+  @InjectView(R.id.et_tags) EditText editTextTags;
+  @InjectView(R.id.et_start_time) EditText editTextStartTime;
+  @InjectView(R.id.et_end_time) EditText editTextEndTime;
+  @InjectView(R.id.et_description) EditText editTextDescription;
+  @InjectView(R.id.cb_ongoing) CheckBox checkBoxIsInProgress;
+
+  private Calendar selectedStartTime;
+  private Calendar selectedEndTime;
 
   public static Intent getCallingIntent(Context context) {
     return new Intent(context, FactFormActivity.class);
@@ -38,64 +46,97 @@ public class FactFormActivity extends BaseActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_fact_form);
     ButterKnife.inject(this);
-    // TODO: Rewrite below lines.
-    startTime.setEnabled(true);
-    startTime.setClickable(true);
-    startTime.setFocusable(false);
-    startTime.setText(04 + ":" + 02);
-    endTime.setEnabled(true);
-    endTime.setClickable(true);
-    endTime.setFocusable(false);
-    endTime.setText(04 + ":" + 02);
-  }
-
-  @OnClick(R.id.cb_ongoing) public void onCheckBoxClicked(View view) {
-    boolean isChecked = ((CheckBox) view).isChecked();
-    endTime.setEnabled(!isChecked);
+    initiateTimeFields();
   }
 
   @OnClick({ R.id.et_start_time, R.id.et_end_time }) public void onTimeClicked(final View view) {
 
-    Calendar currentTime = Calendar.getInstance();
-    int hour = currentTime.get(Calendar.HOUR_OF_DAY);
-    int minute = currentTime.get(Calendar.MINUTE);
+    int hour = selectedStartTime.get(Calendar.HOUR_OF_DAY);
+    int minutes = selectedEndTime.get(Calendar.MINUTE);
 
     TimePickerDialog timePicker = new TimePickerDialog(FactFormActivity.this,
-        (timePicker1, selectedHour, selectedMinutes) -> {
+        (timePickerView, selectedHour, selectedMinutes) -> {
           switch (view.getId()) {
             case R.id.et_start_time:
-              startTime.setText(selectedHour + ":" + selectedMinutes);
+              selectedStartTime.set(Calendar.HOUR_OF_DAY, selectedHour);
+              selectedStartTime.set(Calendar.MINUTE, selectedMinutes);
+              editTextStartTime.setText(TimeConverter.toString(selectedStartTime));
               break;
             case R.id.et_end_time:
-              endTime.setText(selectedHour + ":" + selectedMinutes);
+              selectedEndTime.set(Calendar.HOUR_OF_DAY, selectedHour);
+              selectedEndTime.set(Calendar.MINUTE, selectedMinutes);
+              editTextEndTime.setText(TimeConverter.toString(selectedEndTime));
               break;
           }
-        }, hour, minute, true);
+        }, hour, minutes, true);
 
     timePicker.setTitle("Select Time");
     timePicker.show();
   }
 
-  @OnClick(R.id.btn_ok) public void onSubmitButtonClicked(View view) {
-    // TODO: Rewrite below lines.
+  @OnClick(R.id.cb_ongoing) public void onCheckBoxClicked(View view) {
+    boolean isChecked = ((CheckBox) view).isChecked();
+    if (isChecked) {
+      editTextEndTime.setEnabled(false);
+    } else {
+      editTextEndTime.setEnabled(true);
+    }
+  }
+
+  @OnClick(R.id.btn_apply) public void onApplyClicked(View view) {
+    FactModel fact = readFact();
     Intent intent = FactFormActivity.this.getIntent();
-    intent.putExtra("fact", readFact());
+    intent.putExtra(EXTRAS_KEY_FACT, fact);
     setResult(Activity.RESULT_OK, intent);
     finish();
   }
 
   private FactModel readFact() {
-    return new FactModel.Builder().activity(activity.getText().toString())
-        .category(category.getText().toString())
-        .tags(getTags(tags.getText().toString()))
-        .description(description.getText().toString())
+    return new FactModel.Builder().activity(editTextActivity.getText().toString())
+        .category(editTextCategory.getText().toString())
+        .tags(splitTags(editTextTags.getText().toString()))
+        .description(editTextDescription.getText().toString())
+        .startTime(selectedStartTime)
+        .endTime(selectedEndTime)
         .build();
   }
 
-  private List<String> getTags(String tags) {
+  private void initiateTimeFields() {
+    selectedStartTime = Calendar.getInstance();
+    selectedEndTime = Calendar.getInstance();
+
+    editTextStartTime.setClickable(true);
+    editTextStartTime.setFocusable(false);
+    editTextStartTime.setEnabled(true);
+    editTextStartTime.setText(TimeConverter.toString(selectedStartTime));
+
+    editTextEndTime.setClickable(true);
+    editTextEndTime.setFocusable(false);
+    editTextEndTime.setEnabled(false);
+    editTextEndTime.setText(TimeConverter.toString(selectedStartTime));
+    checkBoxIsInProgress.setChecked(true);
+  }
+
+  private List<String> splitTags(String tags) {
     List<String> result = new ArrayList<>();
-    for (String i : StringUtils.split(tags, ","))
+    for (String i : StringUtils.split(tags, ",")) {
       result.add(StringUtils.trim(i));
+    }
     return result;
+  }
+
+  private static class TimeConverter {
+
+    public static String toString(Calendar calendar) {
+      String stringTime = "";
+      SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.US);
+
+      if (calendar != null) {
+        stringTime = sdf.format(calendar.getTime());
+      }
+      return stringTime;
+      // TODO: Check below approach.
+      //return DateFormat.format("HH:mm", calendar).toString();
+    }
   }
 }

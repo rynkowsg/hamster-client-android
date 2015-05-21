@@ -6,8 +6,8 @@
     <string name="activity">Activity</string>
     <string name="category">Category</string>
     <string name="tags">Tags</string>
-    <string name="ok">OK</string>
+    <string name="apply">Apply</string>
     <string name="add_fact">Add a fact</string>
-    <string name="open_facts_list">Open facts list</string>
-    <string name="title_activity_facts_list">Facts List</string>
+    <string name="open_fact_list">Open fact list</string>
+    <string name="title_activity_fact_list">Fact List</string>
 </resources>
