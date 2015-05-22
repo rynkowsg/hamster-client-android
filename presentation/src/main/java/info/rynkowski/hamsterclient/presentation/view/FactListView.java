@@ -13,5 +13,5 @@ public interface FactListView extends LoadDataView {
    *
    * @param factModelCollection The collection of {@link FactModel} that will be shown.
    */
-  void renderUserList(Collection<FactModel> factModelCollection);
+  void renderFactList(Collection<FactModel> factModelCollection);
 }

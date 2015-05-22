@@ -4,21 +4,26 @@ package info.rynkowski.hamsterclient.presentation.presenter;
  * Interface representing a Presenter in a model view presenter (MVP) pattern.
  */
 public interface Presenter {
+
   /**
-   * Method that control the lifecycle of the view. It should be called in the view's
-   * (Activity or Fragment) onResume() method.
+   * Called when the presenter is initialized, this method represents the start of the presenter
+   * lifecycle.
+   */
+  void initialize();
+
+  /**
+   * Called when the presenter is resumed. After the initialization and when the presenter comes
+   * from a pause state.
    */
   void resume();
 
   /**
-   * Method that control the lifecycle of the view. It should be called in the view's
-   * (Activity or Fragment) onPause() method.
+   * Called when the presenter is paused.
    */
   void pause();
 
   /**
-   * Method that control the lifecycle of the view. It should be called in the view's
-   * (Activity or Fragment) onDestroy() method.
+   * Called at the end of the presenter life cycle.
    */
   void destroy();
 }

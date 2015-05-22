@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+// TODO: Transform to parcelable
 public class FactModel implements Serializable {
 
   @Getter private int factId;
