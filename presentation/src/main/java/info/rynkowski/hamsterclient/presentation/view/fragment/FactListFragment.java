@@ -3,12 +3,16 @@ package info.rynkowski.hamsterclient.presentation.view.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 import butterknife.OnClick;
 import info.rynkowski.hamsterclient.presentation.R;
+import info.rynkowski.hamsterclient.presentation.adapter.FactsAdapter;
+import info.rynkowski.hamsterclient.presentation.adapter.FactsLayoutManager;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.presentation.presenter.FactListPresenter;
 import info.rynkowski.hamsterclient.presentation.view.FactListView;
@@ -17,7 +21,8 @@ import java.util.Collection;
 /**
  * Fragment that shows a list of Facts.
  */
-public class FactListFragment extends BaseFragment implements FactListView {
+public class FactListFragment extends BaseFragment
+    implements FactListView, FactsAdapter.OnItemClickListener {
 
   /**
    * Interface for listening fact list events.
@@ -28,6 +33,11 @@ public class FactListFragment extends BaseFragment implements FactListView {
   
   // TODO: Use DI!
   FactListPresenter factListPresenter = new FactListPresenter();
+
+  @InjectView(R.id.rv_facts) RecyclerView rv_facts;
+
+  private FactsLayoutManager factsLayoutManager;
+  private FactsAdapter factsAdapter;
 
   private OnAddFactClickedListener listener;
 
@@ -45,6 +55,7 @@ public class FactListFragment extends BaseFragment implements FactListView {
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_fact_list, container, false);
     ButterKnife.inject(this, view);
+    setupUI();
     return view;
   }
 
@@ -74,13 +85,32 @@ public class FactListFragment extends BaseFragment implements FactListView {
     listener = null;
   }
 
+  private void setupUI() {
+    this.factsLayoutManager = new FactsLayoutManager(getActivity());
+    this.rv_facts.setLayoutManager(factsLayoutManager);
+  }
+
   @OnClick(R.id.btn_add_fact)
   public void onAddFactClicked(View view) {
     listener.onAddFactClicked();
   }
 
+  @Override public void onFactItemClicked(FactModel factModel) {
+    if (FactListFragment.this.factListPresenter != null && factModel != null) {
+      FactListFragment.this.factListPresenter.onFactClicked(factModel);
+    }
+  }
 
   @Override public void renderFactList(Collection<FactModel> factModelCollection) {
+    if (factModelCollection != null) {
+      if (this.factsAdapter == null) {
+        this.factsAdapter = new FactsAdapter(getActivity(), factModelCollection);
+      } else {
+        this.factsAdapter.setFactsCollection(factModelCollection);
+      }
+      this.factsAdapter.setOnItemClickListener(FactListFragment.this);
+      this.rv_facts.setAdapter(factsAdapter);
+    }
   }
 
   @Override public void showLoading() {

@@ -62,4 +62,5 @@ dependencies {
   provided presentationDependencies.lombok
   compile presentationDependencies.commonsLang3
   compile presentationDependencies.appcompatV7
+  compile presentationDependencies.recyclerView
 }
