@@ -1,6 +1,6 @@
 package info.rynkowski.hamsterclient.domain.entities;
 
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -10,8 +10,8 @@ import lombok.experimental.Accessors;
 
 public class Fact {
   @Getter @Setter private Activity activity;
-  @Getter @Setter private Date startTime;
-  @Getter @Setter private Date endTime;
+  @Getter @Setter private Calendar startTime;
+  @Getter @Setter private Calendar endTime;
   @Getter @Setter private List<String> tags;
   @Getter @Setter private String description;
 
@@ -29,8 +29,8 @@ public class Fact {
   public static class Builder {
 
     private Activity activity;
-    private Date startTime;
-    private Date endTime;
+    private Calendar startTime;
+    private Calendar endTime;
     private List<String> tags;
     private String description;
 

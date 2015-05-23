@@ -4,6 +4,7 @@ import info.rynkowski.hamsterclient.data.entity.FactEntity;
 import info.rynkowski.hamsterclient.domain.entities.Activity;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.gnome.Struct5;
@@ -35,10 +36,15 @@ public class FactEntityMapper {
   }
 
   public Fact transform(FactEntity factEntity) {
+    Calendar startTime = Calendar.getInstance();
+    startTime.setTime(new Date(factEntity.getStartTime()));
+    Calendar endTime = Calendar.getInstance();
+    endTime.setTime(new Date(factEntity.getEndTime()));
+
     Activity activity = new Activity(factEntity.getActivity(), factEntity.getCategory());
     return new Fact.Builder().activity(activity)
-        .startTime(new Date(factEntity.getStartTime()))
-        .endTime(new Date(factEntity.getEndTime()))
+        .startTime(startTime)
+        .endTime(endTime)
         .description(factEntity.getDescription())
         .tags(factEntity.getTags())
         .build();
@@ -47,10 +53,8 @@ public class FactEntityMapper {
   public FactEntity transform(Fact fact) {
     return new FactEntity.Builder().activity(fact.getActivity().getName())
         .category(fact.getActivity().getCategory())
-        .startTime(fact.getStartTime().getTime())
-        .endTime(fact.getEndTime().getTime())
-        .description(fact.getDescription())
-        .tags(fact.getTags())
-        .build();
+        .startTime(fact.getStartTime().getTimeInMillis())
+        .endTime(fact.getEndTime().getTimeInMillis())
+        .description(fact.getDescription()).tags(fact.getTags()).build();
   }
 }
