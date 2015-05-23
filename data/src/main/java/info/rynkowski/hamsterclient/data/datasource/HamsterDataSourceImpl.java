@@ -1,6 +1,6 @@
 package info.rynkowski.hamsterclient.data.datasource;
 
-import info.rynkowski.hamsterclient.data.dbus.DBusConnector;
+import android.util.Log;
 import info.rynkowski.hamsterclient.data.dbus.HamsterRemoteObject;
 import info.rynkowski.hamsterclient.data.entity.FactEntity;
 import info.rynkowski.hamsterclient.data.entity.mapper.FactEntityMapper;
@@ -8,16 +8,20 @@ import info.rynkowski.hamsterclient.domain.datasource.HamsterDataSource;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import java.util.Date;
 import java.util.List;
+import org.gnome.Hamster;
+import org.gnome.Struct5;
 
 public class HamsterDataSourceImpl implements HamsterDataSource {
-  private DBusConnector connector;
-  private HamsterRemoteObject hamsterObject;
 
+  private final static String TAG = "HamsterDataSourceImpl";
+
+  // TODO: Use DI container!
+  private HamsterRemoteObject hamsterObject;
   private FactEntityMapper factEntityMapper;
 
-  HamsterDataSourceImpl(DBusConnector connector, HamsterRemoteObject object) {
-    this.connector = connector;
+  public HamsterDataSourceImpl(HamsterRemoteObject object) {
     this.hamsterObject = object;
+    this.factEntityMapper = new FactEntityMapper();
   }
 
   @Override public int AddFact(Fact fact) {
@@ -47,7 +51,11 @@ public class HamsterDataSourceImpl implements HamsterDataSource {
   }
 
   @Override public List<Fact> GetTodaysFacts() {
-    return factEntityMapper.transformFromStruct5(hamsterObject.get().GetTodaysFacts());
+    Hamster hamster = hamsterObject.get();
+    List<Struct5> dbusData = hamster.GetTodaysFacts();
+    List<Fact> facts = factEntityMapper.transformFromStruct5(dbusData);
+    Log.d(TAG, "Today's facts received: " + facts);
+    return facts;
   }
 
   @Override public void RemoveFact(int fact_id) {
