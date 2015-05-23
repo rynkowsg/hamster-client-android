@@ -30,7 +30,7 @@ public class FactListFragment extends BaseFragment
   public interface OnAddFactClickedListener {
     public void onAddFactClicked();
   }
-  
+
   // TODO: Use DI!
   FactListPresenter factListPresenter = new FactListPresenter();
 
@@ -90,8 +90,7 @@ public class FactListFragment extends BaseFragment
     this.rv_facts.setLayoutManager(factsLayoutManager);
   }
 
-  @OnClick(R.id.btn_add_fact)
-  public void onAddFactClicked(View view) {
+  @OnClick(R.id.btn_add_fact) public void onAddFactClicked(View view) {
     listener.onAddFactClicked();
   }
 
