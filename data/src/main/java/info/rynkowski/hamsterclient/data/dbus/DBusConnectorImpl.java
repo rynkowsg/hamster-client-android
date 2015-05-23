@@ -5,6 +5,7 @@ import org.freedesktop.dbus.DBusConnection;
 import org.freedesktop.dbus.exceptions.DBusException;
 
 public class DBusConnectorImpl implements DBusConnector {
+
   private static final String TAG = "DBusConnectorImpl";
 
   private DBusConnection connection;
@@ -12,42 +13,40 @@ public class DBusConnectorImpl implements DBusConnector {
   private String addressHost;
   private String addressPort;
 
-  DBusConnectorImpl(String host, String port) {
+  public DBusConnectorImpl(String host, String port) {
     this.connection = null;
     this.addressHost = host;
     this.addressPort = port;
   }
 
   @Override public void open() {
-    Log.d(TAG, "openDbusConnection()");
-    new Thread(new Runnable() {
-      @Override
-      public void run() {
-        Log.i(TAG, "Before get dbus connection");
-        long startTime = System.currentTimeMillis();
-        try {
-          connection = DBusConnection.getConnection(dbusAddress(addressHost, addressPort));
-        } catch (DBusException e) {
-          e.printStackTrace();
-          Log.i(TAG, "dbus connection isn't established, connection = " + connection);
-          connection = null;
-        }
-        long difference = System.currentTimeMillis() - startTime;
-        Log.i(TAG, "After get dbus connection: it takes " + difference / 1000 + " seconds");
-      }
-    }).start();
+    long startTime = System.currentTimeMillis();
+    try {
+      String address = dbusAddress(addressHost, addressPort);
+      Log.d(TAG, "Opening D-Bus connection on address \"" + address + "\"");
+      connection = DBusConnection.getConnection(address);
+      Log.i(TAG, "D-Bus connection has been established successfully.");
+    } catch (DBusException e) {
+      e.printStackTrace();
+      Log.e(TAG, "D-Bus connection has not been established.");
+      connection = null;
+    }
+    long difference = System.currentTimeMillis() - startTime;
+    Log.d(TAG, "Getting dbus connection took " + difference / 1000 + " seconds");
   }
 
   @Override public void close() {
-      Log.d(TAG, "closeDbusConnection()");
-      connection = null;
-    }
+    connection = null;
+    Log.i(TAG, "D-Bus connection closed.");
+  }
 
   @Override public Boolean isOpen() {
     return connection != null;
   }
 
   @Override public DBusConnection getConnection() {
+    if (!isOpen())
+      open();
     return connection;
   }
 

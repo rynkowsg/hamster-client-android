@@ -23,8 +23,7 @@ public abstract class RemoteObjectAbstract<T> implements RemoteObject<T> {
     return remoteObject != null;
   }
 
-  @SuppressWarnings("unchecked")
-  protected void possessRemoteObject() {
+  @SuppressWarnings("unchecked") protected void possessRemoteObject() {
     if (connector.isOpen()) {
       try {
         DBusConnection connection = connector.getConnection();
