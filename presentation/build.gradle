@@ -8,6 +8,7 @@ buildscript {
 }
 
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 
 retrolambda {
@@ -60,6 +61,7 @@ dependencies {
   def presentationDependencies = rootProject.ext.presentationDependencies
   compile presentationDependencies.butterKnife
   provided presentationDependencies.lombok
+  apt presentationDependencies.lombok
   compile presentationDependencies.commonsLang3
   compile presentationDependencies.appcompatV7
   compile presentationDependencies.recyclerView
