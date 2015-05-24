@@ -19,7 +19,7 @@ ext {
   butterKnifeVersion = '6.1.0'
   lombokVersion = '1.16.4'
   javaxAnnotationVersion = '10.0-b28'
-
+  daggerVersion = '2.0'
 
   //Testing
 
@@ -49,5 +49,7 @@ ext {
       commonsLang3:       "org.apache.commons:commons-lang3:${commonsLang3Version}",
       appcompatV7:        "com.android.support:appcompat-v7:${appcompatV7Version}",
       recyclerView:       "com.android.support:recyclerview-v7:${recyclerViewVersion}",
+      daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
+      dagger:             "com.google.dagger:dagger:${daggerVersion}",
   ]
 }
