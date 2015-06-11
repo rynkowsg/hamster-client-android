@@ -26,11 +26,17 @@ public class HamsterDataSourceImpl implements HamsterDataSource {
 
   @Override public int AddFact(Fact fact) {
     FactEntity factEntity = factEntityMapper.transform(fact);
-    return hamsterObject.get().AddFact(
-        factEntity.serializedName(),
-        (int) factEntity.getStartTime(),
-        (int) factEntity.getEndTime(),
-        false);
+    String serializedName = factEntity.serializedName();
+    int startTime = factEntity.getStartTime();
+    int endTime = factEntity.getEndTime();
+
+    Log.d(TAG, "AddFact( {serializedName:\""
+        + serializedName + "\", startTime:" + startTime + ", endTime:" + endTime + "} )");
+
+    int result = hamsterObject.get().AddFact(serializedName, startTime, endTime, false);
+    Log.d(TAG, "Result of AddFact(): " + result);
+
+    return result;
   }
 
   @Override public Fact GetFact(int factId) {
@@ -51,10 +57,10 @@ public class HamsterDataSourceImpl implements HamsterDataSource {
   }
 
   @Override public List<Fact> GetTodaysFacts() {
-    Hamster hamster = hamsterObject.get();
-    List<Struct5> dbusData = hamster.GetTodaysFacts();
+    Log.d(TAG, "GetTodaysFacts()");
+    List<Struct5> dbusData = hamsterObject.get().GetTodaysFacts();
     List<Fact> facts = factEntityMapper.transformFromStruct5(dbusData);
-    Log.d(TAG, "Today's facts received: " + facts);
+    Log.i(TAG, "Today's facts received. Count:" + facts.size());
     return facts;
   }
 
@@ -65,6 +71,6 @@ public class HamsterDataSourceImpl implements HamsterDataSource {
   @Override public void UpdateFact(int factId, Fact fact) {
     FactEntity factEntity = factEntityMapper.transform(fact);
     hamsterObject.get().UpdateFact(factId, factEntity.serializedName(),
-        (int) factEntity.getStartTime(), (int) factEntity.getEndTime(), false, false);
+        factEntity.getStartTime(), factEntity.getEndTime(), false, false);
   }
 }

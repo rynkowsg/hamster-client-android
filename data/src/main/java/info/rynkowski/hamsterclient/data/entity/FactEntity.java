@@ -19,8 +19,8 @@ public class FactEntity {
   @Getter private String category;
   @Getter private String description;
   @Getter private List<String> tags;
-  @Getter private long startTime;
-  @Getter private long endTime;
+  @Getter private int startTime;
+  @Getter private int endTime;
 
   public FactEntity(Struct4 struct) {
     this.activity = AdapterStruct4.name(struct);
@@ -92,8 +92,8 @@ public class FactEntity {
     private String category;
     private List<String> tags;
     private String description;
-    private long startTime;
-    private long endTime;
+    private int startTime;
+    private int endTime;
 
     public FactEntity build() {
       return new FactEntity(this);

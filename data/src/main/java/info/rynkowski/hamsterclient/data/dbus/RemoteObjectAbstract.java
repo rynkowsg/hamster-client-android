@@ -41,7 +41,7 @@ public abstract class RemoteObjectAbstract<T> implements RemoteObject<T> {
       DBusConnection connection = connector.getConnection();
       Log.d(TAG, "connector.getConnection() = " + connection);
       remoteObject = (T) connection.getRemoteObject(busName, objectPath, dbusType);
-      Log.d(TAG, "connection.getRemoteObject(" + busName + "), " + objectPath + ", "
+      Log.d(TAG, "connection.getRemoteObject(" + busName + ", " + objectPath + ", "
             + dbusType + ") = " + remoteObject);
     } catch (DBusException e) {
       e.printStackTrace();
