@@ -1,4 +1,4 @@
-package info.rynkowski.hamsterclient.presentation.adapter;
+package info.rynkowski.hamsterclient.presentation.view.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
