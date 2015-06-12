@@ -12,9 +12,9 @@ ext {
   androidTargetSdkVersion = 22
 
   //Libraries
-  supportV4Version = '22.1.1'
-  appcompatV7Version = '22.1.1'
-  recyclerViewVersion = '22.1.1'
+  supportV4Version = '22.2.0'
+  appcompatV7Version = '22.2.0'
+  recyclerViewVersion = '22.2.0'
   commonsLang3Version = '3.4'
   butterKnifeVersion = '6.1.0'
   lombokVersion = '1.16.4'
