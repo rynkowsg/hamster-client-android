@@ -16,6 +16,7 @@ import info.rynkowski.hamsterclient.presentation.view.FactListView;
 import java.util.List;
 
 public class FactListPresenter implements Presenter {
+
   public static final String TAG = "FactListPresenter";
 
   // TODO: Use DI container!
@@ -26,6 +27,7 @@ public class FactListPresenter implements Presenter {
   private static GetTodaysFacts getTodaysFacts;
 
   private FactListView viewListView;
+  private FactModelDataMapper mapper;
 
   public void setView(@NonNull FactListView view) {
     this.viewListView = view;
@@ -41,6 +43,7 @@ public class FactListPresenter implements Presenter {
       addFactUseCase = new AddFactUseCase(hamsterDataSource);
       getTodaysFacts = new GetTodaysFacts(hamsterDataSource);
     }).start();
+    mapper = new FactModelDataMapper();
   }
 
   @Override public void resume() {
@@ -56,7 +59,6 @@ public class FactListPresenter implements Presenter {
   @Override public void destroy() {
     Log.d(TAG, "destroy()");
     dependencyConnector.close();
-    // Empty
   }
 
   public void onFactClicked(FactModel factModel) {
@@ -66,11 +68,19 @@ public class FactListPresenter implements Presenter {
 
   private void loadFactList() {
     Log.d(TAG, "loadFactList()");
-    FactModelDataMapper factModelDataMapper = new FactModelDataMapper();
     try {
       List<Fact> useCaseResult = getTodaysFacts.execute();
-      List<FactModel> facts = factModelDataMapper.transform(useCaseResult);
+      List<FactModel> facts = mapper.transform(useCaseResult);
       viewListView.renderFactList(facts);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void addFact(FactModel fact){
+    Log.d(TAG, "addFact()");
+    try {
+      addFactUseCase.execute(mapper.transform(fact));
     } catch (Exception e) {
       e.printStackTrace();
     }

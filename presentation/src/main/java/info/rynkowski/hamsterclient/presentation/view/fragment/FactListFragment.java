@@ -2,8 +2,10 @@ package info.rynkowski.hamsterclient.presentation.view.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +13,10 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import info.rynkowski.hamsterclient.presentation.R;
-import info.rynkowski.hamsterclient.presentation.adapter.FactsAdapter;
-import info.rynkowski.hamsterclient.presentation.adapter.FactsLayoutManager;
+import info.rynkowski.hamsterclient.presentation.navigation.Navigator;
+import info.rynkowski.hamsterclient.presentation.view.activity.FactFormActivity;
+import info.rynkowski.hamsterclient.presentation.view.adapter.FactsAdapter;
+import info.rynkowski.hamsterclient.presentation.view.adapter.FactsLayoutManager;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.presentation.presenter.FactListPresenter;
 import info.rynkowski.hamsterclient.presentation.view.FactListView;
@@ -24,12 +28,7 @@ import java.util.Collection;
 public class FactListFragment extends BaseFragment
     implements FactListView, FactsAdapter.OnItemClickListener {
 
-  /**
-   * Interface for listening fact list events.
-   */
-  public interface OnAddFactClickedListener {
-    public void onAddFactClicked();
-  }
+  private String TAG = "FactListFragment";
 
   // TODO: Use DI!
   FactListPresenter factListPresenter = new FactListPresenter();
@@ -39,16 +38,8 @@ public class FactListFragment extends BaseFragment
   private FactsLayoutManager factsLayoutManager;
   private FactsAdapter factsAdapter;
 
-  private OnAddFactClickedListener listener;
-
   @Override public void onAttach(Activity activity) {
     super.onAttach(activity);
-    try {
-      listener = (OnAddFactClickedListener) activity;
-    } catch (ClassCastException e) {
-      throw new ClassCastException(
-          activity.toString() + " must implement OnAddFactClickedListener");
-    }
   }
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,7 +73,6 @@ public class FactListFragment extends BaseFragment
 
   @Override public void onDetach() {
     super.onDetach();
-    listener = null;
   }
 
   private void setupUI() {
@@ -91,7 +81,26 @@ public class FactListFragment extends BaseFragment
   }
 
   @OnClick(R.id.btn_add_fact) public void onAddFactClicked(View view) {
-    listener.onAddFactClicked();
+    navigator.navigateToFactFormForResult(FactListFragment.this, Navigator.REQUEST_CODE_PICK_FACT);
+  }
+
+  @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    Log.d(TAG, "onActivityResult(requestCode=" + requestCode + ", resultCode=" + resultCode + ")");
+    switch (requestCode) {
+      case (Navigator.REQUEST_CODE_PICK_FACT):
+        if (resultCode == Activity.RESULT_OK) {
+          FactModel fact = (FactModel) data.getSerializableExtra(FactFormActivity.EXTRAS_KEY_FACT);
+          factListPresenter.addFact(fact);
+          showToastMessage("New fact:" + fact.getActivity());
+        } else {
+          Log.e(TAG, "onActivityResult failed, requestCode = " + requestCode + ", resultCode = "
+              + resultCode);
+        }
+        break;
+      default:
+        Log.w(TAG, "onActivityResult have got unknown response, requestCode = " + requestCode);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
   }
 
   @Override public void onFactItemClicked(FactModel factModel) {
