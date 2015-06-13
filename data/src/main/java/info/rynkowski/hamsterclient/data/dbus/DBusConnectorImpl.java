@@ -36,6 +36,7 @@ public class DBusConnectorImpl implements DBusConnector {
   }
 
   @Override public void close() {
+    connection.disconnect();
     connection = null;
     Log.i(TAG, "D-Bus connection closed.");
   }

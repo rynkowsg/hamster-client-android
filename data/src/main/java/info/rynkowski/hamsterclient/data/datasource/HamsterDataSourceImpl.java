@@ -8,7 +8,6 @@ import info.rynkowski.hamsterclient.domain.datasource.HamsterDataSource;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import java.util.Date;
 import java.util.List;
-import org.gnome.Hamster;
 import org.gnome.Struct5;
 
 public class HamsterDataSourceImpl implements HamsterDataSource {
