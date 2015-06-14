@@ -1,5 +1,6 @@
 package info.rynkowski.hamsterclient.presentation.internal.di.components;
 
+import android.content.Context;
 import dagger.Component;
 import info.rynkowski.hamsterclient.presentation.internal.di.modules.ApplicationModule;
 import info.rynkowski.hamsterclient.presentation.view.activity.BaseActivity;
@@ -14,4 +15,7 @@ import javax.inject.Singleton;
 public interface ApplicationComponent {
   void inject(BaseActivity baseActivity);
   void inject(BaseFragment baseFragment);
+
+  //Exposed to sub-graphs.
+  Context context();
 }
