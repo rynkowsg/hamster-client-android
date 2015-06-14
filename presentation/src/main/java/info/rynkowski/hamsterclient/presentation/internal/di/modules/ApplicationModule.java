@@ -12,6 +12,7 @@ import javax.inject.Singleton;
  */
 @Module
 public class ApplicationModule {
+
   private final AndroidApplication application;
 
   public ApplicationModule(AndroidApplication application) {

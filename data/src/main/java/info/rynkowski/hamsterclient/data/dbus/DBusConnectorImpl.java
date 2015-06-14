@@ -1,9 +1,11 @@
 package info.rynkowski.hamsterclient.data.dbus;
 
 import android.util.Log;
+import javax.inject.Singleton;
 import org.freedesktop.dbus.DBusConnection;
 import org.freedesktop.dbus.exceptions.DBusException;
 
+@Singleton
 public class DBusConnectorImpl implements DBusConnector {
 
   private static final String TAG = "DBusConnectorImpl";

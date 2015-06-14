@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 import info.rynkowski.hamsterclient.presentation.AndroidApplication;
+import info.rynkowski.hamsterclient.presentation.internal.di.HasComponent;
 import info.rynkowski.hamsterclient.presentation.internal.di.components.ApplicationComponent;
 import info.rynkowski.hamsterclient.presentation.navigation.Navigator;
 import javax.inject.Inject;
@@ -17,7 +18,7 @@ public class BaseFragment extends Fragment {
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    this.getApplicationComponent().inject(this);
+    this.injectDependencies();
   }
 
   /**
@@ -36,5 +37,17 @@ public class BaseFragment extends Fragment {
    */
   protected void showToastMessage(String message) {
     Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+  }
+
+  /**
+   * Gets a component for dependency injection by its type.
+   */
+  @SuppressWarnings("unchecked")
+  protected <C> C getComponent(Class<C> componentType) {
+    return componentType.cast(((HasComponent<C>)getActivity()).getComponent());
+  }
+
+  private void injectDependencies() {
+    this.getApplicationComponent().inject(this);
   }
 }

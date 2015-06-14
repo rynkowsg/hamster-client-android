@@ -13,6 +13,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import info.rynkowski.hamsterclient.presentation.R;
+import info.rynkowski.hamsterclient.presentation.internal.di.components.FactListComponent;
 import info.rynkowski.hamsterclient.presentation.navigation.Navigator;
 import info.rynkowski.hamsterclient.presentation.view.activity.FactFormActivity;
 import info.rynkowski.hamsterclient.presentation.view.adapter.FactsAdapter;
@@ -21,6 +22,7 @@ import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.presentation.presenter.FactListPresenter;
 import info.rynkowski.hamsterclient.presentation.view.FactListView;
 import java.util.Collection;
+import javax.inject.Inject;
 
 /**
  * Fragment that shows a list of Facts.
@@ -30,8 +32,7 @@ public class FactListFragment extends BaseFragment
 
   private static final String TAG = "FactListFragment";
 
-  // TODO: Use DI!
-  FactListPresenter factListPresenter;
+  @Inject FactListPresenter factListPresenter;
 
   @InjectView(R.id.rv_facts) RecyclerView rv_facts;
 
@@ -68,9 +69,13 @@ public class FactListFragment extends BaseFragment
   }
 
   private void initialize() {
-    factListPresenter = new FactListPresenter();
+    this.injectDependencies();
     factListPresenter.setView(this);
     factListPresenter.initialize();
+  }
+
+  private void injectDependencies() {
+    this.getComponent(FactListComponent.class).inject(this);
   }
 
   private void setupUI() {

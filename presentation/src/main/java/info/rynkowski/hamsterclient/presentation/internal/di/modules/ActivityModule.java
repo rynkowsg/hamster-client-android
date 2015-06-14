@@ -10,6 +10,7 @@ import info.rynkowski.hamsterclient.presentation.internal.di.PerActivity;
  */
 @Module
 public class ActivityModule {
+
   private final Activity activity;
 
   public ActivityModule(Activity activity) {

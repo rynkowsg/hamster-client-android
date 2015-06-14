@@ -57,10 +57,12 @@ dependencies {
   compile project(':domain')
 
   def dataDependencies = rootProject.ext.dataDependencies
-  compile dataDependencies.commonsLang3
-  provided dataDependencies.lombok
+  apt dataDependencies.daggerCompiler
   apt dataDependencies.lombok
+  compile dataDependencies.commonsLang3
+  compile dataDependencies.dagger
   provided dataDependencies.javaxAnnotation
+  provided dataDependencies.lombok
 
   compile fileTree(dir: 'libs', include: ['*.jar'])
 }

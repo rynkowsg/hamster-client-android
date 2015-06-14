@@ -10,24 +10,33 @@ import info.rynkowski.hamsterclient.domain.datasource.HamsterDataSource;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.interactor.AddFactUseCase;
 import info.rynkowski.hamsterclient.domain.interactor.GetTodaysFacts;
+import info.rynkowski.hamsterclient.presentation.internal.di.PerActivity;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.presentation.model.mapper.FactModelDataMapper;
 import info.rynkowski.hamsterclient.presentation.view.FactListView;
 import java.util.List;
+import javax.inject.Inject;
 
+@PerActivity
 public class FactListPresenter implements Presenter {
 
   private static final String TAG = "FactListPresenter";
 
-  // TODO: Use DI container!
-  private static DBusConnector dBusConnector;
-  private static HamsterRemoteObject hamsterRemoteObject;
-  private static HamsterDataSource hamsterDataSource;
-  private static AddFactUseCase addFactUseCase;
-  private static GetTodaysFacts getTodaysFacts;
+  private final DBusConnector dBusConnector;
+  private final AddFactUseCase addFactUseCase;
+  private final GetTodaysFacts getTodaysFacts;
+
+  private final FactModelDataMapper mapper;
 
   private FactListView viewListView;
-  private FactModelDataMapper mapper;
+
+  @Inject public FactListPresenter(DBusConnector dbusConnector, AddFactUseCase addFactUseCase,
+      GetTodaysFacts getTodaysFacts, FactModelDataMapper mapper) {
+    this.dBusConnector = dbusConnector;
+    this.addFactUseCase = addFactUseCase;
+    this.getTodaysFacts = getTodaysFacts;
+    this.mapper = mapper;
+  }
 
   public void setView(@NonNull FactListView view) {
     this.viewListView = view;
@@ -35,15 +44,7 @@ public class FactListPresenter implements Presenter {
 
   @Override public void initialize() {
     Log.d(TAG, "initialize()");
-    new Thread(() -> {
-      dBusConnector = new DBusConnectorImpl("10.0.2.5", "55555");
-      dBusConnector.open();
-      hamsterRemoteObject = new HamsterRemoteObject(dBusConnector);
-      hamsterDataSource = new HamsterDataSourceImpl(hamsterRemoteObject);
-      addFactUseCase = new AddFactUseCase(hamsterDataSource);
-      getTodaysFacts = new GetTodaysFacts(hamsterDataSource);
-    }).start();
-    mapper = new FactModelDataMapper();
+    new Thread(dBusConnector::open).start();
   }
 
   @Override public void resume() {

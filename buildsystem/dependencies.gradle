@@ -36,11 +36,15 @@ ext {
       commonsLang3:       "org.apache.commons:commons-lang3:${commonsLang3Version}",
       lombok:             "org.projectlombok:lombok:${lombokVersion}",
       javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
+      daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
+      dagger:             "com.google.dagger:dagger:${daggerVersion}",
   ]
 
   domainDependencies = [
       lombok:             "org.projectlombok:lombok:${lombokVersion}",
       javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
+      daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
+      dagger:             "com.google.dagger:dagger:${daggerVersion}",
   ]
 
   presentationDependencies = [
