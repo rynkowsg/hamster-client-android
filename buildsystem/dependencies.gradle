@@ -19,7 +19,7 @@ ext {
   butterKnifeVersion = '6.1.0'
   lombokVersion = '1.16.4'
   javaxAnnotationVersion = '10.0-b28'
-  daggerVersion = '2.0'
+  daggerVersion = '2.0.1'
 
   //Testing
 
