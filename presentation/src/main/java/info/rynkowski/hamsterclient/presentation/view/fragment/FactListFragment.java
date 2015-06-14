@@ -28,32 +28,28 @@ import java.util.Collection;
 public class FactListFragment extends BaseFragment
     implements FactListView, FactsAdapter.OnItemClickListener {
 
-  private String TAG = "FactListFragment";
+  private static final String TAG = "FactListFragment";
 
   // TODO: Use DI!
-  FactListPresenter factListPresenter = new FactListPresenter();
+  FactListPresenter factListPresenter;
 
   @InjectView(R.id.rv_facts) RecyclerView rv_facts;
 
   private FactsLayoutManager factsLayoutManager;
   private FactsAdapter factsAdapter;
 
-  @Override public void onAttach(Activity activity) {
-    super.onAttach(activity);
-  }
-
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_fact_list, container, false);
     ButterKnife.inject(this, view);
     setupUI();
+
     return view;
   }
 
   @Override public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
-    factListPresenter.setView(this);
-    factListPresenter.initialize();
+    this.initialize();
   }
 
   @Override public void onResume() {
@@ -71,8 +67,10 @@ public class FactListFragment extends BaseFragment
     ButterKnife.reset(this);
   }
 
-  @Override public void onDetach() {
-    super.onDetach();
+  private void initialize() {
+    factListPresenter = new FactListPresenter();
+    factListPresenter.setView(this);
+    factListPresenter.initialize();
   }
 
   private void setupUI() {

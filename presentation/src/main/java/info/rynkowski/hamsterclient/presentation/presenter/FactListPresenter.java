@@ -17,10 +17,10 @@ import java.util.List;
 
 public class FactListPresenter implements Presenter {
 
-  public static final String TAG = "FactListPresenter";
+  private static final String TAG = "FactListPresenter";
 
   // TODO: Use DI container!
-  private static DBusConnector dependencyConnector;
+  private static DBusConnector dBusConnector;
   private static HamsterRemoteObject hamsterRemoteObject;
   private static HamsterDataSource hamsterDataSource;
   private static AddFactUseCase addFactUseCase;
@@ -36,9 +36,9 @@ public class FactListPresenter implements Presenter {
   @Override public void initialize() {
     Log.d(TAG, "initialize()");
     new Thread(() -> {
-      dependencyConnector = new DBusConnectorImpl("10.0.2.5", "55555");
-      dependencyConnector.open();
-      hamsterRemoteObject = new HamsterRemoteObject(dependencyConnector);
+      dBusConnector = new DBusConnectorImpl("10.0.2.5", "55555");
+      dBusConnector.open();
+      hamsterRemoteObject = new HamsterRemoteObject(dBusConnector);
       hamsterDataSource = new HamsterDataSourceImpl(hamsterRemoteObject);
       addFactUseCase = new AddFactUseCase(hamsterDataSource);
       getTodaysFacts = new GetTodaysFacts(hamsterDataSource);
@@ -58,7 +58,7 @@ public class FactListPresenter implements Presenter {
 
   @Override public void destroy() {
     Log.d(TAG, "destroy()");
-    dependencyConnector.close();
+    dBusConnector.close();
   }
 
   public void onFactClicked(FactModel factModel) {
@@ -67,6 +67,7 @@ public class FactListPresenter implements Presenter {
   }
 
   private void loadFactList() {
+    //TODO: Should be asynchronous!
     Log.d(TAG, "loadFactList()");
     try {
       List<Fact> useCaseResult = getTodaysFacts.execute();
@@ -77,12 +78,14 @@ public class FactListPresenter implements Presenter {
     }
   }
 
-  public void addFact(FactModel fact){
+  public void addFact(FactModel fact) {
     Log.d(TAG, "addFact()");
-    try {
-      addFactUseCase.execute(mapper.transform(fact));
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    new Thread(() -> {
+      try {
+        addFactUseCase.execute(mapper.transform(fact));
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }).start();
   }
 }

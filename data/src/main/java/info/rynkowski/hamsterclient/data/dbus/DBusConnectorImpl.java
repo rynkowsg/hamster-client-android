@@ -20,19 +20,21 @@ public class DBusConnectorImpl implements DBusConnector {
   }
 
   @Override public void open() {
-    long startTime = System.currentTimeMillis();
-    try {
-      String address = dbusAddress(addressHost, addressPort);
-      Log.d(TAG, "Opening D-Bus connection on address \"" + address + "\"");
-      connection = DBusConnection.getConnection(address);
-      Log.i(TAG, "D-Bus connection has been established successfully.");
-    } catch (DBusException e) {
-      e.printStackTrace();
-      Log.e(TAG, "D-Bus connection has not been established.");
-      connection = null;
+    if (!isOpen()) {
+      long startTime = System.currentTimeMillis();
+      try {
+        String address = dbusAddress(addressHost, addressPort);
+        Log.d(TAG, "Opening D-Bus connection on address \"" + address + "\"");
+        connection = DBusConnection.getConnection(address);
+        Log.i(TAG, "D-Bus connection has been established successfully.");
+      } catch (DBusException e) {
+        e.printStackTrace();
+        Log.e(TAG, "D-Bus connection has not been established.");
+        connection = null;
+      }
+      long difference = System.currentTimeMillis() - startTime;
+      Log.d(TAG, "Getting dbus connection took " + difference / 1000 + " seconds");
     }
-    long difference = System.currentTimeMillis() - startTime;
-    Log.d(TAG, "Getting dbus connection took " + difference / 1000 + " seconds");
   }
 
   @Override public void close() {

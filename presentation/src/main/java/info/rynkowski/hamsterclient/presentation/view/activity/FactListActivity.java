@@ -18,7 +18,6 @@ public class FactListActivity extends BaseActivity {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_fact_list);
-    ButterKnife.inject(this);
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
