@@ -6,6 +6,9 @@ import info.rynkowski.hamsterclient.presentation.view.activity.BaseActivity;
 import info.rynkowski.hamsterclient.presentation.view.fragment.BaseFragment;
 import javax.inject.Singleton;
 
+/**
+ * A component whose lifetime is the life of the application.
+ */
 @Singleton
 @Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
