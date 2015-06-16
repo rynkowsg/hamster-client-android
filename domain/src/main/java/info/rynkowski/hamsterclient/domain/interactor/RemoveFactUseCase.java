@@ -10,7 +10,7 @@ public class RemoveFactUseCase implements UseCaseOneArg<Void, Integer> {
   }
 
   @Override public Void execute(Integer arg) throws Exception {
-    hamsterDataSource.RemoveFact(arg.intValue());
+    hamsterDataSource.RemoveFact(arg);
     return null;
   }
 }

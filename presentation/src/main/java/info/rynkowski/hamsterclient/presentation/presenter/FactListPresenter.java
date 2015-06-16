@@ -14,6 +14,10 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+/**
+ * {@link Presenter} that controls communication between views and models of the presentation
+ * layer for fact list screen.
+ */
 @ActivityScope
 public class FactListPresenter implements Presenter {
 
