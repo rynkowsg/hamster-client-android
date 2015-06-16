@@ -11,5 +11,5 @@ import javax.inject.Scope;
  */
 @Scope
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PerActivity {
+public @interface ActivityScope {
 }

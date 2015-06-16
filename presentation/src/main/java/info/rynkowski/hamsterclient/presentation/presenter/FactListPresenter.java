@@ -10,14 +10,14 @@ import info.rynkowski.hamsterclient.domain.datasource.HamsterDataSource;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.interactor.AddFactUseCase;
 import info.rynkowski.hamsterclient.domain.interactor.GetTodaysFacts;
-import info.rynkowski.hamsterclient.presentation.internal.di.PerActivity;
+import info.rynkowski.hamsterclient.presentation.internal.di.ActivityScope;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.presentation.model.mapper.FactModelDataMapper;
 import info.rynkowski.hamsterclient.presentation.view.FactListView;
 import java.util.List;
 import javax.inject.Inject;
 
-@PerActivity
+@ActivityScope
 public class FactListPresenter implements Presenter {
 
   private static final String TAG = "FactListPresenter";

@@ -5,7 +5,7 @@ import dagger.Provides;
 import info.rynkowski.hamsterclient.data.dbus.DBusConnector;
 import info.rynkowski.hamsterclient.domain.interactor.AddFactUseCase;
 import info.rynkowski.hamsterclient.domain.interactor.GetTodaysFacts;
-import info.rynkowski.hamsterclient.presentation.internal.di.PerActivity;
+import info.rynkowski.hamsterclient.presentation.internal.di.ActivityScope;
 import info.rynkowski.hamsterclient.presentation.model.mapper.FactModelDataMapper;
 import info.rynkowski.hamsterclient.presentation.presenter.FactListPresenter;
 
@@ -15,7 +15,7 @@ import info.rynkowski.hamsterclient.presentation.presenter.FactListPresenter;
 @Module(includes = DomainModule.class)
 public class FactListModule {
 
-  @PerActivity @Provides FactListPresenter provideFactListPresenter(DBusConnector dbusConnector,
+  @ActivityScope @Provides FactListPresenter provideFactListPresenter(DBusConnector dbusConnector,
       AddFactUseCase addFactUseCase, GetTodaysFacts getTodaysFacts, FactModelDataMapper mapper) {
     return new FactListPresenter(dbusConnector, addFactUseCase, getTodaysFacts, mapper);
   }

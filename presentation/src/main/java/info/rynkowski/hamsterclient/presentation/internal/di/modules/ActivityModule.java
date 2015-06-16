@@ -3,7 +3,7 @@ package info.rynkowski.hamsterclient.presentation.internal.di.modules;
 import android.app.Activity;
 import dagger.Module;
 import dagger.Provides;
-import info.rynkowski.hamsterclient.presentation.internal.di.PerActivity;
+import info.rynkowski.hamsterclient.presentation.internal.di.ActivityScope;
 
 /**
  * A module to wrap the Activity state and expose it to the graph.
@@ -20,7 +20,7 @@ public class ActivityModule {
   /**
    * Expose the activity to dependents in the graph.
    */
-  @Provides @PerActivity public Activity provideActivity() {
+  @Provides @ActivityScope public Activity provideActivity() {
     return this.activity;
   }
 }

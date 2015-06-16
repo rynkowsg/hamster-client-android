@@ -2,7 +2,7 @@ package info.rynkowski.hamsterclient.presentation.internal.di.components;
 
 import android.app.Activity;
 import dagger.Component;
-import info.rynkowski.hamsterclient.presentation.internal.di.PerActivity;
+import info.rynkowski.hamsterclient.presentation.internal.di.ActivityScope;
 import info.rynkowski.hamsterclient.presentation.internal.di.modules.ActivityModule;
 
 /**
@@ -10,9 +10,9 @@ import info.rynkowski.hamsterclient.presentation.internal.di.modules.ActivityMod
  * Activity-level components should extend this component.
  *
  * Subtypes of ActivityComponent should be decorated with annotation:
- * {@link info.rynkowski.hamsterclient.presentation.internal.di.PerActivity}
+ * {@link info.rynkowski.hamsterclient.presentation.internal.di.ActivityScope}
  */
-@PerActivity
+@ActivityScope
 @Component(dependencies = ApplicationComponent.class, modules = ActivityModule.class)
 public interface ActivityComponent {
 

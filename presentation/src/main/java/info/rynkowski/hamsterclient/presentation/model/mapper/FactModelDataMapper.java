@@ -2,13 +2,13 @@ package info.rynkowski.hamsterclient.presentation.model.mapper;
 
 import info.rynkowski.hamsterclient.domain.entities.Activity;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
-import info.rynkowski.hamsterclient.presentation.internal.di.PerActivity;
+import info.rynkowski.hamsterclient.presentation.internal.di.ActivityScope;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
-@PerActivity
+@ActivityScope
 public class FactModelDataMapper {
 
   @Inject
