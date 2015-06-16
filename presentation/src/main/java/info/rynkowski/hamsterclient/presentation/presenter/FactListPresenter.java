@@ -4,15 +4,12 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import info.rynkowski.hamsterclient.data.dbus.DBusConnector;
 import info.rynkowski.hamsterclient.domain.interactor.AddFactUseCase;
-import info.rynkowski.hamsterclient.domain.interactor.GetTodaysFacts;
+import info.rynkowski.hamsterclient.domain.interactor.GetTodaysFactsUseCase;
 import info.rynkowski.hamsterclient.presentation.internal.di.ActivityScope;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.presentation.model.mapper.FactModelDataMapper;
 import info.rynkowski.hamsterclient.presentation.view.FactListView;
 import javax.inject.Inject;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * {@link Presenter} that controls communication between views and models of the presentation
@@ -25,17 +22,17 @@ public class FactListPresenter implements Presenter {
 
   private final DBusConnector dBusConnector;
   private final AddFactUseCase addFactUseCase;
-  private final GetTodaysFacts getTodaysFacts;
+  private final GetTodaysFactsUseCase getTodaysFactsUseCase;
 
   private final FactModelDataMapper mapper;
 
   private FactListView viewListView;
 
   @Inject public FactListPresenter(DBusConnector dbusConnector, AddFactUseCase addFactUseCase,
-      GetTodaysFacts getTodaysFacts, FactModelDataMapper mapper) {
+      GetTodaysFactsUseCase getTodaysFactsUseCase, FactModelDataMapper mapper) {
     this.dBusConnector = dbusConnector;
     this.addFactUseCase = addFactUseCase;
-    this.getTodaysFacts = getTodaysFacts;
+    this.getTodaysFactsUseCase = getTodaysFactsUseCase;
     this.mapper = mapper;
   }
 
@@ -70,17 +67,18 @@ public class FactListPresenter implements Presenter {
 
   private void loadFactList() {
     Log.d(TAG, "loadFactList()");
-    Observable.defer(
-        () -> Observable.just(getTodaysFacts.execute()))
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribeOn(Schedulers.io())
+    getTodaysFactsUseCase.execute()
         .map(mapper::transform)
         .subscribe(viewListView::renderFactList);
   }
 
   public void addFact(FactModel fact) {
     Log.d(TAG, "addFact()");
-    Observable.defer(() -> Observable.just(mapper.transform(fact)))
-        .subscribe(addFactUseCase::execute);
+    addFactUseCase
+        .setFact(mapper.transform(fact))
+        .execute()
+        .subscribe(
+            id -> Log.i(TAG, "New fact added, id: " + id),
+            Throwable::printStackTrace);
   }
 }

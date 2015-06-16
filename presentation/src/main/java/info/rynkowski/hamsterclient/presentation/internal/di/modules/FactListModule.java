@@ -4,7 +4,7 @@ import dagger.Module;
 import dagger.Provides;
 import info.rynkowski.hamsterclient.data.dbus.DBusConnector;
 import info.rynkowski.hamsterclient.domain.interactor.AddFactUseCase;
-import info.rynkowski.hamsterclient.domain.interactor.GetTodaysFacts;
+import info.rynkowski.hamsterclient.domain.interactor.GetTodaysFactsUseCase;
 import info.rynkowski.hamsterclient.presentation.internal.di.ActivityScope;
 import info.rynkowski.hamsterclient.presentation.model.mapper.FactModelDataMapper;
 import info.rynkowski.hamsterclient.presentation.presenter.FactListPresenter;
@@ -16,7 +16,7 @@ import info.rynkowski.hamsterclient.presentation.presenter.FactListPresenter;
 public class FactListModule {
 
   @ActivityScope @Provides FactListPresenter provideFactListPresenter(DBusConnector dbusConnector,
-      AddFactUseCase addFactUseCase, GetTodaysFacts getTodaysFacts, FactModelDataMapper mapper) {
-    return new FactListPresenter(dbusConnector, addFactUseCase, getTodaysFacts, mapper);
+      AddFactUseCase addFactUseCase, GetTodaysFactsUseCase getTodaysFactsUseCase, FactModelDataMapper mapper) {
+    return new FactListPresenter(dbusConnector, addFactUseCase, getTodaysFactsUseCase, mapper);
   }
 }

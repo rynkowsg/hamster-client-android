@@ -4,6 +4,8 @@ import android.content.Context;
 import dagger.Component;
 import info.rynkowski.hamsterclient.data.dbus.DBusConnector;
 import info.rynkowski.hamsterclient.domain.datasource.HamsterDataSource;
+import info.rynkowski.hamsterclient.domain.executor.PostExecutionThread;
+import info.rynkowski.hamsterclient.domain.executor.ThreadExecutor;
 import info.rynkowski.hamsterclient.presentation.internal.di.modules.ApplicationModule;
 import info.rynkowski.hamsterclient.presentation.internal.di.modules.DataModule;
 import info.rynkowski.hamsterclient.presentation.navigation.Navigator;
@@ -24,6 +26,8 @@ public interface ApplicationComponent {
   //Exposed to sub-graphs.
   Context context();
   Navigator navigator();
+  ThreadExecutor threadExecutor();
+  PostExecutionThread postExecutionThread();
   DBusConnector dBusConnector();
   HamsterDataSource hamsterDataSource();
 }
