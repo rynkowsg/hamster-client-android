@@ -8,19 +8,22 @@ import info.rynkowski.hamsterclient.domain.datasource.HamsterDataSource;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import java.util.Date;
 import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import org.gnome.Struct5;
 
+@Singleton
 public class HamsterDataSourceImpl implements HamsterDataSource {
 
   private final static String TAG = "HamsterDataSourceImpl";
 
-  // TODO: Use DI container!
   private HamsterRemoteObject hamsterObject;
   private FactEntityMapper factEntityMapper;
 
-  public HamsterDataSourceImpl(HamsterRemoteObject object) {
+  @Inject
+  public HamsterDataSourceImpl(HamsterRemoteObject object, FactEntityMapper factEntityMapper) {
     this.hamsterObject = object;
-    this.factEntityMapper = new FactEntityMapper();
+    this.factEntityMapper = factEntityMapper;
   }
 
   @Override public int AddFact(Fact fact) {

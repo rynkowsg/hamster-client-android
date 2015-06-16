@@ -7,12 +7,17 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import org.gnome.Struct5;
 import org.gnome.Struct7;
 
+@Singleton
 public class FactEntityMapper {
 
+  @Inject
   public FactEntityMapper() {
+    //empty
   }
 
   public List<Fact> transformFromStruct5(List<Struct5> structList) {
