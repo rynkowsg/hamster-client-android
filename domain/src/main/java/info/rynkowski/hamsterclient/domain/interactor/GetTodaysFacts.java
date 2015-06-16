@@ -15,7 +15,7 @@ public class GetTodaysFacts implements UseCaseArgumentless<List<Fact>> {
     this.hamsterDataSource = hamsterDataSource;
   }
 
-  @Override public List<Fact> execute() throws Exception {
+  @Override public List<Fact> execute() {
     return hamsterDataSource.GetTodaysFacts();
   }
 }

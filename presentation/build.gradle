@@ -66,5 +66,7 @@ dependencies {
   compile presentationDependencies.commonsLang3
   compile presentationDependencies.dagger
   compile presentationDependencies.recyclerView
+  compile presentationDependencies.rxAndroid
+  compile presentationDependencies.rxJava
   provided presentationDependencies.lombok
 }

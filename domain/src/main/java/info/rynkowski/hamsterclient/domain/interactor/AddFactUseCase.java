@@ -14,7 +14,7 @@ public class AddFactUseCase implements UseCaseOneArg<Integer, Fact> {
     this.hamsterDataSource = hamsterDataSource;
   }
 
-  @Override public Integer execute(Fact arg) throws Exception {
+  @Override public Integer execute(Fact arg) {
     return hamsterDataSource.AddFact(arg);
   }
 }

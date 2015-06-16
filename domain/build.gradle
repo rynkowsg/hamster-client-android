@@ -33,6 +33,7 @@ sourceSets {
 dependencies {
   def domainDependencies = rootProject.ext.domainDependencies
   compile domainDependencies.dagger
+  compile domainDependencies.rxJava
   provided domainDependencies.daggerCompiler
   provided domainDependencies.javaxAnnotation
   provided domainDependencies.lombok

@@ -20,6 +20,8 @@ ext {
   lombokVersion = '1.16.4'
   javaxAnnotationVersion = '10.0-b28'
   daggerVersion = '2.0.1'
+  rxAndroidVersion = '0.24.0'
+  rxJavaVersion = '1.0.12'
 
   //Testing
 
@@ -34,26 +36,31 @@ ext {
 
   dataDependencies = [
       commonsLang3:       "org.apache.commons:commons-lang3:${commonsLang3Version}",
-      lombok:             "org.projectlombok:lombok:${lombokVersion}",
-      javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
       daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
       dagger:             "com.google.dagger:dagger:${daggerVersion}",
+      javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
+      lombok:             "org.projectlombok:lombok:${lombokVersion}",
+      rxAndroid:          "io.reactivex:rxandroid:${rxAndroidVersion}",
+      rxJava:             "io.reactivex:rxjava:${rxJavaVersion}",
   ]
 
   domainDependencies = [
-      lombok:             "org.projectlombok:lombok:${lombokVersion}",
-      javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
       daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
       dagger:             "com.google.dagger:dagger:${daggerVersion}",
+      javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
+      lombok:             "org.projectlombok:lombok:${lombokVersion}",
+      rxJava:             "io.reactivex:rxjava:${rxJavaVersion}",
   ]
 
   presentationDependencies = [
-      butterKnife:        "com.jakewharton:butterknife:${butterKnifeVersion}",
-      lombok:             "org.projectlombok:lombok:${lombokVersion}",
-      commonsLang3:       "org.apache.commons:commons-lang3:${commonsLang3Version}",
       appcompatV7:        "com.android.support:appcompat-v7:${appcompatV7Version}",
       recyclerView:       "com.android.support:recyclerview-v7:${recyclerViewVersion}",
+      butterKnife:        "com.jakewharton:butterknife:${butterKnifeVersion}",
+      commonsLang3:       "org.apache.commons:commons-lang3:${commonsLang3Version}",
       daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
       dagger:             "com.google.dagger:dagger:${daggerVersion}",
+      lombok:             "org.projectlombok:lombok:${lombokVersion}",
+      rxAndroid:          "io.reactivex:rxandroid:${rxAndroidVersion}",
+      rxJava:             "io.reactivex:rxjava:${rxJavaVersion}",
   ]
 }

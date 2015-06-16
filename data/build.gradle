@@ -61,6 +61,8 @@ dependencies {
   apt dataDependencies.lombok
   compile dataDependencies.commonsLang3
   compile dataDependencies.dagger
+  compile dataDependencies.rxAndroid
+  compile dataDependencies.rxJava
   provided dataDependencies.javaxAnnotation
   provided dataDependencies.lombok
 

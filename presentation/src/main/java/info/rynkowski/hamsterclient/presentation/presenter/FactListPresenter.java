@@ -2,20 +2,17 @@ package info.rynkowski.hamsterclient.presentation.presenter;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
-import info.rynkowski.hamsterclient.data.datasource.HamsterDataSourceImpl;
 import info.rynkowski.hamsterclient.data.dbus.DBusConnector;
-import info.rynkowski.hamsterclient.data.dbus.DBusConnectorImpl;
-import info.rynkowski.hamsterclient.data.dbus.HamsterRemoteObject;
-import info.rynkowski.hamsterclient.domain.datasource.HamsterDataSource;
-import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.interactor.AddFactUseCase;
 import info.rynkowski.hamsterclient.domain.interactor.GetTodaysFacts;
 import info.rynkowski.hamsterclient.presentation.internal.di.ActivityScope;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.presentation.model.mapper.FactModelDataMapper;
 import info.rynkowski.hamsterclient.presentation.view.FactListView;
-import java.util.List;
 import javax.inject.Inject;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 @ActivityScope
 public class FactListPresenter implements Presenter {
@@ -68,25 +65,18 @@ public class FactListPresenter implements Presenter {
   }
 
   private void loadFactList() {
-    //TODO: Should be asynchronous!
     Log.d(TAG, "loadFactList()");
-    try {
-      List<Fact> useCaseResult = getTodaysFacts.execute();
-      List<FactModel> facts = mapper.transform(useCaseResult);
-      viewListView.renderFactList(facts);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    Observable.defer(
+        () -> Observable.just(getTodaysFacts.execute()))
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribeOn(Schedulers.io())
+        .map(mapper::transform)
+        .subscribe(viewListView::renderFactList);
   }
 
   public void addFact(FactModel fact) {
     Log.d(TAG, "addFact()");
-    new Thread(() -> {
-      try {
-        addFactUseCase.execute(mapper.transform(fact));
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    }).start();
+    Observable.defer(() -> Observable.just(mapper.transform(fact)))
+        .subscribe(addFactUseCase::execute);
   }
 }
