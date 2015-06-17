@@ -68,5 +68,7 @@ dependencies {
   compile presentationDependencies.recyclerView
   compile presentationDependencies.rxAndroid
   compile presentationDependencies.rxJava
+  compile presentationDependencies.timber
+  compile presentationDependencies.slf4jTimber
   provided presentationDependencies.lombok
 }

@@ -34,6 +34,7 @@ dependencies {
   def domainDependencies = rootProject.ext.domainDependencies
   compile domainDependencies.dagger
   compile domainDependencies.rxJava
+  compile domainDependencies.slf4jApi
   provided domainDependencies.daggerCompiler
   provided domainDependencies.javaxAnnotation
   provided domainDependencies.lombok

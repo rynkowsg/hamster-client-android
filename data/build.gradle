@@ -63,6 +63,8 @@ dependencies {
   compile dataDependencies.dagger
   compile dataDependencies.rxAndroid
   compile dataDependencies.rxJava
+  compile dataDependencies.timber
+  compile dataDependencies.slf4jTimber
   provided dataDependencies.javaxAnnotation
   provided dataDependencies.lombok
 

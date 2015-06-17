@@ -22,8 +22,9 @@ ext {
   daggerVersion = '2.0.1'
   rxAndroidVersion = '0.24.0'
   rxJavaVersion = '1.0.12'
-
-  //Testing
+  slf4jApiVersion = '1.7.12'
+  slf4jTimberVersion = '2.0'
+  timberVersion = '3.1.0'
 
   appDependencies = [
       supportV4:          "com.android.support:support-v4:${supportV4Version}",
@@ -42,6 +43,8 @@ ext {
       lombok:             "org.projectlombok:lombok:${lombokVersion}",
       rxAndroid:          "io.reactivex:rxandroid:${rxAndroidVersion}",
       rxJava:             "io.reactivex:rxjava:${rxJavaVersion}",
+      slf4jTimber:        "com.arcao:slf4j-timber:${slf4jTimberVersion}",
+      timber:             "com.jakewharton.timber:timber:${timberVersion}",
   ]
 
   domainDependencies = [
@@ -50,6 +53,7 @@ ext {
       javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
       lombok:             "org.projectlombok:lombok:${lombokVersion}",
       rxJava:             "io.reactivex:rxjava:${rxJavaVersion}",
+      slf4jApi:           "org.slf4j:slf4j-api:${slf4jApiVersion}",
   ]
 
   presentationDependencies = [
@@ -62,5 +66,7 @@ ext {
       lombok:             "org.projectlombok:lombok:${lombokVersion}",
       rxAndroid:          "io.reactivex:rxandroid:${rxAndroidVersion}",
       rxJava:             "io.reactivex:rxjava:${rxJavaVersion}",
+      slf4jTimber:        "com.arcao:slf4j-timber:${slf4jTimberVersion}",
+      timber:             "com.jakewharton.timber:timber:${timberVersion}",
   ]
 }
