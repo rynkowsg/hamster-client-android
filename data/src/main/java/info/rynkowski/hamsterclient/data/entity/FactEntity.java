@@ -49,13 +49,13 @@ public class FactEntity {
     this.endTime = AdapterStruct7.end_time(struct);
   }
 
-  public FactEntity(String activity, String category, String description, List<String> tags, int startTime, int endTime) {
-    this.activity = activity;
-    this.category = category;
-    this.description = description;
-    this.tags = tags;
-    this.startTime = startTime;
-    this.endTime = endTime;
+  private FactEntity(Builder b) {
+    this.activity = b.activity;
+    this.category = b.category;
+    this.tags = b.tags;
+    this.description = b.description;
+    this.startTime = b.startTime;
+    this.endTime = b.endTime;
   }
 
   public String serializedName() {
@@ -72,15 +72,6 @@ public class FactEntity {
       res += "#" + StringUtils.join(tags, '#');
     }
     return res;
-  }
-
-  private FactEntity(Builder b) {
-    this.activity = b.activity;
-    this.category = b.category;
-    this.tags = b.tags;
-    this.description = b.description;
-    this.startTime = b.startTime;
-    this.endTime = b.endTime;
   }
 
   @NoArgsConstructor(access = AccessLevel.PUBLIC)

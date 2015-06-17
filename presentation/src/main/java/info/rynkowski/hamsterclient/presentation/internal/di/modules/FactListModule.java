@@ -16,7 +16,8 @@ import info.rynkowski.hamsterclient.presentation.presenter.FactListPresenter;
 public class FactListModule {
 
   @ActivityScope @Provides FactListPresenter provideFactListPresenter(DBusConnector dbusConnector,
-      AddFactUseCase addFactUseCase, GetTodaysFactsUseCase getTodaysFactsUseCase, FactModelDataMapper mapper) {
+      AddFactUseCase addFactUseCase, GetTodaysFactsUseCase getTodaysFactsUseCase,
+      FactModelDataMapper mapper) {
     return new FactListPresenter(dbusConnector, addFactUseCase, getTodaysFactsUseCase, mapper);
   }
 }
