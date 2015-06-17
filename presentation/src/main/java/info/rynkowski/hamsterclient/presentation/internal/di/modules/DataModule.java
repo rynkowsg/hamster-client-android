@@ -2,12 +2,14 @@ package info.rynkowski.hamsterclient.presentation.internal.di.modules;
 
 import dagger.Module;
 import dagger.Provides;
-import info.rynkowski.hamsterclient.data.datasource.HamsterDataSourceImpl;
 import info.rynkowski.hamsterclient.data.dbus.DBusConnector;
 import info.rynkowski.hamsterclient.data.dbus.DBusConnectorImpl;
 import info.rynkowski.hamsterclient.data.dbus.HamsterRemoteObject;
-import info.rynkowski.hamsterclient.data.entity.mapper.FactEntityMapper;
-import info.rynkowski.hamsterclient.domain.datasource.HamsterDataSource;
+import info.rynkowski.hamsterclient.data.repository.HamsterDataRepository;
+import info.rynkowski.hamsterclient.data.repository.datasource.HamsterDataStore;
+import info.rynkowski.hamsterclient.data.repository.datasource.RemoteHamsterDataStore;
+import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 /**
@@ -32,8 +34,13 @@ public class DataModule {
     return new HamsterRemoteObject(dBusConnector);
   }
 
-  @Provides @Singleton HamsterDataSource provideHamsterDataSource(HamsterRemoteObject remoteObject,
-      FactEntityMapper factEntityMapper) {
-    return new HamsterDataSourceImpl(remoteObject, factEntityMapper);
+  @Provides @Singleton @Named("remote") HamsterDataStore remoteHamsterDataStore(
+      HamsterRemoteObject hamsterRemoteObject) {
+    return new RemoteHamsterDataStore(hamsterRemoteObject);
+  }
+
+  @Provides @Singleton HamsterRepository provideHamsterRepository(
+      HamsterDataRepository repository) {
+    return repository;
   }
 }

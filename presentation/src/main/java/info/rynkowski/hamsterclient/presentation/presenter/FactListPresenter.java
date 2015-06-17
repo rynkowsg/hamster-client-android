@@ -20,6 +20,7 @@ public class FactListPresenter implements Presenter {
 
   private static final String TAG = "FactListPresenter";
 
+  //TODO: I think DBusConnector shouldn't be a dependency for presenter, too detail (maybe factory?)
   private final DBusConnector dBusConnector;
   private final AddFactUseCase addFactUseCase;
   private final GetTodaysFactsUseCase getTodaysFactsUseCase;
