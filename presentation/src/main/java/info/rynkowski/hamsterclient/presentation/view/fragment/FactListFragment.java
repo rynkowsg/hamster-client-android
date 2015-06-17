@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +13,17 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import info.rynkowski.hamsterclient.presentation.R;
 import info.rynkowski.hamsterclient.presentation.internal.di.components.FactListComponent;
+import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.presentation.navigation.Navigator;
+import info.rynkowski.hamsterclient.presentation.presenter.FactListPresenter;
+import info.rynkowski.hamsterclient.presentation.view.FactListView;
 import info.rynkowski.hamsterclient.presentation.view.activity.FactFormActivity;
 import info.rynkowski.hamsterclient.presentation.view.adapter.FactsAdapter;
 import info.rynkowski.hamsterclient.presentation.view.adapter.FactsLayoutManager;
-import info.rynkowski.hamsterclient.presentation.model.FactModel;
-import info.rynkowski.hamsterclient.presentation.presenter.FactListPresenter;
-import info.rynkowski.hamsterclient.presentation.view.FactListView;
 import java.util.Collection;
 import javax.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Fragment that shows a list of Facts.
@@ -30,7 +31,7 @@ import javax.inject.Inject;
 public class FactListFragment extends BaseFragment
     implements FactListView, FactsAdapter.OnItemClickListener {
 
-  private static final String TAG = "FactListFragment";
+  private static final Logger log = LoggerFactory.getLogger(FactListFragment.class);
 
   @Inject FactListPresenter factListPresenter;
 
@@ -89,20 +90,22 @@ public class FactListFragment extends BaseFragment
   }
 
   @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    Log.d(TAG, "onActivityResult(requestCode=" + requestCode + ", resultCode=" + resultCode + ")");
     switch (requestCode) {
       case (Navigator.REQUEST_CODE_PICK_FACT):
         if (resultCode == Activity.RESULT_OK) {
+          log.debug("Called onActivityResult(requestCode={}, resultCode={}) : ok", requestCode,
+              resultCode);
           FactModel fact = (FactModel) data.getSerializableExtra(FactFormActivity.EXTRAS_KEY_FACT);
           factListPresenter.addFact(fact);
           showToastMessage("New fact:" + fact.getActivity());
         } else {
-          Log.e(TAG, "onActivityResult failed, requestCode = " + requestCode + ", resultCode = "
-              + resultCode);
+          log.warn("Called onActivityResult(requestCode={}, resultCode={}) : failed", requestCode,
+              resultCode);
         }
         break;
       default:
-        Log.w(TAG, "onActivityResult have got unknown response, requestCode = " + requestCode);
+        log.debug("Called onActivityResult(requestCode={}, resultCode={}) : unknown request code",
+            requestCode, resultCode);
         super.onActivityResult(requestCode, resultCode, data);
     }
   }

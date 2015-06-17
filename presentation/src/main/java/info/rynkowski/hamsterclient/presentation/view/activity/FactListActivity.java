@@ -3,15 +3,16 @@ package info.rynkowski.hamsterclient.presentation.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import info.rynkowski.hamsterclient.presentation.R;
 import info.rynkowski.hamsterclient.presentation.internal.di.HasComponent;
 import info.rynkowski.hamsterclient.presentation.internal.di.components.DaggerFactListComponent;
 import info.rynkowski.hamsterclient.presentation.internal.di.components.FactListComponent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FactListActivity extends BaseActivity implements HasComponent<FactListComponent> {
 
-  private static final String TAG = "FactListActvity";
+  private static final Logger log = LoggerFactory.getLogger(FactListActivity.class);
 
   private FactListComponent factListComponent;
 
@@ -26,10 +27,10 @@ public class FactListActivity extends BaseActivity implements HasComponent<FactL
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    Log.d(TAG, "onActivityResult(requestCode=" + requestCode + ", resultCode=" + resultCode + ")");
     switch (requestCode) {
       default:
-        Log.w(TAG, "onActivityResult have got unknown response, requestCode = " + requestCode);
+        log.debug("Called onActivityResult(requestCode={}, resultCode={}) : unknown request code",
+            requestCode, resultCode);
         super.onActivityResult(requestCode, resultCode, data);
     }
   }

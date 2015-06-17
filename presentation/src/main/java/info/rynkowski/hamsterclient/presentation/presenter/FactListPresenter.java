@@ -1,7 +1,6 @@
 package info.rynkowski.hamsterclient.presentation.presenter;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 import info.rynkowski.hamsterclient.data.dbus.DBusConnector;
 import info.rynkowski.hamsterclient.domain.interactor.AddFactUseCase;
 import info.rynkowski.hamsterclient.domain.interactor.GetTodaysFactsUseCase;
@@ -10,6 +9,8 @@ import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.presentation.model.mapper.FactModelDataMapper;
 import info.rynkowski.hamsterclient.presentation.view.FactListView;
 import javax.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * {@link Presenter} that controls communication between views and models of the presentation
@@ -18,7 +19,7 @@ import javax.inject.Inject;
 @ActivityScope
 public class FactListPresenter implements Presenter {
 
-  private static final String TAG = "FactListPresenter";
+  private static final Logger log = LoggerFactory.getLogger(FactListPresenter.class);
 
   //TODO: I think DBusConnector shouldn't be a dependency for presenter, too detail (maybe factory?)
   private final DBusConnector dBusConnector;
@@ -42,44 +43,43 @@ public class FactListPresenter implements Presenter {
   }
 
   @Override public void initialize() {
-    Log.d(TAG, "initialize()");
     new Thread(dBusConnector::open).start();
+    log.debug("FactList initialized.");
   }
 
   @Override public void resume() {
-    Log.d(TAG, "resume()");
     this.loadFactList();
+    log.debug("FactList resumed.");
   }
 
   @Override public void pause() {
-    Log.d(TAG, "pause()");
-    // Empty
+    log.debug("FactList paused.");
   }
 
   @Override public void destroy() {
-    Log.d(TAG, "destroy()");
     dBusConnector.close();
+    log.debug("FactList destroyed.");
   }
 
   public void onFactClicked(FactModel factModel) {
-    Log.d(TAG, "onFactClicked()");
+    log.trace("onFactClicked()");
     // Empty still
   }
 
   private void loadFactList() {
-    Log.d(TAG, "loadFactList()");
+    log.trace("loadFactList()");
     getTodaysFactsUseCase.execute()
         .map(mapper::transform)
         .subscribe(viewListView::renderFactList);
   }
 
   public void addFact(FactModel fact) {
-    Log.d(TAG, "addFact()");
+    log.trace("addFact()");
     addFactUseCase
         .setFact(mapper.transform(fact))
         .execute()
         .subscribe(
-            id -> Log.i(TAG, "New fact added, id: " + id),
+            id -> log.info("New fact added, id=" + id),
             Throwable::printStackTrace);
   }
 }
