@@ -2,13 +2,14 @@ package info.rynkowski.hamsterclient.presentation.presenter;
 
 import android.support.annotation.NonNull;
 import info.rynkowski.hamsterclient.data.dbus.DBusConnector;
-import info.rynkowski.hamsterclient.domain.interactor.AddFactUseCase;
-import info.rynkowski.hamsterclient.domain.interactor.GetTodaysFactsUseCase;
+import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.interactor.UseCase;
+import info.rynkowski.hamsterclient.domain.interactor.UseCaseArgumentless;
 import info.rynkowski.hamsterclient.presentation.internal.di.ActivityScope;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.presentation.model.mapper.FactModelDataMapper;
 import info.rynkowski.hamsterclient.presentation.view.FactListView;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.slf4j.Logger;
@@ -25,16 +26,18 @@ public class FactListPresenter implements Presenter {
 
   //TODO: I think DBusConnector shouldn't be a dependency for presenter, too detail (maybe factory?)
   private final DBusConnector dBusConnector;
-  private final UseCase addFactUseCase;
-  private final UseCase getTodaysFactsUseCase;
+  private final UseCase<Integer, Fact> addFactUseCase;
+  private final UseCaseArgumentless<List<Fact>> getTodaysFactsUseCase;
 
   private final FactModelDataMapper mapper;
 
   private FactListView viewListView;
 
   @Inject
-  public FactListPresenter(DBusConnector dbusConnector, @Named("AddFact") UseCase addFactUseCase,
-      @Named("GetTodaysFacts") UseCase getTodaysFactsUseCase, FactModelDataMapper mapper) {
+  public FactListPresenter(DBusConnector dbusConnector,
+      @Named("AddFact") UseCase<Integer, Fact> addFactUseCase,
+      @Named("GetTodaysFacts") UseCaseArgumentless<List<Fact>> getTodaysFactsUseCase,
+      FactModelDataMapper mapper) {
     this.dBusConnector = dbusConnector;
     this.addFactUseCase = addFactUseCase;
     this.getTodaysFactsUseCase = getTodaysFactsUseCase;
@@ -71,15 +74,15 @@ public class FactListPresenter implements Presenter {
 
   private void loadFactList() {
     log.trace("loadFactList()");
-    ((GetTodaysFactsUseCase) getTodaysFactsUseCase).execute()
+    getTodaysFactsUseCase.execute()
         .map(mapper::transform)
-        .subscribe(viewListView::renderFactList);
+        .subscribe(viewListView::renderFactList, Throwable::printStackTrace);
   }
 
-  public void addFact(FactModel fact) {
+  public void addFact(FactModel factModel) {
     log.trace("addFact()");
-    ((AddFactUseCase) addFactUseCase).setFact(mapper.transform(fact))
-        .execute()
+    Fact fact = mapper.transform(factModel);
+    addFactUseCase.execute(fact)
         .subscribe(id -> log.info("New fact added, id=" + id), Throwable::printStackTrace);
   }
 }

@@ -22,16 +22,16 @@ import rx.Observable;
 import rx.schedulers.Schedulers;
 
 /**
- * Abstract class for a Use Case (Interactor in terms of Clean Architecture) with arguments.
+ * Abstract class for a Use Case (Interactor in terms of Clean Architecture) without arguments.
  *
  * By convention each UseCase implementation will return the result using a {@link rx.Observable}.
  */
-public abstract class UseCase<Result, Argument> {
+public abstract class UseCaseArgumentless<Result> {
 
   private final ThreadExecutor threadExecutor;
   private final PostExecutionThread postExecutionThread;
 
-  protected UseCase(ThreadExecutor threadExecutor,
+  protected UseCaseArgumentless(ThreadExecutor threadExecutor,
       PostExecutionThread postExecutionThread) {
     this.threadExecutor = threadExecutor;
     this.postExecutionThread = postExecutionThread;
@@ -40,13 +40,13 @@ public abstract class UseCase<Result, Argument> {
   /**
    * Builds an {@link rx.Observable} which will be used when executing the current {@link UseCase}.
    */
-  protected abstract Observable<Result> buildUseCaseObservable(Argument argument);
+  protected abstract Observable<Result> buildUseCaseObservable();
 
   /**
    * Return a {@link rx.Observable} with result of execution.
    */
-  public Observable<Result> execute(Argument argument) {
-    return this.buildUseCaseObservable(argument)
+  public Observable<Result> execute() {
+    return this.buildUseCaseObservable()
         .subscribeOn(Schedulers.from(threadExecutor))
         .observeOn(postExecutionThread.getScheduler());
   }

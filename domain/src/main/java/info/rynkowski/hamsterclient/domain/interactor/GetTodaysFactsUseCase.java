@@ -13,11 +13,12 @@ import rx.Observable;
  * This class is an implementation of {@link UseCase} that represents a use case for
  * retrieving today's {@link info.rynkowski.hamsterclient.domain.entities.Fact}s.
  */
-public class GetTodaysFactsUseCase extends UseCase<List<Fact>> {
+public class GetTodaysFactsUseCase extends UseCaseArgumentless<List<Fact>> {
 
   private HamsterRepository hamsterRepository;
 
-  @Inject public GetTodaysFactsUseCase(@Named("remote") HamsterRepository hamsterRepository,
+  @Inject
+  public GetTodaysFactsUseCase(@Named("remote") HamsterRepository hamsterRepository,
       ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
     super(threadExecutor, postExecutionThread);
     this.hamsterRepository = hamsterRepository;
