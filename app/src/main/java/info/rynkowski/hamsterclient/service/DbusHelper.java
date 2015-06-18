@@ -86,7 +86,6 @@ public class DbusHelper {
                 @Override
                 public void run() {
                     try {
-                        Hamster hamster = mDbusConnection.getRemoteObject("org.gnome.Hamster", "/org/gnome/Hamster", Hamster.class);
                         mDbusConnection.addSigHandler(Hamster.ActivitiesChanged.class, new DBusSigHandler<Hamster.ActivitiesChanged>() {
                             @Override
                             public void handle(Hamster.ActivitiesChanged s) {
