@@ -8,16 +8,15 @@ import javax.inject.Singleton;
  * Factory that creates different implementations of {@link HamsterDataStore}.
  */
 @Singleton
-public class HamsterDataStoreFactory {
+public class HamsterDataStoreFactory implements DataStoreFactory {
 
   private HamsterDataStore remoteStore;
 
-  @Inject
-  public HamsterDataStoreFactory(@Named("remote") HamsterDataStore remoteHamsterDataStore) {
+  @Inject public HamsterDataStoreFactory(@Named("remote") HamsterDataStore remoteHamsterDataStore) {
     this.remoteStore = remoteHamsterDataStore;
   }
 
-  public HamsterDataStore getStore() {
+  @Override public HamsterDataStore getStore() {
     return remoteStore;
   }
 }

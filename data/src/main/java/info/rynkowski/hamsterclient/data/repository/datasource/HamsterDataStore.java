@@ -7,7 +7,7 @@ import rx.Observable;
 /**
  * Interface that represents a data store from where data is retrieved.
  */
-public interface HamsterDataStore {
+public interface HamsterDataStore extends DataStore {
 
   /**
    * Get an {@link rx.Observable} which will emit a today's list of {@link FactEntity}.
