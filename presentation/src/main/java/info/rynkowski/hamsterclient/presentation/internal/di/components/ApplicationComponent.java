@@ -2,7 +2,7 @@ package info.rynkowski.hamsterclient.presentation.internal.di.components;
 
 import android.content.Context;
 import dagger.Component;
-import info.rynkowski.hamsterclient.data.dbus.DBusConnector;
+import info.rynkowski.hamsterclient.data.dbus.DBusConnectionProvider;
 import info.rynkowski.hamsterclient.domain.executor.PostExecutionThread;
 import info.rynkowski.hamsterclient.domain.executor.ThreadExecutor;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
@@ -33,7 +33,7 @@ public interface ApplicationComponent {
 
   PostExecutionThread postExecutionThread();
 
-  DBusConnector dBusConnector();
+  DBusConnectionProvider dBusConnectionProvider();
 
   HamsterRepository hamsterRepository();
 }

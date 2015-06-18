@@ -1,7 +1,7 @@
 package info.rynkowski.hamsterclient.presentation.presenter;
 
 import android.support.annotation.NonNull;
-import info.rynkowski.hamsterclient.data.dbus.DBusConnector;
+import info.rynkowski.hamsterclient.data.dbus.DBusConnectionProvider;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.interactor.UseCase;
 import info.rynkowski.hamsterclient.domain.interactor.UseCaseArgumentless;
@@ -25,7 +25,7 @@ public class FactListPresenter implements Presenter {
   private static final Logger log = LoggerFactory.getLogger(FactListPresenter.class);
 
   //TODO: I think DBusConnector shouldn't be a dependency for presenter, too detail (maybe factory?)
-  private final DBusConnector dBusConnector;
+  private final DBusConnectionProvider connectionProvider;
   private final UseCase<Integer, Fact> addFactUseCase;
   private final UseCaseArgumentless<List<Fact>> getTodaysFactsUseCase;
 
@@ -34,11 +34,11 @@ public class FactListPresenter implements Presenter {
   private FactListView viewListView;
 
   @Inject
-  public FactListPresenter(DBusConnector dbusConnector,
+  public FactListPresenter(DBusConnectionProvider connectionProvider,
       @Named("AddFact") UseCase<Integer, Fact> addFactUseCase,
       @Named("GetTodaysFacts") UseCaseArgumentless<List<Fact>> getTodaysFactsUseCase,
       FactModelDataMapper mapper) {
-    this.dBusConnector = dbusConnector;
+    this.connectionProvider = connectionProvider;
     this.addFactUseCase = addFactUseCase;
     this.getTodaysFactsUseCase = getTodaysFactsUseCase;
     this.mapper = mapper;
@@ -49,7 +49,6 @@ public class FactListPresenter implements Presenter {
   }
 
   @Override public void initialize() {
-    new Thread(dBusConnector::open).start();
     log.debug("FactList initialized.");
   }
 
@@ -63,7 +62,7 @@ public class FactListPresenter implements Presenter {
   }
 
   @Override public void destroy() {
-    dBusConnector.close();
+    connectionProvider.close();
     log.debug("FactList destroyed.");
   }
 

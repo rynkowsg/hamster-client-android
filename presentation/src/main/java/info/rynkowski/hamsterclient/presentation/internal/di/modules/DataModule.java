@@ -2,8 +2,8 @@ package info.rynkowski.hamsterclient.presentation.internal.di.modules;
 
 import dagger.Module;
 import dagger.Provides;
-import info.rynkowski.hamsterclient.data.dbus.DBusConnector;
-import info.rynkowski.hamsterclient.data.dbus.DBusConnectorImpl;
+import info.rynkowski.hamsterclient.data.dbus.DBusConnectionProvider;
+import info.rynkowski.hamsterclient.data.dbus.DBusConnectionProviderOverNetwork;
 import info.rynkowski.hamsterclient.data.dbus.HamsterRemoteObject;
 import info.rynkowski.hamsterclient.data.repository.HamsterDataRepository;
 import info.rynkowski.hamsterclient.data.repository.datasource.HamsterDataStore;
@@ -26,12 +26,13 @@ public class DataModule {
     this.port = port;
   }
 
-  @Provides @Singleton DBusConnector provideDBusConnector() {
-    return new DBusConnectorImpl(host, port);
+  @Provides @Singleton DBusConnectionProvider provideDBusConnectionProvider() {
+    return new DBusConnectionProviderOverNetwork(host, port);
   }
 
-  @Provides @Singleton HamsterRemoteObject provideHamsterRemoteObject(DBusConnector dBusConnector) {
-    return new HamsterRemoteObject(dBusConnector);
+  @Provides @Singleton HamsterRemoteObject provideHamsterRemoteObject(
+      DBusConnectionProvider connectionProvider) {
+    return new HamsterRemoteObject(connectionProvider);
   }
 
   @Provides @Singleton @Named("remote") HamsterDataStore remoteHamsterDataStore(

@@ -9,15 +9,15 @@ public abstract class RemoteObjectAbstract<T> implements RemoteObject<T> {
 
   private static final Logger log = LoggerFactory.getLogger(RemoteObjectAbstract.class);
 
-  private DBusConnector connector;
+  private DBusConnectionProvider connectionProvider;
   private String busName;
   private String objectPath;
   private Class dbusType;
   private T remoteObject;
 
-  public RemoteObjectAbstract(DBusConnector connector, String busName, String objectPath,
-      Class dbusType) {
-    this.connector = connector;
+  public RemoteObjectAbstract(DBusConnectionProvider connectionProvider, String busName,
+      String objectPath, Class dbusType) {
+    this.connectionProvider = connectionProvider;
     this.busName = busName;
     this.objectPath = objectPath;
     this.dbusType = dbusType;
@@ -29,12 +29,8 @@ public abstract class RemoteObjectAbstract<T> implements RemoteObject<T> {
   }
 
   @SuppressWarnings("unchecked") protected void possessRemoteObject() {
-    if (!connector.isOpen()) {
-      connector.open();
-    }
-
     try {
-      DBusConnection connection = connector.getConnection();
+      DBusConnection connection = connectionProvider.get();
 
       log.debug("Possesing DBus remote object started:");
       log.debug("    busName:    {}", busName);

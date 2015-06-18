@@ -10,7 +10,7 @@ public class HamsterRemoteObject extends RemoteObjectAbstract<Hamster> {
   private static final String objectPath = "/org/gnome/Hamster";
   private static final Class dbusType = Hamster.class;
 
-  @Inject public HamsterRemoteObject(DBusConnector connector) {
-    super(connector, busName, objectPath, dbusType);
+  @Inject public HamsterRemoteObject(DBusConnectionProvider connectionProvider) {
+    super(connectionProvider, busName, objectPath, dbusType);
   }
 }
