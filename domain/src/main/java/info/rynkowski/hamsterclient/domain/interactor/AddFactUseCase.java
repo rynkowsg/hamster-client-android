@@ -7,7 +7,6 @@ import info.rynkowski.hamsterclient.domain.executor.ThreadExecutor;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.inject.Singleton;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import rx.Observable;
@@ -16,7 +15,6 @@ import rx.Observable;
  * This class is an implementation of {@link UseCase} that represents a use case for
  * adding a new {@link info.rynkowski.hamsterclient.domain.entities.Fact}.
  */
-@Singleton
 public class AddFactUseCase extends UseCase<Integer> {
 
   private HamsterRepository hamsterRepository;

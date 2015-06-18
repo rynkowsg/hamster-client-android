@@ -7,14 +7,12 @@ import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.inject.Singleton;
 import rx.Observable;
 
 /**
  * This class is an implementation of {@link UseCase} that represents a use case for
  * retrieving today's {@link info.rynkowski.hamsterclient.domain.entities.Fact}s.
  */
-@Singleton
 public class GetTodaysFactsUseCase extends UseCase<List<Fact>> {
 
   private HamsterRepository hamsterRepository;

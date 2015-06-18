@@ -78,8 +78,6 @@ public class FactListPresenter implements Presenter {
     addFactUseCase
         .setFact(mapper.transform(fact))
         .execute()
-        .subscribe(
-            id -> log.info("New fact added, id=" + id),
-            Throwable::printStackTrace);
+        .subscribe(id -> log.info("New fact added, id=" + id), Throwable::printStackTrace);
   }
 }
