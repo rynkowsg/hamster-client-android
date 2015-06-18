@@ -22,7 +22,7 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
   }
 
   @Override public Observable<List<FactEntity>> getTodaysFactEntities() {
-    return Observable.defer(() -> Observable.just(hamsterObject.get()))
+    return Observable.defer(hamsterObject::getObservable)
         .map(Hamster::GetTodaysFacts)
         .flatMap(Observable::from)
         .map(FactEntity::new)
@@ -34,7 +34,7 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
     int startTime = factEntity.getStartTime();
     int endTime = factEntity.getEndTime();
 
-    return Observable.defer(() -> Observable.just(hamsterObject.get()))
+    return Observable.defer(hamsterObject::getObservable)
         .doOnNext(object -> {
           log.debug("Calling AddFact() on remote DBus object:");
           log.debug("    serializedName: \"{}\"", serializedName);
