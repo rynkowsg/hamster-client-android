@@ -43,4 +43,20 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
         })
         .map(remoteObject -> remoteObject.AddFact(serializedName, startTime, endTime, false));
   }
+
+  @Override public Observable<Void> signalActivitiesChanged() {
+    return hamsterObject.signalActivitiesChanged();
+  }
+
+  @Override public Observable<Void> signalFactsChanged() {
+    return hamsterObject.signalFactsChanged();
+  }
+
+  @Override public Observable<Void> signalTagsChanged() {
+    return hamsterObject.signalTagsChanged();
+  }
+
+  @Override public Observable<Void> signalToggleCalled() {
+    return hamsterObject.signalToggleCalled();
+  }
 }

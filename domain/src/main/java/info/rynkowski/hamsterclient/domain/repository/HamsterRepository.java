@@ -12,4 +12,12 @@ public interface HamsterRepository {
   Observable<List<Fact>> getTodaysFacts();
 
   Observable<Integer> addFact(Fact fact);
+
+  Observable<Void> signalActivitiesChanged();
+
+  Observable<Void> signalFactsChanged();
+
+  Observable<Void> signalTagsChanged();
+
+  Observable<Void> signalToggleCalled();
 }

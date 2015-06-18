@@ -38,4 +38,20 @@ public class HamsterDataRepository implements HamsterRepository {
     FactEntity factEntity = factEntityMapper.transform(fact);
     return hamsterDataStoreFactory.getStore().addFactEntity(factEntity);
   }
+
+  @Override public Observable<Void> signalActivitiesChanged() {
+    return hamsterDataStoreFactory.getStore().signalActivitiesChanged();
+  }
+
+  @Override public Observable<Void> signalFactsChanged() {
+    return hamsterDataStoreFactory.getStore().signalFactsChanged();
+  }
+
+  @Override public Observable<Void> signalTagsChanged() {
+    return hamsterDataStoreFactory.getStore().signalTagsChanged();
+  }
+
+  @Override public Observable<Void> signalToggleCalled() {
+    return hamsterDataStoreFactory.getStore().signalToggleCalled();
+  }
 }

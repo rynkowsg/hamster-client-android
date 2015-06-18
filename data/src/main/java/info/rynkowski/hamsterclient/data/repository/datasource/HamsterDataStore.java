@@ -21,4 +21,12 @@ public interface HamsterDataStore extends DataStore {
    * @return The id of added {@link FactEntity}.
    */
   Observable<Integer> addFactEntity(FactEntity factEntity);
+
+  Observable<Void> signalActivitiesChanged();
+
+  Observable<Void> signalFactsChanged();
+
+  Observable<Void> signalTagsChanged();
+
+  Observable<Void> signalToggleCalled();
 }
