@@ -10,13 +10,13 @@ import javax.inject.Singleton;
 @Singleton
 public class HamsterDataStoreFactory implements DataStoreFactory {
 
-  private HamsterDataStore remoteStore;
+  private HamsterDataStore dataStore;
 
   @Inject public HamsterDataStoreFactory(@Named("remote") HamsterDataStore remoteHamsterDataStore) {
-    this.remoteStore = remoteHamsterDataStore;
+    this.dataStore = remoteHamsterDataStore;
   }
 
   @Override public HamsterDataStore getStore() {
-    return remoteStore;
+    return dataStore;
   }
 }

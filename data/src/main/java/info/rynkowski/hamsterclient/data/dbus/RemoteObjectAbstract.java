@@ -5,7 +5,7 @@ import org.freedesktop.dbus.exceptions.DBusException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class RemoteObjectAbstract<T> implements RemoteObject<T> {
+public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
 
   private static final Logger log = LoggerFactory.getLogger(RemoteObjectAbstract.class);
 
@@ -13,7 +13,7 @@ public abstract class RemoteObjectAbstract<T> implements RemoteObject<T> {
   private String busName;
   private String objectPath;
   private Class dbusType;
-  private T remoteObject;
+  private Type remoteObject;
 
   public RemoteObjectAbstract(DBusConnectionProvider connectionProvider, String busName,
       String objectPath, Class dbusType) {
@@ -22,10 +22,6 @@ public abstract class RemoteObjectAbstract<T> implements RemoteObject<T> {
     this.objectPath = objectPath;
     this.dbusType = dbusType;
     this.remoteObject = null;
-  }
-
-  protected boolean isPossessed() {
-    return remoteObject != null;
   }
 
   @SuppressWarnings("unchecked") protected void possessRemoteObject() {
@@ -37,14 +33,14 @@ public abstract class RemoteObjectAbstract<T> implements RemoteObject<T> {
       log.debug("    objectPath: {}", objectPath);
       log.debug("    dbusType:   {}", dbusType);
 
-      remoteObject = (T) connection.getRemoteObject(busName, objectPath, dbusType);
+      remoteObject = (Type) connection.getRemoteObject(busName, objectPath, dbusType);
     } catch (DBusException e) {
       e.printStackTrace();
     }
   }
 
-  @Override public T get() {
-    if (!isPossessed()) {
+  @Override public Type get() {
+    if (remoteObject == null) {
       possessRemoteObject();
     }
     return remoteObject;
