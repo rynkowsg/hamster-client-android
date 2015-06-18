@@ -4,11 +4,13 @@ import android.support.annotation.NonNull;
 import info.rynkowski.hamsterclient.data.dbus.DBusConnector;
 import info.rynkowski.hamsterclient.domain.interactor.AddFactUseCase;
 import info.rynkowski.hamsterclient.domain.interactor.GetTodaysFactsUseCase;
+import info.rynkowski.hamsterclient.domain.interactor.UseCase;
 import info.rynkowski.hamsterclient.presentation.internal.di.ActivityScope;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.presentation.model.mapper.FactModelDataMapper;
 import info.rynkowski.hamsterclient.presentation.view.FactListView;
 import javax.inject.Inject;
+import javax.inject.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,15 +25,16 @@ public class FactListPresenter implements Presenter {
 
   //TODO: I think DBusConnector shouldn't be a dependency for presenter, too detail (maybe factory?)
   private final DBusConnector dBusConnector;
-  private final AddFactUseCase addFactUseCase;
-  private final GetTodaysFactsUseCase getTodaysFactsUseCase;
+  private final UseCase addFactUseCase;
+  private final UseCase getTodaysFactsUseCase;
 
   private final FactModelDataMapper mapper;
 
   private FactListView viewListView;
 
-  @Inject public FactListPresenter(DBusConnector dbusConnector, AddFactUseCase addFactUseCase,
-      GetTodaysFactsUseCase getTodaysFactsUseCase, FactModelDataMapper mapper) {
+  @Inject
+  public FactListPresenter(DBusConnector dbusConnector, @Named("AddFact") UseCase addFactUseCase,
+      @Named("GetTodaysFacts") UseCase getTodaysFactsUseCase, FactModelDataMapper mapper) {
     this.dBusConnector = dbusConnector;
     this.addFactUseCase = addFactUseCase;
     this.getTodaysFactsUseCase = getTodaysFactsUseCase;
@@ -68,15 +71,14 @@ public class FactListPresenter implements Presenter {
 
   private void loadFactList() {
     log.trace("loadFactList()");
-    getTodaysFactsUseCase.execute()
+    ((GetTodaysFactsUseCase) getTodaysFactsUseCase).execute()
         .map(mapper::transform)
         .subscribe(viewListView::renderFactList);
   }
 
   public void addFact(FactModel fact) {
     log.trace("addFact()");
-    addFactUseCase
-        .setFact(mapper.transform(fact))
+    ((AddFactUseCase) addFactUseCase).setFact(mapper.transform(fact))
         .execute()
         .subscribe(id -> log.info("New fact added, id=" + id), Throwable::printStackTrace);
   }
