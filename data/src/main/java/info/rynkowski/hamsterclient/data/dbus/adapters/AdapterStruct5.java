@@ -1,8 +1,7 @@
 package info.rynkowski.hamsterclient.data.dbus.adapters;
 
-import org.gnome.Struct5;
-
 import java.util.List;
+import org.gnome.Struct5;
 
 // used in:
 //   public List<Struct7> GetFacts(UInt32 start_date, UInt32 end_date, String search_terms, UInt32 limit, boolean asc_by_date);

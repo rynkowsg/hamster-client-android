@@ -19,14 +19,16 @@ public class HamsterDataRepository implements HamsterRepository {
   private HamsterDataStoreFactory hamsterDataStoreFactory;
   private FactEntityMapper factEntityMapper;
 
-  @Inject public HamsterDataRepository(HamsterDataStoreFactory hamsterDataStoreFactory,
+  @Inject
+  public HamsterDataRepository(HamsterDataStoreFactory hamsterDataStoreFactory,
       FactEntityMapper factEntityMapper) {
     this.hamsterDataStoreFactory = hamsterDataStoreFactory;
     this.factEntityMapper = factEntityMapper;
   }
 
   @Override public Observable<List<Fact>> getTodaysFacts() {
-    return hamsterDataStoreFactory.getStore().getTodaysFactEntities()
+    return hamsterDataStoreFactory.getStore()
+        .getTodaysFactEntities()
         .flatMap(Observable::from)
         .map(factEntityMapper::transform)
         .toList();

@@ -1,8 +1,7 @@
 package info.rynkowski.hamsterclient.data.dbus.adapters;
 
-import org.gnome.Struct7;
-
 import java.util.List;
+import org.gnome.Struct7;
 
 // used in:
 //   public List<Struct5> GetTodaysFacts();

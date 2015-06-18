@@ -1,18 +1,19 @@
 package info.rynkowski.hamsterclient.data.repository.datasource;
 
-import android.util.Log;
 import info.rynkowski.hamsterclient.data.dbus.HamsterRemoteObject;
 import info.rynkowski.hamsterclient.data.entity.FactEntity;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.gnome.Hamster;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import rx.Observable;
 
 @Singleton
 public class RemoteHamsterDataStore implements HamsterDataStore {
 
-  private static final String TAG = "RemoteHamsterDataStore";
+  private static final Logger log = LoggerFactory.getLogger(RemoteHamsterDataStore.class);
 
   private HamsterRemoteObject hamsterObject;
 
@@ -23,19 +24,23 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
   @Override public Observable<List<FactEntity>> getTodaysFactEntities() {
     return Observable.defer(() -> Observable.just(hamsterObject.get()))
         .map(Hamster::GetTodaysFacts)
-        .flatMap(Observable::from).map(FactEntity::new).toList();
+        .flatMap(Observable::from)
+        .map(FactEntity::new)
+        .toList();
   }
 
   @Override public Observable<Integer> addFactEntity(FactEntity factEntity) {
     String serializedName = factEntity.serializedName();
     int startTime = factEntity.getStartTime();
     int endTime = factEntity.getEndTime();
-    Log.d(TAG,
-        "AddFact( {serializedName:\"" + serializedName + "\", startTime:" + startTime + ", endTime:"
-            + endTime + "} )");
 
     return Observable.defer(() -> Observable.just(hamsterObject.get()))
-        .map(remoteObject -> remoteObject.AddFact(serializedName, startTime, endTime, false))
-        .doOnNext(result -> Log.d(TAG, "Result of AddFact(): " + result));
+        .doOnNext(object -> {
+          log.debug("Calling AddFact() on remote DBus object:");
+          log.debug("    serializedName: \"{}\"", serializedName);
+          log.debug("    startTime:      {}", startTime);
+          log.debug("    endTime:        {}", endTime);
+        })
+        .map(remoteObject -> remoteObject.AddFact(serializedName, startTime, endTime, false));
   }
 }

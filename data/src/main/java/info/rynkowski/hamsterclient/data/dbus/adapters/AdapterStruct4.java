@@ -1,8 +1,7 @@
 package info.rynkowski.hamsterclient.data.dbus.adapters;
 
-import org.gnome.Struct4;
-
 import java.util.List;
+import org.gnome.Struct4;
 
 // used in:
 //   public Struct4 GetFact(int fact_id);

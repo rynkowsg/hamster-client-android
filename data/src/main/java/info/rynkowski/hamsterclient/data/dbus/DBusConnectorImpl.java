@@ -1,14 +1,15 @@
 package info.rynkowski.hamsterclient.data.dbus;
 
-import android.util.Log;
 import javax.inject.Singleton;
 import org.freedesktop.dbus.DBusConnection;
 import org.freedesktop.dbus.exceptions.DBusException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Singleton
 public class DBusConnectorImpl implements DBusConnector {
 
-  private static final String TAG = "DBusConnectorImpl";
+  private static final Logger log = LoggerFactory.getLogger(DBusConnectorImpl.class);
 
   private DBusConnection connection;
 
@@ -26,23 +27,23 @@ public class DBusConnectorImpl implements DBusConnector {
       long startTime = System.currentTimeMillis();
       try {
         String address = dbusAddress(addressHost, addressPort);
-        Log.d(TAG, "Opening D-Bus connection on address \"" + address + "\"");
+        log.debug("Opening D-Bus connection on address: {}", address);
         connection = DBusConnection.getConnection(address);
-        Log.i(TAG, "D-Bus connection has been established successfully.");
+        log.info("D-Bus connection has been established successfully.");
       } catch (DBusException e) {
         e.printStackTrace();
-        Log.e(TAG, "D-Bus connection has not been established.");
+        log.error("D-Bus connection has not been established.");
         connection = null;
       }
       long difference = System.currentTimeMillis() - startTime;
-      Log.d(TAG, "Getting dbus connection took " + difference / 1000 + " seconds");
+      log.debug("Getting dbus connection took {} seconds", difference / 1000);
     }
   }
 
   @Override public void close() {
     connection.disconnect();
     connection = null;
-    Log.i(TAG, "D-Bus connection closed.");
+    log.info("D-Bus connection closed.");
   }
 
   @Override public Boolean isOpen() {
@@ -50,8 +51,9 @@ public class DBusConnectorImpl implements DBusConnector {
   }
 
   @Override public DBusConnection getConnection() {
-    if (!isOpen())
+    if (!isOpen()) {
       open();
+    }
     return connection;
   }
 

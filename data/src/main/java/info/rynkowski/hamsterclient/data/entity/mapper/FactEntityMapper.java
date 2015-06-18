@@ -15,8 +15,7 @@ import org.gnome.Struct7;
 @Singleton
 public class FactEntityMapper {
 
-  @Inject
-  public FactEntityMapper() {
+  @Inject public FactEntityMapper() {
     //empty
   }
 
@@ -42,9 +41,9 @@ public class FactEntityMapper {
 
   public Fact transform(FactEntity factEntity) {
     Calendar startTime = Calendar.getInstance();
-    startTime.setTime(new Date((long)(factEntity.getStartTime())*1000));
+    startTime.setTime(new Date((long) (factEntity.getStartTime()) * 1000));
     Calendar endTime = Calendar.getInstance();
-    endTime.setTime(new Date((long)(factEntity.getEndTime())*1000));
+    endTime.setTime(new Date((long) (factEntity.getEndTime()) * 1000));
 
     Activity activity = new Activity(factEntity.getActivity(), factEntity.getCategory());
     return new Fact.Builder().activity(activity)
@@ -58,8 +57,10 @@ public class FactEntityMapper {
   public FactEntity transform(Fact fact) {
     return new FactEntity.Builder().activity(fact.getActivity().getName())
         .category(fact.getActivity().getCategory())
-        .startTime((int)(fact.getStartTime().getTimeInMillis()/1000))
-        .endTime((int) (fact.getEndTime().getTimeInMillis()/1000))
-        .description(fact.getDescription()).tags(fact.getTags()).build();
+        .startTime((int) (fact.getStartTime().getTimeInMillis() / 1000))
+        .endTime((int) (fact.getEndTime().getTimeInMillis() / 1000))
+        .description(fact.getDescription())
+        .tags(fact.getTags())
+        .build();
   }
 }

@@ -1,12 +1,13 @@
 package info.rynkowski.hamsterclient.data.dbus;
 
-import android.util.Log;
 import org.freedesktop.dbus.DBusConnection;
 import org.freedesktop.dbus.exceptions.DBusException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class RemoteObjectAbstract<T> implements RemoteObject<T> {
 
-  public static final String TAG = "RemoteObjectAbstract";
+  private static final Logger log = LoggerFactory.getLogger(RemoteObjectAbstract.class);
 
   private DBusConnector connector;
   private String busName;
@@ -28,28 +29,25 @@ public abstract class RemoteObjectAbstract<T> implements RemoteObject<T> {
   }
 
   @SuppressWarnings("unchecked") protected void possessRemoteObject() {
-    Log.d(TAG, "Possesing remote object started");
-    Log.d(TAG, "  busName = " + busName);
-    Log.d(TAG, "  objectPath = " + objectPath);
-    Log.d(TAG, "  dbusType = " + dbusType);
-
     if (!connector.isOpen()) {
       connector.open();
     }
 
     try {
       DBusConnection connection = connector.getConnection();
-      Log.d(TAG, "connector.getConnection() = " + connection);
+
+      log.debug("Possesing DBus remote object started:");
+      log.debug("    busName:    {}", busName);
+      log.debug("    objectPath: {}", objectPath);
+      log.debug("    dbusType:   {}", dbusType);
+
       remoteObject = (T) connection.getRemoteObject(busName, objectPath, dbusType);
-      Log.d(TAG, "connection.getRemoteObject(" + busName + ", " + objectPath + ", "
-            + dbusType + ") = " + remoteObject);
     } catch (DBusException e) {
       e.printStackTrace();
     }
   }
 
-  @Override
-  public T get() {
+  @Override public T get() {
     if (!isPossessed()) {
       possessRemoteObject();
     }
