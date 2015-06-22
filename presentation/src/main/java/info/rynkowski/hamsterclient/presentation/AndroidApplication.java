@@ -5,7 +5,7 @@ import info.rynkowski.hamsterclient.presentation.internal.di.components.Applicat
 import info.rynkowski.hamsterclient.presentation.internal.di.components.DaggerApplicationComponent;
 import info.rynkowski.hamsterclient.presentation.internal.di.modules.ApplicationModule;
 import info.rynkowski.hamsterclient.presentation.internal.di.modules.DataModule;
-import timber.log.Timber;
+//import timber.log.Timber;
 
 public class AndroidApplication extends Application {
 
@@ -26,7 +26,7 @@ public class AndroidApplication extends Application {
   }
 
   private void initializeLogger() {
-    Timber.plant(new Timber.DebugTree());
+    //Timber.plant(new Timber.DebugTree());
   }
 
   public ApplicationComponent getApplicationComponent() {

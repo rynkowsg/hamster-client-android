@@ -25,6 +25,7 @@ ext {
   slf4jApiVersion = '1.7.12'
   slf4jTimberVersion = '2.0'
   timberVersion = '3.1.0'
+  androidLoggerVersion = '1.3.5'
 
   appDependencies = [
       supportV4:          "com.android.support:support-v4:${supportV4Version}",
@@ -43,8 +44,10 @@ ext {
       lombok:             "org.projectlombok:lombok:${lombokVersion}",
       rxAndroid:          "io.reactivex:rxandroid:${rxAndroidVersion}",
       rxJava:             "io.reactivex:rxjava:${rxJavaVersion}",
-      slf4jTimber:        "com.arcao:slf4j-timber:${slf4jTimberVersion}",
-      timber:             "com.jakewharton.timber:timber:${timberVersion}",
+//      slf4jTimber:        "com.arcao:slf4j-timber:${slf4jTimberVersion}",
+//      timber:             "com.jakewharton.timber:timber:${timberVersion}",
+      androidLogger:      "com.noveogroup.android:android-logger:${androidLoggerVersion}",
+      slf4jApi:           "org.slf4j:slf4j-api:${slf4jApiVersion}",
   ]
 
   domainDependencies = [
@@ -66,7 +69,9 @@ ext {
       lombok:             "org.projectlombok:lombok:${lombokVersion}",
       rxAndroid:          "io.reactivex:rxandroid:${rxAndroidVersion}",
       rxJava:             "io.reactivex:rxjava:${rxJavaVersion}",
-      slf4jTimber:        "com.arcao:slf4j-timber:${slf4jTimberVersion}",
-      timber:             "com.jakewharton.timber:timber:${timberVersion}",
+//      slf4jTimber:        "com.arcao:slf4j-timber:${slf4jTimberVersion}",
+//      timber:             "com.jakewharton.timber:timber:${timberVersion}",
+      androidLogger:      "com.noveogroup.android:android-logger:${androidLoggerVersion}",
+      slf4jApi:           "org.slf4j:slf4j-api:${slf4jApiVersion}",
   ]
 }
