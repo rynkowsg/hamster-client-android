@@ -6,7 +6,7 @@ import org.freedesktop.dbus.exceptions.DBusException;
 /**
  * Interface representing a connection provider for {@link org.freedesktop.dbus.DBusConnection}s.
  */
-public interface DBusConnectionProvider {
+public interface ConnectionProvider {
 
   /**
    * Returns {@link org.freedesktop.dbus.DBusConnection}s.

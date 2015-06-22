@@ -10,14 +10,14 @@ import rx.Observable;
 public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
 
   private static final Logger log = LoggerFactory.getLogger(RemoteObjectAbstract.class);
-  private DBusConnectionProvider connectionProvider;
+  private ConnectionProvider connectionProvider;
   private String busName;
   private String objectPath;
   private Class dbusType;
   private volatile Type remoteObject;
   private Observable<Type> remoteObjectObservable;
 
-  public RemoteObjectAbstract(DBusConnectionProvider connectionProvider, String busName,
+  public RemoteObjectAbstract(ConnectionProvider connectionProvider, String busName,
       String objectPath, Class dbusType) {
     this.connectionProvider = connectionProvider;
     this.busName = busName;

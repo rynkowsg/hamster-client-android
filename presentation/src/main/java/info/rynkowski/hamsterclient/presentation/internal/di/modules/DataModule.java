@@ -2,8 +2,8 @@ package info.rynkowski.hamsterclient.presentation.internal.di.modules;
 
 import dagger.Module;
 import dagger.Provides;
-import info.rynkowski.hamsterclient.data.dbus.DBusConnectionProvider;
-import info.rynkowski.hamsterclient.data.dbus.DBusConnectionProviderOverNetwork;
+import info.rynkowski.hamsterclient.data.dbus.ConnectionProvider;
+import info.rynkowski.hamsterclient.data.dbus.ConnectionProviderOverNetwork;
 import info.rynkowski.hamsterclient.data.dbus.HamsterRemoteObject;
 import info.rynkowski.hamsterclient.data.repository.HamsterDataRepository;
 import info.rynkowski.hamsterclient.data.repository.datasource.HamsterDataStore;
@@ -15,8 +15,7 @@ import javax.inject.Singleton;
 /**
  * Dagger module that provides collaborators from Data layer.
  */
-@Module
-public class DataModule {
+@Module public class DataModule {
 
   private final String host;
   private final String port;
@@ -26,17 +25,17 @@ public class DataModule {
     this.port = port;
   }
 
-  @Provides @Singleton DBusConnectionProvider provideDBusConnectionProvider() {
-    return new DBusConnectionProviderOverNetwork(host, port);
+  @Provides @Singleton ConnectionProvider provideDBusConnectionProvider() {
+    return new ConnectionProviderOverNetwork(host, port);
   }
 
   @Provides @Singleton HamsterRemoteObject provideHamsterRemoteObject(
-      DBusConnectionProvider connectionProvider) {
+      ConnectionProvider connectionProvider) {
     return new HamsterRemoteObject(connectionProvider);
   }
 
   @Provides @Singleton @Named("remote") HamsterDataStore remoteHamsterDataStore(
-      DBusConnectionProvider connectionProvider, HamsterRemoteObject hamsterRemoteObject) {
+      ConnectionProvider connectionProvider, HamsterRemoteObject hamsterRemoteObject) {
     return new RemoteHamsterDataStore(connectionProvider, hamsterRemoteObject);
   }
 
