@@ -1,7 +1,6 @@
 package info.rynkowski.hamsterclient.domain.interactor;
 
 import info.rynkowski.hamsterclient.domain.entities.Fact;
-import info.rynkowski.hamsterclient.domain.exception.NotInitializedException;
 import info.rynkowski.hamsterclient.domain.executor.PostExecutionThread;
 import info.rynkowski.hamsterclient.domain.executor.ThreadExecutor;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
@@ -25,8 +24,7 @@ public class AddFactUseCase extends UseCase<Integer, Fact> {
 
   @Override protected Observable<Integer> buildUseCaseObservable(Fact fact) {
     if (fact == null) {
-      return Observable.error(
-          new NotInitializedException("Use Case is not initialized - fact was not provided"));
+      return Observable.error(new NullPointerException("fact should not be null"));
     }
     return hamsterRepository.addFact(fact);
   }
