@@ -1,6 +1,5 @@
 package info.rynkowski.hamsterclient.data.dbus;
 
-import org.freedesktop.dbus.DBusConnection;
 import org.freedesktop.dbus.DBusSigHandler;
 import org.freedesktop.dbus.DBusSignal;
 import org.freedesktop.dbus.exceptions.DBusException;
@@ -15,7 +14,8 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
   private String busName;
   private String objectPath;
   private Class dbusType;
-  private Type remoteObject;
+  private volatile Type remoteObject;
+  private Observable<Type> remoteObjectObservable;
 
   public RemoteObjectAbstract(DBusConnectionProvider connectionProvider, String busName,
       String objectPath, Class dbusType) {
@@ -24,50 +24,41 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
     this.objectPath = objectPath;
     this.dbusType = dbusType;
     this.remoteObject = null;
+    this.remoteObjectObservable = null;
   }
 
-  @SuppressWarnings("unchecked") protected void possessRemoteObject() throws DBusException {
-      DBusConnection connection = connectionProvider.get();
-
-      log.debug("Possesing DBus remote object started:");
+  @SuppressWarnings("unchecked") @Override public synchronized Type get() throws DBusException {
+    if (remoteObject == null) {
+      log.debug("Possesing D-Bus remote object started:");
       log.debug("    busName:    {}", busName);
       log.debug("    objectPath: {}", objectPath);
       log.debug("    dbusType:   {}", dbusType);
-
-      remoteObject = (Type) connection.getRemoteObject(busName, objectPath, dbusType);
-  }
-
-  @Override public Type get() throws DBusException {
-    log.trace("get()");
-    if (remoteObject == null) {
-      possessRemoteObject();
+      remoteObject = (Type) connectionProvider.get().getRemoteObject(busName, objectPath, dbusType);
     }
     return remoteObject;
   }
 
-  @Override public Observable<Type> getObservable() {
-    log.trace("getObservable()");
-    Type remoteObject;
-
-    try {
-      remoteObject = this.get();
-    } catch (DBusException e) {
-      log.error("Exception threw during retrieving DBus remote object! ", e);
-      return Observable.error(e);
+  @Override public synchronized Observable<Type> getObservable() {
+    if (remoteObjectObservable == null) {
+      Type object;
+      try {
+        object = RemoteObjectAbstract.this.get();
+      } catch (DBusException e) {
+        log.error("Exception threw during retrieving D-Bus remote object!", e);
+        return Observable.error(e);
+      }
+      remoteObjectObservable = Observable.just(object);
     }
-
-    return Observable.just(remoteObject);
+    return remoteObjectObservable;
   }
 
   @Override @SuppressWarnings("unchecked")
   public void registerSignalCallback(Class<? extends DBusSignal> signalClass,
       DBusSigHandler<DBusSignal> callback) throws DBusException {
-    log.trace("registerSignalCallback()");
     connectionProvider.get().addSigHandler((Class<DBusSignal>) signalClass, callback);
   }
 
   @Override public Observable<Void> createSignalObservable(Class<? extends DBusSignal> signalClass) {
-    log.trace("createSignalObservable()");
     return Observable.create(subscriber -> {
       try {
         registerSignalCallback(signalClass, signal -> subscriber.onNext(null));

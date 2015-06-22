@@ -20,7 +20,7 @@ public class DBusConnectionProviderOverNetwork implements DBusConnectionProvider
   private String addressHost;
   private String addressPort;
 
-  private DBusConnection connection;
+  private volatile DBusConnection connection;
 
   @Inject
   public DBusConnectionProviderOverNetwork(String addressHost, String addressPort) {
@@ -29,7 +29,7 @@ public class DBusConnectionProviderOverNetwork implements DBusConnectionProvider
     this.connection = null;
   }
 
-  @Override public DBusConnection get() throws DBusException {
+  @Override public synchronized DBusConnection get() throws DBusException {
     if (connection == null) {
       String address = dbusAddress(addressHost, addressPort);
       log.debug("Opening D-Bus connection on address: {}", address);
