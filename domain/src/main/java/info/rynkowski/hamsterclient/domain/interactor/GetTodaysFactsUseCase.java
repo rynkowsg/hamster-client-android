@@ -17,8 +17,7 @@ public class GetTodaysFactsUseCase extends UseCaseArgumentless<List<Fact>> {
 
   private HamsterRepository hamsterRepository;
 
-  @Inject
-  public GetTodaysFactsUseCase(@Named("remote") HamsterRepository hamsterRepository,
+  @Inject public GetTodaysFactsUseCase(@Named("remote") HamsterRepository hamsterRepository,
       ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
     super(threadExecutor, postExecutionThread);
     this.hamsterRepository = hamsterRepository;

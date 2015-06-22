@@ -11,8 +11,7 @@ import org.slf4j.LoggerFactory;
  * {@link DBusConnectionProvider} providing a {@link org.freedesktop.dbus.DBusConnection}
  * over the network.
  */
-@Singleton
-public class DBusConnectionProviderOverNetwork implements DBusConnectionProvider {
+@Singleton public class DBusConnectionProviderOverNetwork implements DBusConnectionProvider {
 
   private static final Logger log =
       LoggerFactory.getLogger(DBusConnectionProviderOverNetwork.class);
@@ -22,11 +21,14 @@ public class DBusConnectionProviderOverNetwork implements DBusConnectionProvider
 
   private volatile DBusConnection connection;
 
-  @Inject
-  public DBusConnectionProviderOverNetwork(String addressHost, String addressPort) {
+  @Inject public DBusConnectionProviderOverNetwork(String addressHost, String addressPort) {
     this.addressHost = addressHost;
     this.addressPort = addressPort;
     this.connection = null;
+  }
+
+  private static String dbusAddress(String host, String port) {
+    return "tcp:host=" + host + ",port=" + port;
   }
 
   @Override public synchronized DBusConnection get() throws DBusException {
@@ -43,9 +45,5 @@ public class DBusConnectionProviderOverNetwork implements DBusConnectionProvider
     connection.disconnect();
     connection = null;
     log.info("D-Bus connection closed.");
-  }
-
-  private static String dbusAddress(String host, String port) {
-    return "tcp:host=" + host + ",port=" + port;
   }
 }

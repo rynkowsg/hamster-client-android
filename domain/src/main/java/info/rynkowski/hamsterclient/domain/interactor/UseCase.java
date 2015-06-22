@@ -31,8 +31,7 @@ public abstract class UseCase<Result, Argument> {
   private final ThreadExecutor threadExecutor;
   private final PostExecutionThread postExecutionThread;
 
-  protected UseCase(ThreadExecutor threadExecutor,
-      PostExecutionThread postExecutionThread) {
+  protected UseCase(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
     this.threadExecutor = threadExecutor;
     this.postExecutionThread = postExecutionThread;
   }

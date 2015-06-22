@@ -58,7 +58,8 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
     connectionProvider.get().addSigHandler((Class<DBusSignal>) signalClass, callback);
   }
 
-  @Override public Observable<Void> createSignalObservable(Class<? extends DBusSignal> signalClass) {
+  @Override
+  public Observable<Void> createSignalObservable(Class<? extends DBusSignal> signalClass) {
     return Observable.create(subscriber -> {
       try {
         registerSignalCallback(signalClass, signal -> subscriber.onNext(null));

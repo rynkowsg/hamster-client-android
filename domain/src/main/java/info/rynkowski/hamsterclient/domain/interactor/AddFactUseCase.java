@@ -17,8 +17,7 @@ public class AddFactUseCase extends UseCase<Integer, Fact> {
 
   private HamsterRepository hamsterRepository;
 
-  @Inject
-  public AddFactUseCase(@Named("remote") HamsterRepository hamsterRepository,
+  @Inject public AddFactUseCase(@Named("remote") HamsterRepository hamsterRepository,
       ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
     super(threadExecutor, postExecutionThread);
     this.hamsterRepository = hamsterRepository;
