@@ -117,6 +117,7 @@ public class FactListFragment extends BaseFragment
   }
 
   @Override public void renderFactList(Collection<FactModel> factModelCollection) {
+    log.debug("Entering renderFactList()");
     if (factModelCollection != null) {
       if (this.factsAdapter == null) {
         this.factsAdapter = new FactsAdapter(getActivity(), factModelCollection);

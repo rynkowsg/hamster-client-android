@@ -14,20 +14,20 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.schedulers.Schedulers;
 
 /**
  * {@link Presenter} that controls communication between views and models of the presentation
  * layer for fact list screen.
  */
 @ActivityScope
-public class FactListPresenter implements Presenter, SignalsListener {
+public class FactListPresenter implements Presenter {
 
   private static final Logger log = LoggerFactory.getLogger(FactListPresenter.class);
 
   private final HamsterRepository hamsterRepository;
   private final UseCase<Integer, Fact> addFactUseCase;
   private final UseCaseArgumentless<List<Fact>> getTodaysFactsUseCase;
+  private final UseCaseArgumentless<Void> signalFactsChangedUseCase;
 
   private final FactModelDataMapper mapper;
 
@@ -36,11 +36,13 @@ public class FactListPresenter implements Presenter, SignalsListener {
   @Inject public FactListPresenter(HamsterRepository hamsterRepository,
       @Named("AddFact") UseCase<Integer, Fact> addFactUseCase,
       @Named("GetTodaysFacts") UseCaseArgumentless<List<Fact>> getTodaysFactsUseCase,
+      @Named("SignalFactsChanged") UseCaseArgumentless<Void> signalFactsChangedUseCase,
       FactModelDataMapper mapper) {
     this.hamsterRepository = hamsterRepository;
     this.addFactUseCase = addFactUseCase;
     this.getTodaysFactsUseCase = getTodaysFactsUseCase;
     this.mapper = mapper;
+    this.signalFactsChangedUseCase = signalFactsChangedUseCase;
   }
 
   public void setView(@NonNull FactListView view) {
@@ -87,37 +89,12 @@ public class FactListPresenter implements Presenter, SignalsListener {
   }
 
   private void registerSignals() {
-    hamsterRepository.signalActivitiesChanged()
-        .subscribeOn(Schedulers.io())
-        .subscribe(o -> this.onActivitiesChanged());
-
-    hamsterRepository.signalFactsChanged()
-        .subscribeOn(Schedulers.io())
-        .subscribe(o -> this.onFactsChanged());
-
-    hamsterRepository.signalTagsChanged()
-        .subscribeOn(Schedulers.io())
-        .subscribe(o -> this.onTagsChanged());
-
-    hamsterRepository.signalToggleCalled()
-        .subscribeOn(Schedulers.io())
-        .subscribe(o -> this.onToggleCalled());
+    signalFactsChangedUseCase.execute().
+        subscribe(o -> this.onFactsChanged());
   }
 
-  @Override public void onActivitiesChanged() {
-    log.debug("Signal ActivitiesChanged appeared!");
-  }
-
-  @Override public void onFactsChanged() {
+  private void onFactsChanged() {
     log.debug("Signal FactsChanged appeared!");
     loadFactList();
-  }
-
-  @Override public void onTagsChanged() {
-    log.debug("Signal TagsChanged appeared!");
-  }
-
-  @Override public void onToggleCalled() {
-    log.debug("Signal ToggleCalled appeared!");
   }
 }
