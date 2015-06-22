@@ -36,8 +36,8 @@ public class DataModule {
   }
 
   @Provides @Singleton @Named("remote") HamsterDataStore remoteHamsterDataStore(
-      HamsterRemoteObject hamsterRemoteObject) {
-    return new RemoteHamsterDataStore(hamsterRemoteObject);
+      DBusConnectionProvider connectionProvider, HamsterRemoteObject hamsterRemoteObject) {
+    return new RemoteHamsterDataStore(connectionProvider, hamsterRemoteObject);
   }
 
   @Provides @Singleton HamsterRepository provideHamsterRepository(

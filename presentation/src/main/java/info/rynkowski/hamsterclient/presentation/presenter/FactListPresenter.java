@@ -1,7 +1,6 @@
 package info.rynkowski.hamsterclient.presentation.presenter;
 
 import android.support.annotation.NonNull;
-import info.rynkowski.hamsterclient.data.dbus.DBusConnectionProvider;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.interactor.UseCase;
 import info.rynkowski.hamsterclient.domain.interactor.UseCaseArgumentless;
@@ -26,8 +25,6 @@ public class FactListPresenter implements Presenter, SignalsListener {
 
   private static final Logger log = LoggerFactory.getLogger(FactListPresenter.class);
 
-  //TODO: I think DBusConnector shouldn't be a dependency for presenter, too detail (maybe factory?)
-  private final DBusConnectionProvider connectionProvider;
   private final HamsterRepository hamsterRepository;
   private final UseCase<Integer, Fact> addFactUseCase;
   private final UseCaseArgumentless<List<Fact>> getTodaysFactsUseCase;
@@ -36,12 +33,10 @@ public class FactListPresenter implements Presenter, SignalsListener {
 
   private FactListView viewListView;
 
-  @Inject
-  public FactListPresenter(DBusConnectionProvider connectionProvider,
-      HamsterRepository hamsterRepository, @Named("AddFact") UseCase<Integer, Fact> addFactUseCase,
+  @Inject public FactListPresenter(HamsterRepository hamsterRepository,
+      @Named("AddFact") UseCase<Integer, Fact> addFactUseCase,
       @Named("GetTodaysFacts") UseCaseArgumentless<List<Fact>> getTodaysFactsUseCase,
       FactModelDataMapper mapper) {
-    this.connectionProvider = connectionProvider;
     this.hamsterRepository = hamsterRepository;
     this.addFactUseCase = addFactUseCase;
     this.getTodaysFactsUseCase = getTodaysFactsUseCase;
@@ -53,6 +48,7 @@ public class FactListPresenter implements Presenter, SignalsListener {
   }
 
   @Override public void initialize() {
+    hamsterRepository.initialize();
     registerSignals();
     log.debug("FactList initialized.");
   }
@@ -67,7 +63,7 @@ public class FactListPresenter implements Presenter, SignalsListener {
   }
 
   @Override public void destroy() {
-    connectionProvider.close();
+    hamsterRepository.deinitialize();
     log.debug("FactList destroyed.");
   }
 

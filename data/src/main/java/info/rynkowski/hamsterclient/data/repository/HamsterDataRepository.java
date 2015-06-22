@@ -26,6 +26,14 @@ public class HamsterDataRepository implements HamsterRepository {
     this.factEntityMapper = factEntityMapper;
   }
 
+  @Override public void initialize() {
+    //empty
+  }
+
+  @Override public void deinitialize() {
+    hamsterDataStoreFactory.getStore().deinitialize();
+  }
+
   @Override public Observable<List<Fact>> getTodaysFacts() {
     return hamsterDataStoreFactory.getStore()
         .getTodaysFactEntities()

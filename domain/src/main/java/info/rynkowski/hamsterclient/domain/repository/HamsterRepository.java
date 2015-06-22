@@ -7,7 +7,7 @@ import rx.Observable;
 /**
  * Interface that represents a Repository for communicating with Hamster database.
  */
-public interface HamsterRepository {
+public interface HamsterRepository extends Repository {
 
   Observable<List<Fact>> getTodaysFacts();
 

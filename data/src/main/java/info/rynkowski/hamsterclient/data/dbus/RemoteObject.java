@@ -5,6 +5,11 @@ import org.freedesktop.dbus.DBusSignal;
 import org.freedesktop.dbus.exceptions.DBusException;
 import rx.Observable;
 
+/**
+ * Base interface for remote objects.
+ *
+ * @param <Type> type of remote object
+ */
 public interface RemoteObject<Type> {
 
   Type get() throws DBusException;
@@ -15,4 +20,9 @@ public interface RemoteObject<Type> {
       DBusSigHandler<DBusSignal> callback) throws DBusException;
 
   Observable<Void> createSignalObservable(Class<? extends DBusSignal> signalClass);
+
+  /**
+   * Removes a retrieved remote object.
+   */
+  void clear();
 }

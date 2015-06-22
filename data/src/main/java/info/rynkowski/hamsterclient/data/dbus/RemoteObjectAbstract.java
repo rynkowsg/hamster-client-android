@@ -69,4 +69,9 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
       }
     });
   }
+
+  @Override public void clear() {
+    remoteObject = null;
+    remoteObjectObservable = null;
+  }
 }

@@ -1,5 +1,6 @@
 package info.rynkowski.hamsterclient.data.repository.datasource;
 
+import info.rynkowski.hamsterclient.data.dbus.DBusConnectionProvider;
 import info.rynkowski.hamsterclient.data.dbus.HamsterRemoteObject;
 import info.rynkowski.hamsterclient.data.entity.FactEntity;
 import java.util.List;
@@ -15,10 +16,22 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
 
   private static final Logger log = LoggerFactory.getLogger(RemoteHamsterDataStore.class);
 
+  private DBusConnectionProvider connectionProvider;
   private HamsterRemoteObject hamsterObject;
 
-  @Inject public RemoteHamsterDataStore(HamsterRemoteObject hamsterRemoteObject) {
+  @Inject public RemoteHamsterDataStore(DBusConnectionProvider connectionProvider,
+      HamsterRemoteObject hamsterRemoteObject) {
+    this.connectionProvider = connectionProvider;
     this.hamsterObject = hamsterRemoteObject;
+  }
+
+  @Override public void initialize() {
+    // empty
+  }
+
+  @Override public void deinitialize() {
+    hamsterObject.clear();
+    connectionProvider.close();
   }
 
   @Override public Observable<List<FactEntity>> getTodaysFactEntities() {
