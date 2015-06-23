@@ -18,8 +18,8 @@
 package info.rynkowski.hamsterclient.presentation.executor;
 
 import info.rynkowski.hamsterclient.domain.executor.PostExecutionThread;
-import javax.inject.Singleton;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -30,8 +30,8 @@ import rx.android.schedulers.AndroidSchedulers;
 @Singleton
 public class UIThread implements PostExecutionThread {
 
-  @Inject
-  public UIThread() {}
+  @Inject public UIThread() {
+  }
 
   @Override public Scheduler getScheduler() {
     return AndroidSchedulers.mainThread();

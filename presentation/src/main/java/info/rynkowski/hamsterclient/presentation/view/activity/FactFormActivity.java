@@ -108,7 +108,8 @@ public class FactFormActivity extends BaseActivity {
   }
 
   private FactModel readFact() {
-    return new FactModel.Builder().activity(editTextActivity.getText().toString())
+    return new FactModel.Builder()
+        .activity(editTextActivity.getText().toString())
         .category(editTextCategory.getText().toString())
         .tags(splitTags(editTextTags.getText().toString()))
         .description(editTextDescription.getText().toString())

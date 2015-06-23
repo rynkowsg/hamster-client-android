@@ -29,50 +29,6 @@ public class AdapterStruct4 {
     this.object = object;
   }
 
-  public int id() {
-    return id(object);
-  }
-
-  public int start_time() {
-    return start_time(object);
-  }
-
-  public int end_time() {
-    return end_time(object);
-  }
-
-  public String description() {
-    return description(object);
-  }
-
-  public String name() {
-    return name(object);
-  }
-
-  public int activity_id() {
-    return activity_id(object);
-  }
-
-  public String category() {
-    return category(object);
-  }
-
-  public List<String> tags() {
-    return tags(object);
-  }
-
-  public int date() {
-    return date(object);
-  }
-
-  public int delta() {
-    return delta(object);
-  }
-
-  public boolean exported() {
-    return exported(object);
-  }
-
   public static int id(Struct4 object) {
     return object.a;
   }
@@ -115,5 +71,49 @@ public class AdapterStruct4 {
 
   public static boolean exported(Struct4 object) {
     return object.k;
+  }
+
+  public int id() {
+    return id(object);
+  }
+
+  public int start_time() {
+    return start_time(object);
+  }
+
+  public int end_time() {
+    return end_time(object);
+  }
+
+  public String description() {
+    return description(object);
+  }
+
+  public String name() {
+    return name(object);
+  }
+
+  public int activity_id() {
+    return activity_id(object);
+  }
+
+  public String category() {
+    return category(object);
+  }
+
+  public List<String> tags() {
+    return tags(object);
+  }
+
+  public int date() {
+    return date(object);
+  }
+
+  public int delta() {
+    return delta(object);
+  }
+
+  public boolean exported() {
+    return exported(object);
   }
 }

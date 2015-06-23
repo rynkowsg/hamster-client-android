@@ -27,8 +27,7 @@ import javax.inject.Inject;
 @ActivityScope
 public class FactModelDataMapper {
 
-  @Inject
-  FactModelDataMapper() {
+  @Inject FactModelDataMapper() {
     //empty
   }
 

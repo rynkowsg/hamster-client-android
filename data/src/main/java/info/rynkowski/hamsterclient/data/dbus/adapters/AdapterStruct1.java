@@ -28,18 +28,6 @@ public class AdapterStruct1 {
     this.object = object;
   }
 
-  public int id() {
-    return id(object);
-  }
-
-  public String name() {
-    return name(object);
-  }
-
-  public boolean autocomplete() {
-    return autocomplete(object);
-  }
-
   public static int id(Struct1 object) {
     return object.a;
   }
@@ -50,5 +38,17 @@ public class AdapterStruct1 {
 
   public static boolean autocomplete(Struct1 object) {
     return object.c;
+  }
+
+  public int id() {
+    return id(object);
+  }
+
+  public String name() {
+    return name(object);
+  }
+
+  public boolean autocomplete() {
+    return autocomplete(object);
   }
 }

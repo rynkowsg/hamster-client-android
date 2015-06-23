@@ -31,7 +31,8 @@ import javax.inject.Singleton;
 /**
  * Dagger module that provides collaborators from Data layer.
  */
-@Module public class DataModule {
+@Module
+public class DataModule {
 
   private final String host;
   private final String port;

@@ -28,19 +28,19 @@ public class AdapterStruct6 {
     this.object = object;
   }
 
-  public int id() {
-    return id(object);
-  }
-
-  public String name() {
-    return name(object);
-  }
-
   public static int id(Struct6 object) {
     return object.a;
   }
 
   public static String name(Struct6 object) {
     return object.b;
+  }
+
+  public int id() {
+    return id(object);
+  }
+
+  public String name() {
+    return name(object);
   }
 }

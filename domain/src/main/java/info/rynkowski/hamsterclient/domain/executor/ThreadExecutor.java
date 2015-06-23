@@ -23,4 +23,5 @@ import java.util.concurrent.Executor;
  * execution, but every implementation will execute the
  * {@link info.rynkowski.hamsterclient.domain.interactor.UseCase} out of the UI thread.
  */
-public interface ThreadExecutor extends Executor {}
+public interface ThreadExecutor extends Executor {
+}

@@ -35,8 +35,7 @@ public class HamsterDataRepository implements HamsterRepository {
   private HamsterDataStoreFactory hamsterDataStoreFactory;
   private FactEntityMapper factEntityMapper;
 
-  @Inject
-  public HamsterDataRepository(HamsterDataStoreFactory hamsterDataStoreFactory,
+  @Inject public HamsterDataRepository(HamsterDataStoreFactory hamsterDataStoreFactory,
       FactEntityMapper factEntityMapper) {
     this.hamsterDataStoreFactory = hamsterDataStoreFactory;
     this.factEntityMapper = factEntityMapper;

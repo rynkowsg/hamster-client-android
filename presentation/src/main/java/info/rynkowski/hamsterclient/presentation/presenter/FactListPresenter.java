@@ -35,7 +35,8 @@ import org.slf4j.LoggerFactory;
  * {@link Presenter} that controls communication between views and models of the presentation
  * layer for fact list screen.
  */
-@ActivityScope public class FactListPresenter implements Presenter {
+@ActivityScope
+public class FactListPresenter implements Presenter {
 
   private static final Logger log = LoggerFactory.getLogger(FactListPresenter.class);
 
@@ -91,21 +92,21 @@ import org.slf4j.LoggerFactory;
 
   private void loadFactList() {
     log.trace("loadFactList()");
-    getTodaysFactsUseCase.execute().
-        map(mapper::transform).
-        subscribe(viewListView::renderFactList, Throwable::printStackTrace);
+    getTodaysFactsUseCase.execute()
+        .map(mapper::transform)
+        .subscribe(viewListView::renderFactList, Throwable::printStackTrace);
   }
 
   public void addFact(FactModel factModel) {
     log.trace("addFact()");
     Fact fact = mapper.transform(factModel);
-    addFactUseCase.execute(fact).
-        subscribe(id -> log.info("New fact added, id={}", id), Throwable::printStackTrace);
+    addFactUseCase.execute(fact)
+        .subscribe(id -> log.info("New fact added, id={}", id), Throwable::printStackTrace);
   }
 
   private void registerSignals() {
-    signalFactsChangedUseCase.execute().
-        subscribe(o -> this.onFactsChanged());
+    signalFactsChangedUseCase.execute()
+        .subscribe(o -> this.onFactsChanged());
   }
 
   private void onFactsChanged() {

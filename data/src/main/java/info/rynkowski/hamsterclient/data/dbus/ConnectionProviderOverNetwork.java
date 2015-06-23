@@ -27,7 +27,8 @@ import org.slf4j.LoggerFactory;
  * {@link ConnectionProvider} providing a {@link org.freedesktop.dbus.DBusConnection}
  * over the network.
  */
-@Singleton public class ConnectionProviderOverNetwork implements ConnectionProvider {
+@Singleton
+public class ConnectionProviderOverNetwork implements ConnectionProvider {
 
   private static final Logger log = LoggerFactory.getLogger(ConnectionProviderOverNetwork.class);
 

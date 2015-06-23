@@ -21,11 +21,11 @@ import lombok.Setter;
 
 public class Activity {
 
+  @Getter @Setter private String name;
+  @Getter @Setter private String category;
+
   public Activity(String name, String category) {
     this.name = name;
     this.category = category;
   }
-
-  @Getter @Setter private String name;
-  @Getter @Setter private String category;
 }

@@ -56,8 +56,7 @@ public class FactListFragment extends BaseFragment
   private FactsLayoutManager factsLayoutManager;
   private FactsAdapter factsAdapter;
 
-  @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_fact_list, container, false);
     ButterKnife.inject(this, view);

@@ -28,19 +28,19 @@ public class AdapterStruct8 {
     this.object = object;
   }
 
-  public String name() {
-    return name(object);
-  }
-
-  public String category() {
-    return category(object);
-  }
-
   public static String name(Struct8 object) {
     return object.a;
   }
 
   public static String category(Struct8 object) {
     return object.b;
+  }
+
+  public String name() {
+    return name(object);
+  }
+
+  public String category() {
+    return category(object);
   }
 }

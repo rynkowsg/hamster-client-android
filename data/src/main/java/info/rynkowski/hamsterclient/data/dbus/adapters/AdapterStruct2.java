@@ -28,22 +28,6 @@ public class AdapterStruct2 {
     this.object = object;
   }
 
-  public int id() {
-    return id(object);
-  }
-
-  public String name() {
-    return name(object);
-  }
-
-  public int category_id() {
-    return category_id(object);
-  }
-
-  public String category() {
-    return category(object);
-  }
-
   public static int id(Struct2 object) {
     return object.a;
   }
@@ -58,5 +42,21 @@ public class AdapterStruct2 {
 
   public static String category(Struct2 object) {
     return object.d;
+  }
+
+  public int id() {
+    return id(object);
+  }
+
+  public String name() {
+    return name(object);
+  }
+
+  public int category_id() {
+    return category_id(object);
+  }
+
+  public String category() {
+    return category(object);
   }
 }

@@ -32,8 +32,7 @@ public class Navigator {
 
   public static final int REQUEST_CODE_PICK_FACT = 1;
 
-  @Inject
-  public Navigator() {
+  @Inject public Navigator() {
     //empty
   }
 

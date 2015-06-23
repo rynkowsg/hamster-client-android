@@ -44,7 +44,7 @@ public class BaseFragment extends Fragment {
    * @return {@link info.rynkowski.hamsterclient.presentation.internal.di.components.ApplicationComponent}
    */
   protected ApplicationComponent getApplicationComponent() {
-    return ((AndroidApplication)getActivity().getApplication()).getApplicationComponent();
+    return ((AndroidApplication) getActivity().getApplication()).getApplicationComponent();
   }
 
   /**
@@ -59,9 +59,8 @@ public class BaseFragment extends Fragment {
   /**
    * Gets a component for dependency injection by its type.
    */
-  @SuppressWarnings("unchecked")
-  protected <C> C getComponent(Class<C> componentType) {
-    return componentType.cast(((HasComponent<C>)getActivity()).getComponent());
+  @SuppressWarnings("unchecked") protected <C> C getComponent(Class<C> componentType) {
+    return componentType.cast(((HasComponent<C>) getActivity()).getComponent());
   }
 
   private void injectDependencies() {

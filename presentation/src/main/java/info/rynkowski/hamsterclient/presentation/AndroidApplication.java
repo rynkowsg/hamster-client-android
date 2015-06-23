@@ -34,9 +34,9 @@ public class AndroidApplication extends Application {
   }
 
   private void initializeDependencyInjector() {
+    //TODO: Move host&port setting to DBusConnector.open(host,port) method
     this.applicationComponent = DaggerApplicationComponent.builder()
         .applicationModule(new ApplicationModule(this))
-        //TODO: Move host&port setting to DBusConnector.open(host,port) method
         .dataModule(new DataModule("10.0.2.5", "55555"))
         .build();
   }

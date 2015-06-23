@@ -34,13 +34,8 @@ import java.util.List;
  */
 public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHolder> {
 
-  public interface OnItemClickListener {
-    void onFactItemClicked(FactModel factModel);
-  }
-
-  private List<FactModel> factsCollection;
   private final LayoutInflater layoutInflater;
-
+  private List<FactModel> factsCollection;
   private OnItemClickListener onItemClickListener;
 
   public FactsAdapter(Context context, Collection<FactModel> factsCollection) {
@@ -73,7 +68,7 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
     return position;
   }
 
-  public void setOnItemClickListener (OnItemClickListener onItemClickListener) {
+  public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
     this.onItemClickListener = onItemClickListener;
   }
 
@@ -87,6 +82,10 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
     this.validateFactsCollection(factsCollection);
     this.factsCollection = (List<FactModel>) factsCollection;
     this.notifyDataSetChanged();
+  }
+
+  public interface OnItemClickListener {
+    void onFactItemClicked(FactModel factModel);
   }
 
   static class FactViewHolder extends RecyclerView.ViewHolder {
