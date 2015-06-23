@@ -18,6 +18,6 @@ public class SignalTagsChangedUseCase extends UseCaseArgumentless<Void> {
   }
 
   @Override protected Observable<Void> buildUseCaseObservable() {
-    return hamsterRepository.signalFactsChanged();
+    return hamsterRepository.signalTagsChanged();
   }
 }

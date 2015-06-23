@@ -18,6 +18,6 @@ public class SignalToggleCalledUseCase extends UseCaseArgumentless<Void> {
   }
 
   @Override protected Observable<Void> buildUseCaseObservable() {
-    return hamsterRepository.signalFactsChanged();
+    return hamsterRepository.signalToggleCalled();
   }
 }
