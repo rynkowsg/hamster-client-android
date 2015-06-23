@@ -21,7 +21,7 @@ import java.util.List;
 import rx.Observable;
 
 /**
- * Interface that represents a Repository for communicating with Hamster database.
+ * Interface that represents a {@link Repository} for communicating with Hamster database.
  */
 public interface HamsterRepository extends Repository {
 

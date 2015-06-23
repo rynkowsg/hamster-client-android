@@ -27,6 +27,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Observable;
 
+/**
+ * {@link HamsterDataStore} based on a remote D-Bus connection.
+ */
 @Singleton
 public class RemoteHamsterDataStore implements HamsterDataStore {
 

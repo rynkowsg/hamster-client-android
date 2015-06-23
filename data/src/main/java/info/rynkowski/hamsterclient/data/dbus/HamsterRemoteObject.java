@@ -21,6 +21,9 @@ import javax.inject.Singleton;
 import org.gnome.Hamster;
 import rx.Observable;
 
+/**
+ * Wrapper class for {@link org.gnome.Hamster}'s remote object.
+ */
 @Singleton
 public class HamsterRemoteObject extends RemoteObjectAbstract<Hamster> {
 

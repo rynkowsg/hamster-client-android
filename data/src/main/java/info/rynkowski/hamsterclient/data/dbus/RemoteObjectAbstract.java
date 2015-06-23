@@ -23,6 +23,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Observable;
 
+/**
+ * Abstract class that implements common utilities of each {@link RemoteObject}.
+ *
+ * @param <Type> type of D-Bus remote object
+ */
 public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
 
   private static final Logger log = LoggerFactory.getLogger(RemoteObjectAbstract.class);

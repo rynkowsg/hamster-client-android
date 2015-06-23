@@ -21,7 +21,7 @@ import java.util.List;
 import rx.Observable;
 
 /**
- * Interface that represents a data store from where data is retrieved.
+ * Interface that represents a Hamster's {@link DataStore}.
  */
 public interface HamsterDataStore extends DataStore {
 

@@ -27,7 +27,7 @@ import javax.inject.Singleton;
 import rx.Observable;
 
 /**
- * {@link HamsterRepository} for retrieving data.
+ * Implementation of {@link info.rynkowski.hamsterclient.domain.repository.HamsterRepository}.
  */
 @Singleton
 public class HamsterDataRepository implements HamsterRepository {

@@ -30,6 +30,9 @@ import org.gnome.Struct4;
 import org.gnome.Struct5;
 import org.gnome.Struct7;
 
+/**
+ * Class represents a fact representation comfortable for data layer.
+ */
 public class FactEntity {
   @Getter private String activity;
   @Getter private String category;

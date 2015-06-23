@@ -32,6 +32,8 @@ import javax.inject.Singleton;
 
 /**
  * A component whose lifetime is the life of the application.
+ * It injects {@link info.rynkowski.hamsterclient.presentation.view.activity.BaseActivity} and
+ * {@link info.rynkowski.hamsterclient.presentation.view.fragment.BaseFragment}.
  */
 @Singleton
 @Component(modules = { ApplicationModule.class, DataModule.class })

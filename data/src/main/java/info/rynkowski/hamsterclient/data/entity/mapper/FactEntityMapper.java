@@ -28,6 +28,11 @@ import javax.inject.Singleton;
 import org.gnome.Struct5;
 import org.gnome.Struct7;
 
+/**
+ * Class that translates fact representations of two layers: data and domain.
+ * Could transform object of {@link info.rynkowski.hamsterclient.domain.entities.Fact} to
+ * {@link info.rynkowski.hamsterclient.data.entity.FactEntity} and in the opposite direction.
+ */
 @Singleton
 public class FactEntityMapper {
 

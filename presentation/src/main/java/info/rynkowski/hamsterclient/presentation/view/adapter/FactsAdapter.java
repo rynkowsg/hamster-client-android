@@ -30,7 +30,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Adaptar that manages a collection of {@link FactModel}.
+ * Adapter that manages a collection of {@link FactModel}.
  */
 public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHolder> {
 

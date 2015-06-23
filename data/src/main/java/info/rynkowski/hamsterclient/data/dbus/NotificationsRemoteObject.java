@@ -18,6 +18,9 @@ package info.rynkowski.hamsterclient.data.dbus;
 
 import org.freedesktop.Notifications;
 
+/**
+ * Wrapper class for {@link org.freedesktop.Notifications}' remote object.
+ */
 public class NotificationsRemoteObject extends RemoteObjectAbstract<Notifications> {
   private static final String busName = "org.freedesktop.Notifications";
   private static final String objectPath = "/org/freedesktop/Notifications";

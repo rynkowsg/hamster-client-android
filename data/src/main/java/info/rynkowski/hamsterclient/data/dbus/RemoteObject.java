@@ -22,9 +22,9 @@ import org.freedesktop.dbus.exceptions.DBusException;
 import rx.Observable;
 
 /**
- * Base interface for remote objects.
+ * Interface of wrapper to D-Bus remote object.
  *
- * @param <Type> type of remote object
+ * @param <Type> type of D-Bus remote object
  */
 public interface RemoteObject<Type> {
 

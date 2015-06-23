@@ -22,6 +22,9 @@ import info.rynkowski.hamsterclient.presentation.internal.di.modules.ActivityMod
 import info.rynkowski.hamsterclient.presentation.internal.di.modules.FactListModule;
 import info.rynkowski.hamsterclient.presentation.view.fragment.FactListFragment;
 
+/**
+ * Injects {@link info.rynkowski.hamsterclient.presentation.view.fragment.FactListFragment}.
+ */
 @ActivityScope
 @Component(dependencies = ApplicationComponent.class,
     modules = { ActivityModule.class, FactListModule.class })
