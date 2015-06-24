@@ -15,6 +15,8 @@ ext {
   supportV4Version = '22.2.0'
   appcompatV7Version = '22.2.0'
   recyclerViewVersion = '22.2.0'
+  designVersion = '22.2.0'
+
   commonsLang3Version = '3.4'
   butterKnifeVersion = '6.1.0'
   lombokVersion = '1.16.4'
@@ -62,6 +64,7 @@ ext {
   presentationDependencies = [
       appcompatV7:        "com.android.support:appcompat-v7:${appcompatV7Version}",
       recyclerView:       "com.android.support:recyclerview-v7:${recyclerViewVersion}",
+      design:             "com.android.support:design:${designVersion}",
       butterKnife:        "com.jakewharton:butterknife:${butterKnifeVersion}",
       commonsLang3:       "org.apache.commons:commons-lang3:${commonsLang3Version}",
       daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",

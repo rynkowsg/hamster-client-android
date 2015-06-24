@@ -59,13 +59,16 @@ dependencies {
   compile project(':data')
 
   def presentationDependencies = rootProject.ext.presentationDependencies
+
+  compile presentationDependencies.appcompatV7
+  compile presentationDependencies.design
+  compile presentationDependencies.recyclerView
+
   apt presentationDependencies.daggerCompiler
   apt presentationDependencies.lombok
-  compile presentationDependencies.appcompatV7
   compile presentationDependencies.butterKnife
   compile presentationDependencies.commonsLang3
   compile presentationDependencies.dagger
-  compile presentationDependencies.recyclerView
   compile presentationDependencies.rxAndroid
   compile presentationDependencies.rxJava
   provided presentationDependencies.lombok
