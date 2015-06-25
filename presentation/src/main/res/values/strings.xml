@@ -28,4 +28,15 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_fact_form">Fact Form</string>
     <string name="title_activity_fact_list">Fact List</string>
+    <string name="title_settings">Settings</string>
+
+    <!-- ActionBar's actions -->
+    <string name="action_settings">Settings</string>
+
+    <!-- Preferences' titles/descriptions -->
+    <string name="pref_host_title">Host</string>
+    <string name="pref_host_summary">The host name or ip address of your server.</string>
+    <string name="pref_port_title">Port</string>
+    <string name="pref_port_summary">The port to connect to your server.</string>
+
 </resources>

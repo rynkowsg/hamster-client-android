@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 import info.rynkowski.hamsterclient.presentation.view.activity.FactFormActivity;
 import info.rynkowski.hamsterclient.presentation.view.activity.FactListActivity;
+import info.rynkowski.hamsterclient.presentation.view.activity.SettingsActivity;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -57,6 +58,18 @@ public class Navigator {
     if (fragment != null) {
       Intent intentToLaunch = FactFormActivity.getCallingIntent(fragment.getActivity());
       fragment.startActivityForResult(intentToLaunch, requestCode);
+    }
+  }
+
+  /**
+   * Goes to application's settings.
+   *
+   * @param context A Context needed to open the destiny activity.
+   */
+  public void navigateToSettings(Context context) {
+    if (context != null) {
+      Intent intent = new Intent(context, SettingsActivity.class);
+      context.startActivity(intent);
     }
   }
 }

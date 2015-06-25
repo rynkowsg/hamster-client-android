@@ -20,6 +20,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import info.rynkowski.hamsterclient.presentation.R;
@@ -48,6 +50,22 @@ public class FactListActivity extends BaseActivity implements HasComponent<FactL
     setSupportActionBar(toolbar);
 
     this.initializeDependencyInjector();
+  }
+
+  @Override public boolean onCreateOptionsMenu(Menu menu) {
+    // Inflate the menu; this adds items to the action bar if it is present.
+    getMenuInflater().inflate(R.menu.menu_fact_list, menu);
+    return super.onCreateOptionsMenu(menu);
+  }
+
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.action_settings:
+        navigator.navigateToSettings(this);
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
+    }
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
