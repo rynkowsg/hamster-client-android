@@ -15,21 +15,11 @@
   ~ limitations under the License.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="info.rynkowski.hamsterclient.presentation.view.fragment.FactListFragment"
     >
-
-    <Button
-        android:layout_width="258dp"
-        android:layout_height="wrap_content"
-        android:text="@string/add_fact"
-        android:id="@+id/btn_add_fact"
-        android:layout_gravity="center_horizontal"
-        />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_facts"
@@ -38,4 +28,13 @@
         android:layout_height="match_parent"
         />
 
-</LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add_fact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_add_white_24dp"
+        />
+
+</android.support.design.widget.CoordinatorLayout>

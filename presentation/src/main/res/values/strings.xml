@@ -22,7 +22,6 @@
     <string name="category">Category</string>
     <string name="tags">Tags</string>
     <string name="apply">Apply</string>
-    <string name="add_fact">Add a fact</string>
     <string name="open_fact_list">Open fact list</string>
 
     <!-- Activities' titles -->

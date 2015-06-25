@@ -49,7 +49,7 @@ public class Navigator {
   }
 
   /**
-   * Goes to the fact form screen.
+   * Goes to the fact form screen from fragment.
    *
    * @param fragment A Fragment that opens the activity for result.
    */

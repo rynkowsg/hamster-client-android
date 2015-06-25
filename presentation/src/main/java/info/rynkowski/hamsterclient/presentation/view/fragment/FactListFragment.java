@@ -100,7 +100,7 @@ public class FactListFragment extends BaseFragment
     this.rv_facts.setLayoutManager(factsLayoutManager);
   }
 
-  @OnClick(R.id.btn_add_fact) public void onAddFactClicked(View view) {
+  @OnClick(R.id.fab_add_fact) public void onAddFactClicked(View view) {
     navigator.navigateToFactFormForResult(FactListFragment.this, Navigator.REQUEST_CODE_PICK_FACT);
   }
 
