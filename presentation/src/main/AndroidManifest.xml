@@ -16,7 +16,8 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="info.rynkowski.hamsterclient.presentation">
+    package="info.rynkowski.hamsterclient.presentation"
+    >
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -25,11 +26,13 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:name=".AndroidApplication"
-        android:theme="@style/Theme.HamsterClient">
+        android:theme="@style/Theme.HamsterClient"
+        >
 
         <activity
             android:name=".view.activity.MainActivity"
-            android:label="@string/title_activity_main">
+            android:label="@string/title_activity_main"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -38,13 +41,13 @@
 
         <activity
             android:name=".view.activity.FactFormActivity"
-            android:label="@string/title_activity_fact_form">
-        </activity>
+            android:label="@string/title_activity_fact_form"
+            />
 
         <activity
             android:name=".view.activity.FactListActivity"
-            android:label="@string/title_activity_fact_list">
-        </activity>
+            android:label="@string/title_activity_fact_list"
+            />
 
     </application>
 
