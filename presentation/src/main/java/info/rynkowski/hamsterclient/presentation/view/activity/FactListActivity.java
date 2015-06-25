@@ -19,6 +19,9 @@ package info.rynkowski.hamsterclient.presentation.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import info.rynkowski.hamsterclient.presentation.R;
 import info.rynkowski.hamsterclient.presentation.internal.di.HasComponent;
 import info.rynkowski.hamsterclient.presentation.internal.di.components.DaggerFactListComponent;
@@ -30,6 +33,8 @@ public class FactListActivity extends BaseActivity implements HasComponent<FactL
 
   private static final Logger log = LoggerFactory.getLogger(FactListActivity.class);
 
+  @InjectView(R.id.toolbar) Toolbar toolbar;
+
   private FactListComponent factListComponent;
 
   public static Intent getCallingIntent(Context context) {
@@ -39,6 +44,9 @@ public class FactListActivity extends BaseActivity implements HasComponent<FactL
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_fact_list);
+    ButterKnife.inject(this);
+    setSupportActionBar(toolbar);
+
     this.initializeDependencyInjector();
   }
 
