@@ -36,6 +36,7 @@ import info.rynkowski.hamsterclient.presentation.view.FactListView;
 import info.rynkowski.hamsterclient.presentation.view.activity.FactFormActivity;
 import info.rynkowski.hamsterclient.presentation.view.adapter.FactsAdapter;
 import info.rynkowski.hamsterclient.presentation.view.adapter.FactsLayoutManager;
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.inject.Inject;
 import org.slf4j.Logger;
@@ -53,14 +54,13 @@ public class FactListFragment extends BaseFragment
 
   @InjectView(R.id.rv_facts) RecyclerView rv_facts;
 
-  private FactsLayoutManager factsLayoutManager;
   private FactsAdapter factsAdapter;
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_fact_list, container, false);
     ButterKnife.inject(this, view);
-    setupUI();
+    this.setupRecyclerView();
 
     return view;
   }
@@ -95,9 +95,13 @@ public class FactListFragment extends BaseFragment
     this.getComponent(FactListComponent.class).inject(this);
   }
 
-  private void setupUI() {
-    this.factsLayoutManager = new FactsLayoutManager(getActivity());
+  private void setupRecyclerView() {
+    FactsLayoutManager factsLayoutManager = new FactsLayoutManager(getActivity());
     this.rv_facts.setLayoutManager(factsLayoutManager);
+
+    this.factsAdapter = new FactsAdapter(getActivity(), new ArrayList<>());
+    this.factsAdapter.setOnItemClickListener(FactListFragment.this);
+    this.rv_facts.setAdapter(factsAdapter);
   }
 
   @OnClick(R.id.fab_add_fact) public void onAddFactClicked(View view) {
@@ -132,15 +136,8 @@ public class FactListFragment extends BaseFragment
   }
 
   @Override public void renderFactList(Collection<FactModel> factModelCollection) {
-    log.debug("Entering renderFactList()");
     if (factModelCollection != null) {
-      if (this.factsAdapter == null) {
-        this.factsAdapter = new FactsAdapter(getActivity(), factModelCollection);
-      } else {
-        this.factsAdapter.setFactsCollection(factModelCollection);
-      }
-      this.factsAdapter.setOnItemClickListener(FactListFragment.this);
-      this.rv_facts.setAdapter(factsAdapter);
+      this.factsAdapter.setFactsCollection(factModelCollection);
     }
   }
 
