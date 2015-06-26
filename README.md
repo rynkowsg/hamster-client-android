@@ -1,4 +1,4 @@
-Hamster Client for Android
+Hamster Client for Android [![Build Status](https://travis-ci.org/rynkowsg/hamster-client-android.svg?branch=master)](https://travis-ci.org/rynkowsg/hamster-client-android)
 ==========================
 
 The project is an extension of desktop application named Hamster.
