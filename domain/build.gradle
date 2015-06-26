@@ -10,14 +10,16 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'me.tatarka.retrolambda'
 
+//noinspection GroovyUnusedAssignment
 sourceCompatibility = 1.8
+//noinspection GroovyUnusedAssignment
 targetCompatibility = 1.8
 
 retrolambda {
-  jdk System.getenv("JAVA8_HOME")
-  oldJdk System.getenv("JAVA7_HOME")
-  javaVersion JavaVersion.VERSION_1_7
-  incremental true
+//  jdk System.getenv("JAVA8_HOME")
+//  oldJdk System.getenv("JAVA7_HOME")
+//  javaVersion JavaVersion.VERSION_1_7
+//  incremental true
 }
 
 configurations {
