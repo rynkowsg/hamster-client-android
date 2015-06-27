@@ -85,7 +85,6 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
       try {
         registerSignalCallback(signalClass, signal -> subscriber.onNext(null));
       } catch (DBusException e) {
-        e.printStackTrace();
         log.error("Exception threw during registering a signal! ", e);
         subscriber.onError(e);
       }
