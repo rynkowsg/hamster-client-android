@@ -11,13 +11,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 
-retrolambda {
-  jdk System.getenv("JAVA8_HOME")
-  oldJdk System.getenv("JAVA7_HOME")
-  javaVersion JavaVersion.VERSION_1_7
-  incremental true
-}
-
 android {
   def globalConfiguration = rootProject.extensions.getByName("ext")
 
@@ -45,13 +38,19 @@ android {
   }
 
   lintOptions {
-    // Lombok, ButterKnife: https://github.com/JakeWharton/butterknife/issues/110
-    disable 'InvalidPackage'
+    disable 'InvalidPackage' // Lombok, ButterKnife: github.com/JakeWharton/butterknife/issues/110
   }
 
   dexOptions {
-//    incremental true         // http://stackoverflow.com/a/30322882
+//    incremental true // stackoverflow.com/a/30322882
   }
+}
+
+retrolambda {
+  jdk System.getenv("JAVA8_HOME")
+  oldJdk System.getenv("JAVA7_HOME")
+  javaVersion JavaVersion.VERSION_1_7
+  incremental true
 }
 
 dependencies {
