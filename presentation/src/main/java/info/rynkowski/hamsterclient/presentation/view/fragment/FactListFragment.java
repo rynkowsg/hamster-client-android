@@ -17,7 +17,9 @@
 package info.rynkowski.hamsterclient.presentation.view.fragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -58,6 +60,8 @@ public class FactListFragment extends BaseFragment
 
   private FactsAdapter factsAdapter;
 
+  private AlertDialog retryDialog;
+
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_fact_list, container, false);
@@ -74,6 +78,7 @@ public class FactListFragment extends BaseFragment
 
   @Override public void onResume() {
     super.onResume();
+    this.setupRetryDialog();
     factListPresenter.resume();
   }
 
@@ -154,10 +159,39 @@ public class FactListFragment extends BaseFragment
     progress_circular.setVisibility(View.INVISIBLE);
   }
 
+  private void setupRetryDialog() {
+    log.debug("setupRetryDialog()");
+    retryDialog = new AlertDialog.Builder(getActivity())
+        .setTitle("No Connection")
+        .setMessage("Cannot connect to the internet!")
+        .setPositiveButton("Retry", new AlertDialog.OnClickListener() {
+          @Override public void onClick(DialogInterface dialog, int which) {
+            log.trace("Retry...");
+            factListPresenter.loadFactList();
+          }
+        })
+        .setNegativeButton("Close", new AlertDialog.OnClickListener() {
+          @Override public void onClick(DialogInterface dialog, int which) {
+            log.trace("Closing...");
+            getActivity().finish();
+          }
+        })
+        .setNeutralButton("Settings", new AlertDialog.OnClickListener() {
+          @Override public void onClick(DialogInterface dialog, int which) {
+            navigator.navigateToSettings(getActivity());
+          }
+        })
+        .create();
+  }
+
   @Override public void showRetry() {
+    log.debug("showRetry()");
+    retryDialog.show();
   }
 
   @Override public void hideRetry() {
+    log.debug("hideRetry()");
+    retryDialog.hide();
   }
 
   @Override public void showError(String message) {
