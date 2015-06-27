@@ -24,6 +24,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -53,6 +54,7 @@ public class FactListFragment extends BaseFragment
   @Inject FactListPresenter factListPresenter;
 
   @InjectView(R.id.rv_facts) RecyclerView rv_facts;
+  @InjectView(R.id.progress_circular) ProgressBar progress_circular;
 
   private FactsAdapter factsAdapter;
 
@@ -136,15 +138,20 @@ public class FactListFragment extends BaseFragment
   }
 
   @Override public void renderFactList(Collection<FactModel> factModelCollection) {
+    this.hideLoading();
     if (factModelCollection != null) {
       this.factsAdapter.setFactsCollection(factModelCollection);
     }
   }
 
   @Override public void showLoading() {
+    log.debug("showLoading()");
+    progress_circular.setVisibility(View.VISIBLE);
   }
 
   @Override public void hideLoading() {
+    log.debug("hideLoading()");
+    progress_circular.setVisibility(View.INVISIBLE);
   }
 
   @Override public void showRetry() {

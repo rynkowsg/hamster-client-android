@@ -28,6 +28,15 @@
         android:layout_height="match_parent"
         />
 
+    <ProgressBar
+        android:id="@+id/progress_circular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        android:indeterminate="true"
+        />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_add_fact"
         android:layout_width="wrap_content"

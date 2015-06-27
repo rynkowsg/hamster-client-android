@@ -92,6 +92,7 @@ public class FactListPresenter implements Presenter {
 
   private void loadFactList() {
     log.trace("loadFactList()");
+    viewListView.showLoading();
     getTodaysFactsUseCase.execute()
         .doOnNext(list -> log.info("Received {} facts.", list.size()))
         .map(mapper::transform)
