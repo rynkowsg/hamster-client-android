@@ -62,9 +62,11 @@ ext {
   ]
 
   presentationDependencies = [
+      supportV4:          "com.android.support:support-v4:${supportV4Version}",
       appcompatV7:        "com.android.support:appcompat-v7:${appcompatV7Version}",
       recyclerView:       "com.android.support:recyclerview-v7:${recyclerViewVersion}",
       design:             "com.android.support:design:${designVersion}",
+
       butterKnife:        "com.jakewharton:butterknife:${butterKnifeVersion}",
       commonsLang3:       "org.apache.commons:commons-lang3:${commonsLang3Version}",
       daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
