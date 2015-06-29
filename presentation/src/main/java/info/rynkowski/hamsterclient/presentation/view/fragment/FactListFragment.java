@@ -168,7 +168,7 @@ public class FactListFragment extends BaseFragment
         .setPositiveButton("Retry", new AlertDialog.OnClickListener() {
           @Override public void onClick(DialogInterface dialog, int which) {
             log.trace("Retry...");
-            factListPresenter.loadFactList();
+            factListPresenter.onRetry();
           }
         })
         .setNegativeButton("Close", new AlertDialog.OnClickListener() {
