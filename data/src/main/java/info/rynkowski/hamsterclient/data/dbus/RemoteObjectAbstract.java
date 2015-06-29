@@ -79,6 +79,12 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
     connectionProvider.get().addSigHandler((Class<DBusSignal>) signalClass, callback);
   }
 
+  @Override @SuppressWarnings("unchecked")
+  public void unregisterSignalCallback(Class<? extends DBusSignal> signalClass,
+      DBusSigHandler<DBusSignal> callback) throws DBusException {
+    connectionProvider.get().removeSigHandler((Class<DBusSignal>) signalClass, callback);
+  }
+
   @Override
   public Observable<Void> createSignalObservable(Class<? extends DBusSignal> signalClass) {
     return Observable.create(subscriber -> {
@@ -90,6 +96,7 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
       }
     });
   }
+  //TODO: add unregisterSignalCallback to unsubscription
 
   @Override public void clear() {
     remoteObject = null;
