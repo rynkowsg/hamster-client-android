@@ -58,8 +58,10 @@ public class ConnectionProviderOverNetwork implements ConnectionProvider {
   }
 
   @Override public void close() {
-    connection.disconnect();
-    connection = null;
-    log.info("D-Bus connection closed.");
+    if (connection != null) {
+      connection.disconnect();
+      connection = null;
+      log.info("D-Bus connection closed.");
+    }
   }
 }
