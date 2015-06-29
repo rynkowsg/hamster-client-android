@@ -65,10 +65,8 @@ public class FactListPresenter implements Presenter {
     this.viewListView = view;
   }
 
-  @Override public void initialize() {
-    hamsterRepository.initialize();
-    registerSignals();
-    log.debug("FactList initialized.");
+  @Override public void start() {
+    log.debug("FactList started.");
   }
 
   @Override public void resume() {

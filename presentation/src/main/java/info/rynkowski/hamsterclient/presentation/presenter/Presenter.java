@@ -26,7 +26,7 @@ public interface Presenter {
    * Called when the presenter is initialized, this method represents the start of the presenter
    * lifecycle.
    */
-  void initialize();
+  void start();
 
   /**
    * Called when the presenter is resumed. After the initialization and when the presenter comes

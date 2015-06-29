@@ -73,7 +73,13 @@ public class FactListFragment extends BaseFragment
 
   @Override public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
-    this.initialize();
+    this.injectDependencies();
+  }
+
+  @Override public void onStart() {
+    super.onStart();
+    factListPresenter.setView(this);
+    factListPresenter.start();
   }
 
   @Override public void onResume() {
@@ -90,12 +96,7 @@ public class FactListFragment extends BaseFragment
   @Override public void onDestroyView() {
     super.onDestroyView();
     ButterKnife.reset(this);
-  }
-
-  private void initialize() {
-    this.injectDependencies();
-    factListPresenter.setView(this);
-    factListPresenter.initialize();
+    factListPresenter.destroy();
   }
 
   private void injectDependencies() {
