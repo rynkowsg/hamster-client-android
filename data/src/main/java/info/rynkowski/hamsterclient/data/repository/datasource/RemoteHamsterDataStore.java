@@ -44,13 +44,17 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
     this.hamsterObject = hamsterRemoteObject;
   }
 
-  @Override public void initialize() {
-    // empty
+  @Override public Observable<Void> initialize() {
+    return hamsterObject.getObservable()
+        .doOnNext(hamster -> log.debug("Remote data store initialized."))
+        .flatMap(object -> Observable.just(null));
   }
 
-  @Override public void deinitialize() {
+  @Override public Observable<Void> deinitialize() {
     hamsterObject.clear();
     connectionProvider.close();
+    log.debug("Remote data store deinitialized.");
+    return Observable.empty();
   }
 
   @Override public Observable<List<FactEntity>> getTodaysFactEntities() {

@@ -55,6 +55,7 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
       log.debug("    objectPath: {}", objectPath);
       log.debug("    dbusType:   {}", dbusType);
       remoteObject = (Type) connectionProvider.get().getRemoteObject(busName, objectPath, dbusType);
+      log.debug("D-Bus remote object possessed successfully.");
     }
     return remoteObject;
   }

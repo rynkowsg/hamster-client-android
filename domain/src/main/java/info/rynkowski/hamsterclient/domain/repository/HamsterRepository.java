@@ -21,9 +21,15 @@ import java.util.List;
 import rx.Observable;
 
 /**
- * Interface that represents a {@link Repository} for communicating with Hamster database.
+ * Interface that represents a repository for communicating with Hamster database.
  */
-public interface HamsterRepository extends Repository {
+public interface HamsterRepository {
+
+  void initialize(Type type);
+
+  void deinitialize();
+
+  Observable<Status> onChange();
 
   Observable<List<Fact>> getTodaysFacts();
 
@@ -36,4 +42,19 @@ public interface HamsterRepository extends Repository {
   Observable<Void> signalTagsChanged();
 
   Observable<Void> signalToggleCalled();
+
+  enum Type {
+    LOCAL, REMOTE
+  }
+
+  enum Status {
+    SWITCHED_TO_REMOTE,
+    SWITCHED_TO_LOCAL,
+    REMOTE_UNAVAILABLE,
+    LOCAL_UNAVAILABLE
+  }
+
+  interface OnDataStoreChangedListener {
+    void onDataStoreChanged(Status status);
+  }
 }

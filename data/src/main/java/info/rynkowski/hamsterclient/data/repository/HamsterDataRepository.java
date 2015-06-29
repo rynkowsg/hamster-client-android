@@ -18,13 +18,17 @@ package info.rynkowski.hamsterclient.data.repository;
 
 import info.rynkowski.hamsterclient.data.entity.FactEntity;
 import info.rynkowski.hamsterclient.data.entity.mapper.FactEntityMapper;
-import info.rynkowski.hamsterclient.data.repository.datasource.HamsterDataStoreFactory;
+import info.rynkowski.hamsterclient.data.repository.datasource.HamsterDataStore;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
 import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import rx.Observable;
+import rx.subjects.PublishSubject;
 
 /**
  * Implementation of {@link info.rynkowski.hamsterclient.domain.repository.HamsterRepository}.
@@ -32,49 +36,132 @@ import rx.Observable;
 @Singleton
 public class HamsterDataRepository implements HamsterRepository {
 
-  private HamsterDataStoreFactory hamsterDataStoreFactory;
+  private static final Logger log = LoggerFactory.getLogger(HamsterDataRepository.class);
+
   private FactEntityMapper factEntityMapper;
 
-  @Inject public HamsterDataRepository(HamsterDataStoreFactory hamsterDataStoreFactory,
+  private HamsterDataStore localStore;
+  private HamsterDataStore remoteStore;
+  private volatile HamsterDataStore currentStore;
+
+  private PublishSubject<Status> status;
+
+  @Inject public HamsterDataRepository(@Named("remote") HamsterDataStore remoteHamsterDataStore,
       FactEntityMapper factEntityMapper) {
-    this.hamsterDataStoreFactory = hamsterDataStoreFactory;
     this.factEntityMapper = factEntityMapper;
+    this.remoteStore = remoteHamsterDataStore;
+    this.localStore = null; // TODO: provide also a local database
+
+    this.status = PublishSubject.create();
   }
 
-  @Override public void initialize() {
-    //empty
+  @Override public void initialize(Type type) {
+    log.debug("Entering initialize(type={})", type);
+    switch (type) {
+      case LOCAL:
+        localStore.initialize().subscribe(aVoid -> {
+          log.info("Initialized a LOCAL store");
+          currentStore = localStore;
+          status.onNext(Status.SWITCHED_TO_LOCAL);
+        }, throwable -> {
+          log.warn("Initializing a REMOTE store failed.");
+          status.onNext(Status.LOCAL_UNAVAILABLE);
+        });
+        break;
+      case REMOTE:
+        remoteStore.initialize().subscribe(aVoid -> {
+          log.info("Initialized a REMOTE store");
+          currentStore = remoteStore;
+          status.onNext(Status.SWITCHED_TO_REMOTE);
+        }, throwable -> {
+          log.warn("Initializing a REMOTE store failed.");
+          status.onNext(Status.REMOTE_UNAVAILABLE);
+        });
+        break;
+      default:
+        throw new RuntimeException("Unknown repository type: " + type);
+    }
   }
 
   @Override public void deinitialize() {
-    hamsterDataStoreFactory.getStore().deinitialize();
+    log.debug("Entering deinitialize()");
+    if (currentStore != null) {
+      currentStore.deinitialize();
+    }
   }
 
   @Override public Observable<List<Fact>> getTodaysFacts() {
-    return hamsterDataStoreFactory.getStore()
-        .getTodaysFactEntities()
+    if (currentStore == null) {
+      return Observable.error(new RuntimeException(
+          "Repository should be initialized! Take a look at method initialize(Type type)."));
+    }
+    return currentStore.getTodaysFactEntities()
         .flatMap(Observable::from)
         .map(factEntityMapper::transform)
         .toList();
   }
 
   @Override public Observable<Integer> addFact(Fact fact) {
+    if (currentStore == null) {
+      return Observable.error(new RuntimeException(
+          "Repository should be initialized! Take a look at method initialize(Type type)."));
+    }
     FactEntity factEntity = factEntityMapper.transform(fact);
-    return hamsterDataStoreFactory.getStore().addFactEntity(factEntity);
+    return currentStore.addFactEntity(factEntity);
   }
 
   @Override public Observable<Void> signalActivitiesChanged() {
-    return hamsterDataStoreFactory.getStore().signalActivitiesChanged();
+    if (currentStore == null) {
+      return Observable.error(new RuntimeException(
+          "Repository should be initialized! Take a look at method initialize(Type type)."));
+    }
+    return currentStore.signalActivitiesChanged();
   }
 
   @Override public Observable<Void> signalFactsChanged() {
-    return hamsterDataStoreFactory.getStore().signalFactsChanged();
+    if (currentStore == null) {
+      return Observable.error(new RuntimeException(
+          "Repository should be initialized! Take a look at method initialize(Type type)."));
+    }
+    return currentStore.signalFactsChanged();
   }
 
   @Override public Observable<Void> signalTagsChanged() {
-    return hamsterDataStoreFactory.getStore().signalTagsChanged();
+    if (currentStore == null) {
+      return Observable.error(new RuntimeException(
+          "Repository should be initialized! Take a look at method initialize(Type type)."));
+    }
+    return currentStore.signalTagsChanged();
   }
 
   @Override public Observable<Void> signalToggleCalled() {
-    return hamsterDataStoreFactory.getStore().signalToggleCalled();
+    if (currentStore == null) {
+      return Observable.error(new RuntimeException(
+          "Repository should be initialized! Take a look at method initialize(Type type)."));
+    }
+    return currentStore.signalToggleCalled();
+  }
+
+  @Override public Observable<Status> onChange() {
+    return status
+        .doOnNext(status1 -> log.debug("doOnNext, status: {}", status1))
+        .doOnUnsubscribe(() -> log.debug("doOnUnsubscribe"))
+        .doOnCompleted(() -> log.debug("doOnCompleted"))
+        .doOnSubscribe(() -> log.debug("doOnSubscribe"))
+        .doOnTerminate(() -> log.debug("doOnTerminate"))
+        .doOnError(throwable -> log.debug("doOnError", throwable))
+        ;
+  }
+
+  private Boolean isRemote() {
+    return currentStore == remoteStore;
+  }
+
+  private Boolean isLocal() {
+    return currentStore == localStore;
+  }
+
+  void onError(Throwable throwable) {
+
   }
 }

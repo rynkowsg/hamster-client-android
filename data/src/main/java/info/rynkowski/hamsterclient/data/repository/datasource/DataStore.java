@@ -16,6 +16,8 @@
 
 package info.rynkowski.hamsterclient.data.repository.datasource;
 
+import rx.Observable;
+
 /**
  * Root interface for specific data store's interfaces.
  */
@@ -24,10 +26,10 @@ public interface DataStore {
   /**
    * Called to initialize data store object.
    */
-  void initialize();
+  Observable<Void> initialize();
 
   /**
    * Called to deinitialize data store object.
    */
-  void deinitialize();
+  Observable<Void> deinitialize();
 }
