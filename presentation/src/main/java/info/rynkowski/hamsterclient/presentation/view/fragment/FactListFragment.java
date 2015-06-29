@@ -64,6 +64,7 @@ public class FactListFragment extends BaseFragment
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
+    log.debug("onCreateView()");
     View view = inflater.inflate(R.layout.fragment_fact_list, container, false);
     ButterKnife.inject(this, view);
     this.setupRecyclerView();
@@ -73,28 +74,33 @@ public class FactListFragment extends BaseFragment
 
   @Override public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
+    log.debug("onActivityCreated()");
     this.injectDependencies();
   }
 
   @Override public void onStart() {
     super.onStart();
+    log.debug("onStart()");
     factListPresenter.setView(this);
     factListPresenter.start();
   }
 
   @Override public void onResume() {
     super.onResume();
+    log.debug("onResume()");
     this.setupRetryDialog();
     factListPresenter.resume();
   }
 
   @Override public void onPause() {
     super.onPause();
+    log.debug("onPause()");
     factListPresenter.pause();
   }
 
   @Override public void onDestroyView() {
     super.onDestroyView();
+    log.debug("onDestroyView()");
     ButterKnife.reset(this);
     factListPresenter.destroy();
   }
@@ -144,6 +150,7 @@ public class FactListFragment extends BaseFragment
   }
 
   @Override public void renderFactList(Collection<FactModel> factModelCollection) {
+    log.debug("renderFactList()");
     this.hideLoading();
     if (factModelCollection != null) {
       this.factsAdapter.setFactsCollection(factModelCollection);

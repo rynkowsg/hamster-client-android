@@ -45,6 +45,7 @@ public class FactListActivity extends BaseActivity implements HasComponent<FactL
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    log.debug("onCreate()");
     setContentView(R.layout.activity_fact_list);
     ButterKnife.inject(this);
     setSupportActionBar(toolbar);
@@ -86,5 +87,20 @@ public class FactListActivity extends BaseActivity implements HasComponent<FactL
 
   @Override public FactListComponent getComponent() {
     return factListComponent;
+  }
+
+  @Override protected void onDestroy() {
+    super.onDestroy();
+    log.debug("onDestroy()");
+  }
+
+  @Override protected void onPause() {
+    super.onPause();
+    log.debug("onPause()");
+  }
+
+  @Override protected void onResume() {
+    super.onResume();
+    log.debug("onResume()");
   }
 }

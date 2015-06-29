@@ -79,6 +79,8 @@ public class FactListPresenter implements Presenter, HamsterRepository.OnDataSto
   }
 
   @Override public void start() {
+    log.debug("start()");
+
     subscriptionOnChange = hamsterRepository.onChange()
         .subscribeOn(Schedulers.from(threadExecutor))
         .observeOn(postExecutionThread.getScheduler())
@@ -103,7 +105,7 @@ public class FactListPresenter implements Presenter, HamsterRepository.OnDataSto
   }
 
   public void onFactClicked(FactModel factModel) {
-    log.trace("onFactClicked()");
+    log.debug("onFactClicked()");
     // Empty still
   }
 
@@ -117,13 +119,14 @@ public class FactListPresenter implements Presenter, HamsterRepository.OnDataSto
   }
 
   public void addFact(FactModel factModel) {
-    log.trace("addFact()");
+    log.debug("addFact()");
     Fact fact = mapper.transform(factModel);
     addFactUseCase.execute(fact)
         .subscribe(id -> log.info("New fact added, id={}", id), this::onException);
   }
 
   private void registerSignals() {
+    log.debug("registerSignals()");
     signalFactsChangedUseCase.execute()
         .subscribe(o -> this.onFactsChanged(), this::onException);
   }
