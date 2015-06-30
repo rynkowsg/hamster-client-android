@@ -26,6 +26,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import info.rynkowski.hamsterclient.presentation.R;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
+import info.rynkowski.hamsterclient.presentation.utils.TimeConverter;
 import java.util.Collection;
 import java.util.List;
 
@@ -56,7 +57,9 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
 
   @Override public void onBindViewHolder(FactViewHolder holder, final int position) {
     final FactModel factModel = this.factsCollection.get(position);
-    holder.textViewActivity.setText(factModel.getActivity());
+    holder.activity_name.setText(factModel.getActivity());
+    holder.start_time.setText(TimeConverter.toString(factModel.getStartTime()));
+    holder.end_time.setText(TimeConverter.toString(factModel.getEndTime()));
     holder.itemView.setOnClickListener((View v) -> {
       if (FactsAdapter.this.onItemClickListener != null) {
         FactsAdapter.this.onItemClickListener.onFactItemClicked(factModel);
@@ -89,7 +92,9 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
   }
 
   static class FactViewHolder extends RecyclerView.ViewHolder {
-    @InjectView(R.id.activity_name) TextView textViewActivity;
+    @InjectView(R.id.activity_name) TextView activity_name;
+    @InjectView(R.id.start_time) TextView start_time;
+    @InjectView(R.id.end_time) TextView end_time;
 
     public FactViewHolder(View itemView) {
       super(itemView);

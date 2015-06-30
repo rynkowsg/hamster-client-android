@@ -29,7 +29,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import info.rynkowski.hamsterclient.presentation.R;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
-import java.text.SimpleDateFormat;
+import info.rynkowski.hamsterclient.presentation.utils.TimeConverter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -119,8 +119,8 @@ public class FactFormActivity extends BaseActivity {
   }
 
   private void initiateTimeFields() {
-    selectedStartTime = Calendar.getInstance();
-    selectedEndTime = Calendar.getInstance();
+    selectedStartTime = Calendar.getInstance(Locale.getDefault());
+    selectedEndTime = Calendar.getInstance(Locale.getDefault());
 
     editTextStartTime.setClickable(true);
     editTextStartTime.setFocusable(false);
@@ -130,7 +130,7 @@ public class FactFormActivity extends BaseActivity {
     editTextEndTime.setClickable(true);
     editTextEndTime.setFocusable(false);
     editTextEndTime.setEnabled(false);
-    editTextEndTime.setText(TimeConverter.toString(selectedStartTime));
+    editTextEndTime.setText(TimeConverter.toString(selectedEndTime));
     checkBoxIsInProgress.setChecked(true);
   }
 
@@ -140,20 +140,5 @@ public class FactFormActivity extends BaseActivity {
       result.add(StringUtils.trim(i));
     }
     return result;
-  }
-
-  private static class TimeConverter {
-
-    public static String toString(Calendar calendar) {
-      String stringTime = "";
-      SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.US);
-
-      if (calendar != null) {
-        stringTime = sdf.format(calendar.getTime());
-      }
-      return stringTime;
-      // TODO: Check below approach.
-      //return DateFormat.format("HH:mm", calendar).toString();
-    }
   }
 }
