@@ -35,6 +35,7 @@ sourceSets {
 dependencies {
   def domainDependencies = rootProject.ext.domainDependencies
   compile domainDependencies.dagger
+  compile domainDependencies.guava
   compile domainDependencies.rxJava
   compile domainDependencies.slf4jApi
   provided domainDependencies.daggerCompiler

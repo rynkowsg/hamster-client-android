@@ -70,6 +70,7 @@ dependencies {
   compile presentationDependencies.butterKnife
   compile presentationDependencies.commonsLang3
   compile presentationDependencies.dagger
+  compile presentationDependencies.guava
   compile presentationDependencies.rxAndroid
   compile presentationDependencies.rxJava
   provided presentationDependencies.lombok

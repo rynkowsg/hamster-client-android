@@ -28,6 +28,7 @@ ext {
   slf4jTimberVersion = '2.0'
   timberVersion = '3.1.0'
   androidLoggerVersion = '1.3.5'
+  guavaVersion = '18.0'
 
   appDependencies = [
       supportV4:          "com.android.support:support-v4:${supportV4Version}",
@@ -42,6 +43,7 @@ ext {
       commonsLang3:       "org.apache.commons:commons-lang3:${commonsLang3Version}",
       daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
       dagger:             "com.google.dagger:dagger:${daggerVersion}",
+      guava:              "com.google.guava:guava:${guavaVersion}",
       javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
       lombok:             "org.projectlombok:lombok:${lombokVersion}",
       rxAndroid:          "io.reactivex:rxandroid:${rxAndroidVersion}",
@@ -55,6 +57,7 @@ ext {
   domainDependencies = [
       daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
       dagger:             "com.google.dagger:dagger:${daggerVersion}",
+      guava:              "com.google.guava:guava:${guavaVersion}",
       javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
       lombok:             "org.projectlombok:lombok:${lombokVersion}",
       rxJava:             "io.reactivex:rxjava:${rxJavaVersion}",
@@ -71,6 +74,7 @@ ext {
       commonsLang3:       "org.apache.commons:commons-lang3:${commonsLang3Version}",
       daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
       dagger:             "com.google.dagger:dagger:${daggerVersion}",
+      guava:              "com.google.guava:guava:${guavaVersion}",
       lombok:             "org.projectlombok:lombok:${lombokVersion}",
       rxAndroid:          "io.reactivex:rxandroid:${rxAndroidVersion}",
       rxJava:             "io.reactivex:rxjava:${rxJavaVersion}",
