@@ -16,18 +16,26 @@
 
 package info.rynkowski.hamsterclient.presentation.utils;
 
-import android.text.format.DateFormat;
+import android.support.annotation.NonNull;
+import com.google.common.base.Optional;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class TimeConverter {
 
-  public static String toString(Calendar calendar) {
-    String result = "";
-    if (calendar != null && calendar.getTimeInMillis() != 0) {
-      //SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
-      //result = sdf.format(calendar);
-      return DateFormat.format("HH:mm", calendar.getTime()).toString();
+  public static String toString(@NonNull Calendar calendar) {
+    if (calendar.getTimeInMillis() != 0) {
+      SimpleDateFormat dateFormatGmt = new SimpleDateFormat("HH:mm", Locale.getDefault());
+      return dateFormatGmt.format(calendar.getTime());
     }
-    return result;
+    return "";
+  }
+
+  public static String toString(@NonNull Optional<Calendar> calendar) {
+    if (calendar.isPresent()) {
+      return toString(calendar.get());
+    }
+    return "";
   }
 }

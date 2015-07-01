@@ -27,11 +27,13 @@ import android.widget.EditText;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.presentation.R;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.presentation.utils.TimeConverter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 import org.apache.commons.lang3.StringUtils;
@@ -51,6 +53,8 @@ public class FactFormActivity extends BaseActivity {
   @InjectView(R.id.et_description) EditText editTextDescription;
   @InjectView(R.id.cb_ongoing) CheckBox checkBoxIsInProgress;
 
+  private boolean isEndTimeDisabled = false;
+
   private Calendar selectedStartTime;
   private Calendar selectedEndTime;
 
@@ -66,9 +70,20 @@ public class FactFormActivity extends BaseActivity {
   }
 
   @OnClick({ R.id.et_start_time, R.id.et_end_time }) public void onTimeClicked(final View view) {
+    int hour, minutes;
 
-    int hour = selectedStartTime.get(Calendar.HOUR_OF_DAY);
-    int minutes = selectedEndTime.get(Calendar.MINUTE);
+    switch (view.getId()) {
+      case R.id.et_start_time:
+        hour = selectedStartTime.get(Calendar.HOUR_OF_DAY);
+        minutes = selectedStartTime.get(Calendar.MINUTE);
+        break;
+      case R.id.et_end_time:
+        hour = selectedEndTime.get(Calendar.HOUR_OF_DAY);
+        minutes = selectedEndTime.get(Calendar.MINUTE);
+        break;
+      default:
+        throw new RuntimeException("Unknown view id");
+    }
 
     TimePickerDialog timePicker = new TimePickerDialog(FactFormActivity.this,
         (timePickerView, selectedHour, selectedMinutes) -> {
@@ -91,12 +106,8 @@ public class FactFormActivity extends BaseActivity {
   }
 
   @OnClick(R.id.cb_ongoing) public void onCheckBoxClicked(View view) {
-    boolean isChecked = ((CheckBox) view).isChecked();
-    if (isChecked) {
-      editTextEndTime.setEnabled(false);
-    } else {
-      editTextEndTime.setEnabled(true);
-    }
+    isEndTimeDisabled = ((CheckBox) view).isChecked();
+    editTextEndTime.setEnabled(!isEndTimeDisabled);
   }
 
   @OnClick(R.id.btn_apply) public void onApplyClicked(View view) {
@@ -114,13 +125,13 @@ public class FactFormActivity extends BaseActivity {
         .tags(splitTags(editTextTags.getText().toString()))
         .description(editTextDescription.getText().toString())
         .startTime(selectedStartTime)
-        .endTime(selectedEndTime)
+        .endTime(isEndTimeDisabled ? Optional.absent() : Optional.of(selectedEndTime))
         .build();
   }
 
   private void initiateTimeFields() {
-    selectedStartTime = Calendar.getInstance(Locale.getDefault());
-    selectedEndTime = Calendar.getInstance(Locale.getDefault());
+    selectedStartTime = GregorianCalendar.getInstance(Locale.getDefault());
+    selectedEndTime = GregorianCalendar.getInstance(Locale.getDefault());
 
     editTextStartTime.setClickable(true);
     editTextStartTime.setFocusable(false);

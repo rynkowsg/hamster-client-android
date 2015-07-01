@@ -16,6 +16,7 @@
 
 package info.rynkowski.hamsterclient.presentation.model;
 
+import com.google.common.base.Optional;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
@@ -34,7 +35,7 @@ public class FactModel implements Serializable {
   @Getter private List<String> tags;
   @Getter private String description;
   @Getter private Calendar startTime;
-  @Getter private Calendar endTime;
+  @Getter private Optional<Calendar> endTime;
 
   private FactModel(Builder b) {
     this.activity = b.activity;
@@ -55,7 +56,7 @@ public class FactModel implements Serializable {
     private String description;
     private List<String> tags;
     private Calendar startTime;
-    private Calendar endTime;
+    private Optional<Calendar> endTime;
 
     public FactModel build() {
       return new FactModel(this);

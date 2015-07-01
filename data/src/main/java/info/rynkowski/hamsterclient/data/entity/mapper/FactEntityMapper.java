@@ -16,13 +16,15 @@
 
 package info.rynkowski.hamsterclient.data.entity.mapper;
 
+import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.data.entity.FactEntity;
 import info.rynkowski.hamsterclient.domain.entities.Activity;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.gnome.Struct5;
@@ -61,10 +63,16 @@ public class FactEntityMapper {
   }
 
   public Fact transform(FactEntity factEntity) {
-    Calendar startTime = Calendar.getInstance();
-    startTime.setTime(new Date((long) (factEntity.getStartTime()) * 1000));
-    Calendar endTime = Calendar.getInstance();
-    endTime.setTime(new Date((long) (factEntity.getEndTime()) * 1000));
+    Calendar startTime = GregorianCalendar.getInstance();
+    startTime.setTimeZone(TimeZone.getDefault());
+    startTime.setTimeInMillis((long) (factEntity.getStartTime()) * 1000);
+
+    Optional<Calendar> endTime = Optional.absent();
+    if (factEntity.getEndTime() != 0) {
+      endTime = Optional.of(GregorianCalendar.getInstance());
+      endTime.get().setTimeZone(TimeZone.getDefault());
+      endTime.get().setTimeInMillis((long) (factEntity.getEndTime()) * 1000);
+    }
 
     Activity activity = new Activity(factEntity.getActivity(), factEntity.getCategory());
     return new Fact.Builder().activity(activity)
@@ -76,10 +84,16 @@ public class FactEntityMapper {
   }
 
   public FactEntity transform(Fact fact) {
+    int startTime = (int) (fact.getStartTime().getTimeInMillis() / 1000);
+
+    int endTime = 0;
+    if (fact.getEndTime().isPresent()) {
+      endTime = (int) (fact.getEndTime().get().getTimeInMillis() / 1000);
+    }
     return new FactEntity.Builder().activity(fact.getActivity().getName())
         .category(fact.getActivity().getCategory())
-        .startTime((int) (fact.getStartTime().getTimeInMillis() / 1000))
-        .endTime((int) (fact.getEndTime().getTimeInMillis() / 1000))
+        .startTime(startTime)
+        .endTime(endTime)
         .description(fact.getDescription())
         .tags(fact.getTags())
         .build();
