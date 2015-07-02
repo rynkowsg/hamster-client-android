@@ -30,9 +30,8 @@ import info.rynkowski.hamsterclient.presentation.view.FactListView;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
+import lombok.extern.slf4j.Slf4j;
 import org.freedesktop.dbus.exceptions.DBusException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import rx.Subscription;
 import rx.schedulers.Schedulers;
 
@@ -40,10 +39,9 @@ import rx.schedulers.Schedulers;
  * {@link Presenter} that controls communication between views and models of the presentation
  * layer for fact list screen.
  */
+@Slf4j
 @ActivityScope
 public class FactListPresenter implements Presenter, HamsterRepository.OnDataStoreChangedListener {
-
-  private static final Logger log = LoggerFactory.getLogger(FactListPresenter.class);
 
   private final ThreadExecutor threadExecutor;
   private final PostExecutionThread postExecutionThread;

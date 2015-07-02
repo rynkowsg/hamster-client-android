@@ -28,12 +28,10 @@ import info.rynkowski.hamsterclient.presentation.R;
 import info.rynkowski.hamsterclient.presentation.internal.di.HasComponent;
 import info.rynkowski.hamsterclient.presentation.internal.di.components.DaggerFactListComponent;
 import info.rynkowski.hamsterclient.presentation.internal.di.components.FactListComponent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class FactListActivity extends BaseActivity implements HasComponent<FactListComponent> {
-
-  private static final Logger log = LoggerFactory.getLogger(FactListActivity.class);
 
   @InjectView(R.id.toolbar) Toolbar toolbar;
 

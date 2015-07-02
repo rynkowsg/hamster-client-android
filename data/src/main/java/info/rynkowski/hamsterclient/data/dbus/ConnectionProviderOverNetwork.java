@@ -18,19 +18,17 @@ package info.rynkowski.hamsterclient.data.dbus;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
 import org.freedesktop.dbus.DBusConnection;
 import org.freedesktop.dbus.exceptions.DBusException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * {@link ConnectionProvider} providing a {@link org.freedesktop.dbus.DBusConnection}
  * over the network.
  */
+@Slf4j
 @Singleton
 public class ConnectionProviderOverNetwork implements ConnectionProvider {
-
-  private static final Logger log = LoggerFactory.getLogger(ConnectionProviderOverNetwork.class);
 
   private String addressHost;
   private String addressPort;

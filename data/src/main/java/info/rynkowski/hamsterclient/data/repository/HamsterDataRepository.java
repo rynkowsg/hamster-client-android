@@ -25,18 +25,16 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
 /**
  * Implementation of {@link info.rynkowski.hamsterclient.domain.repository.HamsterRepository}.
  */
+@Slf4j
 @Singleton
 public class HamsterDataRepository implements HamsterRepository {
-
-  private static final Logger log = LoggerFactory.getLogger(HamsterDataRepository.class);
 
   private FactEntityMapper factEntityMapper;
 

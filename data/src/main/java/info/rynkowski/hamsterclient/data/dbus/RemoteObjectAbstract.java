@@ -16,11 +16,10 @@
 
 package info.rynkowski.hamsterclient.data.dbus;
 
+import lombok.extern.slf4j.Slf4j;
 import org.freedesktop.dbus.DBusSigHandler;
 import org.freedesktop.dbus.DBusSignal;
 import org.freedesktop.dbus.exceptions.DBusException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import rx.Observable;
 
 /**
@@ -28,9 +27,9 @@ import rx.Observable;
  *
  * @param <Type> type of D-Bus remote object
  */
+@Slf4j
 public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
 
-  private static final Logger log = LoggerFactory.getLogger(RemoteObjectAbstract.class);
   private ConnectionProvider connectionProvider;
   private String busName;
   private String objectPath;

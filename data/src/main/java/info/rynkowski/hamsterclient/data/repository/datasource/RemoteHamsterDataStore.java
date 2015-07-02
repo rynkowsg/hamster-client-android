@@ -22,18 +22,16 @@ import info.rynkowski.hamsterclient.data.entity.FactEntity;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
 import org.gnome.Hamster;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import rx.Observable;
 
 /**
  * {@link HamsterDataStore} based on a remote D-Bus connection.
  */
+@Slf4j
 @Singleton
 public class RemoteHamsterDataStore implements HamsterDataStore {
-
-  private static final Logger log = LoggerFactory.getLogger(RemoteHamsterDataStore.class);
 
   private ConnectionProvider connectionProvider;
   private HamsterRemoteObject hamsterObject;

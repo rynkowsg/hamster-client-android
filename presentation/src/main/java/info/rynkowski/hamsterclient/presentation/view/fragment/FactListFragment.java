@@ -42,16 +42,14 @@ import info.rynkowski.hamsterclient.presentation.view.adapter.FactsLayoutManager
 import java.util.ArrayList;
 import java.util.Collection;
 import javax.inject.Inject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Fragment that shows a list of Facts.
  */
+@Slf4j
 public class FactListFragment extends BaseFragment
     implements FactListView, FactsAdapter.OnItemClickListener {
-
-  private static final Logger log = LoggerFactory.getLogger(FactListFragment.class);
 
   @Inject FactListPresenter factListPresenter;
 
