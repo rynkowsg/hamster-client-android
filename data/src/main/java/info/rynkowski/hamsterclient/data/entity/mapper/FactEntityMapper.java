@@ -38,6 +38,10 @@ import org.gnome.Struct7;
 @Singleton
 public class FactEntityMapper {
 
+  // Computer's time zone
+  // It is assumed that remote computer has the same time zone as the mobile device.
+  private TimeZone remoteTimeZone = TimeZone.getDefault();
+
   @Inject public FactEntityMapper() {
     //empty
   }
@@ -63,15 +67,14 @@ public class FactEntityMapper {
   }
 
   public Fact transform(FactEntity factEntity) {
-    Calendar startTime = GregorianCalendar.getInstance();
-    startTime.setTimeZone(TimeZone.getDefault());
-    startTime.setTimeInMillis((long) (factEntity.getStartTime()) * 1000);
 
+    // Start Time
+    Calendar startTime = convertTimeFromRemote(factEntity.getStartTime());
+
+    // End Time
     Optional<Calendar> endTime = Optional.absent();
     if (factEntity.getEndTime() != 0) {
-      endTime = Optional.of(GregorianCalendar.getInstance());
-      endTime.get().setTimeZone(TimeZone.getDefault());
-      endTime.get().setTimeInMillis((long) (factEntity.getEndTime()) * 1000);
+      endTime = Optional.of(convertTimeFromRemote(factEntity.getEndTime()));
     }
 
     Activity activity = new Activity(factEntity.getActivity(), factEntity.getCategory());
@@ -84,11 +87,12 @@ public class FactEntityMapper {
   }
 
   public FactEntity transform(Fact fact) {
-    int startTime = (int) (fact.getStartTime().getTimeInMillis() / 1000);
+
+    int startTime = convertTimeToRemote(fact.getStartTime());
 
     int endTime = 0;
     if (fact.getEndTime().isPresent()) {
-      endTime = (int) (fact.getEndTime().get().getTimeInMillis() / 1000);
+      endTime = convertTimeToRemote(fact.getEndTime().get());
     }
     return new FactEntity.Builder().activity(fact.getActivity().getName())
         .category(fact.getActivity().getCategory())
@@ -97,5 +101,40 @@ public class FactEntityMapper {
         .description(fact.getDescription())
         .tags(fact.getTags())
         .build();
+  }
+
+  /**
+   * Converts time from remote representation to representation used at domain module.
+   * @param time is remote representation of time ({@code int})
+   * @return representation of time used at domain module ({@link Calendar})
+   */
+  private Calendar convertTimeFromRemote(int time) {
+    // Hamster uses time counted in seconds.
+    long date = ((long) time) * 1000;
+
+    // Hamster provides bad time representation.
+    // It requires a correction using time zone' offset of remote PC.
+    date -= remoteTimeZone.getOffset(date);
+
+    Calendar calendar = GregorianCalendar.getInstance();
+    calendar.setTimeInMillis(date);
+
+    return calendar;
+  }
+
+  /**
+   * Converts time from domain representation type to remote representation.
+   * @param calendar is a time representation used at domain module ({@link Calendar})
+   * @return remote representation of time ({@code int})
+   */
+  private int convertTimeToRemote(Calendar calendar) {
+    long date = calendar.getTimeInMillis();
+
+    // Hamster provides bad time representation.
+    // It requires a correction using time zone' offset of remote PC.
+    date += remoteTimeZone.getOffset(date);
+
+    // Hamster uses time counted in seconds.
+    return (int) (date / 1000);
   }
 }
