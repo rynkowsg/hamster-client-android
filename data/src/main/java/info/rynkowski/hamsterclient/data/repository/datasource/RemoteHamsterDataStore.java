@@ -45,7 +45,7 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
   @Override public Observable<Void> initialize() {
     return hamsterObject.getObservable()
         .doOnNext(hamster -> log.debug("Remote data store initialized."))
-        .flatMap(object -> Observable.just(null));
+        .flatMap(object -> Observable.empty());
   }
 
   @Override public Observable<Void> deinitialize() {

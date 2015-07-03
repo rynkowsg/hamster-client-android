@@ -16,6 +16,7 @@
 
 package info.rynkowski.hamsterclient.data.repository;
 
+import info.rynkowski.hamsterclient.data.rx.OnCompletedObserver;
 import info.rynkowski.hamsterclient.data.entity.FactEntity;
 import info.rynkowski.hamsterclient.data.entity.mapper.FactEntityMapper;
 import info.rynkowski.hamsterclient.data.repository.datasource.HamsterDataStore;
@@ -57,23 +58,29 @@ public class HamsterDataRepository implements HamsterRepository {
     log.debug("Entering initialize(type={})", type);
     switch (type) {
       case LOCAL:
-        localStore.initialize().subscribe(aVoid -> {
-          log.info("Initialized a LOCAL store");
-          currentStore = localStore;
-          status.onNext(Status.SWITCHED_TO_LOCAL);
-        }, throwable -> {
-          log.warn("Initializing a REMOTE store failed.");
-          status.onNext(Status.LOCAL_UNAVAILABLE);
+        localStore.initialize().subscribe(new OnCompletedObserver<Void>() {
+          @Override public void onCompleted() {
+            log.info("Initialized a LOCAL store");
+            currentStore = localStore;
+            status.onNext(Status.SWITCHED_TO_LOCAL);
+          }
+          @Override public void onError(Throwable e) {
+            log.warn("Initializing a REMOTE store failed.");
+            status.onNext(Status.LOCAL_UNAVAILABLE);
+          }
         });
         break;
       case REMOTE:
-        remoteStore.initialize().subscribe(aVoid -> {
-          log.info("Initialized a REMOTE store");
-          currentStore = remoteStore;
-          status.onNext(Status.SWITCHED_TO_REMOTE);
-        }, throwable -> {
-          log.warn("Initializing a REMOTE store failed.");
-          status.onNext(Status.REMOTE_UNAVAILABLE);
+        remoteStore.initialize().subscribe(new OnCompletedObserver<Void>() {
+          @Override public void onCompleted() {
+            log.info("Initialized a REMOTE store");
+            currentStore = remoteStore;
+            status.onNext(Status.SWITCHED_TO_REMOTE);
+          }
+          @Override public void onError(Throwable e) {
+            log.warn("Initializing a REMOTE store failed.");
+            status.onNext(Status.REMOTE_UNAVAILABLE);
+          }
         });
         break;
       default:
