@@ -17,6 +17,7 @@
 package info.rynkowski.hamsterclient.presentation.view.adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.presentation.R;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.presentation.utils.TimeConverter;
@@ -35,19 +37,19 @@ import java.util.List;
  */
 public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHolder> {
 
-  private final LayoutInflater layoutInflater;
-  private List<FactModel> factsCollection;
-  private OnItemClickListener onItemClickListener;
+  @NonNull private final LayoutInflater layoutInflater;
+  @NonNull private List<FactModel> factsCollection;
+  @NonNull private Optional<OnItemClickListener> onItemClickListener;
 
-  public FactsAdapter(Context context, Collection<FactModel> factsCollection) {
-    this.validateFactsCollection(factsCollection);
+  public FactsAdapter(@NonNull Context context, @NonNull Collection<FactModel> factsCollection) {
     this.layoutInflater =
         (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     this.factsCollection = (List<FactModel>) factsCollection;
+    this.onItemClickListener = Optional.absent();
   }
 
   @Override public int getItemCount() {
-    return (this.factsCollection != null) ? this.factsCollection.size() : 0;
+    return this.factsCollection.size();
   }
 
   @Override public FactViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -61,8 +63,8 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
     holder.start_time.setText(TimeConverter.toString(factModel.getStartTime()));
     holder.end_time.setText(TimeConverter.toString(factModel.getEndTime()));
     holder.itemView.setOnClickListener((View v) -> {
-      if (FactsAdapter.this.onItemClickListener != null) {
-        FactsAdapter.this.onItemClickListener.onFactItemClicked(factModel);
+      if (FactsAdapter.this.onItemClickListener.isPresent()) {
+        FactsAdapter.this.onItemClickListener.get().onFactItemClicked(factModel);
       }
     });
   }
@@ -71,24 +73,17 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
     return position;
   }
 
-  public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-    this.onItemClickListener = onItemClickListener;
+  public void setOnItemClickListener(@NonNull OnItemClickListener onItemClickListener) {
+    this.onItemClickListener = Optional.of(onItemClickListener);
   }
 
-  private void validateFactsCollection(Collection<FactModel> factsCollection) {
-    if (factsCollection == null) {
-      throw new IllegalArgumentException("The list cannot be null");
-    }
-  }
-
-  public void setFactsCollection(Collection<FactModel> factsCollection) {
-    this.validateFactsCollection(factsCollection);
+  public void setFactsCollection(@NonNull Collection<FactModel> factsCollection) {
     this.factsCollection = (List<FactModel>) factsCollection;
     this.notifyDataSetChanged();
   }
 
   public interface OnItemClickListener {
-    void onFactItemClicked(FactModel factModel);
+    void onFactItemClicked(@NonNull FactModel factModel);
   }
 
   static class FactViewHolder extends RecyclerView.ViewHolder {

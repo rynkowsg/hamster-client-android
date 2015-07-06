@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -141,18 +142,14 @@ public class FactListFragment extends BaseFragment
     }
   }
 
-  @Override public void onFactItemClicked(FactModel factModel) {
-    if (FactListFragment.this.factListPresenter != null && factModel != null) {
-      FactListFragment.this.factListPresenter.onFactClicked(factModel);
-    }
+  @Override public void onFactItemClicked(@NonNull FactModel factModel) {
+    FactListFragment.this.factListPresenter.onFactClicked(factModel);
   }
 
-  @Override public void renderFactList(Collection<FactModel> factModelCollection) {
+  @Override public void renderFactList(@NonNull Collection<FactModel> factModelCollection) {
     log.debug("renderFactList()");
     this.hideLoading();
-    if (factModelCollection != null) {
-      this.factsAdapter.setFactsCollection(factModelCollection);
-    }
+    this.factsAdapter.setFactsCollection(factModelCollection);
   }
 
   @Override public void showLoading() {

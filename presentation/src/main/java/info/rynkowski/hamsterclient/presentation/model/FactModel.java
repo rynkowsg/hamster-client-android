@@ -20,6 +20,7 @@ import com.google.common.base.Optional;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
+import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,17 +28,18 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 // TODO: Transform to parcelable
+@Getter
 public class FactModel implements Serializable {
 
-  @Getter private Optional<Integer> id;
-  @Getter private String activity;
-  @Getter private String category;
-  @Getter private List<String> tags;
-  @Getter private String description;
-  @Getter private Calendar startTime;
-  @Getter private Optional<Calendar> endTime;
+  private @Nonnull Optional<Integer> id;
+  private @Nonnull String activity;
+  private @Nonnull String category;
+  private @Nonnull List<String> tags;
+  private @Nonnull String description;
+  private @Nonnull Calendar startTime;
+  private @Nonnull Optional<Calendar> endTime;
 
-  private FactModel(Builder b) {
+  private FactModel(@Nonnull Builder b) {
     this.id = b.id;
     this.activity = b.activity;
     this.category = b.category;
@@ -47,20 +49,21 @@ public class FactModel implements Serializable {
     this.endTime = b.endTime;
   }
 
+  @SuppressWarnings("NullableProblems")  // To ignore warnings "Not-null fields must be initialized"
   @NoArgsConstructor(access = AccessLevel.PUBLIC)
   @Setter
   @Accessors(fluent = true, chain = true)
   public static class Builder {
 
-    private Optional<Integer> id = Optional.absent();
-    private String activity;
-    private String category;
-    private String description;
-    private List<String> tags;
-    private Calendar startTime;
-    private Optional<Calendar> endTime;
+    private @Nonnull Optional<Integer> id = Optional.absent();
+    private @Nonnull String activity;
+    private @Nonnull String category;
+    private @Nonnull String description;
+    private @Nonnull List<String> tags;
+    private @Nonnull Calendar startTime;
+    private @Nonnull Optional<Calendar> endTime;
 
-    public FactModel build() {
+    public @Nonnull FactModel build() {
       return new FactModel(this);
     }
   }

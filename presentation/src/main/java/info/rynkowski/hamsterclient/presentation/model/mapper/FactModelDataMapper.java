@@ -16,6 +16,7 @@
 
 package info.rynkowski.hamsterclient.presentation.model.mapper;
 
+import android.support.annotation.NonNull;
 import info.rynkowski.hamsterclient.domain.entities.Activity;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.presentation.internal.di.ActivityScope;
@@ -27,11 +28,11 @@ import javax.inject.Inject;
 @ActivityScope
 public class FactModelDataMapper {
 
-  @Inject FactModelDataMapper() {
+  public @Inject FactModelDataMapper() {
     //empty
   }
 
-  public Fact transform(FactModel factModel) {
+  public @NonNull Fact transform(@NonNull FactModel factModel) {
     return new Fact.Builder()
         .id(factModel.getId())
         .activity(new Activity(factModel.getActivity(), factModel.getCategory()))
@@ -42,7 +43,7 @@ public class FactModelDataMapper {
         .build();
   }
 
-  public FactModel transform(Fact fact) {
+  public @NonNull FactModel transform(@NonNull Fact fact) {
     return new FactModel.Builder()
         .id(fact.getId())
         .activity(fact.getActivity().getName())
@@ -54,7 +55,7 @@ public class FactModelDataMapper {
         .build();
   }
 
-  public List<FactModel> transform(List<Fact> factList) {
+  public @NonNull List<FactModel> transform(@NonNull List<Fact> factList) {
     List<FactModel> factModelList = new ArrayList<>(factList.size());
     FactModel factModel;
     for (Fact fact : factList) {

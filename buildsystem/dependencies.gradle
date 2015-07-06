@@ -16,6 +16,7 @@ ext {
   appcompatV7Version = '22.2.0'
   recyclerViewVersion = '22.2.0'
   designVersion = '22.2.0'
+  supportAnnotationsVersion = '22.2.0'
 
   commonsLang3Version = '3.4'
   butterKnifeVersion = '6.1.0'
@@ -69,6 +70,7 @@ ext {
       appcompatV7:        "com.android.support:appcompat-v7:${appcompatV7Version}",
       recyclerView:       "com.android.support:recyclerview-v7:${recyclerViewVersion}",
       design:             "com.android.support:design:${designVersion}",
+      supportAnnotations: "com.android.support:support-annotations:${supportAnnotationsVersion}",
 
       butterKnife:        "com.jakewharton:butterknife:${butterKnifeVersion}",
       commonsLang3:       "org.apache.commons:commons-lang3:${commonsLang3Version}",

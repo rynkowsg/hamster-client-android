@@ -64,6 +64,7 @@ dependencies {
   compile presentationDependencies.appcompatV7
   compile presentationDependencies.design
   compile presentationDependencies.recyclerView
+  compile presentationDependencies.supportAnnotations
 
   apt presentationDependencies.daggerCompiler
   apt presentationDependencies.lombok
