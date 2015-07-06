@@ -23,7 +23,6 @@ import info.rynkowski.hamsterclient.domain.executor.PostExecutionThread;
 import info.rynkowski.hamsterclient.domain.executor.ThreadExecutor;
 import info.rynkowski.hamsterclient.domain.interactor.AddFactUseCase;
 import info.rynkowski.hamsterclient.domain.interactor.GetTodaysFactsUseCase;
-import info.rynkowski.hamsterclient.domain.interactor.SignalFactsChangedUseCase;
 import info.rynkowski.hamsterclient.domain.interactor.UseCase;
 import info.rynkowski.hamsterclient.domain.interactor.UseCaseArgumentless;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
@@ -47,11 +46,5 @@ public class DomainModule {
   UseCaseArgumentless<List<Fact>> provideGetTodaysFacts(HamsterRepository hamsterRepository,
       ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
     return new GetTodaysFactsUseCase(hamsterRepository, threadExecutor, postExecutionThread);
-  }
-
-  @Provides @ActivityScope @Named("SignalFactsChanged")
-  UseCaseArgumentless<Void> provideSignalFactsChanged(HamsterRepository hamsterRepository,
-      ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
-    return new SignalFactsChangedUseCase(hamsterRepository, threadExecutor, postExecutionThread);
   }
 }

@@ -49,7 +49,6 @@ public class FactListPresenter implements Presenter, HamsterRepository.OnDataSto
   private final HamsterRepository hamsterRepository;
   private final UseCase<Integer, Fact> addFactUseCase;
   private final UseCaseArgumentless<List<Fact>> getTodaysFactsUseCase;
-  private final UseCaseArgumentless<Void> signalFactsChangedUseCase;
 
   private final FactModelDataMapper mapper;
 
@@ -61,7 +60,6 @@ public class FactListPresenter implements Presenter, HamsterRepository.OnDataSto
   public FactListPresenter(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread,
       HamsterRepository hamsterRepository, @Named("AddFact") UseCase<Integer, Fact> addFactUseCase,
       @Named("GetTodaysFacts") UseCaseArgumentless<List<Fact>> getTodaysFactsUseCase,
-      @Named("SignalFactsChanged") UseCaseArgumentless<Void> signalFactsChangedUseCase,
       FactModelDataMapper mapper) {
     this.threadExecutor = threadExecutor;
     this.postExecutionThread = postExecutionThread;
@@ -69,7 +67,6 @@ public class FactListPresenter implements Presenter, HamsterRepository.OnDataSto
     this.addFactUseCase = addFactUseCase;
     this.getTodaysFactsUseCase = getTodaysFactsUseCase;
     this.mapper = mapper;
-    this.signalFactsChangedUseCase = signalFactsChangedUseCase;
   }
 
   public void setView(@NonNull FactListView view) {
@@ -125,7 +122,9 @@ public class FactListPresenter implements Presenter, HamsterRepository.OnDataSto
 
   private void registerSignals() {
     log.debug("registerSignals()");
-    signalFactsChangedUseCase.execute()
+    hamsterRepository.signalFactsChanged()
+        .subscribeOn(Schedulers.from(threadExecutor))
+        .observeOn(postExecutionThread.getScheduler())
         .subscribe(o -> this.onFactsChanged(), this::onException);
   }
 
