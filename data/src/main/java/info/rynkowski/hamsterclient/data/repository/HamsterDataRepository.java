@@ -157,16 +157,4 @@ public class HamsterDataRepository implements HamsterRepository {
         .doOnError(throwable -> log.debug("doOnError", throwable))
         ;
   }
-
-  private Boolean isRemote() {
-    return currentStore == remoteStore;
-  }
-
-  private Boolean isLocal() {
-    return currentStore == localStore;
-  }
-
-  void onError(Throwable throwable) {
-
-  }
 }

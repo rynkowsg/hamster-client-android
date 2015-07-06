@@ -17,6 +17,7 @@
 package info.rynkowski.hamsterclient.data.dbus;
 
 import lombok.extern.slf4j.Slf4j;
+import org.freedesktop.dbus.DBusConnection;
 import org.freedesktop.dbus.DBusSigHandler;
 import org.freedesktop.dbus.DBusSignal;
 import org.freedesktop.dbus.exceptions.DBusException;
@@ -53,7 +54,9 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
       log.debug("    busName:    {}", busName);
       log.debug("    objectPath: {}", objectPath);
       log.debug("    dbusType:   {}", dbusType);
-      remoteObject = (Type) connectionProvider.get().getRemoteObject(busName, objectPath, dbusType);
+
+      DBusConnection dBusConnection = connectionProvider.get();
+      remoteObject = (Type) dBusConnection.getRemoteObject(busName, objectPath, dbusType);
       log.debug("D-Bus remote object possessed successfully.");
     }
     return remoteObject;
@@ -98,8 +101,9 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
   }
   //TODO: add unregisterSignalCallback to unsubscription
 
-  @Override public void clear() {
+  @Override public void deinit() {
     remoteObject = null;
     remoteObjectObservable = null;
+    connectionProvider.close();
   }
 }

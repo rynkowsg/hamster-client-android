@@ -43,5 +43,5 @@ public interface RemoteObject<Type> {
   /**
    * Removes a retrieved remote object.
    */
-  void clear();
+  void deinit();
 }
