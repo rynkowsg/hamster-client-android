@@ -17,8 +17,6 @@
 package info.rynkowski.hamsterclient.domain.interactor;
 
 import info.rynkowski.hamsterclient.domain.entities.Fact;
-import info.rynkowski.hamsterclient.domain.executor.PostExecutionThread;
-import info.rynkowski.hamsterclient.domain.executor.ThreadExecutor;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
 import java.util.List;
 import javax.inject.Inject;
@@ -33,9 +31,7 @@ public class GetTodaysFactsUseCase extends UseCaseArgumentless<List<Fact>> {
 
   private HamsterRepository hamsterRepository;
 
-  @Inject public GetTodaysFactsUseCase(@Named("remote") HamsterRepository hamsterRepository,
-      ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
-    super(threadExecutor, postExecutionThread);
+  @Inject public GetTodaysFactsUseCase(@Named("remote") HamsterRepository hamsterRepository) {
     this.hamsterRepository = hamsterRepository;
   }
 

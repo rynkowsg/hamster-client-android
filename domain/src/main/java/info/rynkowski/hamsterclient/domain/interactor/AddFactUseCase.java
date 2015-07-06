@@ -17,8 +17,6 @@
 package info.rynkowski.hamsterclient.domain.interactor;
 
 import info.rynkowski.hamsterclient.domain.entities.Fact;
-import info.rynkowski.hamsterclient.domain.executor.PostExecutionThread;
-import info.rynkowski.hamsterclient.domain.executor.ThreadExecutor;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -32,9 +30,7 @@ public class AddFactUseCase extends UseCase<Integer, Fact> {
 
   private HamsterRepository hamsterRepository;
 
-  @Inject public AddFactUseCase(@Named("remote") HamsterRepository hamsterRepository,
-      ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
-    super(threadExecutor, postExecutionThread);
+  @Inject public AddFactUseCase(@Named("remote") HamsterRepository hamsterRepository) {
     this.hamsterRepository = hamsterRepository;
   }
 

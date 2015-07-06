@@ -17,10 +17,7 @@
 
 package info.rynkowski.hamsterclient.domain.interactor;
 
-import info.rynkowski.hamsterclient.domain.executor.PostExecutionThread;
-import info.rynkowski.hamsterclient.domain.executor.ThreadExecutor;
 import rx.Observable;
-import rx.schedulers.Schedulers;
 
 /**
  * Abstract class for a Use Case (Interactor in terms of Clean Architecture) with arguments.
@@ -28,14 +25,6 @@ import rx.schedulers.Schedulers;
  * By convention each UseCase implementation will return the result using a {@link rx.Observable}.
  */
 public abstract class UseCase<Result, Argument> {
-
-  private final ThreadExecutor threadExecutor;
-  private final PostExecutionThread postExecutionThread;
-
-  protected UseCase(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
-    this.threadExecutor = threadExecutor;
-    this.postExecutionThread = postExecutionThread;
-  }
 
   /**
    * Builds an {@link rx.Observable} which will be used when executing the current {@link UseCase}.
@@ -46,8 +35,6 @@ public abstract class UseCase<Result, Argument> {
    * Return a {@link rx.Observable} with result of execution.
    */
   public Observable<Result> execute(Argument argument) {
-    return this.buildUseCaseObservable(argument)
-        .subscribeOn(Schedulers.from(threadExecutor))
-        .observeOn(postExecutionThread.getScheduler());
+    return this.buildUseCaseObservable(argument);
   }
 }

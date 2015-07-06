@@ -110,6 +110,8 @@ public class FactListPresenter implements Presenter, HamsterRepository.OnDataSto
     getTodaysFactsUseCase.execute()
         .doOnNext(list -> log.info("Received {} facts.", list.size()))
         .map(mapper::transform)
+        .subscribeOn(Schedulers.from(threadExecutor))
+        .observeOn(postExecutionThread.getScheduler())
         .subscribe(viewListView::renderFactList, this::onException);
   }
 
@@ -117,6 +119,8 @@ public class FactListPresenter implements Presenter, HamsterRepository.OnDataSto
     log.debug("addFact()");
     Fact fact = mapper.transform(factModel);
     addFactUseCase.execute(fact)
+        .subscribeOn(Schedulers.from(threadExecutor))
+        .observeOn(postExecutionThread.getScheduler())
         .subscribe(id -> log.info("New fact added, id={}", id), this::onException);
   }
 
