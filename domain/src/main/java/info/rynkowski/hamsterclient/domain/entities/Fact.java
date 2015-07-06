@@ -19,21 +19,24 @@ package info.rynkowski.hamsterclient.domain.entities;
 import com.google.common.base.Optional;
 import java.util.Calendar;
 import java.util.List;
+import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+@Getter
 public class Fact {
-  @Getter @Setter private Optional<Integer> id;
-  @Getter @Setter private Activity activity;
-  @Getter @Setter private Calendar startTime;
-  @Getter @Setter private Optional<Calendar> endTime;
-  @Getter @Setter private List<String> tags;
-  @Getter @Setter private String description;
 
-  private Fact(Builder b) {
+  private @Nonnull Optional<Integer> id;
+  private @Nonnull Activity activity;
+  private @Nonnull Calendar startTime;
+  private @Nonnull Optional<Calendar> endTime;
+  private @Nonnull List<String> tags;
+  private @Nonnull String description;
+
+  private Fact(@Nonnull Builder b) {
     this.id = b.id;
     this.activity = b.activity;
     this.description = b.description;
@@ -42,19 +45,20 @@ public class Fact {
     this.endTime = b.endTime;
   }
 
+  @SuppressWarnings("NullableProblems")  // To ignore warnings "Not-null fields must be initialized"
   @NoArgsConstructor(access = AccessLevel.PUBLIC)
   @Setter
   @Accessors(fluent = true, chain = true)
   public static class Builder {
 
-    private Optional<Integer> id = Optional.absent();
-    private Activity activity;
-    private Calendar startTime;
-    private Optional<Calendar> endTime;
-    private List<String> tags;
-    private String description;
+    private @Nonnull Optional<Integer> id = Optional.absent();
+    private @Nonnull Activity activity;
+    private @Nonnull Calendar startTime;
+    private @Nonnull Optional<Calendar> endTime;
+    private @Nonnull List<String> tags;
+    private @Nonnull String description;
 
-    public Fact build() {
+    public @Nonnull Fact build() {
       return new Fact(this);
     }
   }

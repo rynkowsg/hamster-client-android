@@ -17,6 +17,7 @@
 
 package info.rynkowski.hamsterclient.domain.interactor;
 
+import javax.annotation.Nonnull;
 import rx.Observable;
 
 /**
@@ -29,12 +30,12 @@ public abstract class UseCase<Result, Argument> {
   /**
    * Builds an {@link rx.Observable} which will be used when executing the current {@link UseCase}.
    */
-  protected abstract Observable<Result> buildUseCaseObservable(Argument argument);
+  @Nonnull protected abstract Observable<Result> buildUseCaseObservable(@Nonnull Argument argument);
 
   /**
    * Return a {@link rx.Observable} with result of execution.
    */
-  public Observable<Result> execute(Argument argument) {
+  @Nonnull public Observable<Result> execute(@Nonnull Argument argument) {
     return this.buildUseCaseObservable(argument);
   }
 }

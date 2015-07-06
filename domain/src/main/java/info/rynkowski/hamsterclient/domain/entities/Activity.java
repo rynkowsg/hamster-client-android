@@ -16,15 +16,16 @@
 
 package info.rynkowski.hamsterclient.domain.entities;
 
+import javax.annotation.Nonnull;
 import lombok.Getter;
 import lombok.Setter;
 
 public class Activity {
 
-  @Getter @Setter private String name;
-  @Getter @Setter private String category;
+  @Getter @Setter @Nonnull private String name;
+  @Getter @Setter @Nonnull private String category;
 
-  public Activity(String name, String category) {
+  public Activity(@Nonnull String name, @Nonnull String category) {
     this.name = name;
     this.category = category;
   }

@@ -17,6 +17,7 @@
 
 package info.rynkowski.hamsterclient.presentation.executor;
 
+import android.support.annotation.NonNull;
 import info.rynkowski.hamsterclient.domain.executor.PostExecutionThread;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -33,7 +34,7 @@ public class UIThread implements PostExecutionThread {
   @Inject public UIThread() {
   }
 
-  @Override public Scheduler getScheduler() {
+  @Override @NonNull public Scheduler getScheduler() {
     return AndroidSchedulers.mainThread();
   }
 }

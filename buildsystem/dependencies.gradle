@@ -30,6 +30,7 @@ ext {
   timberVersion = '3.1.0'
   androidLoggerVersion = '1.3.5'
   guavaVersion = '18.0'
+  jsr305Version = '3.0.0'
 
   appDependencies = [
       supportV4:          "com.android.support:support-v4:${supportV4Version}",
@@ -63,6 +64,7 @@ ext {
       lombok:             "org.projectlombok:lombok:${lombokVersion}",
       rxJava:             "io.reactivex:rxjava:${rxJavaVersion}",
       slf4jApi:           "org.slf4j:slf4j-api:${slf4jApiVersion}",
+      jsr305:             "com.google.code.findbugs:jsr305:${jsr305Version}"
   ]
 
   presentationDependencies = [

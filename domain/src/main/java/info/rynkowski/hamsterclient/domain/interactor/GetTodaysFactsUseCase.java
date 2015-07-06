@@ -19,6 +19,7 @@ package info.rynkowski.hamsterclient.domain.interactor;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
 import java.util.List;
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Named;
 import rx.Observable;
@@ -29,13 +30,14 @@ import rx.Observable;
  */
 public class GetTodaysFactsUseCase extends UseCaseArgumentless<List<Fact>> {
 
-  private HamsterRepository hamsterRepository;
+  @Nonnull private HamsterRepository hamsterRepository;
 
-  @Inject public GetTodaysFactsUseCase(@Named("remote") HamsterRepository hamsterRepository) {
+  @Inject
+  public GetTodaysFactsUseCase(@Nonnull @Named("remote") HamsterRepository hamsterRepository) {
     this.hamsterRepository = hamsterRepository;
   }
 
-  @Override protected Observable<List<Fact>> buildUseCaseObservable() {
+  @Override @Nonnull protected Observable<List<Fact>> buildUseCaseObservable() {
     return hamsterRepository.getTodaysFacts();
   }
 }

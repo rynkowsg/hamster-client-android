@@ -16,6 +16,7 @@
 
 package info.rynkowski.hamsterclient.domain.executor;
 
+import javax.annotation.Nonnull;
 import rx.Scheduler;
 
 /**
@@ -24,5 +25,5 @@ import rx.Scheduler;
  * implementation of this interface will change context and update the UI.
  */
 public interface PostExecutionThread {
-  Scheduler getScheduler();
+  @Nonnull Scheduler getScheduler();
 }

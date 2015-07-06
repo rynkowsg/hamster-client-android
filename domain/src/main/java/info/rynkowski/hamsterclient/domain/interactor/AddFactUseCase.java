@@ -18,6 +18,7 @@ package info.rynkowski.hamsterclient.domain.interactor;
 
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Named;
 import rx.Observable;
@@ -28,16 +29,13 @@ import rx.Observable;
  */
 public class AddFactUseCase extends UseCase<Integer, Fact> {
 
-  private HamsterRepository hamsterRepository;
+  @Nonnull private HamsterRepository hamsterRepository;
 
-  @Inject public AddFactUseCase(@Named("remote") HamsterRepository hamsterRepository) {
+  @Inject public AddFactUseCase(@Nonnull @Named("remote") HamsterRepository hamsterRepository) {
     this.hamsterRepository = hamsterRepository;
   }
 
-  @Override protected Observable<Integer> buildUseCaseObservable(Fact fact) {
-    if (fact == null) {
-      return Observable.error(new NullPointerException("fact should not be null"));
-    }
+  @Override @Nonnull protected Observable<Integer> buildUseCaseObservable(@Nonnull Fact fact) {
     return hamsterRepository.addFact(fact);
   }
 }
