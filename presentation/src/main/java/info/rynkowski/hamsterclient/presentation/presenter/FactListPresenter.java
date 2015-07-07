@@ -112,7 +112,10 @@ public class FactListPresenter implements Presenter, HamsterRepository.OnDataSto
         .map(mapper::transform)
         .subscribeOn(Schedulers.from(threadExecutor))
         .observeOn(postExecutionThread.getScheduler())
-        .subscribe(viewListView::renderFactList, this::onException);
+        .subscribe(factModels -> {
+          viewListView.hideLoading();
+          viewListView.renderFactList(factModels);
+        }, this::onException);
   }
 
   public void addFact(FactModel factModel) {
@@ -175,7 +178,7 @@ public class FactListPresenter implements Presenter, HamsterRepository.OnDataSto
       viewListView.showRetry();
     } else {
       log.error(
-          "Unknown Exception!, e.getClass()={}, e.getCause()={}", e.getClass(), e.getCause(), e);
+          "Unknown Exception!", e);
     }
   }
 }

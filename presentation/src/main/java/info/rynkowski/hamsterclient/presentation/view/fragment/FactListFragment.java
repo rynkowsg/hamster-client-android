@@ -148,7 +148,6 @@ public class FactListFragment extends BaseFragment
 
   @Override public void renderFactList(@NonNull Collection<FactModel> factModelCollection) {
     log.debug("renderFactList()");
-    this.hideLoading();
     this.factsAdapter.setFactsCollection(factModelCollection);
   }
 
