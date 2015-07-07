@@ -1,4 +1,5 @@
 /*
+ * Copyright (C) 2015 Fernando Cejas Open Source Project
  * Copyright (C) 2015 Grzegorz Rynkowski
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,21 +15,16 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.presentation.view;
+package info.rynkowski.hamsterclient.presentation.executor;
 
-import info.rynkowski.hamsterclient.presentation.model.FactModel;
-import java.util.Collection;
 import javax.annotation.Nonnull;
+import rx.Scheduler;
 
 /**
- * Interface representing a View in a model view presenter (MVP) pattern.
- * In this case is used as a view representing a list of {@link FactModel}.
+ * Thread abstraction created to change the execution context from any thread to any other thread.
+ * Useful to encapsulate a UI Thread for example, since some job will be done in background, an
+ * implementation of this interface will change context and update the UI.
  */
-public interface FactListView extends LoadDataView {
-  /**
-   * Render a fact list in the UI.
-   *
-   * @param factModelCollection The collection of {@link FactModel} that will be shown.
-   */
-  void renderFactList(@Nonnull Collection<FactModel> factModelCollection);
+public interface PostExecutionThread {
+  @Nonnull Scheduler getScheduler();
 }

@@ -30,3 +30,4 @@ script:
   - ./gradlew domain:build --stacktrace
   - ./gradlew data:build --stacktrace
   - ./gradlew presentation:build --stacktrace
+  - ./gradlew ui:build --stacktrace

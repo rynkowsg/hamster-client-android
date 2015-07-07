@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.presentation.view;
+package info.rynkowski.hamsterclient.ui.internal.di.modules;
 
-import info.rynkowski.hamsterclient.presentation.model.FactModel;
-import java.util.Collection;
-import javax.annotation.Nonnull;
+import dagger.Module;
+import info.rynkowski.hamsterclient.domain.DomainModule;
 
 /**
- * Interface representing a View in a model view presenter (MVP) pattern.
- * In this case is used as a view representing a list of {@link FactModel}.
+ * Dagger module that provides collaborators related to fact's list.
  */
-public interface FactListView extends LoadDataView {
-  /**
-   * Render a fact list in the UI.
-   *
-   * @param factModelCollection The collection of {@link FactModel} that will be shown.
-   */
-  void renderFactList(@Nonnull Collection<FactModel> factModelCollection);
+@Module(includes = DomainModule.class)
+public class FactListModule {
 }

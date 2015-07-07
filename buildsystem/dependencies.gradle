@@ -42,32 +42,41 @@ ext {
   ]
 
   dataDependencies = [
+      androidLogger:      "com.noveogroup.android:android-logger:${androidLoggerVersion}",
       commonsLang3:       "org.apache.commons:commons-lang3:${commonsLang3Version}",
-      daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
       dagger:             "com.google.dagger:dagger:${daggerVersion}",
+      daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
       guava:              "com.google.guava:guava:${guavaVersion}",
       javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
       lombok:             "org.projectlombok:lombok:${lombokVersion}",
       rxAndroid:          "io.reactivex:rxandroid:${rxAndroidVersion}",
       rxJava:             "io.reactivex:rxjava:${rxJavaVersion}",
-//      slf4jTimber:        "com.arcao:slf4j-timber:${slf4jTimberVersion}",
-//      timber:             "com.jakewharton.timber:timber:${timberVersion}",
-      androidLogger:      "com.noveogroup.android:android-logger:${androidLoggerVersion}",
       slf4jApi:           "org.slf4j:slf4j-api:${slf4jApiVersion}",
   ]
 
   domainDependencies = [
-      daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
       dagger:             "com.google.dagger:dagger:${daggerVersion}",
+      daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
       guava:              "com.google.guava:guava:${guavaVersion}",
       javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
+      jsr305:             "com.google.code.findbugs:jsr305:${jsr305Version}",
       lombok:             "org.projectlombok:lombok:${lombokVersion}",
       rxJava:             "io.reactivex:rxjava:${rxJavaVersion}",
       slf4jApi:           "org.slf4j:slf4j-api:${slf4jApiVersion}",
-      jsr305:             "com.google.code.findbugs:jsr305:${jsr305Version}"
   ]
 
   presentationDependencies = [
+      androidLogger:      "com.noveogroup.android:android-logger:${androidLoggerVersion}",
+      dagger:             "com.google.dagger:dagger:${daggerVersion}",
+      daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
+      guava:              "com.google.guava:guava:${guavaVersion}",
+      lombok:             "org.projectlombok:lombok:${lombokVersion}",
+      rxJava:             "io.reactivex:rxjava:${rxJavaVersion}",
+      slf4jApi:           "org.slf4j:slf4j-api:${slf4jApiVersion}",
+      supportAnnotations: "com.android.support:support-annotations:${supportAnnotationsVersion}",
+  ]
+
+  uiDependencies = [
       supportV4:          "com.android.support:support-v4:${supportV4Version}",
       appcompatV7:        "com.android.support:appcompat-v7:${appcompatV7Version}",
       recyclerView:       "com.android.support:recyclerview-v7:${recyclerViewVersion}",
@@ -76,15 +85,16 @@ ext {
 
       butterKnife:        "com.jakewharton:butterknife:${butterKnifeVersion}",
       commonsLang3:       "org.apache.commons:commons-lang3:${commonsLang3Version}",
-      daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
       dagger:             "com.google.dagger:dagger:${daggerVersion}",
+      daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
       guava:              "com.google.guava:guava:${guavaVersion}",
       lombok:             "org.projectlombok:lombok:${lombokVersion}",
       rxAndroid:          "io.reactivex:rxandroid:${rxAndroidVersion}",
       rxJava:             "io.reactivex:rxjava:${rxJavaVersion}",
-//      slf4jTimber:        "com.arcao:slf4j-timber:${slf4jTimberVersion}",
-//      timber:             "com.jakewharton.timber:timber:${timberVersion}",
+
       androidLogger:      "com.noveogroup.android:android-logger:${androidLoggerVersion}",
       slf4jApi:           "org.slf4j:slf4j-api:${slf4jApiVersion}",
+//      slf4jTimber:        "com.arcao:slf4j-timber:${slf4jTimberVersion}",
+//      timber:             "com.jakewharton.timber:timber:${timberVersion}",
   ]
 }

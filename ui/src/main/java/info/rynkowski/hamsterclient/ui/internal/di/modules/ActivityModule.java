@@ -1,4 +1,5 @@
 /*
+ * Copyright (C) 2015 Fernando Cejas Open Source Project
  * Copyright (C) 2015 Grzegorz Rynkowski
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,21 +15,29 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.presentation.view;
+package info.rynkowski.hamsterclient.ui.internal.di.modules;
 
-import info.rynkowski.hamsterclient.presentation.model.FactModel;
-import java.util.Collection;
-import javax.annotation.Nonnull;
+import android.app.Activity;
+import dagger.Module;
+import dagger.Provides;
+import info.rynkowski.hamsterclient.ui.internal.di.ActivityScope;
 
 /**
- * Interface representing a View in a model view presenter (MVP) pattern.
- * In this case is used as a view representing a list of {@link FactModel}.
+ * A module to wrap the Activity state and expose it to the graph.
  */
-public interface FactListView extends LoadDataView {
+@Module
+public class ActivityModule {
+
+  private final Activity activity;
+
+  public ActivityModule(Activity activity) {
+    this.activity = activity;
+  }
+
   /**
-   * Render a fact list in the UI.
-   *
-   * @param factModelCollection The collection of {@link FactModel} that will be shown.
+   * Expose the activity to dependents in the graph.
    */
-  void renderFactList(@Nonnull Collection<FactModel> factModelCollection);
+  @Provides @ActivityScope public Activity provideActivity() {
+    return this.activity;
+  }
 }

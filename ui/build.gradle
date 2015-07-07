@@ -7,7 +7,7 @@ buildscript {
   }
 }
 
-apply plugin: 'com.android.library'
+apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 
@@ -18,6 +18,7 @@ android {
   buildToolsVersion globalConfiguration.getAt("androidBuildToolsVersion")
 
   defaultConfig {
+    applicationId globalConfiguration.getAt("androidApplicationId")
     minSdkVersion globalConfiguration.getAt("androidMinSdkVersion")
     targetSdkVersion globalConfiguration.getAt("androidTargetSdkVersion")
     versionCode globalConfiguration.getAt("androidVersionCode")
@@ -37,7 +38,7 @@ android {
   }
 
   lintOptions {
-    disable 'InvalidPackage' // Lombok has issue with this
+    disable 'InvalidPackage' // Lombok, ButterKnife: github.com/JakeWharton/butterknife/issues/110
   }
 
   dexOptions {
@@ -50,29 +51,33 @@ retrolambda {
 //  oldJdk System.getenv("JAVA7_HOME")
 //  javaVersion JavaVersion.VERSION_1_7
 //  incremental true
-//  jvmArgs '-noverify'
+  jvmArgs '-noverify'
 }
 
 dependencies {
   compile project(':domain')
   compile project(':data')
+  compile project(':presentation')
 
-  def presentationDependencies = rootProject.ext.presentationDependencies
+  def uiDependencies = rootProject.ext.uiDependencies
 
-  // lombok
-  apt presentationDependencies.lombok
-  provided presentationDependencies.lombok
+  compile uiDependencies.supportV4
+  compile uiDependencies.appcompatV7
+  compile uiDependencies.design
+  compile uiDependencies.recyclerView
+  compile uiDependencies.supportAnnotations
 
-  // dagger 2
-  apt presentationDependencies.daggerCompiler
-  compile presentationDependencies.dagger
-
-  // logs
-  compile presentationDependencies.androidLogger
-  compile presentationDependencies.slf4jApi
-
-  // others
-  compile presentationDependencies.guava
-  compile presentationDependencies.rxJava
-  compile presentationDependencies.supportAnnotations
+  apt uiDependencies.daggerCompiler
+  apt uiDependencies.lombok
+  compile uiDependencies.butterKnife
+  compile uiDependencies.commonsLang3
+  compile uiDependencies.dagger
+  compile uiDependencies.guava
+  compile uiDependencies.rxAndroid
+  compile uiDependencies.rxJava
+  provided uiDependencies.lombok
+//  compile uiDependencies.timber
+//  compile uiDependencies.slf4jTimber
+  compile uiDependencies.androidLogger
+  compile uiDependencies.slf4jApi
 }

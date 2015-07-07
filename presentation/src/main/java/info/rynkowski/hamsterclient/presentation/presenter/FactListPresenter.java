@@ -18,12 +18,11 @@ package info.rynkowski.hamsterclient.presentation.presenter;
 
 import android.support.annotation.NonNull;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
-import info.rynkowski.hamsterclient.domain.executor.PostExecutionThread;
-import info.rynkowski.hamsterclient.domain.executor.ThreadExecutor;
 import info.rynkowski.hamsterclient.domain.interactor.UseCase;
 import info.rynkowski.hamsterclient.domain.interactor.UseCaseArgumentless;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
-import info.rynkowski.hamsterclient.presentation.internal.di.ActivityScope;
+import info.rynkowski.hamsterclient.presentation.executor.PostExecutionThread;
+import info.rynkowski.hamsterclient.presentation.executor.ThreadExecutor;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.presentation.model.mapper.FactModelDataMapper;
 import info.rynkowski.hamsterclient.presentation.view.FactListView;
@@ -39,7 +38,6 @@ import rx.schedulers.Schedulers;
  * layer for fact list screen.
  */
 @Slf4j
-@ActivityScope
 public class FactListPresenter implements Presenter/*, HamsterRepository.OnDataStoreChangedListener */{
 
   private final ThreadExecutor threadExecutor;

@@ -19,13 +19,11 @@ package info.rynkowski.hamsterclient.presentation.model.mapper;
 import android.support.annotation.NonNull;
 import info.rynkowski.hamsterclient.domain.entities.Activity;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
-import info.rynkowski.hamsterclient.presentation.internal.di.ActivityScope;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
-@ActivityScope
 public class FactModelDataMapper {
 
   public @Inject FactModelDataMapper() {

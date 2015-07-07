@@ -1,4 +1,5 @@
 /*
+ * Copyright (C) 2015 Fernando Cejas Open Source Project
  * Copyright (C) 2015 Grzegorz Rynkowski
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,21 +15,18 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.presentation.view;
+package info.rynkowski.hamsterclient.ui.internal.di;
 
-import info.rynkowski.hamsterclient.presentation.model.FactModel;
-import java.util.Collection;
-import javax.annotation.Nonnull;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import javax.inject.Scope;
 
 /**
- * Interface representing a View in a model view presenter (MVP) pattern.
- * In this case is used as a view representing a list of {@link FactModel}.
+ * A scoping annotation to permit objects whose lifetime should
+ * conform to the life of the activity to be memorized in the
+ * correct component.
  */
-public interface FactListView extends LoadDataView {
-  /**
-   * Render a fact list in the UI.
-   *
-   * @param factModelCollection The collection of {@link FactModel} that will be shown.
-   */
-  void renderFactList(@Nonnull Collection<FactModel> factModelCollection);
+@Scope
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ActivityScope {
 }
