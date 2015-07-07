@@ -41,7 +41,7 @@ android {
   }
 
   dexOptions {
-    incremental true // stackoverflow.com/a/30322882
+//    incremental true // stackoverflow.com/a/30322882
   }
 }
 
