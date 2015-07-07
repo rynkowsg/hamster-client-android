@@ -27,8 +27,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.presentation.presenter.FactListPresenter;
@@ -53,8 +53,8 @@ public class FactListFragment extends BaseFragment
 
   @Inject FactListPresenter factListPresenter;
 
-  @InjectView(R.id.rv_facts) RecyclerView rv_facts;
-  @InjectView(R.id.progress_circular) ProgressBar progress_circular;
+  @Bind(R.id.rv_facts) RecyclerView rv_facts;
+  @Bind(R.id.progress_circular) ProgressBar progress_circular;
 
   private FactsAdapter factsAdapter;
 
@@ -64,7 +64,7 @@ public class FactListFragment extends BaseFragment
       Bundle savedInstanceState) {
     log.debug("onCreateView()");
     View view = inflater.inflate(R.layout.fragment_fact_list, container, false);
-    ButterKnife.inject(this, view);
+    ButterKnife.bind(this, view);
     this.setupRecyclerView();
 
     return view;
@@ -99,7 +99,7 @@ public class FactListFragment extends BaseFragment
   @Override public void onDestroyView() {
     super.onDestroyView();
     log.debug("onDestroyView()");
-    ButterKnife.reset(this);
+    ButterKnife.unbind(this);
     factListPresenter.destroy();
   }
 

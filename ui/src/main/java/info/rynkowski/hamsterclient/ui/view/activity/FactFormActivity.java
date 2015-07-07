@@ -24,8 +24,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
@@ -45,13 +45,13 @@ public class FactFormActivity extends BaseActivity {
 
   public static final String EXTRAS_KEY_FACT = "EXTRAS_KEY_FACT";
 
-  @InjectView(R.id.et_activity) EditText editTextActivity;
-  @InjectView(R.id.et_category) EditText editTextCategory;
-  @InjectView(R.id.et_tags) EditText editTextTags;
-  @InjectView(R.id.et_start_time) EditText editTextStartTime;
-  @InjectView(R.id.et_end_time) EditText editTextEndTime;
-  @InjectView(R.id.et_description) EditText editTextDescription;
-  @InjectView(R.id.cb_ongoing) CheckBox checkBoxIsInProgress;
+  @Bind(R.id.et_activity) EditText editTextActivity;
+  @Bind(R.id.et_category) EditText editTextCategory;
+  @Bind(R.id.et_tags) EditText editTextTags;
+  @Bind(R.id.et_start_time) EditText editTextStartTime;
+  @Bind(R.id.et_end_time) EditText editTextEndTime;
+  @Bind(R.id.et_description) EditText editTextDescription;
+  @Bind(R.id.cb_ongoing) CheckBox checkBoxIsInProgress;
 
   private boolean isEndTimeDisabled = false;
 
@@ -65,7 +65,7 @@ public class FactFormActivity extends BaseActivity {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_fact_form);
-    ButterKnife.inject(this);
+    ButterKnife.bind(this);
     initiateTimeFields();
   }
 

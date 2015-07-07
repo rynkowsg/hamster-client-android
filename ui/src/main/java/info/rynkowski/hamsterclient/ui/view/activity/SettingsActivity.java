@@ -20,19 +20,19 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import info.rynkowski.hamsterclient.ui.R;
 import info.rynkowski.hamsterclient.ui.view.fragment.SettingsFragment;
 
 public class SettingsActivity extends BaseActivity {
 
-  @InjectView(R.id.toolbar) Toolbar toolbar;
+  @Bind(R.id.toolbar) Toolbar toolbar;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_settings);
-    ButterKnife.inject(this);
+    ButterKnife.bind(this);
 
     setSupportActionBar(toolbar);
 

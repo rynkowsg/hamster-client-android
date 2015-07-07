@@ -4,51 +4,40 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TimePicker;
-
-import org.apache.commons.lang3.StringUtils;
-
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import info.rynkowski.hamsterclient.R;
+import info.rynkowski.hamsterclient.model.Fact;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
-import info.rynkowski.hamsterclient.R;
-import info.rynkowski.hamsterclient.model.Fact;
+import org.apache.commons.lang3.StringUtils;
 
 public class AddFactActivity extends BaseActivity {
     private static final String TAG = AddFactActivity.class.getName();
 
-    @InjectView(R.id.start_time)
-    EditText mStartTime;
-    @InjectView(R.id.end_time)
-    EditText mEndTime;
-    @InjectView(R.id.activity)
-    EditText mActivity;
-    @InjectView(R.id.category)
-    EditText mCategory;
-    @InjectView(R.id.tags)
-    EditText mTags;
-    @InjectView(R.id.description)
-    EditText mDescription;
+    @Bind(R.id.start_time) EditText mStartTime;
+    @Bind(R.id.end_time) EditText mEndTime;
+    @Bind(R.id.activity) EditText mActivity;
+    @Bind(R.id.category) EditText mCategory;
+    @Bind(R.id.tags) EditText mTags;
+    @Bind(R.id.description) EditText mDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_fact);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         // enabling action bar app icon and behaving it as toggle button
         ActionBar actionBar = getSupportActionBar();

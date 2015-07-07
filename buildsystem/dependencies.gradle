@@ -19,11 +19,11 @@ ext {
   supportAnnotationsVersion = '22.2.0'
 
   commonsLang3Version = '3.4'
-  butterKnifeVersion = '6.1.0'
+  butterKnifeVersion = '7.0.1'
   lombokVersion = '1.16.4'
   javaxAnnotationVersion = '10.0-b28'
   daggerVersion = '2.0.1'
-  rxAndroidVersion = '0.24.0'
+  rxAndroidVersion = '0.25.0'
   rxJavaVersion = '1.0.12'
   slf4jApiVersion = '1.7.12'
   slf4jTimberVersion = '2.0'

@@ -23,8 +23,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.ui.R;
@@ -87,13 +87,13 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
   }
 
   static class FactViewHolder extends RecyclerView.ViewHolder {
-    @InjectView(R.id.activity_name) TextView activity_name;
-    @InjectView(R.id.start_time) TextView start_time;
-    @InjectView(R.id.end_time) TextView end_time;
+    @Bind(R.id.activity_name) TextView activity_name;
+    @Bind(R.id.start_time) TextView start_time;
+    @Bind(R.id.end_time) TextView end_time;
 
     public FactViewHolder(View itemView) {
       super(itemView);
-      ButterKnife.inject(this, itemView);
+      ButterKnife.bind(this, itemView);
     }
   }
 }

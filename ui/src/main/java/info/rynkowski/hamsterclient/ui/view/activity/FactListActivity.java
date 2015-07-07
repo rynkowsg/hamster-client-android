@@ -22,8 +22,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import info.rynkowski.hamsterclient.ui.R;
 import info.rynkowski.hamsterclient.ui.internal.di.HasComponent;
 import info.rynkowski.hamsterclient.ui.internal.di.components.DaggerFactListComponent;
@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FactListActivity extends BaseActivity implements HasComponent<FactListComponent> {
 
-  @InjectView(R.id.toolbar) Toolbar toolbar;
+  @Bind(R.id.toolbar) Toolbar toolbar;
 
   private FactListComponent factListComponent;
 
@@ -45,7 +45,7 @@ public class FactListActivity extends BaseActivity implements HasComponent<FactL
     super.onCreate(savedInstanceState);
     log.debug("onCreate()");
     setContentView(R.layout.activity_fact_list);
-    ButterKnife.inject(this);
+    ButterKnife.bind(this);
     setSupportActionBar(toolbar);
 
     this.initializeDependencyInjector();
