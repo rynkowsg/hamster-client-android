@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.presentation.internal.di.modules;
+package info.rynkowski.hamsterclient.domain;
 
 import dagger.Module;
 import dagger.Provides;
@@ -24,7 +24,6 @@ import info.rynkowski.hamsterclient.domain.interactor.GetTodaysFactsUseCase;
 import info.rynkowski.hamsterclient.domain.interactor.UseCase;
 import info.rynkowski.hamsterclient.domain.interactor.UseCaseArgumentless;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
-import info.rynkowski.hamsterclient.presentation.internal.di.ActivityScope;
 import java.util.List;
 import javax.inject.Named;
 
@@ -34,13 +33,13 @@ import javax.inject.Named;
 @Module
 public class DomainModule {
 
-  @Provides @ActivityScope @Named("AddFact") UseCase<Integer, Fact> provideAddFactUseCase(
+  @Provides @Named("AddFact") UseCase<Integer, Fact> provideAddFactUseCase(
       HamsterRepository hamsterRepository) {
     return new AddFactUseCase(hamsterRepository);
   }
 
-  @Provides @ActivityScope @Named("GetTodaysFacts")
-  UseCaseArgumentless<List<Fact>> provideGetTodaysFacts(HamsterRepository hamsterRepository) {
+  @Provides @Named("GetTodaysFacts") UseCaseArgumentless<List<Fact>> provideGetTodaysFacts(
+      HamsterRepository hamsterRepository) {
     return new GetTodaysFactsUseCase(hamsterRepository);
   }
 }

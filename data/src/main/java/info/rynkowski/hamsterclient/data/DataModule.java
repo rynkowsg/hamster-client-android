@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.presentation.internal.di.modules;
+package info.rynkowski.hamsterclient.data;
 
 import dagger.Module;
 import dagger.Provides;

@@ -17,6 +17,7 @@
 package info.rynkowski.hamsterclient.presentation.internal.di.modules;
 
 import dagger.Module;
+import info.rynkowski.hamsterclient.domain.DomainModule;
 
 /**
  * Dagger module that provides collaborators related to fact's list.
