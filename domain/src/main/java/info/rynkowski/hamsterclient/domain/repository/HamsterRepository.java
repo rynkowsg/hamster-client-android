@@ -25,11 +25,11 @@ import rx.Observable;
  */
 public interface HamsterRepository {
 
-  void initialize(Type type);
+  //void initialize(Type type);
+  //
+  //void deinitialize();
 
-  void deinitialize();
-
-  Observable<Status> onChange();
+  //Observable<Status> onChange();
 
   Observable<List<Fact>> getTodaysFacts();
 
@@ -43,9 +43,9 @@ public interface HamsterRepository {
 
   Observable<Void> signalToggleCalled();
 
-  enum Type {
-    LOCAL, REMOTE
-  }
+  //enum Type {
+  //  LOCAL, REMOTE
+  //}
 
   enum Status {
     SWITCHED_TO_REMOTE,
@@ -54,7 +54,7 @@ public interface HamsterRepository {
     LOCAL_UNAVAILABLE
   }
 
-  interface OnDataStoreChangedListener {
-    void onDataStoreChanged(Status status);
-  }
+  //interface OnDataStoreChangedListener {
+  //  void onDataStoreChanged(Status status);
+  //}
 }

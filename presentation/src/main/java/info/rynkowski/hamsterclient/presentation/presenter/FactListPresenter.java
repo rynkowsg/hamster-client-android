@@ -32,7 +32,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.freedesktop.dbus.exceptions.DBusException;
-import rx.Subscription;
 import rx.schedulers.Schedulers;
 
 /**
@@ -41,7 +40,7 @@ import rx.schedulers.Schedulers;
  */
 @Slf4j
 @ActivityScope
-public class FactListPresenter implements Presenter, HamsterRepository.OnDataStoreChangedListener {
+public class FactListPresenter implements Presenter/*, HamsterRepository.OnDataStoreChangedListener */{
 
   private final ThreadExecutor threadExecutor;
   private final PostExecutionThread postExecutionThread;
@@ -54,7 +53,7 @@ public class FactListPresenter implements Presenter, HamsterRepository.OnDataSto
 
   private FactListView viewListView;
 
-  Subscription subscriptionOnChange;
+  //Subscription subscriptionOnChange;
 
   @Inject
   public FactListPresenter(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread,
@@ -76,11 +75,13 @@ public class FactListPresenter implements Presenter, HamsterRepository.OnDataSto
   @Override public void start() {
     log.debug("start()");
 
-    subscriptionOnChange = hamsterRepository.onChange()
-        .subscribeOn(Schedulers.from(threadExecutor))
-        .observeOn(postExecutionThread.getScheduler())
-        .subscribe(this::onDataStoreChanged);
-    this.chooseDataStore(HamsterRepository.Type.REMOTE);
+    loadFactList();
+    registerSignals();
+    //subscriptionOnChange = hamsterRepository.onChange()
+    //    .subscribeOn(Schedulers.from(threadExecutor))
+    //    .observeOn(postExecutionThread.getScheduler())
+    //    .subscribe(this::onDataStoreChanged);
+    //this.chooseDataStore(HamsterRepository.Type.REMOTE);
 
     log.debug("FactList started.");
   }
@@ -94,8 +95,8 @@ public class FactListPresenter implements Presenter, HamsterRepository.OnDataSto
   }
 
   @Override public void destroy() {
-    subscriptionOnChange.unsubscribe();
-    hamsterRepository.deinitialize();
+    //subscriptionOnChange.unsubscribe();
+    //hamsterRepository.deinitialize();
     log.debug("FactList destroyed.");
   }
 
@@ -140,34 +141,35 @@ public class FactListPresenter implements Presenter, HamsterRepository.OnDataSto
     loadFactList();
   }
 
-  @Override public void onDataStoreChanged(HamsterRepository.Status status) {
-    log.debug("onDataStoreChanged(status: {})", status);
-    switch (status) {
-      case SWITCHED_TO_REMOTE:
-      case SWITCHED_TO_LOCAL:
-        this.registerSignals();
-        this.loadFactList();
-        break;
-      case LOCAL_UNAVAILABLE:
-        throw new RuntimeException("Local database should be always available.");
-      case REMOTE_UNAVAILABLE:
-        viewListView.showRetry();
-        break;
-      default:
-        throw new RuntimeException("Unknown status: " + status);
-    }
-  }
+  //@Override public void onDataStoreChanged(HamsterRepository.Status status) {
+  //  log.debug("onDataStoreChanged(status: {})", status);
+  //  switch (status) {
+  //    case SWITCHED_TO_REMOTE:
+  //    case SWITCHED_TO_LOCAL:
+  //      this.registerSignals();
+  //      this.loadFactList();
+  //      break;
+  //    case LOCAL_UNAVAILABLE:
+  //      throw new RuntimeException("Local database should be always available.");
+  //    case REMOTE_UNAVAILABLE:
+  //      viewListView.showRetry();
+  //      break;
+  //    default:
+  //      throw new RuntimeException("Unknown status: " + status);
+  //  }
+  //}
 
-  private void chooseDataStore(HamsterRepository.Type type) {
-    log.debug("chooseDataStore(type: {})", type);
-    viewListView.showLoading();
-    new Thread(() -> hamsterRepository.initialize(type)).start();
-  }
+  //private void chooseDataStore(HamsterRepository.Type type) {
+  //  log.debug("chooseDataStore(type: {})", type);
+  //  viewListView.showLoading();
+  //  new Thread(() -> hamsterRepository.initialize(type)).start();
+  //}
 
   public void onRetry() {
     log.debug("onRetry()");
-    chooseDataStore(HamsterRepository.Type.REMOTE);
-    // here should also call the last command
+    //chooseDataStore(HamsterRepository.Type.REMOTE);
+    loadFactList();
+    // TODO: onRetry() should call last interrupted presenter's command
   }
 
   private void onException(Throwable e) {
