@@ -117,7 +117,7 @@ public class FactListPresenter implements Presenter/*, HamsterRepository.OnDataS
         }, this::onException);
   }
 
-  public void addFact(FactModel factModel) {
+  public void addFact(@NonNull FactModel factModel) {
     log.debug("addFact()");
     Fact fact = mapper.transform(factModel);
     addFactUseCase.execute(fact)
