@@ -26,6 +26,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 public class Fact {
+  @Getter @Setter private Optional<Integer> id;
   @Getter @Setter private Activity activity;
   @Getter @Setter private Calendar startTime;
   @Getter @Setter private Optional<Calendar> endTime;
@@ -33,6 +34,7 @@ public class Fact {
   @Getter @Setter private String description;
 
   private Fact(Builder b) {
+    this.id = b.id;
     this.activity = b.activity;
     this.description = b.description;
     this.tags = b.tags;
@@ -45,6 +47,7 @@ public class Fact {
   @Accessors(fluent = true, chain = true)
   public static class Builder {
 
+    private Optional<Integer> id = Optional.absent();
     private Activity activity;
     private Calendar startTime;
     private Optional<Calendar> endTime;

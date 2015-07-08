@@ -16,6 +16,7 @@
 
 package info.rynkowski.hamsterclient.data.entity;
 
+import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.data.dbus.adapters.AdapterStruct4;
 import info.rynkowski.hamsterclient.data.dbus.adapters.AdapterStruct5;
 import info.rynkowski.hamsterclient.data.dbus.adapters.AdapterStruct7;
@@ -34,6 +35,7 @@ import org.gnome.Struct7;
  * Class represents a fact representation comfortable for data layer.
  */
 public class FactEntity {
+  @Getter private Optional<Integer> id;
   @Getter private String activity;
   @Getter private String category;
   @Getter private String description;
@@ -42,6 +44,7 @@ public class FactEntity {
   @Getter private Integer endTime;
 
   public FactEntity(Struct4 struct) {
+    this.id = Optional.of(AdapterStruct4.id(struct));
     this.activity = AdapterStruct4.name(struct);
     this.category = AdapterStruct4.category(struct);
     this.description = AdapterStruct4.description(struct);
@@ -51,6 +54,7 @@ public class FactEntity {
   }
 
   public FactEntity(Struct5 struct) {
+    this.id = Optional.of(AdapterStruct5.id(struct));
     this.activity = AdapterStruct5.name(struct);
     this.category = AdapterStruct5.category(struct);
     this.description = AdapterStruct5.description(struct);
@@ -60,6 +64,7 @@ public class FactEntity {
   }
 
   public FactEntity(Struct7 struct) {
+    this.id = Optional.of(AdapterStruct7.id(struct));
     this.activity = AdapterStruct7.name(struct);
     this.category = AdapterStruct7.category(struct);
     this.description = AdapterStruct7.description(struct);
@@ -69,6 +74,7 @@ public class FactEntity {
   }
 
   private FactEntity(Builder b) {
+    this.id = b.id;
     this.activity = b.activity;
     this.category = b.category;
     this.tags = b.tags;
@@ -98,6 +104,7 @@ public class FactEntity {
   @Accessors(fluent = true, chain = true)
   public static class Builder {
 
+    private Optional<Integer> id = Optional.absent();
     private String activity;
     private String category;
     private List<String> tags;

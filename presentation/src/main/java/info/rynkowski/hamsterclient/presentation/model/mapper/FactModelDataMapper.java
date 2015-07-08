@@ -33,6 +33,7 @@ public class FactModelDataMapper {
 
   public Fact transform(FactModel factModel) {
     return new Fact.Builder()
+        .id(factModel.getId())
         .activity(new Activity(factModel.getActivity(), factModel.getCategory()))
         .tags(factModel.getTags())
         .description(factModel.getDescription())
@@ -43,6 +44,7 @@ public class FactModelDataMapper {
 
   public FactModel transform(Fact fact) {
     return new FactModel.Builder()
+        .id(fact.getId())
         .activity(fact.getActivity().getName())
         .category(fact.getActivity().getCategory())
         .tags(fact.getTags())

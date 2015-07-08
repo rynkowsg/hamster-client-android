@@ -78,7 +78,9 @@ public class FactEntityMapper {
     }
 
     Activity activity = new Activity(factEntity.getActivity(), factEntity.getCategory());
-    return new Fact.Builder().activity(activity)
+    return new Fact.Builder()
+        .id(factEntity.getId())
+        .activity(activity)
         .startTime(startTime)
         .endTime(endTime)
         .description(factEntity.getDescription())
@@ -94,7 +96,9 @@ public class FactEntityMapper {
     if (fact.getEndTime().isPresent()) {
       endTime = convertTimeToRemote(fact.getEndTime().get());
     }
-    return new FactEntity.Builder().activity(fact.getActivity().getName())
+    return new FactEntity.Builder()
+        .id(fact.getId())
+        .activity(fact.getActivity().getName())
         .category(fact.getActivity().getCategory())
         .startTime(startTime)
         .endTime(endTime)

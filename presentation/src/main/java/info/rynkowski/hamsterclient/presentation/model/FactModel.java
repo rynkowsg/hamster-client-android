@@ -29,7 +29,7 @@ import lombok.experimental.Accessors;
 // TODO: Transform to parcelable
 public class FactModel implements Serializable {
 
-  @Getter private int factId;
+  @Getter private Optional<Integer> id;
   @Getter private String activity;
   @Getter private String category;
   @Getter private List<String> tags;
@@ -38,6 +38,7 @@ public class FactModel implements Serializable {
   @Getter private Optional<Calendar> endTime;
 
   private FactModel(Builder b) {
+    this.id = b.id;
     this.activity = b.activity;
     this.category = b.category;
     this.description = b.description;
@@ -51,6 +52,7 @@ public class FactModel implements Serializable {
   @Accessors(fluent = true, chain = true)
   public static class Builder {
 
+    private Optional<Integer> id = Optional.absent();
     private String activity;
     private String category;
     private String description;
