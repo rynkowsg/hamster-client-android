@@ -38,8 +38,8 @@ public class FactEntity {
   @Getter private String category;
   @Getter private String description;
   @Getter private List<String> tags;
-  @Getter private int startTime;
-  @Getter private int endTime;
+  @Getter private Integer startTime;
+  @Getter private Integer endTime;
 
   public FactEntity(Struct4 struct) {
     this.activity = AdapterStruct4.name(struct);
@@ -102,8 +102,8 @@ public class FactEntity {
     private String category;
     private List<String> tags;
     private String description;
-    private int startTime;
-    private int endTime;
+    private Integer startTime;
+    private Integer endTime;
 
     public FactEntity build() {
       return new FactEntity(this);

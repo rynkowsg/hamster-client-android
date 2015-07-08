@@ -108,9 +108,9 @@ public class FactEntityMapper {
    * @param time is remote representation of time ({@code int})
    * @return representation of time used at domain module ({@link Calendar})
    */
-  private Calendar convertTimeFromRemote(int time) {
+  private Calendar convertTimeFromRemote(Integer time) {
     // Hamster uses time counted in seconds.
-    long date = ((long) time) * 1000;
+    long date = time.longValue() * 1000;
 
     // Hamster provides bad time representation.
     // It requires a correction using time zone' offset of remote PC.
@@ -127,7 +127,7 @@ public class FactEntityMapper {
    * @param calendar is a time representation used at domain module ({@link Calendar})
    * @return remote representation of time ({@code int})
    */
-  private int convertTimeToRemote(Calendar calendar) {
+  private Integer convertTimeToRemote(Calendar calendar) {
     long date = calendar.getTimeInMillis();
 
     // Hamster provides bad time representation.
