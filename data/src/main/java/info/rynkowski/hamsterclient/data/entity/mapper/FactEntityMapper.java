@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.gnome.Struct5;
@@ -40,13 +41,13 @@ public class FactEntityMapper {
 
   // Computer's time zone
   // It is assumed that remote computer has the same time zone as the mobile device.
-  private TimeZone remoteTimeZone = TimeZone.getDefault();
+  private @Nonnull TimeZone remoteTimeZone = TimeZone.getDefault();
 
-  @Inject public FactEntityMapper() {
+  public @Inject FactEntityMapper() {
     //empty
   }
 
-  public List<Fact> transformFromStruct5(List<Struct5> structList) {
+  public @Nonnull List<Fact> transformFromStruct5(@Nonnull List<Struct5> structList) {
     List<Fact> factList = new ArrayList<>(structList.size());
     Fact fact;
     for (Struct5 struct : structList) {
@@ -56,7 +57,7 @@ public class FactEntityMapper {
     return factList;
   }
 
-  public List<Fact> transformFromStruct7(List<Struct7> structList) {
+  public @Nonnull List<Fact> transformFromStruct7(@Nonnull List<Struct7> structList) {
     List<Fact> factList = new ArrayList<>(structList.size());
     Fact fact;
     for (Struct7 struct : structList) {
@@ -66,7 +67,7 @@ public class FactEntityMapper {
     return factList;
   }
 
-  public Fact transform(FactEntity factEntity) {
+  public @Nonnull Fact transform(@Nonnull FactEntity factEntity) {
 
     // Start Time
     Calendar startTime = convertTimeFromRemote(factEntity.getStartTime());
@@ -88,7 +89,7 @@ public class FactEntityMapper {
         .build();
   }
 
-  public FactEntity transform(Fact fact) {
+  public @Nonnull FactEntity transform(@Nonnull Fact fact) {
 
     int startTime = convertTimeToRemote(fact.getStartTime());
 
@@ -112,7 +113,7 @@ public class FactEntityMapper {
    * @param time is remote representation of time ({@code int})
    * @return representation of time used at domain module ({@link Calendar})
    */
-  private Calendar convertTimeFromRemote(Integer time) {
+  private @Nonnull Calendar convertTimeFromRemote(@Nonnull Integer time) {
     // Hamster uses time counted in seconds.
     long date = time.longValue() * 1000;
 
@@ -131,7 +132,7 @@ public class FactEntityMapper {
    * @param calendar is a time representation used at domain module ({@link Calendar})
    * @return remote representation of time ({@code int})
    */
-  private Integer convertTimeToRemote(Calendar calendar) {
+  private @Nonnull Integer convertTimeToRemote(@Nonnull Calendar calendar) {
     long date = calendar.getTimeInMillis();
 
     // Hamster provides bad time representation.

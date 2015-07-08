@@ -21,6 +21,7 @@ import info.rynkowski.hamsterclient.data.dbus.adapters.AdapterStruct4;
 import info.rynkowski.hamsterclient.data.dbus.adapters.AdapterStruct5;
 import info.rynkowski.hamsterclient.data.dbus.adapters.AdapterStruct7;
 import java.util.List;
+import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,16 +35,18 @@ import org.gnome.Struct7;
 /**
  * Class represents a fact representation comfortable for data layer.
  */
+@Getter
 public class FactEntity {
-  @Getter private Optional<Integer> id;
-  @Getter private String activity;
-  @Getter private String category;
-  @Getter private String description;
-  @Getter private List<String> tags;
-  @Getter private Integer startTime;
-  @Getter private Integer endTime;
 
-  public FactEntity(Struct4 struct) {
+  private @Nonnull Optional<Integer> id;
+  private @Nonnull String activity;
+  private @Nonnull String category;
+  private @Nonnull String description;
+  private @Nonnull List<String> tags;
+  private @Nonnull Integer startTime;
+  private @Nonnull Integer endTime;
+
+  public FactEntity(@Nonnull Struct4 struct) {
     this.id = Optional.of(AdapterStruct4.id(struct));
     this.activity = AdapterStruct4.name(struct);
     this.category = AdapterStruct4.category(struct);
@@ -53,7 +56,7 @@ public class FactEntity {
     this.endTime = AdapterStruct4.end_time(struct);
   }
 
-  public FactEntity(Struct5 struct) {
+  public FactEntity(@Nonnull Struct5 struct) {
     this.id = Optional.of(AdapterStruct5.id(struct));
     this.activity = AdapterStruct5.name(struct);
     this.category = AdapterStruct5.category(struct);
@@ -63,7 +66,7 @@ public class FactEntity {
     this.endTime = AdapterStruct5.end_time(struct);
   }
 
-  public FactEntity(Struct7 struct) {
+  public FactEntity(@Nonnull Struct7 struct) {
     this.id = Optional.of(AdapterStruct7.id(struct));
     this.activity = AdapterStruct7.name(struct);
     this.category = AdapterStruct7.category(struct);
@@ -73,7 +76,7 @@ public class FactEntity {
     this.endTime = AdapterStruct7.end_time(struct);
   }
 
-  private FactEntity(Builder b) {
+  private FactEntity(@Nonnull Builder b) {
     this.id = b.id;
     this.activity = b.activity;
     this.category = b.category;
@@ -83,7 +86,7 @@ public class FactEntity {
     this.endTime = b.endTime;
   }
 
-  public String serializedName() {
+  public @Nonnull String serializedName() {
     String res = activity;
     if (!category.isEmpty()) {
       res += "@" + category;
@@ -99,20 +102,21 @@ public class FactEntity {
     return res;
   }
 
+  @SuppressWarnings("NullableProblems")  // To ignore warnings "Not-null fields must be initialized"
   @NoArgsConstructor(access = AccessLevel.PUBLIC)
   @Setter
   @Accessors(fluent = true, chain = true)
   public static class Builder {
 
-    private Optional<Integer> id = Optional.absent();
-    private String activity;
-    private String category;
-    private List<String> tags;
-    private String description;
-    private Integer startTime;
-    private Integer endTime;
+    private @Nonnull Optional<Integer> id = Optional.absent();
+    private @Nonnull String activity;
+    private @Nonnull String category;
+    private @Nonnull List<String> tags;
+    private @Nonnull String description;
+    private @Nonnull Integer startTime;
+    private @Nonnull Integer endTime;
 
-    public FactEntity build() {
+    public @Nonnull FactEntity build() {
       return new FactEntity(this);
     }
   }
