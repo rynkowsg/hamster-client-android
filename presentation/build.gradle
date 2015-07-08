@@ -59,20 +59,13 @@ dependencies {
 
   def presentationDependencies = rootProject.ext.presentationDependencies
 
-  // lombok
-  apt presentationDependencies.lombok
-  provided presentationDependencies.lombok
-
-  // dagger 2
   apt presentationDependencies.daggerCompiler
-  compile presentationDependencies.dagger
-
-  // logs
+  apt presentationDependencies.lombok
   compile presentationDependencies.androidLogger
-  compile presentationDependencies.slf4jApi
-
-  // others
+  compile presentationDependencies.dagger
   compile presentationDependencies.guava
   compile presentationDependencies.rxJava
+  compile presentationDependencies.slf4jApi
   compile presentationDependencies.supportAnnotations
+  provided presentationDependencies.lombok
 }

@@ -12,33 +12,33 @@ ext {
   androidTargetSdkVersion = 22
 
   //Libraries
-  supportV4Version = '22.2.0'
   appcompatV7Version = '22.2.0'
-  recyclerViewVersion = '22.2.0'
   designVersion = '22.2.0'
+  recyclerViewVersion = '22.2.0'
   supportAnnotationsVersion = '22.2.0'
+  supportV4Version = '22.2.0'
 
-  commonsLang3Version = '3.4'
+  androidLoggerVersion = '1.3.5'
   butterKnifeVersion = '7.0.1'
+  commonsLang3Version = '3.4'
+  daggerVersion = '2.0.1'
   lombokVersion = '1.16.4'
   javaxAnnotationVersion = '10.0-b28'
-  daggerVersion = '2.0.1'
+  jsr305Version = '3.0.0'
+  guavaVersion = '18.0'
   rxAndroidVersion = '0.25.0'
   rxJavaVersion = '1.0.12'
   slf4jApiVersion = '1.7.12'
   slf4jTimberVersion = '2.0'
   timberVersion = '3.1.0'
-  androidLoggerVersion = '1.3.5'
-  guavaVersion = '18.0'
-  jsr305Version = '3.0.0'
 
   appDependencies = [
-      supportV4:          "com.android.support:support-v4:${supportV4Version}",
       appcompatV7:        "com.android.support:appcompat-v7:${appcompatV7Version}",
       commonsLang3:       "org.apache.commons:commons-lang3:${commonsLang3Version}",
       butterKnife:        "com.jakewharton:butterknife:${butterKnifeVersion}",
       lombok:             "org.projectlombok:lombok:${lombokVersion}",
       javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
+      supportV4:          "com.android.support:support-v4:${supportV4Version}",
   ]
 
   dataDependencies = [
@@ -77,12 +77,13 @@ ext {
   ]
 
   uiDependencies = [
-      supportV4:          "com.android.support:support-v4:${supportV4Version}",
       appcompatV7:        "com.android.support:appcompat-v7:${appcompatV7Version}",
-      recyclerView:       "com.android.support:recyclerview-v7:${recyclerViewVersion}",
       design:             "com.android.support:design:${designVersion}",
+      recyclerView:       "com.android.support:recyclerview-v7:${recyclerViewVersion}",
       supportAnnotations: "com.android.support:support-annotations:${supportAnnotationsVersion}",
+      supportV4:          "com.android.support:support-v4:${supportV4Version}",
 
+      androidLogger:      "com.noveogroup.android:android-logger:${androidLoggerVersion}",
       butterKnife:        "com.jakewharton:butterknife:${butterKnifeVersion}",
       commonsLang3:       "org.apache.commons:commons-lang3:${commonsLang3Version}",
       dagger:             "com.google.dagger:dagger:${daggerVersion}",
@@ -91,8 +92,6 @@ ext {
       lombok:             "org.projectlombok:lombok:${lombokVersion}",
       rxAndroid:          "io.reactivex:rxandroid:${rxAndroidVersion}",
       rxJava:             "io.reactivex:rxjava:${rxJavaVersion}",
-
-      androidLogger:      "com.noveogroup.android:android-logger:${androidLoggerVersion}",
       slf4jApi:           "org.slf4j:slf4j-api:${slf4jApiVersion}",
 //      slf4jTimber:        "com.arcao:slf4j-timber:${slf4jTimberVersion}",
 //      timber:             "com.jakewharton.timber:timber:${timberVersion}",

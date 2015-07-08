@@ -21,7 +21,6 @@ import info.rynkowski.hamsterclient.data.DataModule;
 import info.rynkowski.hamsterclient.ui.internal.di.components.ApplicationComponent;
 import info.rynkowski.hamsterclient.ui.internal.di.components.DaggerApplicationComponent;
 import info.rynkowski.hamsterclient.ui.internal.di.modules.ApplicationModule;
-//import timber.log.Timber;
 
 public class AndroidApplication extends Application {
 
@@ -30,7 +29,6 @@ public class AndroidApplication extends Application {
   @Override public void onCreate() {
     super.onCreate();
     this.initializeDependencyInjector();
-    this.initializeLogger();
   }
 
   private void initializeDependencyInjector() {
@@ -39,10 +37,6 @@ public class AndroidApplication extends Application {
         .applicationModule(new ApplicationModule(this))
         .dataModule(new DataModule("10.0.2.5", "55555"))
         .build();
-  }
-
-  private void initializeLogger() {
-    //Timber.plant(new Timber.DebugTree());
   }
 
   public ApplicationComponent getApplicationComponent() {

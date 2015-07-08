@@ -57,19 +57,18 @@ dependencies {
   compile project(':domain')
 
   def dataDependencies = rootProject.ext.dataDependencies
+
   apt dataDependencies.daggerCompiler
   apt dataDependencies.lombok
+  compile dataDependencies.androidLogger
   compile dataDependencies.commonsLang3
   compile dataDependencies.dagger
   compile dataDependencies.guava
   compile dataDependencies.rxAndroid
   compile dataDependencies.rxJava
+  compile dataDependencies.slf4jApi
   provided dataDependencies.javaxAnnotation
   provided dataDependencies.lombok
-//  compile dataDependencies.timber
-//  compile dataDependencies.slf4jTimber
-  compile dataDependencies.androidLogger
-  compile dataDependencies.slf4jApi
 
   compile fileTree(dir: 'libs', include: ['*.jar'])
 }

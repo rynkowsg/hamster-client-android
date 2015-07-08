@@ -61,23 +61,22 @@ dependencies {
 
   def uiDependencies = rootProject.ext.uiDependencies
 
-  compile uiDependencies.supportV4
   compile uiDependencies.appcompatV7
   compile uiDependencies.design
   compile uiDependencies.recyclerView
   compile uiDependencies.supportAnnotations
+  compile uiDependencies.supportV4
 
   apt uiDependencies.daggerCompiler
   apt uiDependencies.lombok
+  compile uiDependencies.androidLogger
   compile uiDependencies.butterKnife
   compile uiDependencies.commonsLang3
   compile uiDependencies.dagger
   compile uiDependencies.guava
   compile uiDependencies.rxAndroid
   compile uiDependencies.rxJava
-  provided uiDependencies.lombok
-//  compile uiDependencies.timber
-//  compile uiDependencies.slf4jTimber
-  compile uiDependencies.androidLogger
   compile uiDependencies.slf4jApi
+  provided uiDependencies.lombok
+
 }
