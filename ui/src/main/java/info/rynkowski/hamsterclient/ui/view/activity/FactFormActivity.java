@@ -21,6 +21,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -55,10 +56,10 @@ public class FactFormActivity extends BaseActivity {
 
   private boolean isEndTimeDisabled = false;
 
-  private Calendar selectedStartTime;
-  private Calendar selectedEndTime;
+  private @NonNull Calendar selectedStartTime = GregorianCalendar.getInstance(Locale.getDefault());
+  private @NonNull Calendar selectedEndTime = GregorianCalendar.getInstance(Locale.getDefault());
 
-  public static Intent getCallingIntent(Context context) {
+  public static @NonNull Intent getCallingIntent(@NonNull Context context) {
     return new Intent(context, FactFormActivity.class);
   }
 
@@ -118,7 +119,7 @@ public class FactFormActivity extends BaseActivity {
     finish();
   }
 
-  private FactModel readFact() {
+  private @NonNull FactModel readFact() {
     return new FactModel.Builder()
         .activity(editTextActivity.getText().toString())
         .category(editTextCategory.getText().toString())
@@ -130,9 +131,6 @@ public class FactFormActivity extends BaseActivity {
   }
 
   private void initiateTimeFields() {
-    selectedStartTime = GregorianCalendar.getInstance(Locale.getDefault());
-    selectedEndTime = GregorianCalendar.getInstance(Locale.getDefault());
-
     editTextStartTime.setClickable(true);
     editTextStartTime.setFocusable(false);
     editTextStartTime.setEnabled(true);
@@ -145,7 +143,7 @@ public class FactFormActivity extends BaseActivity {
     checkBoxIsInProgress.setChecked(true);
   }
 
-  private List<String> splitTags(String tags) {
+  private @NonNull List<String> splitTags(@NonNull String tags) {
     List<String> result = new ArrayList<>();
     for (String i : StringUtils.split(tags, ",")) {
       result.add(StringUtils.trim(i));

@@ -24,7 +24,7 @@ import java.util.Locale;
 
 public class TimeConverter {
 
-  public static String toString(@NonNull Calendar calendar) {
+  public static @NonNull String toString(@NonNull Calendar calendar) {
     if (calendar.getTimeInMillis() != 0) {
       SimpleDateFormat dateFormatGmt = new SimpleDateFormat("HH:mm", Locale.getDefault());
       return dateFormatGmt.format(calendar.getTime());
@@ -32,7 +32,7 @@ public class TimeConverter {
     return "";
   }
 
-  public static String toString(@NonNull Optional<Calendar> calendar) {
+  public static @NonNull String toString(@NonNull Optional<Calendar> calendar) {
     if (calendar.isPresent()) {
       return toString(calendar.get());
     }

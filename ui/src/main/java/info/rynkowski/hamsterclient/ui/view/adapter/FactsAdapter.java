@@ -37,9 +37,9 @@ import java.util.List;
  */
 public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHolder> {
 
-  @NonNull private final LayoutInflater layoutInflater;
-  @NonNull private List<FactModel> factsCollection;
-  @NonNull private Optional<OnItemClickListener> onItemClickListener;
+  private final @NonNull LayoutInflater layoutInflater;
+  private @NonNull List<FactModel> factsCollection;
+  private @NonNull Optional<OnItemClickListener> onItemClickListener;
 
   public FactsAdapter(@NonNull Context context, @NonNull Collection<FactModel> factsCollection) {
     this.layoutInflater =
@@ -91,7 +91,7 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
     @Bind(R.id.start_time) TextView start_time;
     @Bind(R.id.end_time) TextView end_time;
 
-    public FactViewHolder(View itemView) {
+    public FactViewHolder(@NonNull View itemView) {
       super(itemView);
       ButterKnife.bind(this, itemView);
     }

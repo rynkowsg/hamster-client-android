@@ -17,13 +17,14 @@
 package info.rynkowski.hamsterclient.ui.view.adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 
 /**
  * Layout manager to position items inside a {@link android.support.v7.widget.RecyclerView}.
  */
 public class FactsLayoutManager extends LinearLayoutManager {
-  public FactsLayoutManager(Context context) {
+  public FactsLayoutManager(@NonNull Context context) {
     super(context);
   }
 }

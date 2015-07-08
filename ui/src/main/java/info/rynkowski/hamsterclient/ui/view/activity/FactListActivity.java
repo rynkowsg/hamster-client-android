@@ -19,11 +19,13 @@ package info.rynkowski.hamsterclient.ui.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.ui.R;
 import info.rynkowski.hamsterclient.ui.internal.di.HasComponent;
 import info.rynkowski.hamsterclient.ui.internal.di.components.DaggerFactListComponent;
@@ -35,9 +37,9 @@ public class FactListActivity extends BaseActivity implements HasComponent<FactL
 
   @Bind(R.id.toolbar) Toolbar toolbar;
 
-  private FactListComponent factListComponent;
+  private @NonNull Optional<FactListComponent> factListComponent = Optional.absent();
 
-  public static Intent getCallingIntent(Context context) {
+  public static @NonNull Intent getCallingIntent(@NonNull Context context) {
     return new Intent(context, FactListActivity.class);
   }
 
@@ -77,14 +79,14 @@ public class FactListActivity extends BaseActivity implements HasComponent<FactL
   }
 
   private void initializeDependencyInjector() {
-    this.factListComponent = DaggerFactListComponent.builder()
+    this.factListComponent = Optional.of(DaggerFactListComponent.builder()
         .applicationComponent(getApplicationComponent())
         .activityModule(getActivityModule())
-        .build();
+        .build());
   }
 
   @Override public FactListComponent getComponent() {
-    return factListComponent;
+    return factListComponent.get();
   }
 
   @Override protected void onDestroy() {

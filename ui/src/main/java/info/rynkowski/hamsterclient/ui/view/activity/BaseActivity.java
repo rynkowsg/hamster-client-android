@@ -18,6 +18,7 @@
 package info.rynkowski.hamsterclient.ui.view.activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import info.rynkowski.hamsterclient.ui.AndroidApplication;
 import info.rynkowski.hamsterclient.ui.internal.di.components.ApplicationComponent;
@@ -42,7 +43,7 @@ public abstract class BaseActivity extends AppCompatActivity {
    *
    * @return {@link info.rynkowski.hamsterclient.ui.internal.di.components.ApplicationComponent}
    */
-  protected ApplicationComponent getApplicationComponent() {
+  protected @NonNull ApplicationComponent getApplicationComponent() {
     return ((AndroidApplication) getApplication()).getApplicationComponent();
   }
 
@@ -51,7 +52,7 @@ public abstract class BaseActivity extends AppCompatActivity {
    *
    * @return {@link info.rynkowski.hamsterclient.ui.internal.di.modules.ActivityModule}
    */
-  protected ActivityModule getActivityModule() {
+  protected @NonNull ActivityModule getActivityModule() {
     return new ActivityModule(this);
   }
 

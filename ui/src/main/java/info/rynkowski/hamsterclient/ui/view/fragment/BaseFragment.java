@@ -18,6 +18,8 @@
 package info.rynkowski.hamsterclient.ui.view.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 import info.rynkowski.hamsterclient.ui.AndroidApplication;
@@ -43,7 +45,7 @@ public class BaseFragment extends Fragment {
    *
    * @return {@link info.rynkowski.hamsterclient.ui.internal.di.components.ApplicationComponent}
    */
-  protected ApplicationComponent getApplicationComponent() {
+  protected @NonNull ApplicationComponent getApplicationComponent() {
     return ((AndroidApplication) getActivity().getApplication()).getApplicationComponent();
   }
 
@@ -52,14 +54,15 @@ public class BaseFragment extends Fragment {
    *
    * @param message An string representing a message to be shown.
    */
-  protected void showToastMessage(String message) {
+  protected void showToastMessage(@Nullable String message) {
     Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
   }
 
   /**
    * Gets a component for dependency injection by its type.
    */
-  @SuppressWarnings("unchecked") protected <C> C getComponent(Class<C> componentType) {
+  @SuppressWarnings("unchecked")
+  protected @NonNull <C> C getComponent(@NonNull Class<C> componentType) {
     return componentType.cast(((HasComponent<C>) getActivity()).getComponent());
   }
 
