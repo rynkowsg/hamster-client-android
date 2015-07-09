@@ -34,7 +34,7 @@ import rx.subjects.PublishSubject;
  */
 @Slf4j
 @Singleton
-public class HamsterDataRepository implements HamsterRepository {
+public class HamsterRepositoryImpl implements HamsterRepository {
 
   private FactEntityMapper factEntityMapper;
 
@@ -44,7 +44,7 @@ public class HamsterDataRepository implements HamsterRepository {
 
   //private PublishSubject<Status> status;
 
-  @Inject public HamsterDataRepository(@Named("remote") HamsterDataStore remoteHamsterDataStore,
+  @Inject public HamsterRepositoryImpl(@Named("remote") HamsterDataStore remoteHamsterDataStore,
       FactEntityMapper factEntityMapper) {
     this.factEntityMapper = factEntityMapper;
     this.remoteStore = remoteHamsterDataStore;

@@ -21,7 +21,7 @@ import dagger.Provides;
 import info.rynkowski.hamsterclient.data.dbus.ConnectionProvider;
 import info.rynkowski.hamsterclient.data.dbus.ConnectionProviderOverNetwork;
 import info.rynkowski.hamsterclient.data.dbus.HamsterRemoteObject;
-import info.rynkowski.hamsterclient.data.repository.HamsterDataRepository;
+import info.rynkowski.hamsterclient.data.repository.HamsterRepositoryImpl;
 import info.rynkowski.hamsterclient.data.repository.datasource.HamsterDataStore;
 import info.rynkowski.hamsterclient.data.repository.datasource.RemoteHamsterDataStore;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
@@ -57,7 +57,7 @@ public class DataModule {
   }
 
   @Provides @Singleton HamsterRepository provideHamsterRepository(
-      HamsterDataRepository repository) {
+      HamsterRepositoryImpl repository) {
     return repository;
   }
 }
