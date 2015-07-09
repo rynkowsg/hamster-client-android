@@ -16,8 +16,10 @@
 
 package info.rynkowski.hamsterclient.data.repository.datasource;
 
+import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.data.entity.FactEntity;
 import java.util.List;
+import javax.annotation.Nonnull;
 import rx.Observable;
 
 /**
@@ -36,7 +38,7 @@ public interface HamsterDataStore extends DataStore {
    * @param factEntity The entity to add to store.
    * @return The id of added {@link FactEntity}.
    */
-  Observable<Integer> addFactEntity(FactEntity factEntity);
+  Observable<Optional<Integer>> addFactEntity(@Nonnull FactEntity factEntity);
 
   Observable<Void> signalActivitiesChanged();
 

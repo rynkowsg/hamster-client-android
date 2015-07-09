@@ -16,9 +16,11 @@
 
 package info.rynkowski.hamsterclient.data.repository.datasource;
 
+import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.data.dbus.HamsterRemoteObject;
 import info.rynkowski.hamsterclient.data.entity.FactEntity;
 import java.util.List;
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +34,7 @@ import rx.Observable;
 @Singleton
 public class RemoteHamsterDataStore implements HamsterDataStore {
 
-  private HamsterRemoteObject hamsterObject;
+  private @Nonnull HamsterRemoteObject hamsterObject;
 
   @Inject public RemoteHamsterDataStore(HamsterRemoteObject hamsterRemoteObject) {
     this.hamsterObject = hamsterRemoteObject;
@@ -58,7 +60,7 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
         .toList();
   }
 
-  @Override public Observable<Integer> addFactEntity(FactEntity factEntity) {
+  @Override public Observable<Optional<Integer>> addFactEntity(@Nonnull FactEntity factEntity) {
     String serializedName = factEntity.serializedName();
     int startTime = factEntity.getStartTime();
     int endTime = factEntity.getEndTime();
@@ -70,7 +72,7 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
           log.debug("    startTime:      {}", startTime);
           log.debug("    endTime:        {}", endTime);
         })
-        .map(remoteObject -> remoteObject.AddFact(serializedName, startTime, endTime, false));
+        .map(remoteObject -> Optional.of(remoteObject.AddFact(serializedName, startTime, endTime, false)));
   }
 
   @Override public Observable<Void> signalActivitiesChanged() {

@@ -16,6 +16,7 @@
 
 package info.rynkowski.hamsterclient.data.repository;
 
+import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.data.entity.FactEntity;
 import info.rynkowski.hamsterclient.data.entity.mapper.FactEntityMapper;
 import info.rynkowski.hamsterclient.data.repository.datasource.HamsterDataStore;
@@ -112,7 +113,8 @@ public class HamsterRepositoryImpl implements HamsterRepository {
           "Repository should be initialized! Take a look at method initialize(Type type)."));
     }
     FactEntity factEntity = factEntityMapper.transform(fact);
-    return currentStore.addFactEntity(factEntity);
+    return currentStore.addFactEntity(factEntity)
+        .map(Optional::get);
   }
 
   @Override public Observable<Void> signalActivitiesChanged() {
