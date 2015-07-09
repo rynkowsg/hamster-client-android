@@ -40,7 +40,7 @@ import info.rynkowski.hamsterclient.ui.view.activity.FactFormActivity;
 import info.rynkowski.hamsterclient.ui.view.adapter.FactsAdapter;
 import info.rynkowski.hamsterclient.ui.view.adapter.FactsLayoutManager;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 
@@ -145,9 +145,9 @@ public class FactListFragment extends BaseFragment
     FactListFragment.this.factListPresenter.onFactClicked(factModel);
   }
 
-  @Override public void renderFactList(@NonNull Collection<FactModel> factModelCollection) {
+  @Override public void renderFactList(@NonNull List<FactModel> factModelList) {
     log.debug("renderFactList()");
-    this.factsAdapter.setFactsCollection(factModelCollection);
+    this.factsAdapter.setFactsList(factModelList);
   }
 
   @Override public void showLoading() {

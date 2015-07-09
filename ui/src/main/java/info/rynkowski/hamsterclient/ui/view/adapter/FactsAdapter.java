@@ -29,7 +29,6 @@ import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.ui.R;
 import info.rynkowski.hamsterclient.ui.utils.TimeConverter;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -38,18 +37,18 @@ import java.util.List;
 public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHolder> {
 
   private final @NonNull LayoutInflater layoutInflater;
-  private @NonNull List<FactModel> factsCollection;
+  private @NonNull List<FactModel> factsList;
   private @NonNull Optional<OnItemClickListener> onItemClickListener;
 
-  public FactsAdapter(@NonNull Context context, @NonNull Collection<FactModel> factsCollection) {
+  public FactsAdapter(@NonNull Context context, @NonNull List<FactModel> factsList) {
     this.layoutInflater =
         (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    this.factsCollection = (List<FactModel>) factsCollection;
+    this.factsList = factsList;
     this.onItemClickListener = Optional.absent();
   }
 
   @Override public int getItemCount() {
-    return this.factsCollection.size();
+    return this.factsList.size();
   }
 
   @Override public FactViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -58,7 +57,7 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
   }
 
   @Override public void onBindViewHolder(FactViewHolder holder, final int position) {
-    final FactModel factModel = this.factsCollection.get(position);
+    final FactModel factModel = this.factsList.get(position);
     holder.activity_name.setText(factModel.getActivity());
     holder.start_time.setText(TimeConverter.toString(factModel.getStartTime()));
     holder.end_time.setText(TimeConverter.toString(factModel.getEndTime()));
@@ -77,8 +76,8 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
     this.onItemClickListener = Optional.of(onItemClickListener);
   }
 
-  public void setFactsCollection(@NonNull Collection<FactModel> factsCollection) {
-    this.factsCollection = (List<FactModel>) factsCollection;
+  public void setFactsList(@NonNull List<FactModel> factsList) {
+    this.factsList = factsList;
     this.notifyDataSetChanged();
   }
 

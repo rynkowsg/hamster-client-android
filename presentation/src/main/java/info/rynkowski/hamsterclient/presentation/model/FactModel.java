@@ -18,7 +18,9 @@ package info.rynkowski.hamsterclient.presentation.model;
 
 import com.google.common.base.Optional;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
@@ -49,19 +51,18 @@ public class FactModel implements Serializable {
     this.endTime = b.endTime;
   }
 
-  @SuppressWarnings("NullableProblems")  // To ignore warnings "Not-null fields must be initialized"
   @NoArgsConstructor(access = AccessLevel.PUBLIC)
   @Setter
   @Accessors(fluent = true, chain = true)
   public static class Builder {
 
     private @Nonnull Optional<Integer> id = Optional.absent();
-    private @Nonnull String activity;
-    private @Nonnull String category;
-    private @Nonnull String description;
-    private @Nonnull List<String> tags;
-    private @Nonnull Calendar startTime;
-    private @Nonnull Optional<Calendar> endTime;
+    private @Nonnull String activity = "";
+    private @Nonnull String category = "";
+    private @Nonnull String description = "";
+    private @Nonnull List<String> tags = new ArrayList<>();
+    private @Nonnull Calendar startTime = GregorianCalendar.getInstance();
+    private @Nonnull Optional<Calendar> endTime = Optional.absent();
 
     public @Nonnull FactModel build() {
       return new FactModel(this);

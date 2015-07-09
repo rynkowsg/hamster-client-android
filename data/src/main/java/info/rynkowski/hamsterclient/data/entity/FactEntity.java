@@ -20,6 +20,7 @@ import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.data.dbus.adapters.AdapterStruct4;
 import info.rynkowski.hamsterclient.data.dbus.adapters.AdapterStruct5;
 import info.rynkowski.hamsterclient.data.dbus.adapters.AdapterStruct7;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
@@ -102,19 +103,18 @@ public class FactEntity {
     return res;
   }
 
-  @SuppressWarnings("NullableProblems")  // To ignore warnings "Not-null fields must be initialized"
   @NoArgsConstructor(access = AccessLevel.PUBLIC)
   @Setter
   @Accessors(fluent = true, chain = true)
   public static class Builder {
 
     private @Nonnull Optional<Integer> id = Optional.absent();
-    private @Nonnull String activity;
-    private @Nonnull String category;
-    private @Nonnull List<String> tags;
-    private @Nonnull String description;
-    private @Nonnull Integer startTime;
-    private @Nonnull Integer endTime;
+    private @Nonnull String activity = "";
+    private @Nonnull String category = "";
+    private @Nonnull List<String> tags = new ArrayList<>();
+    private @Nonnull String description = "";
+    private @Nonnull Integer startTime = 0;
+    private @Nonnull Integer endTime = 0;
 
     public @Nonnull FactEntity build() {
       return new FactEntity(this);

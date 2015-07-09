@@ -17,7 +17,9 @@
 package info.rynkowski.hamsterclient.domain.entities;
 
 import com.google.common.base.Optional;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
@@ -45,18 +47,17 @@ public class Fact {
     this.endTime = b.endTime;
   }
 
-  @SuppressWarnings("NullableProblems")  // To ignore warnings "Not-null fields must be initialized"
   @NoArgsConstructor(access = AccessLevel.PUBLIC)
   @Setter
   @Accessors(fluent = true, chain = true)
   public static class Builder {
 
     private @Nonnull Optional<Integer> id = Optional.absent();
-    private @Nonnull Activity activity;
-    private @Nonnull Calendar startTime;
-    private @Nonnull Optional<Calendar> endTime;
-    private @Nonnull List<String> tags;
-    private @Nonnull String description;
+    private @Nonnull Activity activity = new Activity("", "");
+    private @Nonnull Calendar startTime = GregorianCalendar.getInstance();
+    private @Nonnull Optional<Calendar> endTime = Optional.absent();
+    private @Nonnull List<String> tags = new ArrayList<String>();
+    private @Nonnull String description = "";
 
     public @Nonnull Fact build() {
       return new Fact(this);

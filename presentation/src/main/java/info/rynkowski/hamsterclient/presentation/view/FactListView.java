@@ -17,7 +17,7 @@
 package info.rynkowski.hamsterclient.presentation.view;
 
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
-import java.util.Collection;
+import java.util.List;
 import javax.annotation.Nonnull;
 
 /**
@@ -30,5 +30,5 @@ public interface FactListView extends LoadDataView {
    *
    * @param factModelCollection The collection of {@link FactModel} that will be shown.
    */
-  void renderFactList(@Nonnull Collection<FactModel> factModelCollection);
+  void renderFactList(@Nonnull List<FactModel> factModelCollection);
 }

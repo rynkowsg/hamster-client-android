@@ -101,7 +101,7 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
   }
   //TODO: add unregisterSignalCallback to unsubscription
 
-  @Override public void deinit() {
+  @Override public synchronized void deinit() {
     remoteObject = null;
     remoteObjectObservable = null;
     connectionProvider.close();
