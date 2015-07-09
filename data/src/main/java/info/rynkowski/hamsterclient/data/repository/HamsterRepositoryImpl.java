@@ -23,12 +23,12 @@ import info.rynkowski.hamsterclient.data.repository.datasource.HamsterDataStore;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
 import java.util.List;
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import rx.Observable;
-import rx.subjects.PublishSubject;
 
 /**
  * Implementation of {@link info.rynkowski.hamsterclient.domain.repository.HamsterRepository}.
@@ -37,21 +37,20 @@ import rx.subjects.PublishSubject;
 @Singleton
 public class HamsterRepositoryImpl implements HamsterRepository {
 
-  private FactEntityMapper factEntityMapper;
+  private @Nonnull FactEntityMapper factEntityMapper;
 
-  private volatile HamsterDataStore localStore;
-  private volatile HamsterDataStore remoteStore;
-  private volatile HamsterDataStore currentStore;
+  private volatile @Nonnull HamsterDataStore localStore;
+  private volatile @Nonnull HamsterDataStore remoteStore;
 
   //private PublishSubject<Status> status;
 
-  @Inject public HamsterRepositoryImpl(@Named("local") HamsterDataStore localStore,
-      @Named("remote") HamsterDataStore remoteStore, FactEntityMapper factEntityMapper) {
+  @Inject public HamsterRepositoryImpl(@Named("local") @Nonnull HamsterDataStore localStore,
+      @Named("remote") @Nonnull HamsterDataStore remoteStore,
+      @Nonnull FactEntityMapper factEntityMapper) {
 
     this.factEntityMapper = factEntityMapper;
     this.localStore = localStore;
     this.remoteStore = remoteStore;
-    this.currentStore = remoteStore; //TODO: to remove
 
     //this.status = PublishSubject.create();
   }
@@ -98,56 +97,32 @@ public class HamsterRepositoryImpl implements HamsterRepository {
   //}
 
   @Override public Observable<List<Fact>> getTodaysFacts() {
-    if (currentStore == null) {
-      return Observable.error(new RuntimeException(
-          "Repository should be initialized! Take a look at method initialize(Type type)."));
-    }
-    return currentStore.getTodaysFactEntities()
+    return remoteStore.getTodaysFactEntities()
         .flatMap(Observable::from)
         .map(factEntityMapper::transform)
         .toList();
   }
 
   @Override public Observable<Integer> addFact(Fact fact) {
-    if (currentStore == null) {
-      return Observable.error(new RuntimeException(
-          "Repository should be initialized! Take a look at method initialize(Type type)."));
-    }
     FactEntity factEntity = factEntityMapper.transform(fact);
-    return currentStore.addFactEntity(factEntity)
+    return remoteStore.addFactEntity(factEntity)
         .map(Optional::get);
   }
 
   @Override public Observable<Void> signalActivitiesChanged() {
-    if (currentStore == null) {
-      return Observable.error(new RuntimeException(
-          "Repository should be initialized! Take a look at method initialize(Type type)."));
-    }
-    return currentStore.signalActivitiesChanged();
+    return remoteStore.signalActivitiesChanged();
   }
 
   @Override public Observable<Void> signalFactsChanged() {
-    if (currentStore == null) {
-      return Observable.error(new RuntimeException(
-          "Repository should be initialized! Take a look at method initialize(Type type)."));
-    }
-    return currentStore.signalFactsChanged();
+    return remoteStore.signalFactsChanged();
   }
 
   @Override public Observable<Void> signalTagsChanged() {
-    if (currentStore == null) {
-      return Observable.error(new RuntimeException(
-          "Repository should be initialized! Take a look at method initialize(Type type)."));
-    }
-    return currentStore.signalTagsChanged();
+    return remoteStore.signalTagsChanged();
   }
 
   @Override public Observable<Void> signalToggleCalled() {
-    if (currentStore == null) {
-      return Observable.error(new RuntimeException(
-          "Repository should be initialized! Take a look at method initialize(Type type)."));
-    }
-    return currentStore.signalToggleCalled();
+    return remoteStore.signalToggleCalled();
   }
 
   //@Override public Observable<Status> onChange() {
