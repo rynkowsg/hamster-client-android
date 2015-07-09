@@ -16,6 +16,7 @@
 
 package info.rynkowski.hamsterclient.data;
 
+import android.content.Context;
 import dagger.Module;
 import dagger.Provides;
 import info.rynkowski.hamsterclient.data.dbus.ConnectionProvider;
@@ -23,6 +24,7 @@ import info.rynkowski.hamsterclient.data.dbus.ConnectionProviderOverNetwork;
 import info.rynkowski.hamsterclient.data.dbus.HamsterRemoteObject;
 import info.rynkowski.hamsterclient.data.repository.HamsterRepositoryImpl;
 import info.rynkowski.hamsterclient.data.repository.datasource.HamsterDataStore;
+import info.rynkowski.hamsterclient.data.repository.datasource.LocalHamsterDataStore;
 import info.rynkowski.hamsterclient.data.repository.datasource.RemoteHamsterDataStore;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
 import javax.inject.Named;
@@ -51,7 +53,12 @@ public class DataModule {
     return new HamsterRemoteObject(connectionProvider);
   }
 
-  @Provides @Singleton @Named("remote") HamsterDataStore remoteHamsterDataStore(
+  @Provides @Singleton @Named("local") HamsterDataStore provideLocalHamsterDataStore(
+      Context context) {
+    return new LocalHamsterDataStore(context);
+  }
+
+  @Provides @Singleton @Named("remote") HamsterDataStore provideRemoteHamsterDataStore(
       HamsterRemoteObject hamsterRemoteObject) {
     return new RemoteHamsterDataStore(hamsterRemoteObject);
   }

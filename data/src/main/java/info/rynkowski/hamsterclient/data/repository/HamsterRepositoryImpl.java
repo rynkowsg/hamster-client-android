@@ -39,18 +39,19 @@ public class HamsterRepositoryImpl implements HamsterRepository {
 
   private FactEntityMapper factEntityMapper;
 
-  private HamsterDataStore localStore;
-  private HamsterDataStore remoteStore;
+  private volatile HamsterDataStore localStore;
+  private volatile HamsterDataStore remoteStore;
   private volatile HamsterDataStore currentStore;
 
   //private PublishSubject<Status> status;
 
-  @Inject public HamsterRepositoryImpl(@Named("remote") HamsterDataStore remoteHamsterDataStore,
-      FactEntityMapper factEntityMapper) {
+  @Inject public HamsterRepositoryImpl(@Named("local") HamsterDataStore localStore,
+      @Named("remote") HamsterDataStore remoteStore, FactEntityMapper factEntityMapper) {
+
     this.factEntityMapper = factEntityMapper;
-    this.remoteStore = remoteHamsterDataStore;
-    this.localStore = null; // TODO: provide also a local database
-    this.currentStore = remoteStore;
+    this.localStore = localStore;
+    this.remoteStore = remoteStore;
+    this.currentStore = remoteStore; //TODO: to remove
 
     //this.status = PublishSubject.create();
   }

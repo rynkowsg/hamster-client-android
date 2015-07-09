@@ -37,6 +37,8 @@ import org.gnome.Struct7;
  * Class represents a fact representation comfortable for data layer.
  */
 @Getter
+@Setter
+@Accessors(chain = true)
 public class FactEntity {
 
   private @Nonnull Optional<Integer> id;
