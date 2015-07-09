@@ -59,8 +59,8 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
   @Override public void onBindViewHolder(FactViewHolder holder, final int position) {
     final FactModel factModel = this.factsList.get(position);
     holder.activity_name.setText(factModel.getActivity());
-    holder.start_time.setText(TimeConverter.toString(factModel.getStartTime()));
-    holder.end_time.setText(TimeConverter.toString(factModel.getEndTime()));
+    holder.start_time.setText(TimeConverter.toString(factModel.getStartTime(), "HH:mm"));
+    holder.end_time.setText(TimeConverter.toString(factModel.getEndTime(), "HH:mm"));
     holder.itemView.setOnClickListener((View v) -> {
       if (FactsAdapter.this.onItemClickListener.isPresent()) {
         FactsAdapter.this.onItemClickListener.get().onFactItemClicked(factModel);

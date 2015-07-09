@@ -24,17 +24,18 @@ import java.util.Locale;
 
 public class TimeConverter {
 
-  public static @NonNull String toString(@NonNull Calendar calendar) {
+  public static @NonNull String toString(@NonNull Calendar calendar, @NonNull String format) {
     if (calendar.getTimeInMillis() != 0) {
-      SimpleDateFormat dateFormatGmt = new SimpleDateFormat("HH:mm", Locale.getDefault());
+      SimpleDateFormat dateFormatGmt = new SimpleDateFormat(format, Locale.getDefault());
       return dateFormatGmt.format(calendar.getTime());
     }
     return "";
   }
 
-  public static @NonNull String toString(@NonNull Optional<Calendar> calendar) {
+  public static @NonNull String toString(@NonNull Optional<Calendar> calendar,
+      @NonNull String format) {
     if (calendar.isPresent()) {
-      return toString(calendar.get());
+      return toString(calendar.get(), format);
     }
     return "";
   }

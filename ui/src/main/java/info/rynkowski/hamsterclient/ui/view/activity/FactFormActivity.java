@@ -92,12 +92,12 @@ public class FactFormActivity extends BaseActivity {
             case R.id.et_start_time:
               selectedStartTime.set(Calendar.HOUR_OF_DAY, selectedHour);
               selectedStartTime.set(Calendar.MINUTE, selectedMinutes);
-              editTextStartTime.setText(TimeConverter.toString(selectedStartTime));
+              editTextStartTime.setText(TimeConverter.toString(selectedStartTime, "HH:mm"));
               break;
             case R.id.et_end_time:
               selectedEndTime.set(Calendar.HOUR_OF_DAY, selectedHour);
               selectedEndTime.set(Calendar.MINUTE, selectedMinutes);
-              editTextEndTime.setText(TimeConverter.toString(selectedEndTime));
+              editTextEndTime.setText(TimeConverter.toString(selectedEndTime, "HH:mm"));
               break;
           }
         }, hour, minutes, true);
@@ -134,12 +134,12 @@ public class FactFormActivity extends BaseActivity {
     editTextStartTime.setClickable(true);
     editTextStartTime.setFocusable(false);
     editTextStartTime.setEnabled(true);
-    editTextStartTime.setText(TimeConverter.toString(selectedStartTime));
+    editTextStartTime.setText(TimeConverter.toString(selectedStartTime, "HH:mm"));
 
     editTextEndTime.setClickable(true);
     editTextEndTime.setFocusable(false);
     editTextEndTime.setEnabled(false);
-    editTextEndTime.setText(TimeConverter.toString(selectedEndTime));
+    editTextEndTime.setText(TimeConverter.toString(selectedEndTime, "HH:mm"));
     checkBoxIsInProgress.setChecked(true);
   }
 
