@@ -32,6 +32,7 @@ import lombok.experimental.Accessors;
 public class Fact {
 
   private @Nonnull Optional<Integer> id;
+  private @Nonnull Optional<Integer> remoteId;
   private @Nonnull Activity activity;
   private @Nonnull Calendar startTime;
   private @Nonnull Optional<Calendar> endTime;
@@ -40,6 +41,7 @@ public class Fact {
 
   private Fact(@Nonnull Builder b) {
     this.id = b.id;
+    this.remoteId = b.remoteId;
     this.activity = b.activity;
     this.description = b.description;
     this.tags = b.tags;
@@ -53,6 +55,7 @@ public class Fact {
   public static class Builder {
 
     private @Nonnull Optional<Integer> id = Optional.absent();
+    private @Nonnull Optional<Integer> remoteId = Optional.absent();
     private @Nonnull Activity activity = new Activity("", "");
     private @Nonnull Calendar startTime = GregorianCalendar.getInstance();
     private @Nonnull Optional<Calendar> endTime = Optional.absent();

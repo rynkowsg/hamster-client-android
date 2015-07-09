@@ -81,6 +81,7 @@ public class FactEntityMapper {
     Activity activity = new Activity(factEntity.getActivity(), factEntity.getCategory());
     return new Fact.Builder()
         .id(factEntity.getId())
+        .remoteId(factEntity.getRemoteId())
         .activity(activity)
         .startTime(startTime)
         .endTime(endTime)
@@ -99,6 +100,7 @@ public class FactEntityMapper {
     }
     return new FactEntity.Builder()
         .id(fact.getId())
+        .remoteId(fact.getRemoteId())
         .activity(fact.getActivity().getName())
         .category(fact.getActivity().getCategory())
         .startTime(startTime)

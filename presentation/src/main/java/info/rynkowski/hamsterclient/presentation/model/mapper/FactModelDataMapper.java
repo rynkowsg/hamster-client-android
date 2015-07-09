@@ -33,6 +33,7 @@ public class FactModelDataMapper {
   public @NonNull Fact transform(@NonNull FactModel factModel) {
     return new Fact.Builder()
         .id(factModel.getId())
+        .remoteId(factModel.getRemoteId())
         .activity(new Activity(factModel.getActivity(), factModel.getCategory()))
         .tags(factModel.getTags())
         .description(factModel.getDescription())
@@ -44,6 +45,7 @@ public class FactModelDataMapper {
   public @NonNull FactModel transform(@NonNull Fact fact) {
     return new FactModel.Builder()
         .id(fact.getId())
+        .remoteId(fact.getRemoteId())
         .activity(fact.getActivity().getName())
         .category(fact.getActivity().getCategory())
         .tags(fact.getTags())
