@@ -34,7 +34,6 @@ import lombok.experimental.Accessors;
 public class FactModel implements Serializable {
 
   private @Nonnull Optional<Integer> id;
-  private @Nonnull Optional<Integer> remoteId;
   private @Nonnull String activity;
   private @Nonnull String category;
   private @Nonnull List<String> tags;
@@ -44,7 +43,6 @@ public class FactModel implements Serializable {
 
   private FactModel(@Nonnull Builder b) {
     this.id = b.id;
-    this.remoteId = b.remoteId;
     this.activity = b.activity;
     this.category = b.category;
     this.description = b.description;
@@ -59,7 +57,6 @@ public class FactModel implements Serializable {
   public static class Builder {
 
     private @Nonnull Optional<Integer> id = Optional.absent();
-    private @Nonnull Optional<Integer> remoteId = Optional.absent();
     private @Nonnull String activity = "";
     private @Nonnull String category = "";
     private @Nonnull String description = "";
