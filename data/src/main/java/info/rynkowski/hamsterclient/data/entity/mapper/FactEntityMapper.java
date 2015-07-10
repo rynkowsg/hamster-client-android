@@ -18,11 +18,11 @@ package info.rynkowski.hamsterclient.data.entity.mapper;
 
 import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.data.entity.FactEntity;
+import info.rynkowski.hamsterclient.data.utils.Time;
 import info.rynkowski.hamsterclient.domain.entities.Activity;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 import javax.annotation.Nonnull;
@@ -68,17 +68,15 @@ public class FactEntityMapper {
   }
 
   public @Nonnull Fact transform(@Nonnull FactEntity factEntity) {
+    Activity activity = new Activity(factEntity.getActivity(), factEntity.getCategory());
 
-    // Start Time
-    Calendar startTime = convertTimeFromRemote(factEntity.getStartTime());
+    Calendar startTime = factEntity.getStartTime().getCalendar();
 
-    // End Time
     Optional<Calendar> endTime = Optional.absent();
-    if (factEntity.getEndTime() != 0) {
-      endTime = Optional.of(convertTimeFromRemote(factEntity.getEndTime()));
+    if (factEntity.getEndTime().isPresent()) {
+      endTime = Optional.of(factEntity.getEndTime().get().getCalendar());
     }
 
-    Activity activity = new Activity(factEntity.getActivity(), factEntity.getCategory());
     return new Fact.Builder()
         .id(factEntity.getId())
         .activity(activity)
@@ -91,12 +89,13 @@ public class FactEntityMapper {
 
   public @Nonnull FactEntity transform(@Nonnull Fact fact) {
 
-    int startTime = convertTimeToRemote(fact.getStartTime());
+    Time startTime = Time.getInstance(fact.getStartTime());
 
-    int endTime = 0;
+    Optional<Time> endTime = Optional.absent();
     if (fact.getEndTime().isPresent()) {
-      endTime = convertTimeToRemote(fact.getEndTime().get());
+      endTime = Optional.of(Time.getInstance(fact.getEndTime().get()));
     }
+
     return new FactEntity.Builder()
         .id(fact.getId())
         .activity(fact.getActivity().getName())
@@ -106,40 +105,5 @@ public class FactEntityMapper {
         .description(fact.getDescription())
         .tags(fact.getTags())
         .build();
-  }
-
-  /**
-   * Converts time from remote representation to representation used at domain module.
-   * @param time is remote representation of time ({@code int})
-   * @return representation of time used at domain module ({@link Calendar})
-   */
-  private @Nonnull Calendar convertTimeFromRemote(@Nonnull Integer time) {
-    // Hamster uses time counted in seconds.
-    long date = time.longValue() * 1000;
-
-    // Hamster provides bad time representation.
-    // It requires a correction using time zone' offset of remote PC.
-    date -= remoteTimeZone.getOffset(date);
-
-    Calendar calendar = GregorianCalendar.getInstance();
-    calendar.setTimeInMillis(date);
-
-    return calendar;
-  }
-
-  /**
-   * Converts time from domain representation type to remote representation.
-   * @param calendar is a time representation used at domain module ({@link Calendar})
-   * @return remote representation of time ({@code int})
-   */
-  private @Nonnull Integer convertTimeToRemote(@Nonnull Calendar calendar) {
-    long date = calendar.getTimeInMillis();
-
-    // Hamster provides bad time representation.
-    // It requires a correction using time zone' offset of remote PC.
-    date += remoteTimeZone.getOffset(date);
-
-    // Hamster uses time counted in seconds.
-    return (int) (date / 1000);
   }
 }

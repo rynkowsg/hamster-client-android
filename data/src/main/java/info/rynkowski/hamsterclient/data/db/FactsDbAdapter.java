@@ -23,6 +23,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.data.entity.FactEntity;
+import info.rynkowski.hamsterclient.data.utils.Time;
+import java.sql.Timestamp;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -125,8 +127,8 @@ public class FactsDbAdapter {
     newTodoValues.put(KEY_ACTIVITY, factEntity.getActivity());
     newTodoValues.put(KEY_CATEGORY, factEntity.getCategory());
     newTodoValues.put(KEY_DESCRIPTION, factEntity.getDescription());
-    newTodoValues.put(KEY_START_TIME, factEntity.getStartTime());
-    newTodoValues.put(KEY_END_TIME, factEntity.getEndTime());
+    newTodoValues.put(KEY_START_TIME, factEntity.getStartTime().toString());
+    newTodoValues.put(KEY_END_TIME, factEntity.getEndTime().toString());
     return (int) db.insert(DB_FACTS_TABLE, null, newTodoValues);
   }
 
@@ -138,8 +140,8 @@ public class FactsDbAdapter {
     updateTodoValues.put(KEY_ACTIVITY, factEntity.getActivity());
     updateTodoValues.put(KEY_CATEGORY, factEntity.getCategory());
     updateTodoValues.put(KEY_DESCRIPTION, factEntity.getDescription());
-    updateTodoValues.put(KEY_START_TIME, factEntity.getStartTime());
-    updateTodoValues.put(KEY_END_TIME, factEntity.getEndTime());
+    updateTodoValues.put(KEY_START_TIME, factEntity.getStartTime().toString());
+    updateTodoValues.put(KEY_END_TIME, factEntity.getEndTime().toString());
     return db.update(DB_FACTS_TABLE, updateTodoValues, where, null) > 0;
   }
 
@@ -162,14 +164,14 @@ public class FactsDbAdapter {
 
     Optional<FactEntity> factEntity = Optional.absent();
     if (cursor != null && cursor.moveToFirst()) {
-      factEntity = Optional.of(new FactEntity.Builder()
-          .id(Optional.of(cursor.getInt(ID_COLUMN)))
+      factEntity = Optional.of(new FactEntity.Builder().id(Optional.of(cursor.getInt(ID_COLUMN)))
           .remoteId(Optional.of(cursor.getInt(REMOTE_ID_COLUMN)))
           .activity(cursor.getString(ACTIVITY_COLUMN))
           .category(cursor.getString(CATEGORY_COLUMN))
           .description(cursor.getString(DESCRIPTION_COLUMN))
-          .startTime(cursor.getInt(START_TIME_COLUMN))
-          .endTime(cursor.getInt(END_TIME_COLUMN))
+          .startTime(Time.getInstance(Timestamp.valueOf(cursor.getString(START_TIME_COLUMN))))
+          .endTime(
+              Optional.of(Time.getInstance(Timestamp.valueOf(cursor.getString(END_TIME_COLUMN)))))
           .build());
     }
     cursor.close();
@@ -193,8 +195,9 @@ public class FactsDbAdapter {
           .activity(cursor.getString(ACTIVITY_COLUMN))
           .category(cursor.getString(CATEGORY_COLUMN))
           .description(cursor.getString(DESCRIPTION_COLUMN))
-          .startTime(cursor.getInt(START_TIME_COLUMN))
-          .endTime(cursor.getInt(END_TIME_COLUMN))
+          .startTime(Time.getInstance(Timestamp.valueOf(cursor.getString(START_TIME_COLUMN))))
+          .endTime(Optional.of(
+              Time.getInstance(Timestamp.valueOf(cursor.getString(END_TIME_COLUMN)))))
           .build());
     }
     cursor.close();

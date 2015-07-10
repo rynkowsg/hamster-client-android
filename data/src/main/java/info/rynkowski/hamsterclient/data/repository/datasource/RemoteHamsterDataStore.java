@@ -57,13 +57,16 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
         .map(Hamster::GetTodaysFacts)
         .flatMap(Observable::from)
         .map(FactEntity::new)
+        .map(FactEntity::timeFixRemoteToLocal)
         .toList();
   }
 
   @Override public Observable<Optional<Integer>> addFactEntity(@Nonnull FactEntity factEntity) {
     String serializedName = factEntity.serializedName();
-    int startTime = factEntity.getStartTime();
-    int endTime = factEntity.getEndTime();
+
+    factEntity.timeFixLocalToRemote();
+    int startTime = factEntity.getStartTime().getTimeInSeconds();
+    int endTime = factEntity.getEndTime().get().getTimeInSeconds();
 
     return Observable.defer(hamsterObject::getObservable)
         .doOnNext(object -> {

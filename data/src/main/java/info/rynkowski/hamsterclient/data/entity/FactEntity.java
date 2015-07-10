@@ -20,6 +20,8 @@ import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.data.dbus.adapters.AdapterStruct4;
 import info.rynkowski.hamsterclient.data.dbus.adapters.AdapterStruct5;
 import info.rynkowski.hamsterclient.data.dbus.adapters.AdapterStruct7;
+import info.rynkowski.hamsterclient.data.utils.Time;
+import info.rynkowski.hamsterclient.data.utils.TimeDifferenceConverter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -47,8 +49,8 @@ public class FactEntity {
   private @Nonnull String category;
   private @Nonnull String description;
   private @Nonnull List<String> tags;
-  private @Nonnull Integer startTime;
-  private @Nonnull Integer endTime;
+  private @Nonnull Time startTime;
+  private @Nonnull Optional<Time> endTime;
 
   public FactEntity(@Nonnull Struct4 struct) {
     this.id = Optional.absent();
@@ -57,8 +59,10 @@ public class FactEntity {
     this.category = AdapterStruct4.category(struct);
     this.description = AdapterStruct4.description(struct);
     this.tags = AdapterStruct4.tags(struct);
-    this.startTime = AdapterStruct4.start_time(struct);
-    this.endTime = AdapterStruct4.end_time(struct);
+
+    this.startTime = Time.getInstance(AdapterStruct4.start_time(struct));
+    this.endTime = AdapterStruct4.end_time(struct) == 0 ? Optional.absent()
+        : Optional.of(Time.getInstance(AdapterStruct4.end_time(struct)));
   }
 
   public FactEntity(@Nonnull Struct5 struct) {
@@ -68,8 +72,10 @@ public class FactEntity {
     this.category = AdapterStruct5.category(struct);
     this.description = AdapterStruct5.description(struct);
     this.tags = AdapterStruct5.tags(struct);
-    this.startTime = AdapterStruct5.start_time(struct);
-    this.endTime = AdapterStruct5.end_time(struct);
+
+    this.startTime = Time.getInstance(AdapterStruct5.start_time(struct));
+    this.endTime = AdapterStruct5.end_time(struct) == 0 ? Optional.absent()
+        : Optional.of(Time.getInstance(AdapterStruct5.end_time(struct)));
   }
 
   public FactEntity(@Nonnull Struct7 struct) {
@@ -79,8 +85,10 @@ public class FactEntity {
     this.category = AdapterStruct7.category(struct);
     this.description = AdapterStruct7.description(struct);
     this.tags = AdapterStruct7.tags(struct);
-    this.startTime = AdapterStruct7.start_time(struct);
-    this.endTime = AdapterStruct7.end_time(struct);
+
+    this.startTime = Time.getInstance(AdapterStruct7.start_time(struct));
+    this.endTime = AdapterStruct7.end_time(struct) == 0 ? Optional.absent()
+        : Optional.of(Time.getInstance(AdapterStruct7.end_time(struct)));
   }
 
   private FactEntity(@Nonnull Builder b) {
@@ -110,6 +118,22 @@ public class FactEntity {
     return res;
   }
 
+  public @Nonnull FactEntity timeFixRemoteToLocal() {
+    this.setStartTime(TimeDifferenceConverter.remoteToLocal(this.getStartTime()));
+    if (this.getEndTime().isPresent()) {
+      this.setEndTime(Optional.of(TimeDifferenceConverter.remoteToLocal(this.getEndTime().get())));
+    }
+    return this;
+  }
+
+  public @Nonnull FactEntity timeFixLocalToRemote() {
+    this.setStartTime(TimeDifferenceConverter.localToRemote(this.getStartTime()));
+    if (this.getEndTime().isPresent()) {
+      this.setEndTime(Optional.of(TimeDifferenceConverter.localToRemote(this.getEndTime().get())));
+    }
+    return this;
+  }
+
   @NoArgsConstructor(access = AccessLevel.PUBLIC)
   @Setter
   @Accessors(fluent = true, chain = true)
@@ -121,8 +145,8 @@ public class FactEntity {
     private @Nonnull String category = "";
     private @Nonnull List<String> tags = new ArrayList<>();
     private @Nonnull String description = "";
-    private @Nonnull Integer startTime = 0;
-    private @Nonnull Integer endTime = 0;
+    private @Nonnull Time startTime = Time.getInstance();
+    private @Nonnull Optional<Time> endTime = Optional.absent();
 
     public @Nonnull FactEntity build() {
       return new FactEntity(this);
