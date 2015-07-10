@@ -36,7 +36,7 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
 
   private @Nonnull HamsterRemoteObject hamsterObject;
 
-  @Inject public RemoteHamsterDataStore(HamsterRemoteObject hamsterRemoteObject) {
+  @Inject public RemoteHamsterDataStore(@Nonnull HamsterRemoteObject hamsterRemoteObject) {
     this.hamsterObject = hamsterRemoteObject;
   }
 
@@ -72,7 +72,8 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
           log.debug("    startTime:      {}", startTime);
           log.debug("    endTime:        {}", endTime);
         })
-        .map(remoteObject -> Optional.of(remoteObject.AddFact(serializedName, startTime, endTime, false)));
+        .map(remoteObject -> Optional.of(
+            remoteObject.AddFact(serializedName, startTime, endTime, false)));
   }
 
   @Override public Observable<Void> signalActivitiesChanged() {
