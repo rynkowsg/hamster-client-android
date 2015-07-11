@@ -118,6 +118,10 @@ public class FactEntity {
     return res;
   }
 
+  /**
+   * Method that corrects time values retrieved from remote host.
+   * @return a reference to current {@link FactEntity} after changing startTime and endTime values
+   */
   public @Nonnull FactEntity timeFixRemoteToLocal() {
     this.setStartTime(TimeDifferenceConverter.remoteToLocal(this.getStartTime()));
     if (this.getEndTime().isPresent()) {
@@ -126,6 +130,10 @@ public class FactEntity {
     return this;
   }
 
+  /**
+   * Method that corrects times values before sending them to remote host.
+   * @return a reference to current {@link FactEntity} after changing startTime and endTime values
+   */
   public @Nonnull FactEntity timeFixLocalToRemote() {
     this.setStartTime(TimeDifferenceConverter.localToRemote(this.getStartTime()));
     if (this.getEndTime().isPresent()) {

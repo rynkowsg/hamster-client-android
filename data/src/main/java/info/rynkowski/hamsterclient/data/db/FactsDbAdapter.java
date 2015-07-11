@@ -128,7 +128,11 @@ public class FactsDbAdapter {
     newTodoValues.put(KEY_CATEGORY, factEntity.getCategory());
     newTodoValues.put(KEY_DESCRIPTION, factEntity.getDescription());
     newTodoValues.put(KEY_START_TIME, factEntity.getStartTime().toString());
-    newTodoValues.put(KEY_END_TIME, factEntity.getEndTime().toString());
+    if (factEntity.getEndTime().isPresent()) {
+      newTodoValues.put(KEY_END_TIME, factEntity.getEndTime().get().toString());
+    } else {
+      newTodoValues.putNull(KEY_END_TIME);
+    }
     return (int) db.insert(DB_FACTS_TABLE, null, newTodoValues);
   }
 
@@ -141,7 +145,11 @@ public class FactsDbAdapter {
     updateTodoValues.put(KEY_CATEGORY, factEntity.getCategory());
     updateTodoValues.put(KEY_DESCRIPTION, factEntity.getDescription());
     updateTodoValues.put(KEY_START_TIME, factEntity.getStartTime().toString());
-    updateTodoValues.put(KEY_END_TIME, factEntity.getEndTime().toString());
+    if (factEntity.getEndTime().isPresent()) {
+      updateTodoValues.put(KEY_END_TIME, factEntity.getEndTime().get().toString());
+    } else {
+      updateTodoValues.putNull(KEY_END_TIME);
+    }
     return db.update(DB_FACTS_TABLE, updateTodoValues, where, null) > 0;
   }
 
@@ -163,18 +171,24 @@ public class FactsDbAdapter {
     Cursor cursor = db.query(DB_FACTS_TABLE, columns, where, null, null, null, null);
 
     Optional<FactEntity> factEntity = Optional.absent();
+
     if (cursor != null && cursor.moveToFirst()) {
-      factEntity = Optional.of(new FactEntity.Builder().id(Optional.of(cursor.getInt(ID_COLUMN)))
+      Time startTime = Time.getInstance(Timestamp.valueOf(cursor.getString(START_TIME_COLUMN)));
+      Optional<Time> endTime = cursor.isNull(END_TIME_COLUMN) ? Optional.absent()
+          : Optional.of(Time.getInstance(Timestamp.valueOf(cursor.getString(END_TIME_COLUMN))));
+
+      factEntity = Optional.of(new FactEntity.Builder()
+          .id(Optional.of(cursor.getInt(ID_COLUMN)))
           .remoteId(Optional.of(cursor.getInt(REMOTE_ID_COLUMN)))
           .activity(cursor.getString(ACTIVITY_COLUMN))
           .category(cursor.getString(CATEGORY_COLUMN))
           .description(cursor.getString(DESCRIPTION_COLUMN))
-          .startTime(Time.getInstance(Timestamp.valueOf(cursor.getString(START_TIME_COLUMN))))
-          .endTime(
-              Optional.of(Time.getInstance(Timestamp.valueOf(cursor.getString(END_TIME_COLUMN)))))
+          .startTime(startTime)
+          .endTime(endTime)
           .build());
+
+      cursor.close();
     }
-    cursor.close();
 
     return factEntity;
   }
@@ -188,6 +202,7 @@ public class FactsDbAdapter {
     Cursor cursor = db.query(DB_FACTS_TABLE, columns, where, null, null, null, null);
 
     Optional<FactEntity> factEntity = Optional.absent();
+
     if (cursor != null && cursor.moveToFirst()) {
       factEntity = Optional.of(new FactEntity.Builder()
           .id(Optional.of(cursor.getInt(ID_COLUMN)))
@@ -199,8 +214,9 @@ public class FactsDbAdapter {
           .endTime(Optional.of(
               Time.getInstance(Timestamp.valueOf(cursor.getString(END_TIME_COLUMN)))))
           .build());
+
+      cursor.close();
     }
-    cursor.close();
 
     return factEntity;
   }

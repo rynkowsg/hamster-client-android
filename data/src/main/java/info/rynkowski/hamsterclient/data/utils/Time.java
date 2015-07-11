@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class Time {
 
   private @Nonnull Calendar calendar;
-  public static @Nonnull String TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS";
+  public static final @Nonnull String TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS";
 
 
   private Time() {
