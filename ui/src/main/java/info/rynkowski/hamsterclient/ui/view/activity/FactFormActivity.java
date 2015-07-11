@@ -106,8 +106,8 @@ public class FactFormActivity extends BaseActivity {
     timePicker.show();
   }
 
-  @OnClick(R.id.cb_ongoing) public void onCheckBoxClicked(View view) {
-    isEndTimeDisabled = ((CheckBox) view).isChecked();
+  @OnClick(R.id.cb_ongoing) public void onCheckBoxClicked(CheckBox checkBox) {
+    isEndTimeDisabled = checkBox.isChecked();
     editTextEndTime.setEnabled(!isEndTimeDisabled);
   }
 
