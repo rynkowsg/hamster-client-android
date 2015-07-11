@@ -104,8 +104,19 @@ public class HamsterRepositoryImpl implements HamsterRepository {
   }
 
   @Override public Observable<Integer> addFact(Fact fact) {
-    FactEntity factEntity = factEntityMapper.transform(fact);
-    return remoteStore.addFactEntity(factEntity)
+    Observable<FactEntity> factEntityObservable = Observable.just(fact)
+        .map(factEntityMapper::transform);
+
+    // TODO: change to add to local database at first
+    return factEntityObservable
+        .flatMap(remoteStore::addFactEntity)
+        .onErrorReturn(throwable -> {
+          // TODO: use this.status to notify the presenter that remote store is unavailable
+          return Optional.absent();
+        })
+        .flatMap(id -> factEntityObservable
+            .map(factEntity -> factEntity.setRemoteId(id)))
+        .flatMap(localStore::addFactEntity)
         .map(Optional::get);
   }
 
