@@ -54,7 +54,7 @@ public class FactFormActivity extends BaseActivity {
   @Bind(R.id.et_description) EditText editTextDescription;
   @Bind(R.id.cb_ongoing) CheckBox checkBoxIsInProgress;
 
-  private boolean isEndTimeDisabled = false;
+  private boolean isEndTimeDisabled;
 
   private @NonNull Calendar selectedStartTime = GregorianCalendar.getInstance(Locale.getDefault());
   private @NonNull Calendar selectedEndTime = GregorianCalendar.getInstance(Locale.getDefault());
@@ -140,6 +140,8 @@ public class FactFormActivity extends BaseActivity {
     editTextEndTime.setFocusable(false);
     editTextEndTime.setEnabled(false);
     editTextEndTime.setText(TimeConverter.toString(selectedEndTime, "HH:mm"));
+
+    isEndTimeDisabled = true;
     checkBoxIsInProgress.setChecked(true);
   }
 

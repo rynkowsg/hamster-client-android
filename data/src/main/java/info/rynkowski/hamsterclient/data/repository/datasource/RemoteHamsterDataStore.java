@@ -66,7 +66,8 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
 
     factEntity.timeFixLocalToRemote();
     int startTime = factEntity.getStartTime().getTimeInSeconds();
-    int endTime = factEntity.getEndTime().get().getTimeInSeconds();
+    int endTime =
+        factEntity.getEndTime().isPresent() ? factEntity.getEndTime().get().getTimeInSeconds() : 0;
 
     return Observable.defer(hamsterObject::getObservable)
         .doOnNext(object -> {
