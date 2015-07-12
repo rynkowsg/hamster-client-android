@@ -181,4 +181,8 @@ public class FactListPresenter implements Presenter/*, HamsterRepository.OnDataS
           "Unknown Exception!", e);
     }
   }
+
+  public void onRefresh() {
+    loadFactList();
+  }
 }
