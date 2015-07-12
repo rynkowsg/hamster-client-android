@@ -20,12 +20,14 @@ package info.rynkowski.hamsterclient.ui.internal.di.modules;
 import android.content.Context;
 import dagger.Module;
 import dagger.Provides;
+import info.rynkowski.hamsterclient.data.utils.PreferencesContainer;
 import info.rynkowski.hamsterclient.presentation.executor.PostExecutionThread;
 import info.rynkowski.hamsterclient.presentation.executor.ThreadExecutor;
 import info.rynkowski.hamsterclient.ui.AndroidApplication;
 import info.rynkowski.hamsterclient.ui.executor.JobExecutor;
 import info.rynkowski.hamsterclient.ui.executor.UIThread;
 import info.rynkowski.hamsterclient.ui.navigation.Navigator;
+import info.rynkowski.hamsterclient.ui.utils.PreferencesContainerImpl;
 import javax.inject.Singleton;
 
 /**
@@ -54,5 +56,9 @@ public class ApplicationModule {
 
   @Provides @Singleton PostExecutionThread providePostExecutionThread(UIThread uiThread) {
     return uiThread;
+  }
+
+  @Provides @Singleton PreferencesContainer providePreferencesContainer(Context context) {
+    return new PreferencesContainerImpl(context);
   }
 }

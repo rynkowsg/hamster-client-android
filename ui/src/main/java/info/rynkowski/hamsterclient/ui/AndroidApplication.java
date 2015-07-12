@@ -19,7 +19,6 @@ package info.rynkowski.hamsterclient.ui;
 import android.app.Application;
 import android.support.annotation.NonNull;
 import com.google.common.base.Optional;
-import info.rynkowski.hamsterclient.data.DataModule;
 import info.rynkowski.hamsterclient.ui.internal.di.components.ApplicationComponent;
 import info.rynkowski.hamsterclient.ui.internal.di.components.DaggerApplicationComponent;
 import info.rynkowski.hamsterclient.ui.internal.di.modules.ApplicationModule;
@@ -34,10 +33,8 @@ public class AndroidApplication extends Application {
   }
 
   private void initializeDependencyInjector() {
-    //TODO: Move host&port setting to DBusConnector.open(host,port) method
     this.applicationComponent = Optional.of(DaggerApplicationComponent.builder()
         .applicationModule(new ApplicationModule(this))
-        .dataModule(new DataModule("10.0.2.5", "55555"))
         .build());
   }
 

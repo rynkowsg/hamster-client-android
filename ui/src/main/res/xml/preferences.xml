@@ -20,19 +20,19 @@
     <PreferenceCategory android:title="DBus Connection">
 
         <EditTextPreference
-            android:defaultValue="@string/default_host"
+            android:defaultValue="@string/prefs.default_value.dbus_host"
             android:inputType="textUri"
-            android:key="host"
-            android:summary="@string/pref_host_summary"
-            android:title="@string/pref_host_title"
+            android:key="@string/prefs.key.dbus_host"
+            android:summary="@string/prefs.summary.dbus_host"
+            android:title="@string/prefs.title.dbus_host"
             />
 
         <EditTextPreference
-            android:defaultValue="@string/default_port"
+            android:defaultValue="@string/prefs.default_value.dbus_host"
             android:inputType="number"
-            android:key="port"
-            android:summary="@string/pref_port_summary"
-            android:title="@string/pref_port_title"
+            android:key="@string/prefs.key.dbus_port"
+            android:summary="@string/prefs.summary.dbus_port"
+            android:title="@string/prefs.title.dbus_port"
             />
 
     </PreferenceCategory>

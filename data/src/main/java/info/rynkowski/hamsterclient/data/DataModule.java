@@ -26,6 +26,7 @@ import info.rynkowski.hamsterclient.data.repository.HamsterRepositoryImpl;
 import info.rynkowski.hamsterclient.data.repository.datasource.HamsterDataStore;
 import info.rynkowski.hamsterclient.data.repository.datasource.LocalHamsterDataStore;
 import info.rynkowski.hamsterclient.data.repository.datasource.RemoteHamsterDataStore;
+import info.rynkowski.hamsterclient.data.utils.PreferencesContainer;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -36,16 +37,9 @@ import javax.inject.Singleton;
 @Module
 public class DataModule {
 
-  private final String host;
-  private final String port;
-
-  public DataModule(String host, String port) {
-    this.host = host;
-    this.port = port;
-  }
-
-  @Provides @Singleton ConnectionProvider provideDBusConnectionProvider() {
-    return new ConnectionProviderOverNetwork(host, port);
+  @Provides @Singleton ConnectionProvider provideDBusConnectionProvider(
+      PreferencesContainer preferences) {
+    return new ConnectionProviderOverNetwork(preferences);
   }
 
   @Provides @Singleton HamsterRemoteObject provideHamsterRemoteObject(

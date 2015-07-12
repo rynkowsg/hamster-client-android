@@ -52,7 +52,5 @@ public interface ApplicationComponent {
 
   PostExecutionThread postExecutionThread();
 
-  ConnectionProvider dBusConnectionProvider();
-
   HamsterRepository hamsterRepository();
 }

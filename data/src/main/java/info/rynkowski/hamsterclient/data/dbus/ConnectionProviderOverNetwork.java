@@ -16,6 +16,9 @@
 
 package info.rynkowski.hamsterclient.data.dbus;
 
+import info.rynkowski.hamsterclient.data.utils.PreferencesContainer;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -30,24 +33,17 @@ import org.freedesktop.dbus.exceptions.DBusException;
 @Singleton
 public class ConnectionProviderOverNetwork implements ConnectionProvider {
 
-  private String addressHost;
-  private String addressPort;
+  private @Nullable DBusConnection connection;
+  private final @Nonnull PreferencesContainer preferences;
 
-  private volatile DBusConnection connection;
-
-  @Inject public ConnectionProviderOverNetwork(String addressHost, String addressPort) {
-    this.addressHost = addressHost;
-    this.addressPort = addressPort;
+  @Inject public ConnectionProviderOverNetwork(@Nonnull PreferencesContainer preferences) {
+    this.preferences = preferences;
     this.connection = null;
-  }
-
-  private static String dbusAddress(String host, String port) {
-    return "tcp:host=" + host + ",port=" + port;
   }
 
   @Override public synchronized DBusConnection get() throws DBusException {
     if (connection == null) {
-      String address = dbusAddress(addressHost, addressPort);
+      String address = dbusAddress(preferences.getDbusHost(), preferences.getDbusPort());
       log.debug("Opening D-Bus connection on address: {}", address);
       connection = DBusConnection.getConnection(address);
       log.info("D-Bus connection has been established successfully.");
@@ -55,11 +51,15 @@ public class ConnectionProviderOverNetwork implements ConnectionProvider {
     return connection;
   }
 
-  @Override public void close() {
+  @Override public synchronized void close() {
     if (connection != null) {
       connection.disconnect();
       connection = null;
       log.info("D-Bus connection closed.");
     }
+  }
+
+  private static String dbusAddress(@Nonnull String host, @Nonnull String port) {
+    return "tcp:host=" + host + ",port=" + port;
   }
 }
