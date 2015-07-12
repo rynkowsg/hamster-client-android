@@ -16,7 +16,7 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.github.rynkowsg.hamsterclient.presentation">
+    package="info.rynkowski.hamsterclient.presentation">
 
     <application android:allowBackup="true"/>
 </manifest>
