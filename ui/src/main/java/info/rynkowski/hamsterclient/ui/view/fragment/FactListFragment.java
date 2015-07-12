@@ -126,7 +126,7 @@ public class FactListFragment extends BaseFragment
         if (resultCode == Activity.RESULT_OK) {
           log.debug("Called onActivityResult(requestCode={}, resultCode={}) : ok", requestCode,
               resultCode);
-          FactModel fact = (FactModel) data.getSerializableExtra(FactFormActivity.EXTRAS_KEY_FACT);
+          FactModel fact = data.getParcelableExtra(FactFormActivity.EXTRAS_KEY_FACT);
           factListPresenter.addFact(fact);
           showToastMessage("New fact:" + fact.getActivity());
         } else {

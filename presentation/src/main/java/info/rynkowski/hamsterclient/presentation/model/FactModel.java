@@ -16,8 +16,9 @@
 
 package info.rynkowski.hamsterclient.presentation.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.google.common.base.Optional;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -29,9 +30,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-// TODO: Transform to parcelable
 @Getter
-public class FactModel implements Serializable {
+public class FactModel implements Parcelable {
 
   private @Nonnull Optional<Integer> id;
   private @Nonnull String activity;
@@ -49,6 +49,56 @@ public class FactModel implements Serializable {
     this.tags = b.tags;
     this.startTime = b.startTime;
     this.endTime = b.endTime;
+  }
+
+  protected FactModel(@Nonnull Parcel in) {
+    this.id = (in.readByte() == 1) ? Optional.of(in.readInt()) : Optional.absent();
+    this.activity = in.readString();
+    this.category = in.readString();
+    this.tags = new ArrayList<>();
+    in.readStringList(this.tags);
+    this.description = in.readString();
+    this.startTime = GregorianCalendar.getInstance();
+    this.startTime.setTimeInMillis(in.readLong());
+    this.endTime = Optional.absent();
+    if (in.readByte() == 1) {
+      this.endTime = Optional.of(GregorianCalendar.getInstance());
+      this.endTime.get().setTimeInMillis(in.readLong());
+    }
+  }
+
+  public static final Creator<FactModel> CREATOR = new Creator<FactModel>() {
+    @Override public FactModel createFromParcel(@Nonnull Parcel in) {
+      return new FactModel(in);
+    }
+
+    @Override public @Nonnull FactModel[] newArray(int size) {
+      return new FactModel[size];
+    }
+  };
+
+  @Override public int describeContents() {
+    return hashCode();
+  }
+
+  @Override public void writeToParcel(@Nonnull Parcel dest, int flags) {
+    if (id.isPresent()) {
+      dest.writeByte((byte) 1);
+      dest.writeInt(id.get());
+    } else {
+      dest.writeByte((byte) 0);
+    }
+    dest.writeString(activity);
+    dest.writeString(category);
+    dest.writeStringList(tags);
+    dest.writeString(description);
+    dest.writeLong(startTime.getTimeInMillis());
+    if (endTime.isPresent()) {
+      dest.writeByte((byte) 1);
+      dest.writeLong(endTime.get().getTimeInMillis());
+    } else {
+      dest.writeByte((byte) 0);
+    }
   }
 
   @NoArgsConstructor(access = AccessLevel.PUBLIC)
