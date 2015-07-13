@@ -25,9 +25,11 @@ import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
 import info.rynkowski.hamsterclient.presentation.executor.PostExecutionThread;
 import info.rynkowski.hamsterclient.presentation.executor.ThreadExecutor;
 import info.rynkowski.hamsterclient.ui.internal.di.modules.ApplicationModule;
+import info.rynkowski.hamsterclient.ui.internal.di.modules.FactListModule;
 import info.rynkowski.hamsterclient.ui.navigation.Navigator;
 import info.rynkowski.hamsterclient.ui.view.activity.BaseActivity;
 import info.rynkowski.hamsterclient.ui.view.fragment.BaseFragment;
+import info.rynkowski.hamsterclient.ui.view.fragment.FactListFragment;
 import javax.inject.Singleton;
 
 /**
@@ -36,12 +38,14 @@ import javax.inject.Singleton;
  * {@link info.rynkowski.hamsterclient.ui.view.fragment.BaseFragment}.
  */
 @Singleton
-@Component(modules = { ApplicationModule.class, DataModule.class })
+@Component(modules = { ApplicationModule.class, DataModule.class, FactListModule.class })
 public interface ApplicationComponent {
 
   void inject(BaseActivity baseActivity);
 
   void inject(BaseFragment baseFragment);
+
+  void inject(FactListFragment fragment);
 
   //Exposed to sub-graphs.
   Context context();

@@ -19,16 +19,12 @@ package info.rynkowski.hamsterclient.ui.internal.di.components;
 import dagger.Component;
 import info.rynkowski.hamsterclient.ui.internal.di.ActivityScope;
 import info.rynkowski.hamsterclient.ui.internal.di.modules.ActivityModule;
-import info.rynkowski.hamsterclient.ui.internal.di.modules.FactListModule;
-import info.rynkowski.hamsterclient.ui.view.fragment.FactListFragment;
 
 /**
  * Injects {@link info.rynkowski.hamsterclient.ui.view.fragment.FactListFragment}.
  */
 @ActivityScope
 @Component(dependencies = ApplicationComponent.class,
-    modules = { ActivityModule.class, FactListModule.class })
+    modules = { ActivityModule.class })
 public interface FactListComponent extends ActivityComponent {
-
-  void inject(FactListFragment fragment);
 }

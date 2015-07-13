@@ -30,6 +30,7 @@ import info.rynkowski.hamsterclient.presentation.view.FactListView;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.freedesktop.dbus.exceptions.DBusException;
 import rx.schedulers.Schedulers;
@@ -39,6 +40,7 @@ import rx.schedulers.Schedulers;
  * layer for fact list screen.
  */
 @Slf4j
+@Singleton
 public class FactListPresenter implements Presenter/*, HamsterRepository.OnDataStoreChangedListener */{
 
   private final ThreadExecutor threadExecutor;

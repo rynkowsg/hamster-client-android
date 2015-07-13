@@ -34,7 +34,6 @@ import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.presentation.presenter.FactListPresenter;
 import info.rynkowski.hamsterclient.presentation.view.FactListView;
 import info.rynkowski.hamsterclient.ui.R;
-import info.rynkowski.hamsterclient.ui.internal.di.components.FactListComponent;
 import info.rynkowski.hamsterclient.ui.navigation.Navigator;
 import info.rynkowski.hamsterclient.ui.view.activity.FactFormActivity;
 import info.rynkowski.hamsterclient.ui.view.adapter.FactsAdapter;
@@ -110,7 +109,7 @@ public class FactListFragment extends BaseFragment
   }
 
   private void injectDependencies() {
-    this.getComponent(FactListComponent.class).inject(this);
+    this.getApplicationComponent().inject(this);
   }
 
   private void setupRecyclerView() {
