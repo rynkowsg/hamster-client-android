@@ -104,6 +104,8 @@ public class FactListFragment extends BaseFragment
     super.onDestroyView();
     log.debug("onDestroyView()");
     ButterKnife.unbind(this);
+
+    factListPresenter.setView(null);
     factListPresenter.destroy();
   }
 

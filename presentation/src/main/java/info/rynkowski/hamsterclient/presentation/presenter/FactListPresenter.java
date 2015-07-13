@@ -17,6 +17,7 @@
 package info.rynkowski.hamsterclient.presentation.presenter;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.interactor.UseCase;
 import info.rynkowski.hamsterclient.domain.interactor.UseCaseArgumentless;
@@ -49,7 +50,7 @@ public class FactListPresenter implements Presenter/*, HamsterRepository.OnDataS
 
   private final FactModelDataMapper mapper;
 
-  private FactListView viewListView;
+  private @Nullable FactListView viewListView;
 
   //Subscription subscriptionOnChange;
 
@@ -66,7 +67,7 @@ public class FactListPresenter implements Presenter/*, HamsterRepository.OnDataS
     this.mapper = mapper;
   }
 
-  public void setView(@NonNull FactListView view) {
+  public void setView(@Nullable FactListView view) {
     this.viewListView = view;
   }
 
@@ -105,6 +106,8 @@ public class FactListPresenter implements Presenter/*, HamsterRepository.OnDataS
 
   private void loadFactList() {
     log.debug("loadFactList()");
+    if (viewListView == null) return;
+
     viewListView.showLoading();
     getTodaysFactsUseCase.execute()
         .doOnNext(list -> log.info("Received {} facts.", list.size()))
@@ -172,6 +175,8 @@ public class FactListPresenter implements Presenter/*, HamsterRepository.OnDataS
 
   private void onException(Throwable e) {
     log.debug("onException()");
+    if (viewListView == null) return;
+
     viewListView.hideLoading();
     if (e.getClass() == DBusException.class) {
       log.error("DBusException! e.getClass()={}, e.getCause()={}", e.getClass(), e.getCause());
