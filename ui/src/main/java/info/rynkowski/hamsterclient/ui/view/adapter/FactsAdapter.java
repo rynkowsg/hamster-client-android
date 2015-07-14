@@ -18,6 +18,7 @@ package info.rynkowski.hamsterclient.ui.view.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +26,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.ui.R;
 import info.rynkowski.hamsterclient.ui.utils.TimeConverter;
@@ -38,13 +38,13 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
 
   private final @NonNull LayoutInflater layoutInflater;
   private @NonNull List<FactModel> factsList;
-  private @NonNull Optional<OnItemClickListener> onItemClickListener;
+  private @Nullable OnItemClickListener onItemClickListener;
 
   public FactsAdapter(@NonNull Context context, @NonNull List<FactModel> factsList) {
     this.layoutInflater =
         (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     this.factsList = factsList;
-    this.onItemClickListener = Optional.absent();
+    this.onItemClickListener = null;
   }
 
   @Override public int getItemCount() {
@@ -62,8 +62,8 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
     holder.start_time.setText(TimeConverter.toString(factModel.getStartTime(), "HH:mm"));
     holder.end_time.setText(TimeConverter.toString(factModel.getEndTime(), "HH:mm"));
     holder.itemView.setOnClickListener((View v) -> {
-      if (FactsAdapter.this.onItemClickListener.isPresent()) {
-        FactsAdapter.this.onItemClickListener.get().onFactItemClicked(factModel);
+      if (FactsAdapter.this.onItemClickListener != null) {
+        FactsAdapter.this.onItemClickListener.onFactItemClicked(factModel);
       }
     });
   }
@@ -73,7 +73,7 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
   }
 
   public void setOnItemClickListener(@NonNull OnItemClickListener onItemClickListener) {
-    this.onItemClickListener = Optional.of(onItemClickListener);
+    this.onItemClickListener = onItemClickListener;
   }
 
   public void setFactsList(@NonNull List<FactModel> factsList) {
