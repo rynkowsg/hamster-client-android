@@ -1,11 +1,15 @@
 Hamster Client for Android [![Build Status](https://travis-ci.org/rynkowsg/hamster-client-android.svg?branch=master)](https://travis-ci.org/rynkowsg/hamster-client-android)
 ==========================
 
-The project is an extension of desktop application named Hamster.
-It provides the mobile application that extends a reach of the Hamster Time Tracker.
+A mobile app addressed to users of existing linux desktop application - Hamster Time Tracker.
+Same as desktop app, Hamster Client allows a time tracking.
+It means the app stores data about user activities in time.
 
-More information about Hamster you can find at [project's website][projecthamster]
-or [GitHub page][projecthamster-github].
+The application allows the user to connect to their desktop
+and synchronize data between Hamster Client and Hamster Time Tracker.
+
+More information about Hamster Time Tracker you can find at [project's website][projecthamster]
+and [GitHub page][projecthamster-github].
 
 
 
@@ -20,28 +24,21 @@ Libraries
 Project provides communication with host by D-Bus. In order to do that I used:
 
  * [dbus-java][dbus-java] - D-Bus library for Java
-     (the library was modificated for the project purpose)
+     (the library was modified for the project purpose)
  * libmatthew-java - a dependency of dbus-java ([link1][libmatthew-java-1],
      [link2][libmatthew-java-2], [link3][libmatthew-java-3], [link4][libmatthew-java-4]).
 
 
 
-Thanks
+The Clean Architecture
 ------
 
-At the project I have applied [The Clean Architeture][the-clean-architecture]
+At the project I have applied [The Clean Architecture][the-clean-architecture]
 proposed by Robert C. Martin.
-To do so I based on articles:
 
- * [The Clean Architeture][the-clean-architecture] by Robert C. Martin
- * [Architecting Android…The clean way?][the-clean-way] by Fernando Cejas
- * [Przejrzysty i testowalny kod na Androidzie? Spróbujmy z Clean Architecture][progmag-ca]
-     by Michał Charmas
-
-and two existed implementations of that approach:
-
- * [Android-CleanArchitecture][android-cleanarchitecture] by Fernando Cejas
- * [shoppinglist-clean-architecture-example][shoppinglist] by Michał Charmas
+About Android approaches of The Clean Architecture you can read [here][the-clean-way]
+and [there][progmag-ca]. You can also look at two another existed implementations
+made by [Fernando Cejas][android-cleanarchitecture] and [Michał Charmas][shoppinglist].
 
 
 
