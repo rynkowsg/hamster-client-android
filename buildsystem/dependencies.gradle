@@ -32,15 +32,6 @@ ext {
   slf4jTimberVersion = '2.0'
   timberVersion = '3.1.0'
 
-  appDependencies = [
-      appcompatV7:        "com.android.support:appcompat-v7:${appcompatV7Version}",
-      commonsLang3:       "org.apache.commons:commons-lang3:${commonsLang3Version}",
-      butterKnife:        "com.jakewharton:butterknife:${butterKnifeVersion}",
-      lombok:             "org.projectlombok:lombok:${lombokVersion}",
-      javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
-      supportV4:          "com.android.support:support-v4:${supportV4Version}",
-  ]
-
   dataDependencies = [
       androidLogger:      "com.noveogroup.android:android-logger:${androidLoggerVersion}",
       commonsLang3:       "org.apache.commons:commons-lang3:${commonsLang3Version}",
