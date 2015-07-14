@@ -62,8 +62,9 @@ dependencies {
   def uiDependencies = rootProject.ext.uiDependencies
 
   compile uiDependencies.appcompatV7
+  compile uiDependencies.cardViewV7
   compile uiDependencies.design
-  compile uiDependencies.recyclerView
+  compile uiDependencies.recyclerViewV7
   compile uiDependencies.supportAnnotations
   compile uiDependencies.supportV4
 

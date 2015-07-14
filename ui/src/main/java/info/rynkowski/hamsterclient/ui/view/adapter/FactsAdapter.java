@@ -19,28 +19,35 @@ package info.rynkowski.hamsterclient.ui.view.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.ui.R;
 import info.rynkowski.hamsterclient.ui.utils.TimeConverter;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Adapter that manages a collection of {@link FactModel}.
  */
+@Slf4j
 public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHolder> {
 
+  private final @NonNull Context context;
   private final @NonNull LayoutInflater layoutInflater;
   private @NonNull List<FactModel> factsList;
   private @Nullable OnItemClickListener onItemClickListener;
 
   public FactsAdapter(@NonNull Context context, @NonNull List<FactModel> factsList) {
+    this.context = context;
     this.layoutInflater =
         (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     this.factsList = factsList;
@@ -59,6 +66,7 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
   @Override public void onBindViewHolder(FactViewHolder holder, final int position) {
     final FactModel factModel = this.factsList.get(position);
     holder.activity_name.setText(factModel.getActivity());
+    holder.category_name.setText(factModel.getCategory());
     holder.start_time.setText(TimeConverter.toString(factModel.getStartTime(), "HH:mm"));
     holder.end_time.setText(TimeConverter.toString(factModel.getEndTime(), "HH:mm"));
     holder.itemView.setOnClickListener((View v) -> {
@@ -66,6 +74,8 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
         FactsAdapter.this.onItemClickListener.onFactItemClicked(factModel);
       }
     });
+
+    this.createPopupMenu(holder, factModel);
   }
 
   @Override public long getItemId(int position) {
@@ -81,14 +91,39 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
     this.notifyDataSetChanged();
   }
 
+  private void createPopupMenu(FactViewHolder holder, FactModel fact) {
+    // creating the instance of PopupMenu
+    PopupMenu popupMenu = new PopupMenu(context, holder.overflow);
+    // inflating the Popup using xml file
+    popupMenu.getMenuInflater().inflate(R.menu.menu_row_fact, popupMenu.getMenu());
+    // registering popup with OnMenuItemClickListener
+    popupMenu.setOnMenuItemClickListener(item -> {
+      Toast.makeText(context, "You Clicked : " + item.getTitle(), Toast.LENGTH_SHORT).show();
+      return true;
+    });
+
+    // if the fact is ongoing then disable 'start' menu position, otherwise disable 'stop'
+    if (!fact.getEndTime().isPresent()) {
+      popupMenu.getMenu().getItem(0).setEnabled(false);
+    } else {
+      popupMenu.getMenu().getItem(1).setEnabled(false);
+    }
+
+    // showing popup menu on ImageView's onClick event
+    holder.overflow.setOnClickListener((view) -> popupMenu.show());
+  }
+
   public interface OnItemClickListener {
     void onFactItemClicked(@NonNull FactModel factModel);
   }
 
+  @Slf4j
   static class FactViewHolder extends RecyclerView.ViewHolder {
     @Bind(R.id.activity_name) TextView activity_name;
+    @Bind(R.id.category_name) TextView category_name;
     @Bind(R.id.start_time) TextView start_time;
     @Bind(R.id.end_time) TextView end_time;
+    @Bind(R.id.more_button) ImageView overflow;
 
     public FactViewHolder(@NonNull View itemView) {
       super(itemView);

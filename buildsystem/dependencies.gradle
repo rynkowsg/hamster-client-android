@@ -13,8 +13,9 @@ ext {
 
   //Libraries
   appcompatV7Version = '22.2.0'
+  cardViewV7Version = '22.2.0'
   designVersion = '22.2.0'
-  recyclerViewVersion = '22.2.0'
+  recyclerViewV7Version = '22.2.0'
   supportAnnotationsVersion = '22.2.0'
   supportV4Version = '22.2.0'
 
@@ -69,8 +70,9 @@ ext {
 
   uiDependencies = [
       appcompatV7:        "com.android.support:appcompat-v7:${appcompatV7Version}",
+      cardViewV7:         "com.android.support:cardview-v7:${cardViewV7Version}",
       design:             "com.android.support:design:${designVersion}",
-      recyclerView:       "com.android.support:recyclerview-v7:${recyclerViewVersion}",
+      recyclerViewV7:     "com.android.support:recyclerview-v7:${recyclerViewV7Version}",
       supportAnnotations: "com.android.support:support-annotations:${supportAnnotationsVersion}",
       supportV4:          "com.android.support:support-v4:${supportV4Version}",
 
