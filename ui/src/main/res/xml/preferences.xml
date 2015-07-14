@@ -28,7 +28,7 @@
             />
 
         <EditTextPreference
-            android:defaultValue="@string/prefs.default_value.dbus_host"
+            android:defaultValue="@string/prefs.default_value.dbus_port"
             android:inputType="number"
             android:key="@string/prefs.key.dbus_port"
             android:summary="@string/prefs.summary.dbus_port"
