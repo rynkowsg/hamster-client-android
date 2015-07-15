@@ -16,8 +16,6 @@
 
 package info.rynkowski.hamsterclient.data.repository;
 
-import com.google.common.base.Optional;
-import info.rynkowski.hamsterclient.data.entity.FactEntity;
 import info.rynkowski.hamsterclient.data.entity.mapper.FactEntityMapper;
 import info.rynkowski.hamsterclient.data.repository.datasource.HamsterDataStore;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
@@ -104,20 +102,9 @@ public class HamsterRepositoryImpl implements HamsterRepository {
   }
 
   @Override public @Nonnull Observable<Integer> addFact(@Nonnull Fact fact) {
-    Observable<FactEntity> factEntityObservable = Observable.just(fact)
-        .map(factEntityMapper::transform);
-
-    // TODO: change to add to local database at first
-    return factEntityObservable
-        .flatMap(remoteStore::addFactEntity)
-        .onErrorReturn(throwable -> {
-          // TODO: use this.status to notify the presenter that remote store is unavailable
-          return Optional.absent();
-        })
-        .flatMap(id -> factEntityObservable
-            .map(factEntity -> factEntity.setRemoteId(id)))
-        .flatMap(localStore::addFactEntity)
-        .map(Optional::get);
+    return Observable.just(fact)
+        .map(factEntityMapper::transform)
+        .flatMap(remoteStore::addFactEntity);
   }
 
   @Override public @Nonnull Observable<Void> signalActivitiesChanged() {

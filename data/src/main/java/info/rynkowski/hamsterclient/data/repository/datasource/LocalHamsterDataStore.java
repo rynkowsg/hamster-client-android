@@ -17,7 +17,6 @@
 package info.rynkowski.hamsterclient.data.repository.datasource;
 
 import android.content.Context;
-import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.data.db.FactsDbAdapter;
 import info.rynkowski.hamsterclient.data.entity.FactEntity;
 import java.util.List;
@@ -47,14 +46,14 @@ public class LocalHamsterDataStore implements HamsterDataStore {
     return Observable.empty();
   }
 
-  @Override public @Nonnull Observable<Optional<Integer>> addFactEntity(@Nonnull FactEntity factEntity) {
+  @Override public @Nonnull Observable<Integer> addFactEntity(@Nonnull FactEntity factEntity) {
     FactsDbAdapter factsDbAdapter = new FactsDbAdapter(context).open();
     int localId = factsDbAdapter.insertFact(factEntity);
     factsDbAdapter.close();
 
     signalFactsChanged.onNext(null);
 
-    return Observable.just(Optional.of(localId));
+    return Observable.just(localId);
   }
 
   @Override public @Nonnull Observable<Void> signalActivitiesChanged() {
