@@ -30,6 +30,7 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
+import info.rynkowski.hamsterclient.presentation.view.OnFactActionListener;
 import info.rynkowski.hamsterclient.ui.R;
 import info.rynkowski.hamsterclient.ui.utils.TimeConverter;
 import java.util.List;
@@ -44,54 +45,56 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
   private final @NonNull Context context;
   private final @NonNull LayoutInflater layoutInflater;
   private @NonNull List<FactModel> factsList;
-  private @Nullable OnItemClickListener onItemClickListener;
+  private @Nullable OnFactActionListener onFactActionListener;
 
   public FactsAdapter(@NonNull Context context, @NonNull List<FactModel> factsList) {
     this.context = context;
     this.layoutInflater =
         (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     this.factsList = factsList;
-    this.onItemClickListener = null;
+    this.onFactActionListener = null;
   }
 
   @Override public int getItemCount() {
-    return this.factsList.size();
+    return factsList.size();
   }
 
   @Override public FactViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    View view = this.layoutInflater.inflate(R.layout.row_fact, parent, false);
+    View view = layoutInflater.inflate(R.layout.row_fact, parent, false);
     return new FactViewHolder(view);
   }
 
   @Override public void onBindViewHolder(FactViewHolder holder, final int position) {
-    final FactModel factModel = this.factsList.get(position);
+    assert onFactActionListener != null : "onFactActionListener must not be null";
+
+    final FactModel factModel = factsList.get(position);
     holder.activity_name.setText(factModel.getActivity());
     holder.category_name.setText(factModel.getCategory());
     holder.start_time.setText(TimeConverter.toString(factModel.getStartTime(), "HH:mm"));
     holder.end_time.setText(TimeConverter.toString(factModel.getEndTime(), "HH:mm"));
-    holder.itemView.setOnClickListener((View v) -> {
-      if (FactsAdapter.this.onItemClickListener != null) {
-        FactsAdapter.this.onItemClickListener.onFactItemClicked(factModel);
-      }
-    });
 
-    this.createPopupMenu(holder, factModel);
+    holder.itemView.setOnClickListener(view -> onFactActionListener.onFactItemClicked(factModel));
+
+    createPopupMenu(holder, factModel);
   }
 
   @Override public long getItemId(int position) {
     return position;
   }
 
-  public void setOnItemClickListener(@NonNull OnItemClickListener onItemClickListener) {
-    this.onItemClickListener = onItemClickListener;
+  public void setOnFactActionListener(@NonNull OnFactActionListener onFactActionListener) {
+    log.debug("setOnFactActionListener(onFactActionListener = {})", onFactActionListener);
+    this.onFactActionListener = onFactActionListener;
   }
 
   public void setFactsList(@NonNull List<FactModel> factsList) {
     this.factsList = factsList;
-    this.notifyDataSetChanged();
+    notifyDataSetChanged();
   }
 
-  private void createPopupMenu(FactViewHolder holder, FactModel fact) {
+  private void createPopupMenu(@NonNull FactViewHolder holder, @NonNull FactModel fact) {
+    assert onFactActionListener != null : "onFactActionListener must not be null";
+
     // creating the instance of PopupMenu
     PopupMenu popupMenu = new PopupMenu(context, holder.overflow);
     // inflating the Popup using xml file
@@ -99,6 +102,24 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
     // registering popup with OnMenuItemClickListener
     popupMenu.setOnMenuItemClickListener(item -> {
       Toast.makeText(context, "You Clicked : " + item.getTitle(), Toast.LENGTH_SHORT).show();
+
+      switch (item.getItemId()) {
+        case R.id.start:
+          onFactActionListener.onStartFactClicked(fact);
+          break;
+        case R.id.stop:
+          onFactActionListener.onStopFactClicked(fact);
+          break;
+        case R.id.edit:
+          onFactActionListener.onEditFactClicked(fact);
+          break;
+        case R.id.remove:
+          onFactActionListener.onRemoveFactClicked(fact);
+          break;
+        default:
+          assert false : "Unknown popup menu position, item id: " + item.getItemId() + ", title: "
+              + item.getTitle();
+      }
       return true;
     });
 
@@ -111,10 +132,6 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
 
     // showing popup menu on ImageView's onClick event
     holder.overflow.setOnClickListener((view) -> popupMenu.show());
-  }
-
-  public interface OnItemClickListener {
-    void onFactItemClicked(@NonNull FactModel factModel);
   }
 
   @Slf4j

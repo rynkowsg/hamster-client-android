@@ -47,8 +47,7 @@ import lombok.extern.slf4j.Slf4j;
  * Fragment that shows a list of Facts.
  */
 @Slf4j
-public class FactListFragment extends BaseFragment
-    implements FactListView, FactsAdapter.OnItemClickListener {
+public class FactListFragment extends BaseFragment implements FactListView {
 
   @Inject FactListPresenter factListPresenter;
 
@@ -65,18 +64,25 @@ public class FactListFragment extends BaseFragment
     View view = inflater.inflate(R.layout.fragment_fact_list, container, false);
     ButterKnife.bind(this, view);
 
-    this.setupRecyclerView();
-
-    //noinspection Convert2MethodRef
-    this.swipeRefreshLayout.setOnRefreshListener(() -> factListPresenter.onRefresh());
-
     return view;
   }
 
   @Override public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
     log.debug("onActivityCreated()");
-    this.injectDependencies();
+    injectDependencies();
+
+    // TODO: Inject FactsLayoutManager object (ActivityScope)
+    FactsLayoutManager factsLayoutManager = new FactsLayoutManager(getActivity());
+    rv_facts.setLayoutManager(factsLayoutManager);
+
+    // TODO: Inject FactsAdapter object (ActivityScope)
+    factsAdapter = new FactsAdapter(getActivity(), new ArrayList<>());
+    factsAdapter.setOnFactActionListener(factListPresenter);
+    rv_facts.setAdapter(factsAdapter);
+
+    //noinspection Convert2MethodRef
+    swipeRefreshLayout.setOnRefreshListener(() -> factListPresenter.onRefresh());
   }
 
   @Override public void onStart() {
@@ -112,15 +118,6 @@ public class FactListFragment extends BaseFragment
     this.getApplicationComponent().inject(this);
   }
 
-  private void setupRecyclerView() {
-    FactsLayoutManager factsLayoutManager = new FactsLayoutManager(getActivity());
-    this.rv_facts.setLayoutManager(factsLayoutManager);
-
-    this.factsAdapter = new FactsAdapter(getActivity(), new ArrayList<>());
-    this.factsAdapter.setOnItemClickListener(FactListFragment.this);
-    this.rv_facts.setAdapter(factsAdapter);
-  }
-
   @OnClick(R.id.fab_add_fact) public void onAddFactClicked(View view) {
     navigator.navigateToFactFormForResult(FactListFragment.this, Navigator.REQUEST_CODE_PICK_FACT);
   }
@@ -144,10 +141,6 @@ public class FactListFragment extends BaseFragment
             requestCode, resultCode);
         super.onActivityResult(requestCode, resultCode, data);
     }
-  }
-
-  @Override public void onFactItemClicked(@NonNull FactModel factModel) {
-    FactListFragment.this.factListPresenter.onFactClicked(factModel);
   }
 
   @Override public void renderFactList(@NonNull List<FactModel> factModelList) {

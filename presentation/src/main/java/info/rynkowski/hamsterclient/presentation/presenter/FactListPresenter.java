@@ -27,6 +27,7 @@ import info.rynkowski.hamsterclient.presentation.executor.ThreadExecutor;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.presentation.model.mapper.FactModelDataMapper;
 import info.rynkowski.hamsterclient.presentation.view.FactListView;
+import info.rynkowski.hamsterclient.presentation.view.OnFactActionListener;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -41,7 +42,8 @@ import rx.schedulers.Schedulers;
  */
 @Slf4j
 @Singleton
-public class FactListPresenter implements Presenter/*, HamsterRepository.OnDataStoreChangedListener */{
+public class FactListPresenter implements Presenter, OnFactActionListener {
+  /*, HamsterRepository.OnDataStoreChangedListener */
 
   private final ThreadExecutor threadExecutor;
   private final PostExecutionThread postExecutionThread;
@@ -99,11 +101,6 @@ public class FactListPresenter implements Presenter/*, HamsterRepository.OnDataS
     //subscriptionOnChange.unsubscribe();
     //hamsterRepository.deinitialize();
     log.debug("FactList destroyed.");
-  }
-
-  public void onFactClicked(FactModel factModel) {
-    log.debug("onFactClicked()");
-    // Empty still
   }
 
   private void loadFactList() {
@@ -191,5 +188,30 @@ public class FactListPresenter implements Presenter/*, HamsterRepository.OnDataS
 
   public void onRefresh() {
     loadFactList();
+  }
+
+  @Override public void onFactItemClicked(@NonNull FactModel fact) {
+    log.debug("onFactItemClicked()");
+    // Empty still
+  }
+
+  @Override public void onStartFactClicked(@NonNull FactModel fact) {
+    log.debug("onStartFactClicked()");
+    // Empty still
+  }
+
+  @Override public void onStopFactClicked(@NonNull FactModel fact) {
+    log.debug("onStopFactClicked()");
+    // Empty still
+  }
+
+  @Override public void onEditFactClicked(@NonNull FactModel fact) {
+    log.debug("onEditFactClicked()");
+    // Empty still
+  }
+
+  @Override public void onRemoveFactClicked(@NonNull FactModel fact) {
+    log.debug("onRemoveFactClicked()");
+    // Empty still
   }
 }
