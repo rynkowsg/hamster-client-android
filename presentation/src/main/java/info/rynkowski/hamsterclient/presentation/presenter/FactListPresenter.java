@@ -18,6 +18,7 @@ package info.rynkowski.hamsterclient.presentation.presenter;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.interactor.UseCase;
 import info.rynkowski.hamsterclient.domain.interactor.UseCaseArgumentless;
@@ -28,6 +29,8 @@ import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.presentation.model.mapper.FactModelDataMapper;
 import info.rynkowski.hamsterclient.presentation.view.FactListView;
 import info.rynkowski.hamsterclient.presentation.view.OnFactActionListener;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -50,6 +53,7 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
 
   private final HamsterRepository hamsterRepository;
   private final UseCase<Integer, Fact> addFactUseCase;
+  private final UseCase<Integer, Fact> updateFactUseCase;
   private final UseCaseArgumentless<List<Fact>> getTodaysFactsUseCase;
 
   private final FactModelDataMapper mapper;
@@ -61,12 +65,14 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
   @Inject
   public FactListPresenter(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread,
       HamsterRepository hamsterRepository, @Named("AddFact") UseCase<Integer, Fact> addFactUseCase,
+      @Named("UpdateFact") UseCase<Integer, Fact> updateFactUseCase,
       @Named("GetTodaysFacts") UseCaseArgumentless<List<Fact>> getTodaysFactsUseCase,
       FactModelDataMapper mapper) {
     this.threadExecutor = threadExecutor;
     this.postExecutionThread = postExecutionThread;
     this.hamsterRepository = hamsterRepository;
     this.addFactUseCase = addFactUseCase;
+    this.updateFactUseCase = updateFactUseCase;
     this.getTodaysFactsUseCase = getTodaysFactsUseCase;
     this.mapper = mapper;
   }
@@ -126,6 +132,15 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
         .subscribeOn(Schedulers.from(threadExecutor))
         .observeOn(postExecutionThread.getScheduler())
         .subscribe(id -> log.info("New fact added, id={}", id), this::onException);
+  }
+
+  public void updateFact(@NonNull FactModel factModel) {
+    log.debug("updateFact()");
+    Fact fact = mapper.transform(factModel);
+    updateFactUseCase.execute(fact)
+        .subscribeOn(Schedulers.from(threadExecutor))
+        .observeOn(postExecutionThread.getScheduler())
+        .subscribe(id -> log.info("Fact updated, id={}", id), this::onException);
   }
 
   private void registerSignals() {
@@ -197,12 +212,20 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
 
   @Override public void onStartFactClicked(@NonNull FactModel fact) {
     log.debug("onStartFactClicked()");
-    // Empty still
+    addFact(new FactModel.Builder(fact)
+        .startTime(GregorianCalendar.getInstance())
+        .endTime(Optional.<Calendar>absent())
+        .build());
   }
 
   @Override public void onStopFactClicked(@NonNull FactModel fact) {
     log.debug("onStopFactClicked()");
-    // Empty still
+    log.debug("    id:             {}",
+        fact.getId().isPresent() ? fact.getId().get() : "absent");
+    log.debug("    activity:       \"{}\"", fact.getActivity());
+    updateFact(new FactModel.Builder(fact)
+        .endTime(Optional.of(GregorianCalendar.getInstance()))
+        .build());
   }
 
   @Override public void onEditFactClicked(@NonNull FactModel fact) {

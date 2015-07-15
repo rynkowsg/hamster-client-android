@@ -39,6 +39,14 @@ public interface HamsterDataStore extends DataStore {
    */
   @Nonnull Observable<Integer> addFactEntity(@Nonnull FactEntity factEntity);
 
+  /**
+   * Get an {@link rx.Observable} which will update a fact and emits its id.
+   *
+   * @param factEntity The entity to update at the store.
+   * @return The id of updated {@link FactEntity}.
+   */
+  @Nonnull Observable<Integer> updateFactEntity(@Nonnull FactEntity factEntity);
+
   @Nonnull Observable<Void> signalActivitiesChanged();
 
   @Nonnull Observable<Void> signalFactsChanged();

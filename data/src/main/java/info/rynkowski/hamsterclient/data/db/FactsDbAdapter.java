@@ -120,38 +120,38 @@ public class FactsDbAdapter {
     dbHelper.close();
   }
 
-  public int insertFact(FactEntity factEntity) {
-    ContentValues newTodoValues = new ContentValues();
-    newTodoValues.put(KEY_REMOTE_ID,
-        factEntity.getRemoteId().isPresent() ? factEntity.getRemoteId().get() : null);
-    newTodoValues.put(KEY_ACTIVITY, factEntity.getActivity());
-    newTodoValues.put(KEY_CATEGORY, factEntity.getCategory());
-    newTodoValues.put(KEY_DESCRIPTION, factEntity.getDescription());
-    newTodoValues.put(KEY_START_TIME, factEntity.getStartTime().toString());
-    if (factEntity.getEndTime().isPresent()) {
-      newTodoValues.put(KEY_END_TIME, factEntity.getEndTime().get().toString());
-    } else {
-      newTodoValues.putNull(KEY_END_TIME);
-    }
-    return (int) db.insert(DB_FACTS_TABLE, null, newTodoValues);
-  }
+  //public int insertFact(FactEntity factEntity) {
+  //  ContentValues newTodoValues = new ContentValues();
+  //  newTodoValues.put(KEY_REMOTE_ID,
+  //      factEntity.getRemoteId().isPresent() ? factEntity.getRemoteId().get() : null);
+  //  newTodoValues.put(KEY_ACTIVITY, factEntity.getActivity());
+  //  newTodoValues.put(KEY_CATEGORY, factEntity.getCategory());
+  //  newTodoValues.put(KEY_DESCRIPTION, factEntity.getDescription());
+  //  newTodoValues.put(KEY_START_TIME, factEntity.getStartTime().toString());
+  //  if (factEntity.getEndTime().isPresent()) {
+  //    newTodoValues.put(KEY_END_TIME, factEntity.getEndTime().get().toString());
+  //  } else {
+  //    newTodoValues.putNull(KEY_END_TIME);
+  //  }
+  //  return (int) db.insert(DB_FACTS_TABLE, null, newTodoValues);
+  //}
 
-  public boolean updateFact(FactEntity factEntity) {
-    String where = KEY_REMOTE_ID + "=" + factEntity.getRemoteId();
-    ContentValues updateTodoValues = new ContentValues();
-    updateTodoValues.put(KEY_REMOTE_ID,
-        factEntity.getRemoteId().isPresent() ? factEntity.getRemoteId().get() : null);
-    updateTodoValues.put(KEY_ACTIVITY, factEntity.getActivity());
-    updateTodoValues.put(KEY_CATEGORY, factEntity.getCategory());
-    updateTodoValues.put(KEY_DESCRIPTION, factEntity.getDescription());
-    updateTodoValues.put(KEY_START_TIME, factEntity.getStartTime().toString());
-    if (factEntity.getEndTime().isPresent()) {
-      updateTodoValues.put(KEY_END_TIME, factEntity.getEndTime().get().toString());
-    } else {
-      updateTodoValues.putNull(KEY_END_TIME);
-    }
-    return db.update(DB_FACTS_TABLE, updateTodoValues, where, null) > 0;
-  }
+  //public boolean updateFact(FactEntity factEntity) {
+  //  String where = KEY_REMOTE_ID + "=" + factEntity.getRemoteId();
+  //  ContentValues updateTodoValues = new ContentValues();
+  //  updateTodoValues.put(KEY_REMOTE_ID,
+  //      factEntity.getRemoteId().isPresent() ? factEntity.getRemoteId().get() : null);
+  //  updateTodoValues.put(KEY_ACTIVITY, factEntity.getActivity());
+  //  updateTodoValues.put(KEY_CATEGORY, factEntity.getCategory());
+  //  updateTodoValues.put(KEY_DESCRIPTION, factEntity.getDescription());
+  //  updateTodoValues.put(KEY_START_TIME, factEntity.getStartTime().toString());
+  //  if (factEntity.getEndTime().isPresent()) {
+  //    updateTodoValues.put(KEY_END_TIME, factEntity.getEndTime().get().toString());
+  //  } else {
+  //    updateTodoValues.putNull(KEY_END_TIME);
+  //  }
+  //  return db.update(DB_FACTS_TABLE, updateTodoValues, where, null) > 0;
+  //}
 
   public boolean deleteFact(int id) {
     String where = KEY_ID + "=" + id;
@@ -179,7 +179,7 @@ public class FactsDbAdapter {
 
       factEntity = Optional.of(new FactEntity.Builder()
           .id(Optional.of(cursor.getInt(ID_COLUMN)))
-          .remoteId(Optional.of(cursor.getInt(REMOTE_ID_COLUMN)))
+          //.remoteId(Optional.of(cursor.getInt(REMOTE_ID_COLUMN)))
           .activity(cursor.getString(ACTIVITY_COLUMN))
           .category(cursor.getString(CATEGORY_COLUMN))
           .description(cursor.getString(DESCRIPTION_COLUMN))
@@ -206,7 +206,7 @@ public class FactsDbAdapter {
     if (cursor != null && cursor.moveToFirst()) {
       factEntity = Optional.of(new FactEntity.Builder()
           .id(Optional.of(cursor.getInt(ID_COLUMN)))
-          .remoteId(Optional.of(cursor.getInt(REMOTE_ID_COLUMN)))
+          //.remoteId(Optional.of(cursor.getInt(REMOTE_ID_COLUMN)))
           .activity(cursor.getString(ACTIVITY_COLUMN))
           .category(cursor.getString(CATEGORY_COLUMN))
           .description(cursor.getString(DESCRIPTION_COLUMN))

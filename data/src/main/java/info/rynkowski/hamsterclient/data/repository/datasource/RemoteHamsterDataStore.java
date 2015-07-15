@@ -71,11 +71,34 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
     return Observable.defer(hamsterObject::getObservable).
         doOnNext(object -> {
           log.debug("Calling AddFact() on remote DBus object:");
+          log.debug("    id:             {}",
+              factEntity.getId().isPresent() ? factEntity.getId().get() : "absent");
           log.debug("    serializedName: \"{}\"", serializedName);
           log.debug("    startTime:      {}", startTime);
           log.debug("    endTime:        {}", endTime);
         }).
         map(remoteObject -> remoteObject.AddFact(serializedName, startTime, endTime, false));
+  }
+
+  @Override public @Nonnull Observable<Integer> updateFactEntity(@Nonnull FactEntity factEntity) {
+    String serializedName = factEntity.serializedName();
+
+    factEntity.timeFixLocalToRemote();
+    int startTime = factEntity.getStartTime().getTimeInSeconds();
+    int endTime =
+        factEntity.getEndTime().isPresent() ? factEntity.getEndTime().get().getTimeInSeconds() : 0;
+
+    return Observable.defer(hamsterObject::getObservable).
+        doOnNext(object -> {
+          log.debug("Calling UpdateFact() on remote DBus object:");
+          log.debug("    id:             {}",
+              factEntity.getId().isPresent() ? factEntity.getId().get() : "absent");
+          log.debug("    serializedName: \"{}\"", serializedName);
+          log.debug("    startTime:      {}", startTime);
+          log.debug("    endTime:        {}", endTime);
+        }).
+        map(remoteObject -> remoteObject.UpdateFact(factEntity.getId().get(), serializedName,
+            startTime, endTime, false, false));
   }
 
   @Override public @Nonnull Observable<Void> signalActivitiesChanged() {

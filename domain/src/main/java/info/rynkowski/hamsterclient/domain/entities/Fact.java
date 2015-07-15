@@ -31,12 +31,12 @@ import lombok.experimental.Accessors;
 @Getter
 public class Fact {
 
-  private @Nonnull Optional<Integer> id;
-  private @Nonnull Activity activity;
-  private @Nonnull Calendar startTime;
-  private @Nonnull Optional<Calendar> endTime;
-  private @Nonnull List<String> tags;
-  private @Nonnull String description;
+  private final @Nonnull Optional<Integer> id;
+  private final @Nonnull Activity activity;
+  private final @Nonnull Calendar startTime;
+  private final @Nonnull Optional<Calendar> endTime;
+  private final @Nonnull List<String> tags;
+  private final @Nonnull String description;
 
   private Fact(@Nonnull Builder b) {
     this.id = b.id;

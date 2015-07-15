@@ -44,7 +44,6 @@ import org.gnome.Struct7;
 public class FactEntity {
 
   private @Nonnull Optional<Integer> id;
-  private @Nonnull Optional<Integer> remoteId;
   private @Nonnull String activity;
   private @Nonnull String category;
   private @Nonnull String description;
@@ -53,8 +52,7 @@ public class FactEntity {
   private @Nonnull Optional<Time> endTime;
 
   public FactEntity(@Nonnull Struct4 struct) {
-    this.id = Optional.absent();
-    this.remoteId = Optional.of(AdapterStruct4.id(struct));
+    this.id = Optional.of(AdapterStruct4.id(struct));
     this.activity = AdapterStruct4.name(struct);
     this.category = AdapterStruct4.category(struct);
     this.description = AdapterStruct4.description(struct);
@@ -66,8 +64,7 @@ public class FactEntity {
   }
 
   public FactEntity(@Nonnull Struct5 struct) {
-    this.id = Optional.absent();
-    this.remoteId = Optional.of(AdapterStruct5.id(struct));
+    this.id = Optional.of(AdapterStruct5.id(struct));
     this.activity = AdapterStruct5.name(struct);
     this.category = AdapterStruct5.category(struct);
     this.description = AdapterStruct5.description(struct);
@@ -79,8 +76,7 @@ public class FactEntity {
   }
 
   public FactEntity(@Nonnull Struct7 struct) {
-    this.id = Optional.absent();
-    this.remoteId = Optional.of(AdapterStruct7.id(struct));
+    this.id = Optional.of(AdapterStruct7.id(struct));
     this.activity = AdapterStruct7.name(struct);
     this.category = AdapterStruct7.category(struct);
     this.description = AdapterStruct7.description(struct);
@@ -93,7 +89,6 @@ public class FactEntity {
 
   private FactEntity(@Nonnull Builder b) {
     this.id = b.id;
-    this.remoteId = b.remoteId;
     this.activity = b.activity;
     this.category = b.category;
     this.tags = b.tags;
@@ -148,7 +143,6 @@ public class FactEntity {
   public static class Builder {
 
     private @Nonnull Optional<Integer> id = Optional.absent();
-    private @Nonnull Optional<Integer> remoteId = Optional.absent();
     private @Nonnull String activity = "";
     private @Nonnull String category = "";
     private @Nonnull List<String> tags = new ArrayList<>();

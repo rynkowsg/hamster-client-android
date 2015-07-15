@@ -107,6 +107,12 @@ public class HamsterRepositoryImpl implements HamsterRepository {
         .flatMap(remoteStore::addFactEntity);
   }
 
+  @Override public @Nonnull Observable<Integer> updateFact(@Nonnull Fact fact) {
+    return Observable.just(fact)
+        .map(factEntityMapper::transform)
+        .flatMap(remoteStore::updateFactEntity);
+  }
+
   @Override public @Nonnull Observable<Void> signalActivitiesChanged() {
     return remoteStore.signalActivitiesChanged();
   }

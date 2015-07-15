@@ -47,13 +47,18 @@ public class LocalHamsterDataStore implements HamsterDataStore {
   }
 
   @Override public @Nonnull Observable<Integer> addFactEntity(@Nonnull FactEntity factEntity) {
-    FactsDbAdapter factsDbAdapter = new FactsDbAdapter(context).open();
-    int localId = factsDbAdapter.insertFact(factEntity);
-    factsDbAdapter.close();
+    //FactsDbAdapter factsDbAdapter = new FactsDbAdapter(context).open();
+    //int localId = factsDbAdapter.insertFact(factEntity);
+    //factsDbAdapter.close();
+    //
+    //signalFactsChanged.onNext(null);
+    //
+    //return Observable.just(localId);
+    return Observable.empty();
+  }
 
-    signalFactsChanged.onNext(null);
-
-    return Observable.just(localId);
+  @Override public @Nonnull Observable<Integer> updateFactEntity(@Nonnull FactEntity factEntity) {
+    return Observable.empty();
   }
 
   @Override public @Nonnull Observable<Void> signalActivitiesChanged() {

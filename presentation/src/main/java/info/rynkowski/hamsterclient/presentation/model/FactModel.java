@@ -33,13 +33,13 @@ import lombok.experimental.Accessors;
 @Getter
 public class FactModel implements Parcelable {
 
-  private @Nonnull Optional<Integer> id;
-  private @Nonnull String activity;
-  private @Nonnull String category;
-  private @Nonnull List<String> tags;
-  private @Nonnull String description;
-  private @Nonnull Calendar startTime;
-  private @Nonnull Optional<Calendar> endTime;
+  private final @Nonnull Optional<Integer> id;
+  private final @Nonnull String activity;
+  private final @Nonnull String category;
+  private final @Nonnull List<String> tags;
+  private final @Nonnull String description;
+  private final @Nonnull Calendar startTime;
+  private final @Nonnull Optional<Calendar> endTime;
 
   private FactModel(@Nonnull Builder b) {
     this.id = b.id;
@@ -51,7 +51,7 @@ public class FactModel implements Parcelable {
     this.endTime = b.endTime;
   }
 
-  protected FactModel(@Nonnull Parcel in) {
+  private FactModel(@Nonnull Parcel in) {
     this.id = (in.readByte() == 1) ? Optional.of(in.readInt()) : Optional.absent();
     this.activity = in.readString();
     this.category = in.readString();
@@ -60,10 +60,15 @@ public class FactModel implements Parcelable {
     this.description = in.readString();
     this.startTime = GregorianCalendar.getInstance();
     this.startTime.setTimeInMillis(in.readLong());
-    this.endTime = Optional.absent();
-    if (in.readByte() == 1) {
+
+    Byte isEndTime = in.readByte();
+    if (isEndTime == 1) {
       this.endTime = Optional.of(GregorianCalendar.getInstance());
       this.endTime.get().setTimeInMillis(in.readLong());
+    } else if (isEndTime == 0)  {
+      this.endTime = Optional.absent();
+    } else {
+      throw new AssertionError("Invalid value: " + isEndTime);
     }
   }
 
@@ -113,6 +118,16 @@ public class FactModel implements Parcelable {
     private @Nonnull List<String> tags = new ArrayList<>();
     private @Nonnull Calendar startTime = GregorianCalendar.getInstance();
     private @Nonnull Optional<Calendar> endTime = Optional.absent();
+
+    public Builder(@Nonnull FactModel factModel) {
+      this.id = factModel.getId();
+      this.activity = factModel.getActivity();
+      this.category = factModel.getCategory();
+      this.description = factModel.getDescription();
+      this.tags = factModel.getTags();
+      this.startTime = factModel.getStartTime();
+      this.endTime = factModel.getEndTime();
+    }
 
     public @Nonnull FactModel build() {
       return new FactModel(this);
