@@ -16,6 +16,7 @@
 
 package info.rynkowski.hamsterclient.data.repository.datasource;
 
+import javax.annotation.Nonnull;
 import rx.Observable;
 
 /**
@@ -26,10 +27,10 @@ public interface DataStore {
   /**
    * Called to initialize data store object.
    */
-  Observable<Void> initialize();
+  @Nonnull Observable<Void> initialize();
 
   /**
    * Called to deinitialize data store object.
    */
-  Observable<Void> deinitialize();
+  @Nonnull Observable<Void> deinitialize();
 }

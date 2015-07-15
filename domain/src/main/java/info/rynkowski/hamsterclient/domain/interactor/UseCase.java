@@ -30,12 +30,12 @@ public abstract class UseCase<Result, Argument> {
   /**
    * Builds an {@link rx.Observable} which will be used when executing the current {@link UseCase}.
    */
-  @Nonnull protected abstract Observable<Result> buildUseCaseObservable(@Nonnull Argument argument);
+  protected abstract @Nonnull Observable<Result> buildUseCaseObservable(@Nonnull Argument argument);
 
   /**
    * Return a {@link rx.Observable} with result of execution.
    */
-  @Nonnull public Observable<Result> execute(@Nonnull Argument argument) {
+  public @Nonnull Observable<Result> execute(@Nonnull Argument argument) {
     return this.buildUseCaseObservable(argument);
   }
 }

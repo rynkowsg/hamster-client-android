@@ -18,6 +18,7 @@ package info.rynkowski.hamsterclient.domain.repository;
 
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import java.util.List;
+import javax.annotation.Nonnull;
 import rx.Observable;
 
 /**
@@ -25,23 +26,23 @@ import rx.Observable;
  */
 public interface HamsterRepository {
 
-  //void initialize(Type type);
+  //void initialize(@Nonnull Type type);
   //
   //void deinitialize();
 
-  //Observable<Status> onChange();
+  //@Nonnull Observable<Status> onChange();
 
-  Observable<List<Fact>> getTodaysFacts();
+  @Nonnull Observable<List<Fact>> getTodaysFacts();
 
-  Observable<Integer> addFact(Fact fact);
+  @Nonnull Observable<Integer> addFact(@Nonnull Fact fact);
 
-  Observable<Void> signalActivitiesChanged();
+  @Nonnull Observable<Void> signalActivitiesChanged();
 
-  Observable<Void> signalFactsChanged();
+  @Nonnull Observable<Void> signalFactsChanged();
 
-  Observable<Void> signalTagsChanged();
+  @Nonnull Observable<Void> signalTagsChanged();
 
-  Observable<Void> signalToggleCalled();
+  @Nonnull Observable<Void> signalToggleCalled();
 
   //enum Type {
   //  LOCAL, REMOTE
@@ -55,6 +56,6 @@ public interface HamsterRepository {
   }
 
   //interface OnDataStoreChangedListener {
-  //  void onDataStoreChanged(Status status);
+  //  void onDataStoreChanged(@Nonnull Status status);
   //}
 }

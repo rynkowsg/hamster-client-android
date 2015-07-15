@@ -4,6 +4,7 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -31,22 +32,22 @@ import rx.subjects.PublishSubject;
 @Singleton
 public class LocalHamsterDataStore implements HamsterDataStore {
 
-  private PublishSubject<Void> signalActivitiesChanged = PublishSubject.create();
-  @Nonnull private PublishSubject<Void> signalFactsChanged = PublishSubject.create();
-  @Nonnull private PublishSubject<Void> signalTagsChanged = PublishSubject.create();
-  @Nonnull private PublishSubject<Void> signalToggleCalled = PublishSubject.create();
+  private @Nonnull PublishSubject<Void> signalActivitiesChanged = PublishSubject.create();
+  private @Nonnull PublishSubject<Void> signalFactsChanged = PublishSubject.create();
+  private @Nonnull PublishSubject<Void> signalTagsChanged = PublishSubject.create();
+  private @Nonnull PublishSubject<Void> signalToggleCalled = PublishSubject.create();
 
-  @Nonnull private Context context;
+  private @Nonnull Context context;
 
   @Inject public LocalHamsterDataStore(@Nonnull Context context) {
     this.context = context;
   }
 
-  @Override public Observable<List<FactEntity>> getTodaysFactEntities() {
-    return null;
+  @Override public @Nonnull Observable<List<FactEntity>> getTodaysFactEntities() {
+    return Observable.empty();
   }
 
-  @Override public Observable<Optional<Integer>> addFactEntity(@Nonnull FactEntity factEntity) {
+  @Override public @Nonnull Observable<Optional<Integer>> addFactEntity(@Nonnull FactEntity factEntity) {
     FactsDbAdapter factsDbAdapter = new FactsDbAdapter(context).open();
     int localId = factsDbAdapter.insertFact(factEntity);
     factsDbAdapter.close();
@@ -56,27 +57,27 @@ public class LocalHamsterDataStore implements HamsterDataStore {
     return Observable.just(Optional.of(localId));
   }
 
-  @Override public Observable<Void> signalActivitiesChanged() {
+  @Override public @Nonnull Observable<Void> signalActivitiesChanged() {
     return signalActivitiesChanged;
   }
 
-  @Override public Observable<Void> signalFactsChanged() {
+  @Override public @Nonnull Observable<Void> signalFactsChanged() {
     return signalFactsChanged;
   }
 
-  @Override public Observable<Void> signalTagsChanged() {
+  @Override public @Nonnull Observable<Void> signalTagsChanged() {
     return signalTagsChanged;
   }
 
-  @Override public Observable<Void> signalToggleCalled() {
+  @Override public @Nonnull Observable<Void> signalToggleCalled() {
     return signalToggleCalled;
   }
 
-  @Override public Observable<Void> initialize() {
-    return null;
+  @Override public @Nonnull Observable<Void> initialize() {
+    return Observable.empty();
   }
 
-  @Override public Observable<Void> deinitialize() {
-    return null;
+  @Override public @Nonnull Observable<Void> deinitialize() {
+    return Observable.empty();
   }
 }

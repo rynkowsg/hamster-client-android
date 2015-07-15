@@ -30,12 +30,12 @@ public abstract class UseCaseArgumentless<Result> {
   /**
    * Builds an {@link rx.Observable} which will be used when executing the current {@link UseCase}.
    */
-  @Nonnull protected abstract Observable<Result> buildUseCaseObservable();
+  protected abstract @Nonnull Observable<Result> buildUseCaseObservable();
 
   /**
    * Return a {@link rx.Observable} with result of execution.
    */
-  @Nonnull public Observable<Result> execute() {
+  public @Nonnull Observable<Result> execute() {
     return this.buildUseCaseObservable();
   }
 }

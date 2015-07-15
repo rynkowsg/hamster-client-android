@@ -40,19 +40,19 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
     this.hamsterObject = hamsterRemoteObject;
   }
 
-  @Override public Observable<Void> initialize() {
+  @Override public @Nonnull Observable<Void> initialize() {
     return hamsterObject.getObservable()
         .doOnNext(hamster -> log.debug("Remote data store initialized."))
         .flatMap(object -> Observable.empty());
   }
 
-  @Override public Observable<Void> deinitialize() {
+  @Override public @Nonnull Observable<Void> deinitialize() {
     hamsterObject.deinit();
     log.debug("Remote data store deinitialized.");
     return Observable.empty();
   }
 
-  @Override public Observable<List<FactEntity>> getTodaysFactEntities() {
+  @Override public @Nonnull Observable<List<FactEntity>> getTodaysFactEntities() {
     return Observable.defer(hamsterObject::getObservable)
         .map(Hamster::GetTodaysFacts)
         .flatMap(Observable::from)
@@ -61,7 +61,8 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
         .toList();
   }
 
-  @Override public Observable<Optional<Integer>> addFactEntity(@Nonnull FactEntity factEntity) {
+  @Override public @Nonnull Observable<Optional<Integer>> addFactEntity(
+      @Nonnull FactEntity factEntity) {
     String serializedName = factEntity.serializedName();
 
     factEntity.timeFixLocalToRemote();
@@ -80,19 +81,19 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
             remoteObject.AddFact(serializedName, startTime, endTime, false)));
   }
 
-  @Override public Observable<Void> signalActivitiesChanged() {
+  @Override public @Nonnull Observable<Void> signalActivitiesChanged() {
     return hamsterObject.signalActivitiesChanged();
   }
 
-  @Override public Observable<Void> signalFactsChanged() {
+  @Override public @Nonnull Observable<Void> signalFactsChanged() {
     return hamsterObject.signalFactsChanged();
   }
 
-  @Override public Observable<Void> signalTagsChanged() {
+  @Override public @Nonnull Observable<Void> signalTagsChanged() {
     return hamsterObject.signalTagsChanged();
   }
 
-  @Override public Observable<Void> signalToggleCalled() {
+  @Override public @Nonnull Observable<Void> signalToggleCalled() {
     return hamsterObject.signalToggleCalled();
   }
 }

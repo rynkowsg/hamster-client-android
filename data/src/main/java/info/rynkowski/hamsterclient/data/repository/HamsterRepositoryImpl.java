@@ -55,7 +55,7 @@ public class HamsterRepositoryImpl implements HamsterRepository {
     //this.status = PublishSubject.create();
   }
 
-  //@Override public void initialize(Type type) {
+  //@Override public void initialize(@Nonnull Type type) {
   //  log.debug("Entering initialize(type={})", type);
   //  switch (type) {
   //    case LOCAL:
@@ -96,14 +96,14 @@ public class HamsterRepositoryImpl implements HamsterRepository {
   //  }
   //}
 
-  @Override public Observable<List<Fact>> getTodaysFacts() {
+  @Override public @Nonnull Observable<List<Fact>> getTodaysFacts() {
     return remoteStore.getTodaysFactEntities()
         .flatMap(Observable::from)
         .map(factEntityMapper::transform)
         .toList();
   }
 
-  @Override public Observable<Integer> addFact(Fact fact) {
+  @Override public @Nonnull Observable<Integer> addFact(@Nonnull Fact fact) {
     Observable<FactEntity> factEntityObservable = Observable.just(fact)
         .map(factEntityMapper::transform);
 
@@ -120,19 +120,19 @@ public class HamsterRepositoryImpl implements HamsterRepository {
         .map(Optional::get);
   }
 
-  @Override public Observable<Void> signalActivitiesChanged() {
+  @Override public @Nonnull Observable<Void> signalActivitiesChanged() {
     return remoteStore.signalActivitiesChanged();
   }
 
-  @Override public Observable<Void> signalFactsChanged() {
+  @Override public @Nonnull Observable<Void> signalFactsChanged() {
     return remoteStore.signalFactsChanged();
   }
 
-  @Override public Observable<Void> signalTagsChanged() {
+  @Override public @Nonnull Observable<Void> signalTagsChanged() {
     return remoteStore.signalTagsChanged();
   }
 
-  @Override public Observable<Void> signalToggleCalled() {
+  @Override public @Nonnull Observable<Void> signalToggleCalled() {
     return remoteStore.signalToggleCalled();
   }
 

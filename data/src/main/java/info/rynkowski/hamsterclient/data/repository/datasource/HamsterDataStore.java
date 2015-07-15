@@ -30,7 +30,7 @@ public interface HamsterDataStore extends DataStore {
   /**
    * Get an {@link rx.Observable} which will emit a today's list of {@link FactEntity}.
    */
-  Observable<List<FactEntity>> getTodaysFactEntities();
+  @Nonnull Observable<List<FactEntity>> getTodaysFactEntities();
 
   /**
    * Get an {@link rx.Observable} which will add a {@link FactEntity} and emits its id.
@@ -38,13 +38,13 @@ public interface HamsterDataStore extends DataStore {
    * @param factEntity The entity to add to store.
    * @return The id of added {@link FactEntity}.
    */
-  Observable<Optional<Integer>> addFactEntity(@Nonnull FactEntity factEntity);
+  @Nonnull Observable<Optional<Integer>> addFactEntity(@Nonnull FactEntity factEntity);
 
-  Observable<Void> signalActivitiesChanged();
+  @Nonnull Observable<Void> signalActivitiesChanged();
 
-  Observable<Void> signalFactsChanged();
+  @Nonnull Observable<Void> signalFactsChanged();
 
-  Observable<Void> signalTagsChanged();
+  @Nonnull Observable<Void> signalTagsChanged();
 
-  Observable<Void> signalToggleCalled();
+  @Nonnull Observable<Void> signalToggleCalled();
 }
