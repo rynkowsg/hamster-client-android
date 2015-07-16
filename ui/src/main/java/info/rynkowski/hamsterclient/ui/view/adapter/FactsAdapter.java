@@ -73,8 +73,6 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
     holder.start_time.setText(TimeConverter.toString(factModel.getStartTime(), "HH:mm"));
     holder.end_time.setText(TimeConverter.toString(factModel.getEndTime(), "HH:mm"));
 
-    holder.itemView.setOnClickListener(view -> onFactActionListener.onFactItemClicked(factModel));
-
     createPopupMenu(holder, factModel);
   }
 
@@ -105,16 +103,16 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
 
       switch (item.getItemId()) {
         case R.id.start:
-          onFactActionListener.onStartFactClicked(fact);
+          onFactActionListener.onStartFact(fact);
           break;
         case R.id.stop:
-          onFactActionListener.onStopFactClicked(fact);
+          onFactActionListener.onStopFact(fact);
           break;
         case R.id.edit:
-          onFactActionListener.onEditFactClicked(fact);
+          onFactActionListener.onEditFact(fact);
           break;
         case R.id.remove:
-          onFactActionListener.onRemoveFactClicked(fact);
+          onFactActionListener.onRemoveFact(fact);
           break;
         default:
           assert false : "Unknown popup menu position, item id: " + item.getItemId() + ", title: "

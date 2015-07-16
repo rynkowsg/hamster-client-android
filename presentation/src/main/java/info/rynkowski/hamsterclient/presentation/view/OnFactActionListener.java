@@ -20,9 +20,12 @@ import android.support.annotation.NonNull;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
 
 public interface OnFactActionListener {
-  void onFactItemClicked(@NonNull FactModel fact);
-  void onStartFactClicked(@NonNull FactModel fact);
-  void onStopFactClicked(@NonNull FactModel fact);
-  void onEditFactClicked(@NonNull FactModel fact);
-  void onRemoveFactClicked(@NonNull FactModel fact);
+
+  void onStartFact(@NonNull FactModel fact);
+
+  void onStopFact(@NonNull FactModel fact);
+
+  void onEditFact(@NonNull FactModel fact);
+
+  void onRemoveFact(@NonNull FactModel fact);
 }

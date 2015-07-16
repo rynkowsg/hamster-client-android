@@ -170,13 +170,8 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
         .subscribe(id -> log.info("New fact added, id={}", id), this::onException);
   }
 
-  @Override public void onFactItemClicked(@NonNull FactModel fact) {
-    log.debug("onFactItemClicked()");
-    // Empty still
-  }
-
-  @Override public void onStartFactClicked(@NonNull FactModel fact) {
-    log.debug("onStartFactClicked()");
+  @Override public void onStartFact(@NonNull FactModel fact) {
+    log.debug("onStartFact()");
     Observable.just(fact)
         .map(mapper::transform)
         .flatMap(startFactUseCase::execute)
@@ -185,8 +180,8 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
         .subscribe(id -> log.info("Started a fact, id={}", id), this::onException);
   }
 
-  @Override public void onStopFactClicked(@NonNull FactModel fact) {
-    log.debug("onStopFactClicked()");
+  @Override public void onStopFact(@NonNull FactModel fact) {
+    log.debug("onStopFact()");
     log.debug("    id:             {}", fact.getId().isPresent() ? fact.getId().get() : "absent");
     log.debug("    activity:       \"{}\"", fact.getActivity());
     Observable.just(fact)
@@ -197,8 +192,8 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
         .subscribe(id -> log.info("Stopped a fact, id={}", id), this::onException);
   }
 
-  @Override public void onEditFactClicked(@NonNull FactModel fact) {
-    log.debug("onEditFactClicked()");
+  @Override public void onEditFact(@NonNull FactModel fact) {
+    log.debug("onEditFact()");
     Observable.just(fact)
         .map(mapper::transform)
         .flatMap(editFactUseCase::execute)
@@ -207,8 +202,8 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
         .subscribe(id -> log.info("Edited a fact , id={}", id), this::onException);
   }
 
-  @Override public void onRemoveFactClicked(@NonNull FactModel fact) {
-    log.debug("onRemoveFactClicked()");
+  @Override public void onRemoveFact(@NonNull FactModel fact) {
+    log.debug("onRemoveFact()");
     Observable.just(fact)
         .map(mapper::transform)
         .flatMap(removeFactUseCase::execute)
