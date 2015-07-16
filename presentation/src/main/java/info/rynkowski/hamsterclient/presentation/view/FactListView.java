@@ -25,10 +25,11 @@ import javax.annotation.Nonnull;
  * In this case is used as a view representing a list of {@link FactModel}.
  */
 public interface FactListView extends LoadDataView {
+
   /**
    * Render a fact list in the UI.
    *
-   * @param factModelCollection The collection of {@link FactModel} that will be shown.
+   * @param facts The collection of {@link FactModel} that will be shown.
    */
-  void renderFactList(@Nonnull List<FactModel> factModelCollection);
+  void showFactList(@Nonnull List<FactModel> facts);
 }

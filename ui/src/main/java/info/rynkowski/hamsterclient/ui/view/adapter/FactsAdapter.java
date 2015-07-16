@@ -30,7 +30,7 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
-import info.rynkowski.hamsterclient.presentation.view.OnFactActionListener;
+import info.rynkowski.hamsterclient.presentation.presenter.OnFactActionListener;
 import info.rynkowski.hamsterclient.ui.R;
 import info.rynkowski.hamsterclient.ui.utils.TimeConverter;
 import java.util.List;

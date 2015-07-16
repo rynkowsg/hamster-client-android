@@ -143,9 +143,9 @@ public class FactListFragment extends BaseFragment implements FactListView {
     }
   }
 
-  @Override public void renderFactList(@NonNull List<FactModel> factModelList) {
-    log.debug("renderFactList()");
-    this.factsAdapter.setFactsList(factModelList);
+  @Override public void showFactList(@NonNull List<FactModel> facts) {
+    log.debug("showFactList()");
+    this.factsAdapter.setFactsList(facts);
   }
 
   @Override public void showLoading() {

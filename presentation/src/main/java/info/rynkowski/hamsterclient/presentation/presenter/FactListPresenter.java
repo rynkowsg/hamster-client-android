@@ -25,7 +25,6 @@ import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.presentation.model.mapper.FactModelDataMapper;
 import info.rynkowski.hamsterclient.presentation.view.FactListView;
-import info.rynkowski.hamsterclient.presentation.view.OnFactActionListener;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -112,7 +111,7 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(factModels -> {
           viewListView.hideLoading();
-          viewListView.renderFactList(factModels);
+          viewListView.showFactList(factModels);
         }, this::onException);
   }
 
