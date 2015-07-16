@@ -80,21 +80,21 @@ public class Time {
     return (int)(this.getTimeInMillis() / 1000);
   }
 
-  public Time set(@Nonnull Calendar calendar) {
+  public @Nonnull Time set(@Nonnull Calendar calendar) {
     this.calendar = calendar;
     return this;
   }
 
-  public Time set(@Nonnull Date date) {
+  public @Nonnull Time set(@Nonnull Date date) {
     this.calendar.setTime(date);
     return this;
   }
 
-  public Time set(@Nonnull String timeStr) {
+  public @Nonnull Time set(@Nonnull String timeStr) {
     return this.set(timeStr, TIMESTAMP_FORMAT);
   }
 
-  public Time set(@Nonnull String timeStr, @Nonnull String format) {
+  public @Nonnull Time set(@Nonnull String timeStr, @Nonnull String format) {
     SimpleDateFormat dateFormatGmt = new SimpleDateFormat(format, Locale.getDefault());
 
     try {
@@ -106,13 +106,34 @@ public class Time {
     return this;
   }
 
-  public Time setTimeInMillis(long timeInMillis) {
+  public @Nonnull Time setTimeInMillis(long timeInMillis) {
     this.calendar.setTimeInMillis(timeInMillis);
     return this;
   }
 
-  public Time setTimeInSeconds(int timeInSeconds) {
+  public @Nonnull Time setTimeInSeconds(int timeInSeconds) {
     this.setTimeInMillis(((long) timeInSeconds) * 1000);
+    return this;
+  }
+
+  public @Nonnull Time roundToMinutes() {
+    return roundTo(Calendar.MINUTE);
+  }
+
+  private @Nonnull Time roundTo(int type) {
+    if (type == Calendar.MILLISECOND) return this;
+
+    calendar.set(Calendar.MILLISECOND, 0);
+    if (type == Calendar.SECOND) return this;
+
+    calendar.set(Calendar.SECOND, 0);
+    if (type == Calendar.MINUTE) return this;
+
+    calendar.set(Calendar.MINUTE, 0);
+    if (type == Calendar.HOUR || type == Calendar.HOUR_OF_DAY) return this;
+
+    assert false : "type=" + type + " is not supported";
+
     return this;
   }
 

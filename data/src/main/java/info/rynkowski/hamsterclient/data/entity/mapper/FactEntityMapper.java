@@ -25,12 +25,14 @@ import java.util.Calendar;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Class that translates fact representations of two layers: data and domain.
  * Could transform object of {@link info.rynkowski.hamsterclient.domain.entities.Fact} to
  * {@link info.rynkowski.hamsterclient.data.entity.FactEntity} and in the opposite direction.
  */
+@Slf4j
 @Singleton
 public class FactEntityMapper {
 
@@ -61,10 +63,12 @@ public class FactEntityMapper {
   public @Nonnull FactEntity transform(@Nonnull Fact fact) {
 
     Time startTime = Time.getInstance(fact.getStartTime());
+    startTime.roundToMinutes(); // Hamster Time Tracker doesn't operate on seconds and millis.
 
     Optional<Time> endTime = Optional.absent();
     if (fact.getEndTime().isPresent()) {
-      endTime = Optional.of(Time.getInstance(fact.getEndTime().get()));
+      endTime = Optional.of(Time.getInstance(fact.getEndTime().get()).roundToMinutes());
+      endTime.get().roundToMinutes(); // Hamster Time Tracker doesn't operate on seconds and millis.
     }
 
     return new FactEntity.Builder()
