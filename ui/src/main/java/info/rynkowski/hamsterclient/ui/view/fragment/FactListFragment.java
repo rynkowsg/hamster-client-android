@@ -129,7 +129,7 @@ public class FactListFragment extends BaseFragment implements FactListView {
           log.debug("Called onActivityResult(requestCode={}, resultCode={}) : ok", requestCode,
               resultCode);
           FactModel fact = data.getParcelableExtra(FactFormActivity.EXTRAS_KEY_FACT);
-          factListPresenter.addFact(fact);
+          factListPresenter.onAddFact(fact);
           showToastMessage("New fact:" + fact.getActivity());
         } else {
           log.warn("Called onActivityResult(requestCode={}, resultCode={}) : failed", requestCode,

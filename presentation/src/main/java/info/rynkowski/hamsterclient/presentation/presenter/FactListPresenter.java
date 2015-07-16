@@ -115,7 +115,9 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
 
   private void loadFactList() {
     log.debug("loadFactList()");
-    if (viewListView == null) return;
+    if (viewListView == null) {
+      throw new RuntimeException("View is not provided.");
+    }
 
     viewListView.showLoading();
     getTodaysFactsUseCase.execute()
@@ -127,34 +129,6 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
           viewListView.hideLoading();
           viewListView.renderFactList(factModels);
         }, this::onException);
-  }
-
-  public void addFact(@NonNull FactModel factModel) {
-    log.debug("addFact()");
-    Fact fact = mapper.transform(factModel);
-    addFactUseCase.execute(fact)
-        .subscribeOn(Schedulers.from(threadExecutor))
-        .observeOn(postExecutionThread.getScheduler())
-        .subscribe(id -> log.info("New fact added, id={}", id), this::onException);
-  }
-
-  private void removeFact(@NonNull FactModel fact) {
-    log.debug("removeFact");
-    Observable.just(fact)
-        .map(mapper::transform)
-        .flatMap(removeFactUseCase::execute)
-        .subscribeOn(Schedulers.from(threadExecutor))
-        .observeOn(postExecutionThread.getScheduler())
-        .subscribe(id -> log.info("A fact (id: {}) removed", id), this::onException);
-  }
-
-  public void updateFact(@NonNull FactModel factModel) {
-    log.debug("updateFact()");
-    Fact fact = mapper.transform(factModel);
-    updateFactUseCase.execute(fact)
-        .subscribeOn(Schedulers.from(threadExecutor))
-        .observeOn(postExecutionThread.getScheduler())
-        .subscribe(id -> log.info("Fact updated, id={}", id), this::onException);
   }
 
   private void registerSignals() {
@@ -219,6 +193,16 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
     loadFactList();
   }
 
+  public void onAddFact(@NonNull FactModel fact) {
+    log.debug("onAddFact()");
+    Observable.just(fact)
+        .map(mapper::transform)
+        .flatMap(addFactUseCase::execute)
+        .subscribeOn(Schedulers.from(threadExecutor))
+        .observeOn(postExecutionThread.getScheduler())
+        .subscribe(id -> log.info("New fact added, id={}", id), this::onException);
+  }
+
   @Override public void onFactItemClicked(@NonNull FactModel fact) {
     log.debug("onFactItemClicked()");
     // Empty still
@@ -226,29 +210,43 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
 
   @Override public void onStartFactClicked(@NonNull FactModel fact) {
     log.debug("onStartFactClicked()");
-    addFact(new FactModel.Builder(fact)
-        .startTime(GregorianCalendar.getInstance())
+    onAddFact(new FactModel.Builder(fact).startTime(GregorianCalendar.getInstance())
         .endTime(Optional.<Calendar>absent())
         .build());
   }
 
   @Override public void onStopFactClicked(@NonNull FactModel fact) {
     log.debug("onStopFactClicked()");
-    log.debug("    id:             {}",
-        fact.getId().isPresent() ? fact.getId().get() : "absent");
+    log.debug("    id:             {}", fact.getId().isPresent() ? fact.getId().get() : "absent");
     log.debug("    activity:       \"{}\"", fact.getActivity());
-    updateFact(new FactModel.Builder(fact)
-        .endTime(Optional.of(GregorianCalendar.getInstance()))
-        .build());
+
+    Observable.just(new FactModel.Builder(fact).
+            endTime(Optional.of(GregorianCalendar.getInstance())).
+            build())
+        .map(mapper::transform)
+        .flatMap(updateFactUseCase::execute)
+        .subscribeOn(Schedulers.from(threadExecutor))
+        .observeOn(postExecutionThread.getScheduler())
+        .subscribe(id -> log.info("Fact updated, id={}", id), this::onException);
   }
 
   @Override public void onEditFactClicked(@NonNull FactModel fact) {
     log.debug("onEditFactClicked()");
-    // Empty still
+    Observable.just(fact)
+        .map(mapper::transform)
+        .flatMap(updateFactUseCase::execute)
+        .subscribeOn(Schedulers.from(threadExecutor))
+        .observeOn(postExecutionThread.getScheduler())
+        .subscribe(id -> log.info("Fact updated, id={}", id), this::onException);
   }
 
   @Override public void onRemoveFactClicked(@NonNull FactModel fact) {
     log.debug("onRemoveFactClicked()");
-    removeFact(fact);
+    Observable.just(fact)
+        .map(mapper::transform)
+        .flatMap(removeFactUseCase::execute)
+        .subscribeOn(Schedulers.from(threadExecutor))
+        .observeOn(postExecutionThread.getScheduler())
+        .subscribe(id -> log.info("A fact (id: {}) removed", id), this::onException);
   }
 }
