@@ -18,7 +18,6 @@ package info.rynkowski.hamsterclient.presentation.presenter;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.interactor.UseCase;
 import info.rynkowski.hamsterclient.domain.interactor.UseCaseArgumentless;
@@ -29,8 +28,6 @@ import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.presentation.model.mapper.FactModelDataMapper;
 import info.rynkowski.hamsterclient.presentation.view.FactListView;
 import info.rynkowski.hamsterclient.presentation.view.OnFactActionListener;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -48,34 +45,40 @@ import rx.schedulers.Schedulers;
 @Singleton
 public class FactListPresenter implements Presenter, OnFactActionListener {
 
-  private final ThreadExecutor threadExecutor;
-  private final PostExecutionThread postExecutionThread;
+  private final @NonNull ThreadExecutor threadExecutor;
+  private final @NonNull PostExecutionThread postExecutionThread;
 
-  private final HamsterRepository hamsterRepository;
-  private final UseCase<Integer, Fact> addFactUseCase;
-  private final UseCase<Void, Fact> removeFactUseCase;
-  private final UseCase<Integer, Fact> updateFactUseCase;
-  private final UseCaseArgumentless<List<Fact>> getTodaysFactsUseCase;
+  private final @NonNull HamsterRepository hamsterRepository;
+  private final @NonNull FactModelDataMapper mapper;
 
-  private final FactModelDataMapper mapper;
+  private final @NonNull UseCase<Integer, Fact> addFactUseCase;
+  private final @NonNull UseCase<Integer, Fact> editFactUseCase;
+  private final @NonNull UseCaseArgumentless<List<Fact>> getTodaysFactsUseCase;
+  private final @NonNull UseCase<Void, Fact> startFactUseCase;
+  private final @NonNull UseCase<Void, Fact> stopFactUseCase;
+  private final @NonNull UseCase<Void, Fact> removeFactUseCase;
 
   private @Nullable FactListView viewListView;
 
-  @Inject
-  public FactListPresenter(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread,
-      HamsterRepository hamsterRepository, @Named("AddFact") UseCase<Integer, Fact> addFactUseCase,
-      @Named("RemoveFact") UseCase<Void, Fact> removeFactUseCase,
-      @Named("UpdateFact") UseCase<Integer, Fact> updateFactUseCase,
-      @Named("GetTodaysFacts") UseCaseArgumentless<List<Fact>> getTodaysFactsUseCase,
-      FactModelDataMapper mapper) {
+  @Inject public FactListPresenter(@NonNull ThreadExecutor threadExecutor,
+      @NonNull PostExecutionThread postExecutionThread,
+      @NonNull HamsterRepository hamsterRepository, @NonNull FactModelDataMapper mapper,
+      @Named("AddFact") @NonNull UseCase<Integer, Fact> addFactUseCase,
+      @Named("EditFact") @NonNull UseCase<Integer, Fact> editFactUseCase,
+      @Named("GetTodaysFacts") @NonNull UseCaseArgumentless<List<Fact>> getTodaysFactsUseCase,
+      @Named("RemoveFact") @NonNull UseCase<Void, Fact> removeFactUseCase,
+      @Named("StartFact") @NonNull UseCase<Void, Fact> startFactUseCase,
+      @Named("StopFact") @NonNull UseCase<Void, Fact> stopFactUseCase) {
     this.threadExecutor = threadExecutor;
     this.postExecutionThread = postExecutionThread;
     this.hamsterRepository = hamsterRepository;
-    this.addFactUseCase = addFactUseCase;
-    this.removeFactUseCase = removeFactUseCase;
-    this.updateFactUseCase = updateFactUseCase;
-    this.getTodaysFactsUseCase = getTodaysFactsUseCase;
     this.mapper = mapper;
+    this.addFactUseCase = addFactUseCase;
+    this.editFactUseCase = editFactUseCase;
+    this.getTodaysFactsUseCase = getTodaysFactsUseCase;
+    this.removeFactUseCase = removeFactUseCase;
+    this.startFactUseCase = startFactUseCase;
+    this.stopFactUseCase = stopFactUseCase;
   }
 
   public void setView(@Nullable FactListView view) {
@@ -149,8 +152,7 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
       log.error("DBusException! e.getClass()={}, e.getCause()={}", e.getClass(), e.getCause());
       viewListView.showRetry();
     } else {
-      log.error(
-          "Unknown Exception!", e);
+      log.error("Unknown Exception!", e);
     }
   }
 
@@ -175,34 +177,34 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
 
   @Override public void onStartFactClicked(@NonNull FactModel fact) {
     log.debug("onStartFactClicked()");
-    onAddFact(new FactModel.Builder(fact).startTime(GregorianCalendar.getInstance())
-        .endTime(Optional.<Calendar>absent())
-        .build());
+    Observable.just(fact)
+        .map(mapper::transform)
+        .flatMap(startFactUseCase::execute)
+        .subscribeOn(Schedulers.from(threadExecutor))
+        .observeOn(postExecutionThread.getScheduler())
+        .subscribe(id -> log.info("Started a fact, id={}", id), this::onException);
   }
 
   @Override public void onStopFactClicked(@NonNull FactModel fact) {
     log.debug("onStopFactClicked()");
     log.debug("    id:             {}", fact.getId().isPresent() ? fact.getId().get() : "absent");
     log.debug("    activity:       \"{}\"", fact.getActivity());
-
-    Observable.just(new FactModel.Builder(fact).
-            endTime(Optional.of(GregorianCalendar.getInstance())).
-            build())
+    Observable.just(fact)
         .map(mapper::transform)
-        .flatMap(updateFactUseCase::execute)
+        .flatMap(stopFactUseCase::execute)
         .subscribeOn(Schedulers.from(threadExecutor))
         .observeOn(postExecutionThread.getScheduler())
-        .subscribe(id -> log.info("Fact updated, id={}", id), this::onException);
+        .subscribe(id -> log.info("Stopped a fact, id={}", id), this::onException);
   }
 
   @Override public void onEditFactClicked(@NonNull FactModel fact) {
     log.debug("onEditFactClicked()");
     Observable.just(fact)
         .map(mapper::transform)
-        .flatMap(updateFactUseCase::execute)
+        .flatMap(editFactUseCase::execute)
         .subscribeOn(Schedulers.from(threadExecutor))
         .observeOn(postExecutionThread.getScheduler())
-        .subscribe(id -> log.info("Fact updated, id={}", id), this::onException);
+        .subscribe(id -> log.info("Edited a fact , id={}", id), this::onException);
   }
 
   @Override public void onRemoveFactClicked(@NonNull FactModel fact) {
@@ -212,6 +214,6 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
         .flatMap(removeFactUseCase::execute)
         .subscribeOn(Schedulers.from(threadExecutor))
         .observeOn(postExecutionThread.getScheduler())
-        .subscribe(id -> log.info("A fact (id: {}) removed", id), this::onException);
+        .subscribe(id -> log.info("Removed a fact, id: {}", id), this::onException);
   }
 }

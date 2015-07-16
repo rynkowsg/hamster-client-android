@@ -16,22 +16,31 @@
 
 package info.rynkowski.hamsterclient.domain.interactor;
 
+import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
+import java.util.GregorianCalendar;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
-
 import rx.Observable;
 
-public class UpdateFactUseCase extends UseCase<Integer, Fact> {
+public class StopFactUseCase extends UseCase<Void, Fact> {
 
   private @Nonnull HamsterRepository hamsterRepository;
 
-  @Inject public UpdateFactUseCase(@Nonnull HamsterRepository hamsterRepository) {
+  @Inject public StopFactUseCase(@Nonnull HamsterRepository hamsterRepository) {
     this.hamsterRepository = hamsterRepository;
   }
 
-  @Override protected @Nonnull Observable<Integer> buildUseCaseObservable(@Nonnull Fact fact) {
-    return hamsterRepository.updateFact(fact);
+  @Override protected @Nonnull Observable<Void> buildUseCaseObservable(@Nonnull Fact fact) {
+    if (fact.getEndTime().isPresent()) {
+      return Observable.error(new AssertionError("The fact is stopped already."));
+    }
+    return Observable.just(
+        new Fact.Builder(fact)
+            .endTime(Optional.of(GregorianCalendar.getInstance()))
+            .build())
+        .flatMap(hamsterRepository::updateFact)
+        .flatMap(id -> Observable.<Void>empty());
   }
 }

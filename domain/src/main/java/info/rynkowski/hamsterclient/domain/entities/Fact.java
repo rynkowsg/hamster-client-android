@@ -59,6 +59,15 @@ public class Fact {
     private @Nonnull List<String> tags = new ArrayList<String>();
     private @Nonnull String description = "";
 
+    public Builder(@Nonnull Fact fact) {
+      this.id = fact.getId();
+      this.activity = fact.getActivity();
+      this.description = fact.getDescription();
+      this.tags = fact.getTags();
+      this.startTime = fact.getStartTime();
+      this.endTime = fact.getEndTime();
+    }
+
     public @Nonnull Fact build() {
       return new Fact(this);
     }

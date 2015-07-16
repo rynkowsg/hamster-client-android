@@ -33,6 +33,16 @@ import lombok.experimental.Accessors;
 @Getter
 public class FactModel implements Parcelable {
 
+  public static final Creator<FactModel> CREATOR = new Creator<FactModel>() {
+    @Override public FactModel createFromParcel(@Nonnull Parcel in) {
+      return new FactModel(in);
+    }
+
+    @Override public @Nonnull FactModel[] newArray(int size) {
+      return new FactModel[size];
+    }
+  };
+
   private final @Nonnull Optional<Integer> id;
   private final @Nonnull String activity;
   private final @Nonnull String category;
@@ -65,22 +75,12 @@ public class FactModel implements Parcelable {
     if (isEndTime == 1) {
       this.endTime = Optional.of(GregorianCalendar.getInstance());
       this.endTime.get().setTimeInMillis(in.readLong());
-    } else if (isEndTime == 0)  {
+    } else if (isEndTime == 0) {
       this.endTime = Optional.absent();
     } else {
       throw new AssertionError("Invalid value: " + isEndTime);
     }
   }
-
-  public static final Creator<FactModel> CREATOR = new Creator<FactModel>() {
-    @Override public FactModel createFromParcel(@Nonnull Parcel in) {
-      return new FactModel(in);
-    }
-
-    @Override public @Nonnull FactModel[] newArray(int size) {
-      return new FactModel[size];
-    }
-  };
 
   @Override public int describeContents() {
     return hashCode();
@@ -118,16 +118,6 @@ public class FactModel implements Parcelable {
     private @Nonnull List<String> tags = new ArrayList<>();
     private @Nonnull Calendar startTime = GregorianCalendar.getInstance();
     private @Nonnull Optional<Calendar> endTime = Optional.absent();
-
-    public Builder(@Nonnull FactModel factModel) {
-      this.id = factModel.getId();
-      this.activity = factModel.getActivity();
-      this.category = factModel.getCategory();
-      this.description = factModel.getDescription();
-      this.tags = factModel.getTags();
-      this.startTime = factModel.getStartTime();
-      this.endTime = factModel.getEndTime();
-    }
 
     public @Nonnull FactModel build() {
       return new FactModel(this);
