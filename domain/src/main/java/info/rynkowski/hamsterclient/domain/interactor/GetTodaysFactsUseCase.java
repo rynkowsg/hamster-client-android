@@ -27,7 +27,7 @@ import rx.Observable;
  * This class is an implementation of {@link UseCase} that represents a use case for
  * retrieving today's {@link info.rynkowski.hamsterclient.domain.entities.Fact}s.
  */
-public class GetTodaysFactsUseCase extends UseCaseArgumentless<List<Fact>> {
+public class GetTodaysFactsUseCase extends UseCaseNoArgs<List<Fact>> {
 
   private @Nonnull HamsterRepository hamsterRepository;
 

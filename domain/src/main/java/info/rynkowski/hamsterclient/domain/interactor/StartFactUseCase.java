@@ -25,7 +25,7 @@ import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import rx.Observable;
 
-public class StartFactUseCase extends UseCase<Void, Fact> {
+public class StartFactUseCase extends UseCase<Fact, Void> {
 
   private @Nonnull HamsterRepository hamsterRepository;
 

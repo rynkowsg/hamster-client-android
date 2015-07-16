@@ -20,7 +20,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.interactor.UseCase;
-import info.rynkowski.hamsterclient.domain.interactor.UseCaseArgumentless;
+import info.rynkowski.hamsterclient.domain.interactor.UseCaseNoArgs;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
 import info.rynkowski.hamsterclient.presentation.executor.PostExecutionThread;
 import info.rynkowski.hamsterclient.presentation.executor.ThreadExecutor;
@@ -51,24 +51,24 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
   private final @NonNull HamsterRepository hamsterRepository;
   private final @NonNull FactModelDataMapper mapper;
 
-  private final @NonNull UseCase<Integer, Fact> addFactUseCase;
-  private final @NonNull UseCase<Integer, Fact> editFactUseCase;
-  private final @NonNull UseCaseArgumentless<List<Fact>> getTodaysFactsUseCase;
-  private final @NonNull UseCase<Void, Fact> startFactUseCase;
-  private final @NonNull UseCase<Void, Fact> stopFactUseCase;
-  private final @NonNull UseCase<Void, Fact> removeFactUseCase;
+  private final @NonNull UseCase<Fact, Integer> addFactUseCase;
+  private final @NonNull UseCase<Fact, Integer> editFactUseCase;
+  private final @NonNull UseCaseNoArgs<List<Fact>> getTodaysFactsUseCase;
+  private final @NonNull UseCase<Fact, Void> startFactUseCase;
+  private final @NonNull UseCase<Fact, Void> stopFactUseCase;
+  private final @NonNull UseCase<Fact, Void> removeFactUseCase;
 
   private @Nullable FactListView viewListView;
 
   @Inject public FactListPresenter(@NonNull ThreadExecutor threadExecutor,
       @NonNull PostExecutionThread postExecutionThread,
       @NonNull HamsterRepository hamsterRepository, @NonNull FactModelDataMapper mapper,
-      @Named("AddFact") @NonNull UseCase<Integer, Fact> addFactUseCase,
-      @Named("EditFact") @NonNull UseCase<Integer, Fact> editFactUseCase,
-      @Named("GetTodaysFacts") @NonNull UseCaseArgumentless<List<Fact>> getTodaysFactsUseCase,
-      @Named("RemoveFact") @NonNull UseCase<Void, Fact> removeFactUseCase,
-      @Named("StartFact") @NonNull UseCase<Void, Fact> startFactUseCase,
-      @Named("StopFact") @NonNull UseCase<Void, Fact> stopFactUseCase) {
+      @Named("AddFact") @NonNull UseCase<Fact, Integer> addFactUseCase,
+      @Named("EditFact") @NonNull UseCase<Fact, Integer> editFactUseCase,
+      @Named("GetTodaysFacts") @NonNull UseCaseNoArgs<List<Fact>> getTodaysFactsUseCase,
+      @Named("RemoveFact") @NonNull UseCase<Fact, Void> removeFactUseCase,
+      @Named("StartFact") @NonNull UseCase<Fact, Void> startFactUseCase,
+      @Named("StopFact") @NonNull UseCase<Fact, Void> stopFactUseCase) {
     this.threadExecutor = threadExecutor;
     this.postExecutionThread = postExecutionThread;
     this.hamsterRepository = hamsterRepository;

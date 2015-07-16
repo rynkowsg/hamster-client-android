@@ -23,7 +23,7 @@ import javax.inject.Inject;
 
 import rx.Observable;
 
-public class EditFactUseCase extends UseCase<Integer, Fact> {
+public class EditFactUseCase extends UseCase<Fact, Integer> {
 
   private @Nonnull HamsterRepository hamsterRepository;
 

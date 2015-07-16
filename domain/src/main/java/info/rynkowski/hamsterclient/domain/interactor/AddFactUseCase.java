@@ -26,7 +26,7 @@ import rx.Observable;
  * This class is an implementation of {@link UseCase} that represents a use case for
  * adding a new {@link info.rynkowski.hamsterclient.domain.entities.Fact}.
  */
-public class AddFactUseCase extends UseCase<Integer, Fact> {
+public class AddFactUseCase extends UseCase<Fact, Integer> {
 
   private @Nonnull HamsterRepository hamsterRepository;
 

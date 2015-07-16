@@ -26,7 +26,7 @@ import info.rynkowski.hamsterclient.domain.interactor.RemoveFactUseCase;
 import info.rynkowski.hamsterclient.domain.interactor.StartFactUseCase;
 import info.rynkowski.hamsterclient.domain.interactor.StopFactUseCase;
 import info.rynkowski.hamsterclient.domain.interactor.UseCase;
-import info.rynkowski.hamsterclient.domain.interactor.UseCaseArgumentless;
+import info.rynkowski.hamsterclient.domain.interactor.UseCaseNoArgs;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
 import java.util.List;
 import javax.inject.Named;
@@ -37,32 +37,32 @@ import javax.inject.Named;
 @Module
 public class DomainModule {
 
-  @Provides @Named("AddFact") UseCase<Integer, Fact> provideAddFactUseCase(
+  @Provides @Named("AddFact") UseCase<Fact, Integer> provideAddFactUseCase(
       HamsterRepository hamsterRepository) {
     return new AddFactUseCase(hamsterRepository);
   }
 
-  @Provides @Named("EditFact") UseCase<Integer, Fact> provideUpdateFactUseCase(
+  @Provides @Named("EditFact") UseCase<Fact, Integer> provideUpdateFactUseCase(
       HamsterRepository hamsterRepository) {
     return new EditFactUseCase(hamsterRepository);
   }
 
-  @Provides @Named("GetTodaysFacts") UseCaseArgumentless<List<Fact>> provideGetTodaysFacts(
+  @Provides @Named("GetTodaysFacts") UseCaseNoArgs<List<Fact>> provideGetTodaysFacts(
       HamsterRepository hamsterRepository) {
     return new GetTodaysFactsUseCase(hamsterRepository);
   }
 
-  @Provides @Named("RemoveFact") UseCase<Void, Fact> provideRemoveFactUseCase(
+  @Provides @Named("RemoveFact") UseCase<Fact, Void> provideRemoveFactUseCase(
       HamsterRepository hamsterRepository) {
     return new RemoveFactUseCase(hamsterRepository);
   }
 
-  @Provides @Named("StartFact") UseCase<Void, Fact> provideStartFactUseCase(
+  @Provides @Named("StartFact") UseCase<Fact, Void> provideStartFactUseCase(
       HamsterRepository hamsterRepository) {
     return new StartFactUseCase(hamsterRepository);
   }
 
-  @Provides @Named("StopFact") UseCase<Void, Fact> provideStopFactUseCase(
+  @Provides @Named("StopFact") UseCase<Fact, Void> provideStopFactUseCase(
       HamsterRepository hamsterRepository) {
     return new StopFactUseCase(hamsterRepository);
   }

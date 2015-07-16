@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import rx.Observable;
 
-public class RemoveFactUseCase extends UseCase<Void, Fact> {
+public class RemoveFactUseCase extends UseCase<Fact, Void> {
 
   private @Nonnull HamsterRepository hamsterRepository;
 

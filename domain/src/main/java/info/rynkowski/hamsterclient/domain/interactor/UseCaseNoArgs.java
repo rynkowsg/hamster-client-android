@@ -25,7 +25,7 @@ import rx.Observable;
  *
  * By convention each UseCase implementation will return the result using a {@link rx.Observable}.
  */
-public abstract class UseCaseArgumentless<Result> {
+public abstract class UseCaseNoArgs<Result> {
 
   /**
    * Builds an {@link rx.Observable} which will be used when executing the current {@link UseCase}.
