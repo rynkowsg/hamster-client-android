@@ -26,7 +26,7 @@ import rx.Observable;
  * This class is an implementation of {@link UseCase} that represents a use case for
  * adding a new {@link info.rynkowski.hamsterclient.domain.entities.Fact}.
  */
-public class AddFactUseCase extends UseCase<Fact, Integer> {
+public class AddFactUseCase extends UseCase<Fact, Void> {
 
   private @Nonnull HamsterRepository hamsterRepository;
 
@@ -34,7 +34,8 @@ public class AddFactUseCase extends UseCase<Fact, Integer> {
     this.hamsterRepository = hamsterRepository;
   }
 
-  @Override protected @Nonnull Observable<Integer> buildUseCaseObservable(@Nonnull Fact fact) {
-    return hamsterRepository.addFact(fact);
+  @Override protected @Nonnull Observable<Void> buildUseCaseObservable(@Nonnull Fact fact) {
+    return hamsterRepository.addFact(fact).
+        flatMap(id -> Observable.<Void>empty());
   }
 }

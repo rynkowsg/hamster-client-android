@@ -51,8 +51,8 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
   private final @NonNull HamsterRepository hamsterRepository;
   private final @NonNull FactModelDataMapper mapper;
 
-  private final @NonNull UseCase<Fact, Integer> addFactUseCase;
-  private final @NonNull UseCase<Fact, Integer> editFactUseCase;
+  private final @NonNull UseCase<Fact, Void> addFactUseCase;
+  private final @NonNull UseCase<Fact, Void> editFactUseCase;
   private final @NonNull UseCaseNoArgs<List<Fact>> getTodaysFactsUseCase;
   private final @NonNull UseCase<Fact, Void> startFactUseCase;
   private final @NonNull UseCase<Fact, Void> stopFactUseCase;
@@ -63,8 +63,8 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
   @Inject public FactListPresenter(@NonNull ThreadExecutor threadExecutor,
       @NonNull PostExecutionThread postExecutionThread,
       @NonNull HamsterRepository hamsterRepository, @NonNull FactModelDataMapper mapper,
-      @Named("AddFact") @NonNull UseCase<Fact, Integer> addFactUseCase,
-      @Named("EditFact") @NonNull UseCase<Fact, Integer> editFactUseCase,
+      @Named("AddFact") @NonNull UseCase<Fact, Void> addFactUseCase,
+      @Named("EditFact") @NonNull UseCase<Fact, Void> editFactUseCase,
       @Named("GetTodaysFacts") @NonNull UseCaseNoArgs<List<Fact>> getTodaysFactsUseCase,
       @Named("RemoveFact") @NonNull UseCase<Fact, Void> removeFactUseCase,
       @Named("StartFact") @NonNull UseCase<Fact, Void> startFactUseCase,

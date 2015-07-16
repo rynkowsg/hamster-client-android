@@ -37,12 +37,12 @@ import javax.inject.Named;
 @Module
 public class DomainModule {
 
-  @Provides @Named("AddFact") UseCase<Fact, Integer> provideAddFactUseCase(
+  @Provides @Named("AddFact") UseCase<Fact, Void> provideAddFactUseCase(
       HamsterRepository hamsterRepository) {
     return new AddFactUseCase(hamsterRepository);
   }
 
-  @Provides @Named("EditFact") UseCase<Fact, Integer> provideUpdateFactUseCase(
+  @Provides @Named("EditFact") UseCase<Fact, Void> provideUpdateFactUseCase(
       HamsterRepository hamsterRepository) {
     return new EditFactUseCase(hamsterRepository);
   }

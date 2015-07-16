@@ -20,10 +20,9 @@ import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
-
 import rx.Observable;
 
-public class EditFactUseCase extends UseCase<Fact, Integer> {
+public class EditFactUseCase extends UseCase<Fact, Void> {
 
   private @Nonnull HamsterRepository hamsterRepository;
 
@@ -31,7 +30,8 @@ public class EditFactUseCase extends UseCase<Fact, Integer> {
     this.hamsterRepository = hamsterRepository;
   }
 
-  @Override protected @Nonnull Observable<Integer> buildUseCaseObservable(@Nonnull Fact fact) {
-    return hamsterRepository.updateFact(fact);
+  @Override protected @Nonnull Observable<Void> buildUseCaseObservable(@Nonnull Fact fact) {
+    return hamsterRepository.updateFact(fact).
+        flatMap(id -> Observable.<Void>empty());
   }
 }

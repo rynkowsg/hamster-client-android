@@ -38,6 +38,6 @@ public class StartFactUseCase extends UseCase<Fact, Void> {
             .endTime(Optional.<Calendar>absent())
             .build()).
         flatMap(hamsterRepository::addFact).
-        flatMap(id -> Observable.empty());
+        flatMap(id -> Observable.<Void>empty());
   }
 }
