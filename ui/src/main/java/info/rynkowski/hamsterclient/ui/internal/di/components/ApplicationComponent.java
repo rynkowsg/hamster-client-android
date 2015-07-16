@@ -20,10 +20,7 @@ package info.rynkowski.hamsterclient.ui.internal.di.components;
 import android.content.Context;
 import dagger.Component;
 import info.rynkowski.hamsterclient.data.DataModule;
-import info.rynkowski.hamsterclient.data.dbus.ConnectionProvider;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
-import info.rynkowski.hamsterclient.presentation.executor.PostExecutionThread;
-import info.rynkowski.hamsterclient.presentation.executor.ThreadExecutor;
 import info.rynkowski.hamsterclient.ui.internal.di.modules.ApplicationModule;
 import info.rynkowski.hamsterclient.ui.internal.di.modules.FactListModule;
 import info.rynkowski.hamsterclient.ui.navigation.Navigator;
@@ -51,10 +48,6 @@ public interface ApplicationComponent {
   Context context();
 
   Navigator navigator();
-
-  ThreadExecutor threadExecutor();
-
-  PostExecutionThread postExecutionThread();
 
   HamsterRepository hamsterRepository();
 }

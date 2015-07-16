@@ -22,8 +22,6 @@ import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.interactor.UseCase;
 import info.rynkowski.hamsterclient.domain.interactor.UseCaseNoArgs;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
-import info.rynkowski.hamsterclient.presentation.executor.PostExecutionThread;
-import info.rynkowski.hamsterclient.presentation.executor.ThreadExecutor;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.presentation.model.mapper.FactModelDataMapper;
 import info.rynkowski.hamsterclient.presentation.view.FactListView;
@@ -35,6 +33,7 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.freedesktop.dbus.exceptions.DBusException;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
@@ -44,9 +43,6 @@ import rx.schedulers.Schedulers;
 @Slf4j
 @Singleton
 public class FactListPresenter implements Presenter, OnFactActionListener {
-
-  private final @NonNull ThreadExecutor threadExecutor;
-  private final @NonNull PostExecutionThread postExecutionThread;
 
   private final @NonNull HamsterRepository hamsterRepository;
   private final @NonNull FactModelDataMapper mapper;
@@ -60,17 +56,13 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
 
   private @Nullable FactListView viewListView;
 
-  @Inject public FactListPresenter(@NonNull ThreadExecutor threadExecutor,
-      @NonNull PostExecutionThread postExecutionThread,
-      @NonNull HamsterRepository hamsterRepository, @NonNull FactModelDataMapper mapper,
+  @Inject public FactListPresenter(@NonNull HamsterRepository hamsterRepository, @NonNull FactModelDataMapper mapper,
       @Named("AddFact") @NonNull UseCase<Fact, Void> addFactUseCase,
       @Named("EditFact") @NonNull UseCase<Fact, Void> editFactUseCase,
       @Named("GetTodaysFacts") @NonNull UseCaseNoArgs<List<Fact>> getTodaysFactsUseCase,
       @Named("RemoveFact") @NonNull UseCase<Fact, Void> removeFactUseCase,
       @Named("StartFact") @NonNull UseCase<Fact, Void> startFactUseCase,
       @Named("StopFact") @NonNull UseCase<Fact, Void> stopFactUseCase) {
-    this.threadExecutor = threadExecutor;
-    this.postExecutionThread = postExecutionThread;
     this.hamsterRepository = hamsterRepository;
     this.mapper = mapper;
     this.addFactUseCase = addFactUseCase;
@@ -116,8 +108,8 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
     getTodaysFactsUseCase.execute()
         .doOnNext(list -> log.info("Received {} facts.", list.size()))
         .map(mapper::transform)
-        .subscribeOn(Schedulers.from(threadExecutor))
-        .observeOn(postExecutionThread.getScheduler())
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
         .subscribe(factModels -> {
           viewListView.hideLoading();
           viewListView.renderFactList(factModels);
@@ -127,8 +119,8 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
   private void registerSignals() {
     log.debug("registerSignals()");
     hamsterRepository.signalFactsChanged()
-        .subscribeOn(Schedulers.from(threadExecutor))
-        .observeOn(postExecutionThread.getScheduler())
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
         .subscribe(o -> this.onFactsChanged(), this::onException);
   }
 
@@ -165,8 +157,8 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
     Observable.just(fact)
         .map(mapper::transform)
         .flatMap(addFactUseCase::execute)
-        .subscribeOn(Schedulers.from(threadExecutor))
-        .observeOn(postExecutionThread.getScheduler())
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
         .subscribe(id -> log.info("New fact added, id={}", id), this::onException);
   }
 
@@ -175,8 +167,8 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
     Observable.just(fact)
         .map(mapper::transform)
         .flatMap(startFactUseCase::execute)
-        .subscribeOn(Schedulers.from(threadExecutor))
-        .observeOn(postExecutionThread.getScheduler())
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
         .subscribe(id -> log.info("Started a fact, id={}", id), this::onException);
   }
 
@@ -187,8 +179,8 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
     Observable.just(fact)
         .map(mapper::transform)
         .flatMap(stopFactUseCase::execute)
-        .subscribeOn(Schedulers.from(threadExecutor))
-        .observeOn(postExecutionThread.getScheduler())
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
         .subscribe(id -> log.info("Stopped a fact, id={}", id), this::onException);
   }
 
@@ -197,8 +189,8 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
     Observable.just(fact)
         .map(mapper::transform)
         .flatMap(editFactUseCase::execute)
-        .subscribeOn(Schedulers.from(threadExecutor))
-        .observeOn(postExecutionThread.getScheduler())
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
         .subscribe(id -> log.info("Edited a fact , id={}", id), this::onException);
   }
 
@@ -207,8 +199,8 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
     Observable.just(fact)
         .map(mapper::transform)
         .flatMap(removeFactUseCase::execute)
-        .subscribeOn(Schedulers.from(threadExecutor))
-        .observeOn(postExecutionThread.getScheduler())
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
         .subscribe(id -> log.info("Removed a fact, id: {}", id), this::onException);
   }
 }
