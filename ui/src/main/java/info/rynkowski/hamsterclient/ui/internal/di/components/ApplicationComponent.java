@@ -21,6 +21,7 @@ import android.content.Context;
 import dagger.Component;
 import info.rynkowski.hamsterclient.data.DataModule;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
+import info.rynkowski.hamsterclient.presentation.PresentationModule;
 import info.rynkowski.hamsterclient.ui.internal.di.modules.ApplicationModule;
 import info.rynkowski.hamsterclient.ui.internal.di.modules.FactListModule;
 import info.rynkowski.hamsterclient.ui.navigation.Navigator;
@@ -35,7 +36,9 @@ import javax.inject.Singleton;
  * {@link info.rynkowski.hamsterclient.ui.view.fragment.BaseFragment}.
  */
 @Singleton
-@Component(modules = { ApplicationModule.class, DataModule.class, FactListModule.class })
+@Component(modules = {
+    ApplicationModule.class, DataModule.class, PresentationModule.class, FactListModule.class
+})
 public interface ApplicationComponent {
 
   void inject(BaseActivity baseActivity);

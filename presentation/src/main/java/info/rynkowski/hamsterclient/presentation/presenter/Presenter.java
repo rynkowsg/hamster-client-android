@@ -17,10 +17,15 @@
 
 package info.rynkowski.hamsterclient.presentation.presenter;
 
+import info.rynkowski.hamsterclient.presentation.view.FactListView;
+
 /**
  * Interface representing a Presenter in a model view presenter (MVP) pattern.
  */
 public interface Presenter {
+
+
+  void setView(FactListView view);
 
   /**
    * Called when the presenter is initialized, this method represents the start of the presenter
