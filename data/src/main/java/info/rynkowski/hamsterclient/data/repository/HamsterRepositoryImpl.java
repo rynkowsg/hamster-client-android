@@ -95,7 +95,7 @@ public class HamsterRepositoryImpl implements HamsterRepository {
   //}
 
   @Override public @Nonnull Observable<List<Fact>> getTodaysFacts() {
-    return remoteStore.getTodaysFactEntities()
+    return remoteStore.getTodaysFacts()
         .flatMap(Observable::from)
         .map(factEntityMapper::transform)
         .toList();
@@ -104,13 +104,13 @@ public class HamsterRepositoryImpl implements HamsterRepository {
   @Override public @Nonnull Observable<Integer> addFact(@Nonnull Fact fact) {
     return Observable.just(fact)
         .map(factEntityMapper::transform)
-        .flatMap(remoteStore::addFactEntity);
+        .flatMap(remoteStore::addFact);
   }
 
   @Override public @Nonnull Observable<Integer> updateFact(@Nonnull Fact fact) {
     return Observable.just(fact)
         .map(factEntityMapper::transform)
-        .flatMap(remoteStore::updateFactEntity);
+        .flatMap(remoteStore::updateFact);
   }
 
   @Override public @Nonnull Observable<Void> signalActivitiesChanged() {

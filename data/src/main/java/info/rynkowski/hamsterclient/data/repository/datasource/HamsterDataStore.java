@@ -29,23 +29,23 @@ public interface HamsterDataStore extends DataStore {
   /**
    * Get an {@link rx.Observable} which will emit a today's list of {@link FactEntity}.
    */
-  @Nonnull Observable<List<FactEntity>> getTodaysFactEntities();
+  @Nonnull Observable<List<FactEntity>> getTodaysFacts();
 
   /**
    * Get an {@link rx.Observable} which will add a {@link FactEntity} and emits its id.
    *
-   * @param factEntity The entity to add to store.
+   * @param fact The entity to add to store.
    * @return The id of added {@link FactEntity}.
    */
-  @Nonnull Observable<Integer> addFactEntity(@Nonnull FactEntity factEntity);
+  @Nonnull Observable<Integer> addFact(@Nonnull FactEntity fact);
 
   /**
    * Get an {@link rx.Observable} which will update a fact and emits its id.
    *
-   * @param factEntity The entity to update at the store.
+   * @param fact The entity to update at the store.
    * @return The id of updated {@link FactEntity}.
    */
-  @Nonnull Observable<Integer> updateFactEntity(@Nonnull FactEntity factEntity);
+  @Nonnull Observable<Integer> updateFact(@Nonnull FactEntity fact);
 
   @Nonnull Observable<Void> signalActivitiesChanged();
 

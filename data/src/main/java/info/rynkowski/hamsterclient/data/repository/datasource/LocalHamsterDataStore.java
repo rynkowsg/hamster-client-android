@@ -42,11 +42,11 @@ public class LocalHamsterDataStore implements HamsterDataStore {
     this.context = context;
   }
 
-  @Override public @Nonnull Observable<List<FactEntity>> getTodaysFactEntities() {
+  @Override public @Nonnull Observable<List<FactEntity>> getTodaysFacts() {
     return Observable.empty();
   }
 
-  @Override public @Nonnull Observable<Integer> addFactEntity(@Nonnull FactEntity factEntity) {
+  @Override public @Nonnull Observable<Integer> addFact(@Nonnull FactEntity factEntity) {
     //FactsDbAdapter factsDbAdapter = new FactsDbAdapter(context).open();
     //int localId = factsDbAdapter.insertFact(factEntity);
     //factsDbAdapter.close();
@@ -57,7 +57,7 @@ public class LocalHamsterDataStore implements HamsterDataStore {
     return Observable.empty();
   }
 
-  @Override public @Nonnull Observable<Integer> updateFactEntity(@Nonnull FactEntity factEntity) {
+  @Override public @Nonnull Observable<Integer> updateFact(@Nonnull FactEntity fact) {
     return Observable.empty();
   }
 
