@@ -57,6 +57,10 @@ public class LocalHamsterDataStore implements HamsterDataStore {
     return Observable.empty();
   }
 
+  @Override public @Nonnull Observable<Void> removeFact(@Nonnull Integer id) {
+    return Observable.empty();
+  }
+
   @Override public @Nonnull Observable<Integer> updateFact(@Nonnull FactEntity fact) {
     return Observable.empty();
   }

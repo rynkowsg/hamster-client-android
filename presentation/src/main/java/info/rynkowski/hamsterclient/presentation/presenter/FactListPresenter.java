@@ -37,6 +37,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.freedesktop.dbus.exceptions.DBusException;
+import rx.Observable;
 import rx.schedulers.Schedulers;
 
 /**
@@ -53,6 +54,7 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
 
   private final HamsterRepository hamsterRepository;
   private final UseCase<Integer, Fact> addFactUseCase;
+  private final UseCase<Void, Fact> removeFactUseCase;
   private final UseCase<Integer, Fact> updateFactUseCase;
   private final UseCaseArgumentless<List<Fact>> getTodaysFactsUseCase;
 
@@ -65,6 +67,7 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
   @Inject
   public FactListPresenter(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread,
       HamsterRepository hamsterRepository, @Named("AddFact") UseCase<Integer, Fact> addFactUseCase,
+      @Named("RemoveFact") UseCase<Void, Fact> removeFactUseCase,
       @Named("UpdateFact") UseCase<Integer, Fact> updateFactUseCase,
       @Named("GetTodaysFacts") UseCaseArgumentless<List<Fact>> getTodaysFactsUseCase,
       FactModelDataMapper mapper) {
@@ -72,6 +75,7 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
     this.postExecutionThread = postExecutionThread;
     this.hamsterRepository = hamsterRepository;
     this.addFactUseCase = addFactUseCase;
+    this.removeFactUseCase = removeFactUseCase;
     this.updateFactUseCase = updateFactUseCase;
     this.getTodaysFactsUseCase = getTodaysFactsUseCase;
     this.mapper = mapper;
@@ -132,6 +136,16 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
         .subscribeOn(Schedulers.from(threadExecutor))
         .observeOn(postExecutionThread.getScheduler())
         .subscribe(id -> log.info("New fact added, id={}", id), this::onException);
+  }
+
+  private void removeFact(@NonNull FactModel fact) {
+    log.debug("removeFact");
+    Observable.just(fact)
+        .map(mapper::transform)
+        .flatMap(removeFactUseCase::execute)
+        .subscribeOn(Schedulers.from(threadExecutor))
+        .observeOn(postExecutionThread.getScheduler())
+        .subscribe(id -> log.info("A fact (id: {}) removed", id), this::onException);
   }
 
   public void updateFact(@NonNull FactModel factModel) {
@@ -235,6 +249,6 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
 
   @Override public void onRemoveFactClicked(@NonNull FactModel fact) {
     log.debug("onRemoveFactClicked()");
-    // Empty still
+    removeFact(fact);
   }
 }

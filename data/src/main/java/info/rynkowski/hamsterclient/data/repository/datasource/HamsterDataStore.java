@@ -40,6 +40,14 @@ public interface HamsterDataStore extends DataStore {
   @Nonnull Observable<Integer> addFact(@Nonnull FactEntity fact);
 
   /**
+   * Get an {@link rx.Observable} that removes a fact.
+   *
+   * @param id The id number of fact to remove.
+   * @return Empty {@link rx.Observable}.
+   */
+  @Nonnull Observable<Void> removeFact(@Nonnull Integer id);
+
+  /**
    * Get an {@link rx.Observable} which will update a fact and emits its id.
    *
    * @param fact The entity to update at the store.

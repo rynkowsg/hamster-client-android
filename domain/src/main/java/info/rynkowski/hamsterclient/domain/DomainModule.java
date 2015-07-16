@@ -21,6 +21,7 @@ import dagger.Provides;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.interactor.AddFactUseCase;
 import info.rynkowski.hamsterclient.domain.interactor.GetTodaysFactsUseCase;
+import info.rynkowski.hamsterclient.domain.interactor.RemoveFactUseCase;
 import info.rynkowski.hamsterclient.domain.interactor.UpdateFactUseCase;
 import info.rynkowski.hamsterclient.domain.interactor.UseCase;
 import info.rynkowski.hamsterclient.domain.interactor.UseCaseArgumentless;
@@ -37,6 +38,11 @@ public class DomainModule {
   @Provides @Named("AddFact") UseCase<Integer, Fact> provideAddFactUseCase(
       HamsterRepository hamsterRepository) {
     return new AddFactUseCase(hamsterRepository);
+  }
+
+  @Provides @Named("RemoveFact") UseCase<Void, Fact> provideRemoveFactUseCase(
+      HamsterRepository hamsterRepository) {
+    return new RemoveFactUseCase(hamsterRepository);
   }
 
   @Provides @Named("UpdateFact") UseCase<Integer, Fact> provideUpdateFactUseCase(

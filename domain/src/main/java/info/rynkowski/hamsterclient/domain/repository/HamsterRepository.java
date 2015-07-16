@@ -36,6 +36,8 @@ public interface HamsterRepository {
 
   @Nonnull Observable<Integer> addFact(@Nonnull Fact fact);
 
+  @Nonnull Observable<Void> removeFact(@Nonnull Integer id);
+
   @Nonnull Observable<Integer> updateFact(@Nonnull Fact fact);
 
   @Nonnull Observable<Void> signalActivitiesChanged();

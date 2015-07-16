@@ -79,6 +79,18 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
         map(remoteObject -> remoteObject.AddFact(serializedName, startTime, endTime, false));
   }
 
+  @Override public @Nonnull Observable<Void> removeFact(@Nonnull Integer id) {
+    return Observable.defer(hamsterObject::getObservable).
+        doOnNext(object -> {
+          log.debug("Calling RemoveFact() on remote DBus object:");
+          log.debug("    id:             {}", id);
+        }).
+        flatMap(remoteObject -> {
+          remoteObject.RemoveFact(id);
+          return Observable.<Void>empty();
+        });
+  }
+
   @Override public @Nonnull Observable<Integer> updateFact(@Nonnull FactEntity fact) {
     String serializedName = fact.serializedName();
 
@@ -95,8 +107,8 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
           log.debug("    startTime:      {}", startTime);
           log.debug("    endTime:        {}", endTime);
         }).
-        map(remoteObject -> remoteObject.UpdateFact(fact.getId().get(), serializedName,
-            startTime, endTime, false, false));
+        map(remoteObject -> remoteObject.UpdateFact(fact.getId().get(), serializedName, startTime,
+            endTime, false, false));
   }
 
   @Override public @Nonnull Observable<Void> signalActivitiesChanged() {
