@@ -40,8 +40,6 @@ public class HamsterRepositoryImpl implements HamsterRepository {
   private volatile @Nonnull HamsterDataStore localStore;
   private volatile @Nonnull HamsterDataStore remoteStore;
 
-  //private PublishSubject<Status> status;
-
   @Inject public HamsterRepositoryImpl(@Named("local") @Nonnull HamsterDataStore localStore,
       @Named("remote") @Nonnull HamsterDataStore remoteStore,
       @Nonnull FactEntityMapper factEntityMapper) {
@@ -49,50 +47,7 @@ public class HamsterRepositoryImpl implements HamsterRepository {
     this.factEntityMapper = factEntityMapper;
     this.localStore = localStore;
     this.remoteStore = remoteStore;
-
-    //this.status = PublishSubject.create();
   }
-
-  //@Override public void initialize(@Nonnull Type type) {
-  //  log.debug("Entering initialize(type={})", type);
-  //  switch (type) {
-  //    case LOCAL:
-  //      localStore.initialize().subscribe(new OnCompletedObserver<Void>() {
-  //        @Override public void onCompleted() {
-  //          log.info("Initialized a LOCAL store");
-  //          currentStore = localStore;
-  //          status.onNext(Status.SWITCHED_TO_LOCAL);
-  //        }
-  //        @Override public void onError(Throwable e) {
-  //          log.warn("Initializing a REMOTE store failed.");
-  //          status.onNext(Status.LOCAL_UNAVAILABLE);
-  //        }
-  //      });
-  //      break;
-  //    case REMOTE:
-  //      remoteStore.initialize().subscribe(new OnCompletedObserver<Void>() {
-  //        @Override public void onCompleted() {
-  //          log.info("Initialized a REMOTE store");
-  //          currentStore = remoteStore;
-  //          status.onNext(Status.SWITCHED_TO_REMOTE);
-  //        }
-  //        @Override public void onError(Throwable e) {
-  //          log.warn("Initializing a REMOTE store failed.");
-  //          status.onNext(Status.REMOTE_UNAVAILABLE);
-  //        }
-  //      });
-  //      break;
-  //    default:
-  //      throw new RuntimeException("Unknown repository type: " + type);
-  //  }
-  //}
-  //
-  //@Override public void deinitialize() {
-  //  log.debug("Entering deinitialize()");
-  //  if (currentStore != null) {
-  //    currentStore.deinitialize();
-  //  }
-  //}
 
   @Override public @Nonnull Observable<List<Fact>> getTodaysFacts() {
     return remoteStore.getTodaysFacts()
@@ -132,15 +87,4 @@ public class HamsterRepositoryImpl implements HamsterRepository {
   @Override public @Nonnull Observable<Void> signalToggleCalled() {
     return remoteStore.signalToggleCalled();
   }
-
-  //@Override public Observable<Status> onChange() {
-  //  return status
-  //      .doOnNext(status1 -> log.debug("doOnNext, status: {}", status1))
-  //      .doOnUnsubscribe(() -> log.debug("doOnUnsubscribe"))
-  //      .doOnCompleted(() -> log.debug("doOnCompleted"))
-  //      .doOnSubscribe(() -> log.debug("doOnSubscribe"))
-  //      .doOnTerminate(() -> log.debug("doOnTerminate"))
-  //      .doOnError(throwable -> log.debug("doOnError", throwable))
-  //      ;
-  //}
 }

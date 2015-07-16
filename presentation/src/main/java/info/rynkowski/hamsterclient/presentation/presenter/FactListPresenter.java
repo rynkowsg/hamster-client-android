@@ -47,7 +47,6 @@ import rx.schedulers.Schedulers;
 @Slf4j
 @Singleton
 public class FactListPresenter implements Presenter, OnFactActionListener {
-  /*, HamsterRepository.OnDataStoreChangedListener */
 
   private final ThreadExecutor threadExecutor;
   private final PostExecutionThread postExecutionThread;
@@ -61,8 +60,6 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
   private final FactModelDataMapper mapper;
 
   private @Nullable FactListView viewListView;
-
-  //Subscription subscriptionOnChange;
 
   @Inject
   public FactListPresenter(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread,
@@ -90,11 +87,6 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
 
     loadFactList();
     registerSignals();
-    //subscriptionOnChange = hamsterRepository.onChange()
-    //    .subscribeOn(Schedulers.from(threadExecutor))
-    //    .observeOn(postExecutionThread.getScheduler())
-    //    .subscribe(this::onDataStoreChanged);
-    //this.chooseDataStore(HamsterRepository.Type.REMOTE);
 
     log.debug("FactList started.");
   }
@@ -108,8 +100,6 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
   }
 
   @Override public void destroy() {
-    //subscriptionOnChange.unsubscribe();
-    //hamsterRepository.deinitialize();
     log.debug("FactList destroyed.");
   }
 
@@ -144,33 +134,8 @@ public class FactListPresenter implements Presenter, OnFactActionListener {
     loadFactList();
   }
 
-  //@Override public void onDataStoreChanged(HamsterRepository.Status status) {
-  //  log.debug("onDataStoreChanged(status: {})", status);
-  //  switch (status) {
-  //    case SWITCHED_TO_REMOTE:
-  //    case SWITCHED_TO_LOCAL:
-  //      this.registerSignals();
-  //      this.loadFactList();
-  //      break;
-  //    case LOCAL_UNAVAILABLE:
-  //      throw new RuntimeException("Local database should be always available.");
-  //    case REMOTE_UNAVAILABLE:
-  //      viewListView.showRetry();
-  //      break;
-  //    default:
-  //      throw new RuntimeException("Unknown status: " + status);
-  //  }
-  //}
-
-  //private void chooseDataStore(HamsterRepository.Type type) {
-  //  log.debug("chooseDataStore(type: {})", type);
-  //  viewListView.showLoading();
-  //  new Thread(() -> hamsterRepository.initialize(type)).start();
-  //}
-
   public void onRetry() {
     log.debug("onRetry()");
-    //chooseDataStore(HamsterRepository.Type.REMOTE);
     loadFactList();
     // TODO: onRetry() should call last interrupted presenter's command
   }

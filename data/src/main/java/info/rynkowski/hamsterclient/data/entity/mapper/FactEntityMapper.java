@@ -21,15 +21,10 @@ import info.rynkowski.hamsterclient.data.entity.FactEntity;
 import info.rynkowski.hamsterclient.data.utils.Time;
 import info.rynkowski.hamsterclient.domain.entities.Activity;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
-import java.util.TimeZone;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import org.gnome.Struct5;
-import org.gnome.Struct7;
 
 /**
  * Class that translates fact representations of two layers: data and domain.
@@ -39,32 +34,8 @@ import org.gnome.Struct7;
 @Singleton
 public class FactEntityMapper {
 
-  // Computer's time zone
-  // It is assumed that remote computer has the same time zone as the mobile device.
-  private @Nonnull TimeZone remoteTimeZone = TimeZone.getDefault();
-
   public @Inject FactEntityMapper() {
     //empty
-  }
-
-  public @Nonnull List<Fact> transformFromStruct5(@Nonnull List<Struct5> structList) {
-    List<Fact> factList = new ArrayList<>(structList.size());
-    Fact fact;
-    for (Struct5 struct : structList) {
-      fact = transform(new FactEntity(struct));
-      factList.add(fact);
-    }
-    return factList;
-  }
-
-  public @Nonnull List<Fact> transformFromStruct7(@Nonnull List<Struct7> structList) {
-    List<Fact> factList = new ArrayList<>(structList.size());
-    Fact fact;
-    for (Struct7 struct : structList) {
-      fact = transform(new FactEntity(struct));
-      factList.add(fact);
-    }
-    return factList;
   }
 
   public @Nonnull Fact transform(@Nonnull FactEntity factEntity) {
