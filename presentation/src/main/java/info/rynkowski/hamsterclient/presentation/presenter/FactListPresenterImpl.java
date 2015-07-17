@@ -148,11 +148,6 @@ public class FactListPresenterImpl implements FactListPresenter {
     }
   }
 
-  @Override public void onRefresh() {
-    loadFactList();
-  }
-
-
   @Override public void onAddFact() {
     if (viewListView != null) {
       viewListView.navigateToAddFact();
@@ -197,7 +192,6 @@ public class FactListPresenterImpl implements FactListPresenter {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(id -> log.info("Removed a fact, id: {}", id), this::onException);
   }
-
 
   @Override public void onNewFactPrepared(@NonNull FactModel newFact) {
     log.debug("onAddFact()");

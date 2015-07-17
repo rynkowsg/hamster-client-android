@@ -22,11 +22,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -54,7 +54,7 @@ public class FactListFragment extends BaseFragment implements FactListView {
   @Inject FactListPresenter factListPresenter;
 
   @Bind(R.id.rv_facts) RecyclerView rv_facts;
-  @Bind(R.id.fragment_swipe_container) SwipeRefreshLayout swipeRefreshLayout;
+  @Bind(R.id.progress_circular) ProgressBar progress_circular;
 
   private FactsAdapter factsAdapter;
 
@@ -82,9 +82,6 @@ public class FactListFragment extends BaseFragment implements FactListView {
     factsAdapter = new FactsAdapter(getActivity(), new ArrayList<>());
     factsAdapter.setOnFactActionListener(factListPresenter);
     rv_facts.setAdapter(factsAdapter);
-
-    //noinspection Convert2MethodRef
-    swipeRefreshLayout.setOnRefreshListener(() -> factListPresenter.onRefresh());
   }
 
   @Override public void onStart() {
@@ -165,12 +162,12 @@ public class FactListFragment extends BaseFragment implements FactListView {
 
   @Override public void showLoading() {
     log.debug("showLoading()");
-    swipeRefreshLayout.setRefreshing(true);
+    progress_circular.setVisibility(View.VISIBLE);
   }
 
   @Override public void hideLoading() {
     log.debug("hideLoading()");
-    swipeRefreshLayout.setRefreshing(false);
+    progress_circular.setVisibility(View.INVISIBLE);
   }
 
   private void setupRetryDialog() {
