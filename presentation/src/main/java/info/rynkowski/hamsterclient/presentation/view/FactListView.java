@@ -27,6 +27,16 @@ import javax.annotation.Nonnull;
 public interface FactListView extends LoadDataView {
 
   /**
+   * Opens a view that allows entering a data of new fact.
+   */
+  void navigateToAddFact();
+
+  /**
+   * Opens a view that allows modification of picked fact.
+   */
+  void navigateToEditFact(@Nonnull FactModel fact);
+
+  /**
    * Render a fact list in the UI.
    *
    * @param facts The collection of {@link FactModel} that will be shown.

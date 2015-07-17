@@ -44,7 +44,8 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class FactFormActivity extends BaseActivity {
 
-  public static final String EXTRAS_KEY_FACT = "EXTRAS_KEY_FACT";
+  public static final String INPUT_EXTRAS_KEY_FACT = "INPUT_EXTRAS_KEY_FACT";
+  public static final String OUTPUT_EXTRAS_KEY_FACT = "OUTPUT_EXTRAS_KEY_FACT";
 
   @Bind(R.id.et_activity) EditText editTextActivity;
   @Bind(R.id.et_category) EditText editTextCategory;
@@ -54,10 +55,12 @@ public class FactFormActivity extends BaseActivity {
   @Bind(R.id.et_description) EditText editTextDescription;
   @Bind(R.id.cb_ongoing) CheckBox checkBoxIsInProgress;
 
-  private boolean isEndTimeDisabled;
+  private boolean isFactOngoing;
 
   private @NonNull Calendar selectedStartTime = GregorianCalendar.getInstance(Locale.getDefault());
   private @NonNull Calendar selectedEndTime = GregorianCalendar.getInstance(Locale.getDefault());
+
+  private Optional<FactModel> fact = Optional.absent();
 
   public static @NonNull Intent getCallingIntent(@NonNull Context context) {
     return new Intent(context, FactFormActivity.class);
@@ -67,7 +70,10 @@ public class FactFormActivity extends BaseActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_fact_form);
     ButterKnife.bind(this);
-    initiateTimeFields();
+
+    fact = Optional.fromNullable(getIntent().getParcelableExtra(INPUT_EXTRAS_KEY_FACT));
+
+    inflateFields();
   }
 
   @OnClick({ R.id.et_start_time, R.id.et_end_time }) public void onTimeClicked(final View view) {
@@ -83,7 +89,7 @@ public class FactFormActivity extends BaseActivity {
         minutes = selectedEndTime.get(Calendar.MINUTE);
         break;
       default:
-        throw new RuntimeException("Unknown view id");
+        throw new AssertionError("Unknown view id");
     }
 
     TimePickerDialog timePicker = new TimePickerDialog(FactFormActivity.this,
@@ -107,42 +113,66 @@ public class FactFormActivity extends BaseActivity {
   }
 
   @OnClick(R.id.cb_ongoing) public void onCheckBoxClicked(CheckBox checkBox) {
-    isEndTimeDisabled = checkBox.isChecked();
-    editTextEndTime.setEnabled(!isEndTimeDisabled);
+    isFactOngoing = checkBox.isChecked();
+    editTextEndTime.setEnabled(!isFactOngoing);
   }
 
   @OnClick(R.id.btn_apply) public void onApplyClicked(View view) {
     FactModel fact = readFact();
     Intent intent = FactFormActivity.this.getIntent();
-    intent.putExtra(EXTRAS_KEY_FACT, fact);
+    intent.putExtra(OUTPUT_EXTRAS_KEY_FACT, fact);
     setResult(Activity.RESULT_OK, intent);
     finish();
   }
 
   private @NonNull FactModel readFact() {
     return new FactModel.Builder()
+        .id(fact.isPresent() ? fact.get().getId() : Optional.absent())
         .activity(editTextActivity.getText().toString())
         .category(editTextCategory.getText().toString())
         .tags(splitTags(editTextTags.getText().toString()))
         .description(editTextDescription.getText().toString())
         .startTime(selectedStartTime)
-        .endTime(isEndTimeDisabled ? Optional.absent() : Optional.of(selectedEndTime))
+        .endTime(isFactOngoing ? Optional.absent() : Optional.of(selectedEndTime))
         .build();
   }
 
-  private void initiateTimeFields() {
-    editTextStartTime.setClickable(true);
-    editTextStartTime.setFocusable(false);
-    editTextStartTime.setEnabled(true);
-    editTextStartTime.setText(TimeConverter.toString(selectedStartTime, "HH:mm"));
+  private void inflateFields() {
+    // by default fact is ongoing
+    isFactOngoing = true;
 
+    if (fact.isPresent()) {
+      editTextActivity.setText(fact.get().getActivity());
+      editTextCategory.setText(fact.get().getCategory());
+      editTextTags.setText(StringUtils.join(fact.get().getTags(), ','));
+      editTextDescription.setText(fact.get().getDescription());
+
+      selectedStartTime = fact.get().getStartTime();
+
+      Optional<Calendar> endTime = fact.get().getEndTime();
+      if (endTime.isPresent()) {
+        selectedEndTime = endTime.get();
+        isFactOngoing = false;
+      }
+    }
+    inflateTimeFields();
+  }
+
+  private void inflateTimeFields() {
+    editTextStartTime.setClickable(true);
     editTextEndTime.setClickable(true);
+
+    editTextStartTime.setFocusable(false);
     editTextEndTime.setFocusable(false);
-    editTextEndTime.setEnabled(false);
+
+    editTextStartTime.setText(TimeConverter.toString(selectedStartTime, "HH:mm"));
     editTextEndTime.setText(TimeConverter.toString(selectedEndTime, "HH:mm"));
 
-    isEndTimeDisabled = true;
-    checkBoxIsInProgress.setChecked(true);
+    editTextStartTime.setEnabled(true);
+
+    // by default a fact is ongoing, so endTime checkbox is disabled
+    checkBoxIsInProgress.setChecked(isFactOngoing);
+    editTextEndTime.setEnabled(!isFactOngoing);
   }
 
   private @NonNull List<String> splitTags(@NonNull String tags) {

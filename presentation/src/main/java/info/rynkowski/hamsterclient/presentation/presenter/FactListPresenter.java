@@ -21,7 +21,11 @@ import info.rynkowski.hamsterclient.presentation.model.FactModel;
 
 public interface FactListPresenter extends Presenter, OnFactActionListener, OnRefreshListener {
 
-  void onAddFact(@NonNull FactModel fact);
+  void onAddFact();
+
+  void onNewFactPrepared(@NonNull FactModel newFact);
+
+  void onEditedFactPrepared(@NonNull FactModel editedFact);
 
   void onRetry();
 }

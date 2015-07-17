@@ -34,7 +34,6 @@ import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.presentation.presenter.FactListPresenter;
 import info.rynkowski.hamsterclient.presentation.view.FactListView;
 import info.rynkowski.hamsterclient.ui.R;
-import info.rynkowski.hamsterclient.ui.navigation.Navigator;
 import info.rynkowski.hamsterclient.ui.view.activity.FactFormActivity;
 import info.rynkowski.hamsterclient.ui.view.adapter.FactsAdapter;
 import info.rynkowski.hamsterclient.ui.view.adapter.FactsLayoutManager;
@@ -48,6 +47,9 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class FactListFragment extends BaseFragment implements FactListView {
+
+  private final static int REQUEST_CODE_ADD_FACT = 0;
+  private final static int REQUEST_CODE_EDIT_FACT = 1;
 
   @Inject FactListPresenter factListPresenter;
 
@@ -119,28 +121,41 @@ public class FactListFragment extends BaseFragment implements FactListView {
   }
 
   @OnClick(R.id.fab_add_fact) public void onAddFactClicked(View view) {
-    navigator.navigateToFactFormForResult(FactListFragment.this, Navigator.REQUEST_CODE_PICK_FACT);
+    factListPresenter.onAddFact();
   }
 
   @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    log.debug("Called onActivityResult(requestCode={}, resultCode={}) : {}", requestCode,
+        resultCode, resultCode == Activity.RESULT_OK ? "ok"
+            : (resultCode == Activity.RESULT_CANCELED ? "cancelled" : "unknown result code"));
+
     switch (requestCode) {
-      case (Navigator.REQUEST_CODE_PICK_FACT):
+      case REQUEST_CODE_ADD_FACT:
         if (resultCode == Activity.RESULT_OK) {
-          log.debug("Called onActivityResult(requestCode={}, resultCode={}) : ok", requestCode,
-              resultCode);
-          FactModel fact = data.getParcelableExtra(FactFormActivity.EXTRAS_KEY_FACT);
-          factListPresenter.onAddFact(fact);
+          FactModel fact = data.getParcelableExtra(FactFormActivity.OUTPUT_EXTRAS_KEY_FACT);
+          factListPresenter.onNewFactPrepared(fact);
           showToastMessage("New fact:" + fact.getActivity());
-        } else {
-          log.warn("Called onActivityResult(requestCode={}, resultCode={}) : failed", requestCode,
-              resultCode);
+        }
+      case REQUEST_CODE_EDIT_FACT:
+        if (resultCode == Activity.RESULT_OK) {
+          FactModel fact = data.getParcelableExtra(FactFormActivity.OUTPUT_EXTRAS_KEY_FACT);
+          factListPresenter.onEditedFactPrepared(fact);
         }
         break;
       default:
-        log.debug("Called onActivityResult(requestCode={}, resultCode={}) : unknown request code",
-            requestCode, resultCode);
-        super.onActivityResult(requestCode, resultCode, data);
+        throw new AssertionError("Unknown request code");
     }
+  }
+
+  @Override public void navigateToAddFact() {
+    navigator.navigateToFactFormForResult(FactListFragment.this, REQUEST_CODE_ADD_FACT);
+  }
+
+  @Override public void navigateToEditFact(@NonNull FactModel fact) {
+    Intent intentToLaunch = FactFormActivity.getCallingIntent(FactListFragment.this.getActivity());
+    intentToLaunch.putExtra(FactFormActivity.INPUT_EXTRAS_KEY_FACT, fact);
+    startActivityForResult(intentToLaunch, REQUEST_CODE_EDIT_FACT);
+    //navigator.navigateToFactFormForResult(FactListFragment.this, REQUEST_CODE_EDIT_FACT);
   }
 
   @Override public void showFactList(@NonNull List<FactModel> facts) {

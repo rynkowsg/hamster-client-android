@@ -152,14 +152,18 @@ public class FactListPresenterImpl implements FactListPresenter {
     loadFactList();
   }
 
-  @Override public void onAddFact(@NonNull FactModel fact) {
-    log.debug("onAddFact()");
-    Observable.just(fact)
-        .map(mapper::transform)
-        .flatMap(addFactUseCase::execute)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(id -> log.info("New fact added, id={}", id), this::onException);
+
+  @Override public void onAddFact() {
+    if (viewListView != null) {
+      viewListView.navigateToAddFact();
+    }
+  }
+
+  @Override public void onEditFact(@NonNull FactModel fact) {
+    log.debug("onEditFact()");
+    if (viewListView != null) {
+      viewListView.navigateToEditFact(fact);
+    }
   }
 
   @Override public void onStartFact(@NonNull FactModel fact) {
@@ -184,16 +188,6 @@ public class FactListPresenterImpl implements FactListPresenter {
         .subscribe(id -> log.info("Stopped a fact, id={}", id), this::onException);
   }
 
-  @Override public void onEditFact(@NonNull FactModel fact) {
-    log.debug("onEditFact()");
-    Observable.just(fact)
-        .map(mapper::transform)
-        .flatMap(editFactUseCase::execute)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(id -> log.info("Edited a fact , id={}", id), this::onException);
-  }
-
   @Override public void onRemoveFact(@NonNull FactModel fact) {
     log.debug("onRemoveFact()");
     Observable.just(fact)
@@ -202,5 +196,25 @@ public class FactListPresenterImpl implements FactListPresenter {
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(id -> log.info("Removed a fact, id: {}", id), this::onException);
+  }
+
+
+  @Override public void onNewFactPrepared(@NonNull FactModel newFact) {
+    log.debug("onAddFact()");
+    Observable.just(newFact)
+        .map(mapper::transform)
+        .flatMap(addFactUseCase::execute)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(id -> log.info("Added a new fact, id={}", id), this::onException);
+  }
+
+  @Override public void onEditedFactPrepared(@NonNull FactModel editedFact) {
+    Observable.just(editedFact)
+        .map(mapper::transform)
+        .flatMap(editFactUseCase::execute)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(id -> log.info("The fact was edited, id={}", id), this::onException);
   }
 }
