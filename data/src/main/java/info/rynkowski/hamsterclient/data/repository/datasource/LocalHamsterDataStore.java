@@ -43,26 +43,53 @@ public class LocalHamsterDataStore implements HamsterDataStore {
   }
 
   @Override public @Nonnull Observable<List<FactEntity>> getTodaysFacts() {
-    return Observable.empty();
+    FactsDbAdapter factsDbAdapter = new FactsDbAdapter(context).open();
+    List<FactEntity> list = factsDbAdapter.getFacts();
+    factsDbAdapter.close();
+
+    return Observable.just(list);
   }
 
   @Override public @Nonnull Observable<Integer> addFact(@Nonnull FactEntity factEntity) {
-    //FactsDbAdapter factsDbAdapter = new FactsDbAdapter(context).open();
-    //int localId = factsDbAdapter.insertFact(factEntity);
-    //factsDbAdapter.close();
-    //
-    //signalFactsChanged.onNext(null);
-    //
-    //return Observable.just(localId);
-    return Observable.empty();
+    FactsDbAdapter factsDbAdapter = new FactsDbAdapter(context).open();
+    int id = factsDbAdapter.insertFact(factEntity);
+    factsDbAdapter.close();
+
+    if(id == -1) {
+      return Observable.error(new RuntimeException("Inserting a fact to database failed"));
+    }
+
+    signalFactsChanged.onNext(null);
+
+    return Observable.just(id);
   }
 
   @Override public @Nonnull Observable<Void> removeFact(@Nonnull Integer id) {
+    FactsDbAdapter factsDbAdapter = new FactsDbAdapter(context).open();
+    boolean resultValue = factsDbAdapter.deleteFact(id);
+    factsDbAdapter.close();
+
+    if (!resultValue) {
+      return Observable.error(new RuntimeException("Deleting a fact from database failed"));
+    }
+
+    signalFactsChanged.onNext(null);
+
     return Observable.empty();
   }
 
   @Override public @Nonnull Observable<Integer> updateFact(@Nonnull FactEntity fact) {
-    return Observable.empty();
+    FactsDbAdapter factsDbAdapter = new FactsDbAdapter(context).open();
+    boolean resultValue = factsDbAdapter.updateFact(fact);
+    factsDbAdapter.close();
+
+    if (!resultValue) {
+      return Observable.error(new RuntimeException("Updating a fact in database failed"));
+    }
+
+    signalFactsChanged.onNext(null);
+
+    return Observable.just(fact.getId().get());
   }
 
   @Override public @Nonnull Observable<Void> signalActivitiesChanged() {
