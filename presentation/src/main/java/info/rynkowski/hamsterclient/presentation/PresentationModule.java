@@ -16,7 +16,6 @@
 
 package info.rynkowski.hamsterclient.presentation;
 
-import android.support.annotation.NonNull;
 import dagger.Module;
 import dagger.Provides;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
@@ -27,6 +26,7 @@ import info.rynkowski.hamsterclient.presentation.model.mapper.FactModelDataMappe
 import info.rynkowski.hamsterclient.presentation.presenter.FactListPresenter;
 import info.rynkowski.hamsterclient.presentation.presenter.FactListPresenterImpl;
 import java.util.List;
+import javax.annotation.Nonnull;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -37,13 +37,13 @@ import javax.inject.Singleton;
 public class PresentationModule {
 
   @Provides @Singleton FactListPresenter provideFactListPresenter(
-      @NonNull HamsterRepository hamsterRepository, @NonNull FactModelDataMapper mapper,
-      @Named("AddFact") @NonNull UseCase<Fact, Void> addFactUseCase,
-      @Named("EditFact") @NonNull UseCase<Fact, Void> editFactUseCase,
-      @Named("GetTodaysFacts") @NonNull UseCaseNoArgs<List<Fact>> getTodaysFactsUseCase,
-      @Named("RemoveFact") @NonNull UseCase<Fact, Void> removeFactUseCase,
-      @Named("StartFact") @NonNull UseCase<Fact, Void> startFactUseCase,
-      @Named("StopFact") @NonNull UseCase<Fact, Void> stopFactUseCase) {
+      @Nonnull HamsterRepository hamsterRepository, @Nonnull FactModelDataMapper mapper,
+      @Named("AddFact") @Nonnull UseCase<Fact, Void> addFactUseCase,
+      @Named("EditFact") @Nonnull UseCase<Fact, Void> editFactUseCase,
+      @Named("GetTodaysFacts") @Nonnull UseCaseNoArgs<List<Fact>> getTodaysFactsUseCase,
+      @Named("RemoveFact") @Nonnull UseCase<Fact, Void> removeFactUseCase,
+      @Named("StartFact") @Nonnull UseCase<Fact, Void> startFactUseCase,
+      @Named("StopFact") @Nonnull UseCase<Fact, Void> stopFactUseCase) {
     return new FactListPresenterImpl(hamsterRepository, mapper, addFactUseCase, editFactUseCase,
         getTodaysFactsUseCase, removeFactUseCase, startFactUseCase, stopFactUseCase);
   }

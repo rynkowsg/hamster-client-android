@@ -16,8 +16,6 @@
 
 package info.rynkowski.hamsterclient.presentation.presenter;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.interactor.UseCase;
 import info.rynkowski.hamsterclient.domain.interactor.UseCaseNoArgs;
@@ -26,6 +24,8 @@ import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.presentation.model.mapper.FactModelDataMapper;
 import info.rynkowski.hamsterclient.presentation.view.FactListView;
 import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -43,26 +43,26 @@ import rx.schedulers.Schedulers;
 @Singleton
 public class FactListPresenterImpl implements FactListPresenter {
 
-  private final @NonNull HamsterRepository hamsterRepository;
-  private final @NonNull FactModelDataMapper mapper;
+  private final @Nonnull HamsterRepository hamsterRepository;
+  private final @Nonnull FactModelDataMapper mapper;
 
-  private final @NonNull UseCase<Fact, Void> addFactUseCase;
-  private final @NonNull UseCase<Fact, Void> editFactUseCase;
-  private final @NonNull UseCaseNoArgs<List<Fact>> getTodaysFactsUseCase;
-  private final @NonNull UseCase<Fact, Void> startFactUseCase;
-  private final @NonNull UseCase<Fact, Void> stopFactUseCase;
-  private final @NonNull UseCase<Fact, Void> removeFactUseCase;
+  private final @Nonnull UseCase<Fact, Void> addFactUseCase;
+  private final @Nonnull UseCase<Fact, Void> editFactUseCase;
+  private final @Nonnull UseCaseNoArgs<List<Fact>> getTodaysFactsUseCase;
+  private final @Nonnull UseCase<Fact, Void> startFactUseCase;
+  private final @Nonnull UseCase<Fact, Void> stopFactUseCase;
+  private final @Nonnull UseCase<Fact, Void> removeFactUseCase;
 
   private @Nullable FactListView viewListView;
 
-  @Inject public FactListPresenterImpl(@NonNull HamsterRepository hamsterRepository,
-      @NonNull FactModelDataMapper mapper,
-      @Named("AddFact") @NonNull UseCase<Fact, Void> addFactUseCase,
-      @Named("EditFact") @NonNull UseCase<Fact, Void> editFactUseCase,
-      @Named("GetTodaysFacts") @NonNull UseCaseNoArgs<List<Fact>> getTodaysFactsUseCase,
-      @Named("RemoveFact") @NonNull UseCase<Fact, Void> removeFactUseCase,
-      @Named("StartFact") @NonNull UseCase<Fact, Void> startFactUseCase,
-      @Named("StopFact") @NonNull UseCase<Fact, Void> stopFactUseCase) {
+  @Inject public FactListPresenterImpl(@Nonnull HamsterRepository hamsterRepository,
+      @Nonnull FactModelDataMapper mapper,
+      @Named("AddFact") @Nonnull UseCase<Fact, Void> addFactUseCase,
+      @Named("EditFact") @Nonnull UseCase<Fact, Void> editFactUseCase,
+      @Named("GetTodaysFacts") @Nonnull UseCaseNoArgs<List<Fact>> getTodaysFactsUseCase,
+      @Named("RemoveFact") @Nonnull UseCase<Fact, Void> removeFactUseCase,
+      @Named("StartFact") @Nonnull UseCase<Fact, Void> startFactUseCase,
+      @Named("StopFact") @Nonnull UseCase<Fact, Void> stopFactUseCase) {
     this.hamsterRepository = hamsterRepository;
     this.mapper = mapper;
     this.addFactUseCase = addFactUseCase;
@@ -154,14 +154,14 @@ public class FactListPresenterImpl implements FactListPresenter {
     }
   }
 
-  @Override public void onEditFact(@NonNull FactModel fact) {
+  @Override public void onEditFact(@Nonnull FactModel fact) {
     log.debug("onEditFact()");
     if (viewListView != null) {
       viewListView.navigateToEditFact(fact);
     }
   }
 
-  @Override public void onStartFact(@NonNull FactModel fact) {
+  @Override public void onStartFact(@Nonnull FactModel fact) {
     log.debug("onStartFact()");
     Observable.just(fact)
         .map(mapper::transform)
@@ -171,7 +171,7 @@ public class FactListPresenterImpl implements FactListPresenter {
         .subscribe(id -> log.info("Started a fact, id={}", id), this::onException);
   }
 
-  @Override public void onStopFact(@NonNull FactModel fact) {
+  @Override public void onStopFact(@Nonnull FactModel fact) {
     log.debug("onStopFact()");
     log.debug("    id:             {}", fact.getId().isPresent() ? fact.getId().get() : "absent");
     log.debug("    activity:       \"{}\"", fact.getActivity());
@@ -183,7 +183,7 @@ public class FactListPresenterImpl implements FactListPresenter {
         .subscribe(id -> log.info("Stopped a fact, id={}", id), this::onException);
   }
 
-  @Override public void onRemoveFact(@NonNull FactModel fact) {
+  @Override public void onRemoveFact(@Nonnull FactModel fact) {
     log.debug("onRemoveFact()");
     Observable.just(fact)
         .map(mapper::transform)
@@ -193,7 +193,7 @@ public class FactListPresenterImpl implements FactListPresenter {
         .subscribe(id -> log.info("Removed a fact, id: {}", id), this::onException);
   }
 
-  @Override public void onNewFactPrepared(@NonNull FactModel newFact) {
+  @Override public void onNewFactPrepared(@Nonnull FactModel newFact) {
     log.debug("onAddFact()");
     Observable.just(newFact)
         .map(mapper::transform)
@@ -203,7 +203,7 @@ public class FactListPresenterImpl implements FactListPresenter {
         .subscribe(id -> log.info("Added a new fact, id={}", id), this::onException);
   }
 
-  @Override public void onEditedFactPrepared(@NonNull FactModel editedFact) {
+  @Override public void onEditedFactPrepared(@Nonnull FactModel editedFact) {
     Observable.just(editedFact)
         .map(mapper::transform)
         .flatMap(editFactUseCase::execute)

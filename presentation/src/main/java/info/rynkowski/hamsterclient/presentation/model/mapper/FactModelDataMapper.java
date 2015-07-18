@@ -16,12 +16,12 @@
 
 package info.rynkowski.hamsterclient.presentation.model.mapper;
 
-import android.support.annotation.NonNull;
 import info.rynkowski.hamsterclient.domain.entities.Activity;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
 public class FactModelDataMapper {
@@ -30,7 +30,7 @@ public class FactModelDataMapper {
     //empty
   }
 
-  public @NonNull Fact transform(@NonNull FactModel factModel) {
+  public @Nonnull Fact transform(@Nonnull FactModel factModel) {
     return new Fact.Builder()
         .id(factModel.getId())
         .activity(new Activity(factModel.getActivity(), factModel.getCategory()))
@@ -41,7 +41,7 @@ public class FactModelDataMapper {
         .build();
   }
 
-  public @NonNull FactModel transform(@NonNull Fact fact) {
+  public @Nonnull FactModel transform(@Nonnull Fact fact) {
     return new FactModel.Builder()
         .id(fact.getId())
         .activity(fact.getActivity().getName())
@@ -53,7 +53,7 @@ public class FactModelDataMapper {
         .build();
   }
 
-  public @NonNull List<FactModel> transform(@NonNull List<Fact> factList) {
+  public @Nonnull List<FactModel> transform(@Nonnull List<Fact> factList) {
     List<FactModel> factModelList = new ArrayList<>(factList.size());
     FactModel factModel;
     for (Fact fact : factList) {

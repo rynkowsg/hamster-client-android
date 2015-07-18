@@ -66,6 +66,5 @@ dependencies {
   compile presentationDependencies.guava
   compile presentationDependencies.rxJava
   compile presentationDependencies.slf4jApi
-  compile presentationDependencies.supportAnnotations
   provided presentationDependencies.lombok
 }

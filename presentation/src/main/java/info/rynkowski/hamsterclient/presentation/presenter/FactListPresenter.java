@@ -16,16 +16,16 @@
 
 package info.rynkowski.hamsterclient.presentation.presenter;
 
-import android.support.annotation.NonNull;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
+import javax.annotation.Nonnull;
 
 public interface FactListPresenter extends Presenter, OnFactActionListener {
 
   void onAddFact();
 
-  void onNewFactPrepared(@NonNull FactModel newFact);
+  void onNewFactPrepared(@Nonnull FactModel newFact);
 
-  void onEditedFactPrepared(@NonNull FactModel editedFact);
+  void onEditedFactPrepared(@Nonnull FactModel editedFact);
 
   void onRetry();
 }
