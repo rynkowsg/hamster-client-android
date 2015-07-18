@@ -12,12 +12,12 @@ ext {
   androidTargetSdkVersion = 22
 
   //Libraries
-  appcompatV7Version = '22.2.0'
-  cardViewV7Version = '22.2.0'
-  designVersion = '22.2.0'
-  recyclerViewV7Version = '22.2.0'
-  supportAnnotationsVersion = '22.2.0'
-  supportV4Version = '22.2.0'
+  appcompatV7Version = '22.2.1'
+  cardViewV7Version = '22.2.1'
+  designVersion = '22.2.1'
+  recyclerViewV7Version = '22.2.1'
+  supportAnnotationsVersion = '22.2.1'
+  supportV4Version = '22.2.1'
 
   androidLoggerVersion = '1.3.5'
   butterKnifeVersion = '7.0.1'
