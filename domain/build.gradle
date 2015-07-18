@@ -7,6 +7,7 @@ buildscript {
   }
 }
 
+apply plugin: 'idea'
 apply plugin: 'java'
 apply plugin: 'me.tatarka.retrolambda'
 
@@ -28,9 +29,11 @@ configurations {
 
 sourceSets {
   main {
-    compileClasspath += configurations.provided
+    compileClasspath += [configurations.provided]
   }
 }
+
+idea.module.scopes.PROVIDED.plus += [configurations.provided]
 
 dependencies {
   def domainDependencies = rootProject.ext.domainDependencies
