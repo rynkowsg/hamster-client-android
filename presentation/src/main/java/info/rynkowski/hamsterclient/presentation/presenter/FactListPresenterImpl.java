@@ -32,6 +32,7 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.freedesktop.dbus.exceptions.DBusException;
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -54,6 +55,8 @@ public class FactListPresenterImpl implements FactListPresenter {
   private final @Nonnull UseCase<Fact, Void> removeFactUseCase;
 
   private @Nullable FactListView viewListView;
+
+  private @Nullable Subscription signalFactsChangedSubscription;
 
   @Inject public FactListPresenterImpl(@Nonnull HamsterRepository hamsterRepository,
       @Nonnull FactModelDataMapper mapper,
@@ -81,16 +84,17 @@ public class FactListPresenterImpl implements FactListPresenter {
     log.debug("start()");
 
     loadFactList();
-    registerSignals();
 
     log.debug("FactList started.");
   }
 
   @Override public void resume() {
+    registerSignals();
     log.debug("FactList resumed.");
   }
 
   @Override public void pause() {
+    unregisterSignals();
     log.debug("FactList paused.");
   }
 
@@ -117,11 +121,17 @@ public class FactListPresenterImpl implements FactListPresenter {
   }
 
   private void registerSignals() {
-    log.debug("registerSignals()");
-    hamsterRepository.signalFactsChanged()
+    signalFactsChangedSubscription = hamsterRepository.signalFactsChanged()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(o -> this.onFactsChanged(), this::onException);
+    log.debug("Signals registered.");
+  }
+
+  private void unregisterSignals() {
+    assert signalFactsChangedSubscription != null : "Signal should be registered on resume.";
+    signalFactsChangedSubscription.unsubscribe();
+    log.debug("Signals unregistered.");
   }
 
   private void onFactsChanged() {
