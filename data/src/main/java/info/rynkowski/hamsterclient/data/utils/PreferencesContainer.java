@@ -19,8 +19,8 @@ package info.rynkowski.hamsterclient.data.utils;
 import javax.annotation.Nonnull;
 
 public interface PreferencesContainer {
+  
+  @Nonnull String dbusHost();
 
-  @Nonnull String getDbusHost();
-
-  @Nonnull String getDbusPort();
+  @Nonnull String dbusPort();
 }

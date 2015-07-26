@@ -34,12 +34,15 @@
     <string name="action_settings">Settings</string>
 
     <!-- Preferences' keys, titles and descriptions -->
-    <string name="prefs.key.dbus_host">host</string> <!-- Do not translate -->
-    <string name="prefs.key.dbus_port">port</string> <!-- Do not translate -->
-    <string name="prefs.title.dbus_host">Host</string>
-    <string name="prefs.title.dbus_port">Port</string>
-    <string name="prefs.summary.dbus_host">The host name or ip address of your server.</string>
-    <string name="prefs.summary.dbus_port">The port to connect to your server.</string>
+    <string name="prefsCategory.databaseSettings">Database settings</string>
+
+    <string name="pref.dbusHost.key">pref.dbusHost.key</string> <!-- Do not translate -->
+    <string name="pref.dbusHost.title">Host</string>
+    <string name="pref.dbusHost.summary">The host name or ip address of your server.</string>
+
+    <string name="pref.dbusPort.key">prefs.dbusPort.key</string> <!-- Do not translate -->
+    <string name="pref.dbusPort.title">Port</string>
+    <string name="pref.dbusPort.summary">The port to connect to your server.</string>
 
     <!-- Actions of fact card' popup menu -->
     <string name="fact_card.popup_menu.action_start">Start</string>

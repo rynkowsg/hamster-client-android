@@ -43,7 +43,7 @@ public class ConnectionProviderOverNetwork implements ConnectionProvider {
 
   @Override public synchronized DBusConnection get() throws DBusException {
     if (connection == null) {
-      String address = dbusAddress(preferences.getDbusHost(), preferences.getDbusPort());
+      String address = dbusAddress(preferences.dbusHost(), preferences.dbusPort());
       log.debug("Opening D-Bus connection on address: {}", address);
       connection = DBusConnection.getConnection(address);
       log.info("D-Bus connection has been established successfully.");

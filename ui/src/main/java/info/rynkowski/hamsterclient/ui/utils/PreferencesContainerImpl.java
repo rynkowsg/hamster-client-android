@@ -34,15 +34,15 @@ public class PreferencesContainerImpl implements PreferencesContainer {
     this.preferences = PreferenceManager.getDefaultSharedPreferences(context);
   }
 
-  @Override public @NonNull String getDbusHost() {
-    String key = context.getResources().getString(R.string.prefs_key_dbus_host);
-    String defaultValue = context.getResources().getString(R.string.prefs_default_value_dbus_host);
+  @Override public @NonNull String dbusHost() {
+    String key = context.getResources().getString(R.string.pref_dbusHost_key);
+    String defaultValue = context.getResources().getString(R.string.pref_dbusHost_defaultValue);
     return preferences.getString(key, defaultValue);
   }
 
-  @Override public @NonNull String getDbusPort() {
-    String key = context.getResources().getString(R.string.prefs_key_dbus_port);
-    String defaultValue = context.getResources().getString(R.string.prefs_default_value_dbus_port);
+  @Override public @NonNull String dbusPort() {
+    String key = context.getResources().getString(R.string.pref_dbusPort_key);
+    String defaultValue = context.getResources().getString(R.string.pref_dbusPort_defaultValue);
     return preferences.getString(key, defaultValue);
   }
 }

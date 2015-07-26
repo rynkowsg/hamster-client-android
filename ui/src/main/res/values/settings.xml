@@ -16,6 +16,6 @@
   -->
 
 <resources>
-    <string name="prefs.default_value.dbus_host">10.0.2.5</string>
-    <string name="prefs.default_value.dbus_port">55555</string>
+    <string name="pref.dbusHost.defaultValue">10.0.2.5</string>
+    <string name="pref.dbusPort.defaultValue">55555</string>
 </resources>
