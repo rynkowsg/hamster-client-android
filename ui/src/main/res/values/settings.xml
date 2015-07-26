@@ -16,6 +16,7 @@
   -->
 
 <resources>
+    <bool name="pref.isDatabaseRemote.defaultValue">false</bool>
     <string name="pref.dbusHost.defaultValue">10.0.2.5</string>
     <string name="pref.dbusPort.defaultValue">55555</string>
 </resources>

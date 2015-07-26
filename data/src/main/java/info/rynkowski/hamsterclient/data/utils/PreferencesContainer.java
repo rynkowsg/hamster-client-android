@@ -19,7 +19,9 @@ package info.rynkowski.hamsterclient.data.utils;
 import javax.annotation.Nonnull;
 
 public interface PreferencesContainer {
-  
+
+  @Nonnull Boolean isDatabaseRemote();
+
   @Nonnull String dbusHost();
 
   @Nonnull String dbusPort();

@@ -18,6 +18,7 @@ package info.rynkowski.hamsterclient.data.repository;
 
 import info.rynkowski.hamsterclient.data.entity.mapper.FactEntityMapper;
 import info.rynkowski.hamsterclient.data.repository.datasource.HamsterDataStore;
+import info.rynkowski.hamsterclient.data.utils.PreferencesContainer;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
 import java.util.List;
@@ -35,22 +36,27 @@ import rx.Observable;
 @Singleton
 public class HamsterRepositoryImpl implements HamsterRepository {
 
+  private @Nonnull PreferencesContainer preferencesContainer;
+
+  private @Nonnull HamsterDataStore localStore;
+  private @Nonnull HamsterDataStore remoteStore;
+
   private @Nonnull FactEntityMapper factEntityMapper;
 
-  private volatile @Nonnull HamsterDataStore localStore;
-  private volatile @Nonnull HamsterDataStore remoteStore;
 
-  @Inject public HamsterRepositoryImpl(@Named("local") @Nonnull HamsterDataStore localStore,
+  @Inject public HamsterRepositoryImpl(@Nonnull PreferencesContainer preferencesContainer,
+      @Named("local") @Nonnull HamsterDataStore localStore,
       @Named("remote") @Nonnull HamsterDataStore remoteStore,
       @Nonnull FactEntityMapper factEntityMapper) {
 
-    this.factEntityMapper = factEntityMapper;
+    this.preferencesContainer = preferencesContainer;
     this.localStore = localStore;
     this.remoteStore = remoteStore;
+    this.factEntityMapper = factEntityMapper;
   }
 
   @Override public @Nonnull Observable<List<Fact>> getTodaysFacts() {
-    return remoteStore.getTodaysFacts()
+    return currentStore().getTodaysFacts()
         .flatMap(Observable::from)
         .map(factEntityMapper::transform)
         .toList();
@@ -59,32 +65,36 @@ public class HamsterRepositoryImpl implements HamsterRepository {
   @Override public @Nonnull Observable<Integer> addFact(@Nonnull Fact fact) {
     return Observable.just(fact)
         .map(factEntityMapper::transform)
-        .flatMap(remoteStore::addFact);
+        .flatMap(currentStore()::addFact);
   }
 
   @Override public @Nonnull Observable<Void> removeFact(@Nonnull Integer id) {
-    return remoteStore.removeFact(id);
+    return currentStore().removeFact(id);
   }
 
   @Override public @Nonnull Observable<Integer> updateFact(@Nonnull Fact fact) {
     return Observable.just(fact)
         .map(factEntityMapper::transform)
-        .flatMap(remoteStore::updateFact);
+        .flatMap(currentStore()::updateFact);
   }
 
   @Override public @Nonnull Observable<Void> signalActivitiesChanged() {
-    return remoteStore.signalActivitiesChanged();
+    return currentStore().signalActivitiesChanged();
   }
 
   @Override public @Nonnull Observable<Void> signalFactsChanged() {
-    return remoteStore.signalFactsChanged();
+    return currentStore().signalFactsChanged();
   }
 
   @Override public @Nonnull Observable<Void> signalTagsChanged() {
-    return remoteStore.signalTagsChanged();
+    return currentStore().signalTagsChanged();
   }
 
   @Override public @Nonnull Observable<Void> signalToggleCalled() {
-    return remoteStore.signalToggleCalled();
+    return currentStore().signalToggleCalled();
+  }
+
+  protected @Nonnull HamsterDataStore currentStore() {
+    return preferencesContainer.isDatabaseRemote() ? remoteStore : localStore;
   }
 }

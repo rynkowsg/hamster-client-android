@@ -36,6 +36,10 @@
     <!-- Preferences' keys, titles and descriptions -->
     <string name="prefsCategory.databaseSettings">Database settings</string>
 
+    <string name="pref.isDatabaseRemote.key">pref.isDatabaseRemote.key</string> <!-- Do not translate -->
+    <string name="pref.isDatabaseRemote.title">Use remote database</string>
+    <string name="pref.isDatabaseRemote.summary">Checked if remote server is configured.</string>
+
     <string name="pref.dbusHost.key">pref.dbusHost.key</string> <!-- Do not translate -->
     <string name="pref.dbusHost.title">Host</string>
     <string name="pref.dbusHost.summary">The host name or ip address of your server.</string>

@@ -34,6 +34,13 @@ public class PreferencesContainerImpl implements PreferencesContainer {
     this.preferences = PreferenceManager.getDefaultSharedPreferences(context);
   }
 
+  @Override public @NonNull Boolean isDatabaseRemote() {
+    String key = context.getResources().getString(R.string.pref_isDatabaseRemote_key);
+    Boolean defaultValue =
+        context.getResources().getBoolean(R.bool.pref_isDatabaseRemote_defaultValue);
+    return preferences.getBoolean(key, defaultValue);
+  }
+
   @Override public @NonNull String dbusHost() {
     String key = context.getResources().getString(R.string.pref_dbusHost_key);
     String defaultValue = context.getResources().getString(R.string.pref_dbusHost_defaultValue);
