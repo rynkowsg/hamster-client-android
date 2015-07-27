@@ -46,33 +46,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Activity"
             android:id="@+id/activity_name"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@+id/more_button"
+            android:layout_toStartOf="@id/more_button"
+            android:singleLine="true"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Category"
             android:id="@+id/category_name"
-            android:layout_below="@+id/activity_name"
-            android:layout_alignLeft="@+id/activity_name"
-            android:layout_alignStart="@+id/activity_name"
+            android:layout_below="@id/activity_name"
+            android:layout_alignLeft="@id/activity_name"
+            android:layout_alignStart="@id/activity_name"
+            android:layout_toLeftOf="@id/more_button"
+            android:layout_toStartOf="@id/more_button"
+            android:singleLine="true"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="00:00"
             android:id="@+id/start_time"
-            android:layout_below="@+id/category_name"
-            android:layout_alignLeft="@+id/category_name"
-            android:layout_alignStart="@+id/category_name"
+            android:layout_below="@id/category_name"
+            android:layout_alignLeft="@id/category_name"
+            android:layout_alignStart="@id/category_name"
             />
 
         <TextView
@@ -81,20 +84,19 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="-"
             android:id="@+id/dash"
-            android:layout_alignBottom="@+id/start_time"
-            android:layout_toRightOf="@+id/start_time"
-            android:layout_toEndOf="@+id/start_time"
+            android:layout_alignBottom="@id/start_time"
+            android:layout_toRightOf="@id/start_time"
+            android:layout_toEndOf="@id/start_time"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="01:00"
             android:id="@+id/end_time"
-            android:layout_alignBottom="@+id/dash"
-            android:layout_toRightOf="@+id/dash"
-            android:layout_toEndOf="@+id/dash"
+            android:layout_alignBottom="@id/dash"
+            android:layout_toRightOf="@id/dash"
+            android:layout_toEndOf="@id/dash"
             />
 
         <ImageView
@@ -102,10 +104,11 @@
             android:layout_height="wrap_content"
             android:id="@+id/more_button"
             android:src="@drawable/ic_more_vert_black_18dp"
-            android:layout_alignTop="@+id/activity_name"
+            android:layout_alignTop="@id/activity_name"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:clickable="true"
+            android:contentDescription="@string/facts_actions"
             />
 
     </RelativeLayout>

@@ -54,4 +54,7 @@
     <string name="fact_card.popup_menu.action_edit">Edit</string>
     <string name="fact_card.popup_menu.action_remove">Remove</string>
 
+    <!-- Content description of images and buttons -->
+    <string name="facts_actions">Fact\'s actions</string>
+
 </resources>
