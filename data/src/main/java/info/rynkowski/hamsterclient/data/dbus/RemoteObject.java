@@ -38,6 +38,8 @@ public interface RemoteObject<Type> {
   void unregisterSignalCallback(Class<? extends DBusSignal> signalClass,
       DBusSigHandler<DBusSignal> callback) throws DBusException;
 
+  void unregisterAllSignalCallbacks() throws DBusException;
+
   Observable<Void> createSignalObservable(Class<? extends DBusSignal> signalClass);
 
   /**

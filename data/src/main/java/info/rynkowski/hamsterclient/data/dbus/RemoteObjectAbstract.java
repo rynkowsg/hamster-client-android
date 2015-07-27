@@ -16,6 +16,7 @@
 
 package info.rynkowski.hamsterclient.data.dbus;
 
+import java.util.HashMap;
 import lombok.extern.slf4j.Slf4j;
 import org.freedesktop.dbus.DBusConnection;
 import org.freedesktop.dbus.DBusSigHandler;
@@ -37,6 +38,8 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
   private Class dbusType;
   private volatile Type remoteObject;
   private Observable<Type> remoteObjectObservable;
+
+  private HashMap<DBusSigHandler<DBusSignal>, Class<? extends DBusSignal>> registeredSignals;
 
   public RemoteObjectAbstract(ConnectionProvider connectionProvider, String busName,
       String objectPath, Class dbusType) {
@@ -80,12 +83,21 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
   public void registerSignalCallback(Class<? extends DBusSignal> signalClass,
       DBusSigHandler<DBusSignal> callback) throws DBusException {
     connectionProvider.get().addSigHandler((Class<DBusSignal>) signalClass, callback);
+    registeredSignals.put(callback, signalClass);
   }
 
   @Override @SuppressWarnings("unchecked")
   public void unregisterSignalCallback(Class<? extends DBusSignal> signalClass,
       DBusSigHandler<DBusSignal> callback) throws DBusException {
     connectionProvider.get().removeSigHandler((Class<DBusSignal>) signalClass, callback);
+    registeredSignals.remove(callback);
+  }
+
+  @Override public void unregisterAllSignalCallbacks() throws DBusException {
+    for (HashMap.Entry<DBusSigHandler<DBusSignal>, Class<? extends DBusSignal>> entry : registeredSignals
+        .entrySet()) {
+      registeredSignals.remove(entry.getKey());
+    }
   }
 
   @Override
@@ -102,6 +114,11 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
   //TODO: add unregisterSignalCallback to unsubscription
 
   @Override public synchronized void deinit() {
+    try {
+      unregisterAllSignalCallbacks();
+    } catch (DBusException e) {
+      log.error("Exception during callbacks' un-registering", e);
+    }
     remoteObject = null;
     remoteObjectObservable = null;
     connectionProvider.close();

@@ -45,10 +45,13 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
         .flatMap(object -> Observable.empty());
   }
 
+  //TODO: The method is never called.
   @Override public @Nonnull Observable<Void> deinitialize() {
-    hamsterObject.deinit();
-    log.debug("Remote data store deinitialized.");
-    return Observable.empty();
+    return Observable.create(subscriber -> {
+      hamsterObject.deinit();
+      log.debug("Remote data store deinitialized.");
+      subscriber.onCompleted();
+    });
   }
 
   @Override public @Nonnull Observable<List<FactEntity>> getTodaysFacts() {
