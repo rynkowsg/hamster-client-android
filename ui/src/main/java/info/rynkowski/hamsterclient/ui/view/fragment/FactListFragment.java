@@ -133,6 +133,7 @@ public class FactListFragment extends BaseFragment implements FactListView {
           factListPresenter.onNewFactPrepared(fact);
           showToastMessage("New fact:" + fact.getActivity());
         }
+        break;
       case REQUEST_CODE_EDIT_FACT:
         if (resultCode == Activity.RESULT_OK) {
           FactModel fact = data.getParcelableExtra(FactFormActivity.OUTPUT_EXTRAS_KEY_FACT);

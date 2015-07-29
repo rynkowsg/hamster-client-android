@@ -17,6 +17,7 @@
 package info.rynkowski.hamsterclient.data.dbus;
 
 import java.util.HashMap;
+import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.freedesktop.dbus.DBusConnection;
 import org.freedesktop.dbus.DBusSigHandler;
@@ -39,7 +40,8 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
   private volatile Type remoteObject;
   private Observable<Type> remoteObjectObservable;
 
-  private HashMap<DBusSigHandler<DBusSignal>, Class<? extends DBusSignal>> registeredSignals;
+  private @Nonnull HashMap<DBusSigHandler<DBusSignal>, Class<? extends DBusSignal>>
+      registeredSignals = new HashMap<>();
 
   public RemoteObjectAbstract(ConnectionProvider connectionProvider, String busName,
       String objectPath, Class dbusType) {
@@ -102,7 +104,7 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
 
   @Override
   public Observable<Void> createSignalObservable(Class<? extends DBusSignal> signalClass) {
-    return Observable.create(subscriber -> {
+    return Observable.<Void>create(subscriber -> {
       try {
         registerSignalCallback(signalClass, signal -> subscriber.onNext(null));
       } catch (DBusException e) {
@@ -122,5 +124,6 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
     remoteObject = null;
     remoteObjectObservable = null;
     connectionProvider.close();
+    log.info("De-initialized successfully a D-Bus remote object.");
   }
 }
