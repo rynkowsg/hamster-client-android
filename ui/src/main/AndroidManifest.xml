@@ -30,24 +30,18 @@
         >
 
         <activity
-            android:name=".view.activity.MainActivity"
-            android:label="@string/title_activity_main"
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-
-        <activity
             android:name=".view.activity.FactFormActivity"
             android:label="@string/title_activity_fact_form"
             />
 
         <activity
             android:name=".view.activity.FactListActivity"
-            android:label="@string/title_activity_fact_list"
-            />
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".view.activity.SettingsActivity"

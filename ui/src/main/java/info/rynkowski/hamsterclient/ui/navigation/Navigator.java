@@ -39,16 +39,6 @@ public class Navigator {
   }
 
   /**
-   * Goes to the fact list screen.
-   *
-   * @param context A Context needed to open the destiny activity.
-   */
-  public void navigateToFactsList(@NonNull Context context) {
-    Intent intentToLaunch = FactListActivity.getCallingIntent(context);
-    context.startActivity(intentToLaunch);
-  }
-
-  /**
    * Goes to the fact form screen from fragment.
    *
    * @param fragment A Fragment that opens the activity for result.

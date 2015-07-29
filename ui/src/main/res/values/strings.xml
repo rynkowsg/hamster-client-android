@@ -17,17 +17,16 @@
 
 <resources>
     <string name="app_name">Hamster Client</string>
-    <string name="description">Description</string>
+
+    <!-- Fact Form Activity' strings -->
     <string name="activity">Activity</string>
     <string name="category">Category</string>
+    <string name="description">Description</string>
     <string name="tags">Tags</string>
     <string name="apply">Apply</string>
-    <string name="open_fact_list">Open fact list</string>
 
     <!-- Activities' titles -->
-    <string name="title_activity_main">Entrance Activity</string>
     <string name="title_activity_fact_form">Fact Form</string>
-    <string name="title_activity_fact_list">Fact List</string>
     <string name="title_settings">Settings</string>
 
     <!-- ActionBar's actions -->
