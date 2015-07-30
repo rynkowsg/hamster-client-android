@@ -13,6 +13,27 @@ and [GitHub page][projecthamster-github].
 
 
 
+The Clean Architecture
+----------------------
+
+At the project I have applied [The Clean Architecture][the-clean-architecture]
+proposed by Robert C. Martin.
+
+About Android approaches of The Clean Architecture you can read [here][the-clean-way]
+and [there][progmag-ca]. You can also look at two another existed implementations
+made by [Fernando Cejas][android-cleanarchitecture] and [Michał Charmas][shoppinglist].
+
+
+
+TODO
+----
+
+ * implement data layer based on [Virgil Dobjanschi' concepts][yt-rest-implementation]
+ * improve MVP according to [implementation of Michał Charmas][shoppinglist-mvp]
+ * make the UI modern and comfortable to use.
+
+
+
 Libraries
 ---------
 
@@ -27,18 +48,6 @@ Project provides communication with host by D-Bus. In order to do that I used:
      (the library was modified for the project purpose)
  * libmatthew-java - a dependency of dbus-java ([link1][libmatthew-java-1],
      [link2][libmatthew-java-2], [link3][libmatthew-java-3], [link4][libmatthew-java-4]).
-
-
-
-The Clean Architecture
-------
-
-At the project I have applied [The Clean Architecture][the-clean-architecture]
-proposed by Robert C. Martin.
-
-About Android approaches of The Clean Architecture you can read [here][the-clean-way]
-and [there][progmag-ca]. You can also look at two another existed implementations
-made by [Fernando Cejas][android-cleanarchitecture] and [Michał Charmas][shoppinglist].
 
 
 
@@ -77,3 +86,5 @@ License
  [progmag-ca]: http://programistamag.pl/przejrzysty-i-testowalny-kod-na-androidzie-sprobujmy-z-clean-architecture/
  [android-cleanarchitecture]: https://github.com/android10/Android-CleanArchitecture
  [shoppinglist]: https://github.com/mcharmas/shoppinglist-clean-architecture-example
+ [shoppinglist-mvp]: https://github.com/mcharmas/shoppinglist-clean-architecture-example/tree/master/presentation/src/main/java/pl/charmas/shoppinglist/presentation/base
+ [yt-rest-implementation]: https://www.youtube.com/watch?v=xHXn3Kg2IQE
