@@ -28,7 +28,7 @@ ext {
   jsr305Version = '3.0.0'
   guavaVersion = '18.0'
   rxAndroidVersion = '0.25.0'
-  rxJavaVersion = '1.0.12'
+  rxJavaVersion = '1.0.13'
   slf4jApiVersion = '1.7.12'
   slf4jTimberVersion = '2.0'
   timberVersion = '3.1.0'
