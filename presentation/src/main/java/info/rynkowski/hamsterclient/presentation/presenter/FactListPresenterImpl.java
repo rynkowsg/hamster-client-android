@@ -83,22 +83,22 @@ public class FactListPresenterImpl implements FactListPresenter {
   @Override public void start() {
     log.debug("start()");
 
+    registerSignals();
     loadFactList();
 
     log.debug("FactList started.");
   }
 
   @Override public void resume() {
-    registerSignals();
     log.debug("FactList resumed.");
   }
 
   @Override public void pause() {
-    unregisterSignals();
     log.debug("FactList paused.");
   }
 
   @Override public void destroy() {
+    unregisterSignals();
     log.debug("FactList destroyed.");
   }
 
