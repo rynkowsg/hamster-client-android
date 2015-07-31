@@ -29,6 +29,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import rx.Scheduler;
 
 /**
  * Dagger module that provides collaborators from Presentation layer.
@@ -38,13 +39,15 @@ public class PresentationModule {
 
   @Provides @Singleton FactListPresenter provideFactListPresenter(
       @Nonnull HamsterRepository hamsterRepository, @Nonnull FactModelDataMapper mapper,
+      @Named("PresenterPostExecute") @Nonnull Scheduler postExecuteScheduler,
       @Named("AddFact") @Nonnull UseCase<Fact, Void> addFactUseCase,
       @Named("EditFact") @Nonnull UseCase<Fact, Void> editFactUseCase,
       @Named("GetTodaysFacts") @Nonnull UseCaseNoArgs<List<Fact>> getTodaysFactsUseCase,
       @Named("RemoveFact") @Nonnull UseCase<Fact, Void> removeFactUseCase,
       @Named("StartFact") @Nonnull UseCase<Fact, Void> startFactUseCase,
       @Named("StopFact") @Nonnull UseCase<Fact, Void> stopFactUseCase) {
-    return new FactListPresenterImpl(hamsterRepository, mapper, addFactUseCase, editFactUseCase,
-        getTodaysFactsUseCase, removeFactUseCase, startFactUseCase, stopFactUseCase);
+    return new FactListPresenterImpl(hamsterRepository, mapper, postExecuteScheduler,
+        addFactUseCase, editFactUseCase, getTodaysFactsUseCase, removeFactUseCase, startFactUseCase,
+        stopFactUseCase);
   }
 }

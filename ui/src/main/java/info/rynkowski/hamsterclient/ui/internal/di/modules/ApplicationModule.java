@@ -24,7 +24,10 @@ import info.rynkowski.hamsterclient.data.utils.PreferencesContainer;
 import info.rynkowski.hamsterclient.ui.AndroidApplication;
 import info.rynkowski.hamsterclient.ui.navigation.Navigator;
 import info.rynkowski.hamsterclient.ui.utils.PreferencesContainerImpl;
+import javax.inject.Named;
 import javax.inject.Singleton;
+import rx.Scheduler;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Dagger module that provides objects which will live during the application lifecycle.
@@ -48,5 +51,9 @@ public class ApplicationModule {
 
   @Provides @Singleton PreferencesContainer providePreferencesContainer(Context context) {
     return new PreferencesContainerImpl(context);
+  }
+
+  @Provides @Singleton @Named("PresenterPostExecute") Scheduler getPresenterPostExecuteScheduler() {
+    return AndroidSchedulers.mainThread();
   }
 }

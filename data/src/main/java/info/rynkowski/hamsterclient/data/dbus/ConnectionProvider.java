@@ -16,8 +16,8 @@
 
 package info.rynkowski.hamsterclient.data.dbus;
 
+import info.rynkowski.hamsterclient.domain.exception.NoNetworkConnectionException;
 import org.freedesktop.dbus.DBusConnection;
-import org.freedesktop.dbus.exceptions.DBusException;
 
 /**
  * Interface representing a connection provider for {@link org.freedesktop.dbus.DBusConnection}s.
@@ -28,9 +28,9 @@ public interface ConnectionProvider {
    * Returns {@link org.freedesktop.dbus.DBusConnection}s.
    *
    * @return a {@link org.freedesktop.dbus.DBusConnection}.
-   * @throws DBusException is an exception from D-Bus library.
+   * @throws NoNetworkConnectionException is an exception thrown when network connection is broken.
    */
-  DBusConnection get() throws DBusException;
+  DBusConnection get() throws NoNetworkConnectionException;
 
   /**
    * Closes the connection provider and releases its resources.

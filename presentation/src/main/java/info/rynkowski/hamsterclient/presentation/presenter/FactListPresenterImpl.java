@@ -17,6 +17,7 @@
 package info.rynkowski.hamsterclient.presentation.presenter;
 
 import info.rynkowski.hamsterclient.domain.entities.Fact;
+import info.rynkowski.hamsterclient.domain.exception.NoNetworkConnectionException;
 import info.rynkowski.hamsterclient.domain.interactor.UseCase;
 import info.rynkowski.hamsterclient.domain.interactor.UseCaseNoArgs;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
@@ -30,10 +31,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
-import org.freedesktop.dbus.exceptions.DBusException;
 import rx.Observable;
+import rx.Scheduler;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
@@ -54,12 +54,15 @@ public class FactListPresenterImpl implements FactListPresenter {
   private final @Nonnull UseCase<Fact, Void> stopFactUseCase;
   private final @Nonnull UseCase<Fact, Void> removeFactUseCase;
 
+  private final @Nonnull Scheduler postExecuteScheduler;
+
   private @Nullable FactListView viewListView;
 
   private @Nullable Subscription signalFactsChangedSubscription;
 
   @Inject public FactListPresenterImpl(@Nonnull HamsterRepository hamsterRepository,
       @Nonnull FactModelDataMapper mapper,
+      @Named("PresenterPostExecute") @Nonnull Scheduler postExecuteScheduler,
       @Named("AddFact") @Nonnull UseCase<Fact, Void> addFactUseCase,
       @Named("EditFact") @Nonnull UseCase<Fact, Void> editFactUseCase,
       @Named("GetTodaysFacts") @Nonnull UseCaseNoArgs<List<Fact>> getTodaysFactsUseCase,
@@ -68,6 +71,7 @@ public class FactListPresenterImpl implements FactListPresenter {
       @Named("StopFact") @Nonnull UseCase<Fact, Void> stopFactUseCase) {
     this.hamsterRepository = hamsterRepository;
     this.mapper = mapper;
+    this.postExecuteScheduler = postExecuteScheduler;
     this.addFactUseCase = addFactUseCase;
     this.editFactUseCase = editFactUseCase;
     this.getTodaysFactsUseCase = getTodaysFactsUseCase;
@@ -113,7 +117,7 @@ public class FactListPresenterImpl implements FactListPresenter {
         .doOnNext(list -> log.info("Received {} facts.", list.size()))
         .map(mapper::transform)
         .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+        .observeOn(postExecuteScheduler)
         .subscribe(factModels -> {
           viewListView.hideLoading();
           viewListView.showFactList(factModels);
@@ -123,7 +127,7 @@ public class FactListPresenterImpl implements FactListPresenter {
   private void registerSignals() {
     signalFactsChangedSubscription = hamsterRepository.signalFactsChanged()
         .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+        .observeOn(postExecuteScheduler)
         .subscribe(o -> this.onFactsChanged(), this::onException);
     log.debug("Signals registered.");
   }
@@ -150,8 +154,8 @@ public class FactListPresenterImpl implements FactListPresenter {
     if (viewListView == null) return;
 
     viewListView.hideLoading();
-    if (e.getClass() == DBusException.class) {
-      log.error("DBusException! e.getClass()={}, e.getCause()={}", e.getClass(), e.getCause());
+    if (e.getClass() == NoNetworkConnectionException.class) {
+      log.error("NoNetworkConnectionException!", e);
       viewListView.showRetry();
     } else {
       log.error("Unknown Exception!", e);
@@ -177,7 +181,7 @@ public class FactListPresenterImpl implements FactListPresenter {
         .map(mapper::transform)
         .flatMap(startFactUseCase::execute)
         .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+        .observeOn(postExecuteScheduler)
         .subscribe(id -> log.info("Started a fact, id={}", id), this::onException);
   }
 
@@ -189,7 +193,7 @@ public class FactListPresenterImpl implements FactListPresenter {
         .map(mapper::transform)
         .flatMap(stopFactUseCase::execute)
         .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+        .observeOn(postExecuteScheduler)
         .subscribe(id -> log.info("Stopped a fact, id={}", id), this::onException);
   }
 
@@ -199,7 +203,7 @@ public class FactListPresenterImpl implements FactListPresenter {
         .map(mapper::transform)
         .flatMap(removeFactUseCase::execute)
         .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+        .observeOn(postExecuteScheduler)
         .subscribe(id -> log.info("Removed a fact, id: {}", id), this::onException);
   }
 
@@ -209,7 +213,7 @@ public class FactListPresenterImpl implements FactListPresenter {
         .map(mapper::transform)
         .flatMap(addFactUseCase::execute)
         .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+        .observeOn(postExecuteScheduler)
         .subscribe(id -> log.info("Added a new fact, id={}", id), this::onException);
   }
 
@@ -218,7 +222,7 @@ public class FactListPresenterImpl implements FactListPresenter {
         .map(mapper::transform)
         .flatMap(editFactUseCase::execute)
         .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+        .observeOn(postExecuteScheduler)
         .subscribe(id -> log.info("The fact was edited, id={}", id), this::onException);
   }
 }
