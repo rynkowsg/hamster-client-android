@@ -98,7 +98,7 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
   @Override public void unregisterAllSignalCallbacks() throws DBusException {
     for (HashMap.Entry<DBusSigHandler<DBusSignal>, Class<? extends DBusSignal>> entry : registeredSignals
         .entrySet()) {
-      registeredSignals.remove(entry.getKey());
+      unregisterSignalCallback(entry.getValue(), entry.getKey());
     }
   }
 
