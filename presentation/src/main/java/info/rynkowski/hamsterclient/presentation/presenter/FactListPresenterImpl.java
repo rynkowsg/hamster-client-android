@@ -17,7 +17,6 @@
 package info.rynkowski.hamsterclient.presentation.presenter;
 
 import info.rynkowski.hamsterclient.domain.entities.Fact;
-import info.rynkowski.hamsterclient.domain.exception.NoNetworkConnectionException;
 import info.rynkowski.hamsterclient.domain.interactor.UseCase;
 import info.rynkowski.hamsterclient.domain.interactor.UseCaseNoArgs;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
@@ -154,12 +153,7 @@ public class FactListPresenterImpl implements FactListPresenter {
     if (viewListView == null) return;
 
     viewListView.hideLoading();
-    if (e.getClass() == NoNetworkConnectionException.class) {
-      log.error("NoNetworkConnectionException!", e);
-      viewListView.showRetry();
-    } else {
-      log.error("Unknown Exception!", e);
-    }
+    log.error("Unknown Exception!", e);
   }
 
   @Override public void onAddFact() {

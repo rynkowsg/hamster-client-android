@@ -16,9 +16,10 @@
 
 package info.rynkowski.hamsterclient.data.dbus;
 
+import info.rynkowski.hamsterclient.data.dbus.exception.DBusConnectionNotReachableException;
+import info.rynkowski.hamsterclient.data.dbus.exception.DBusInternalException;
 import org.freedesktop.dbus.DBusSigHandler;
 import org.freedesktop.dbus.DBusSignal;
-import org.freedesktop.dbus.exceptions.DBusException;
 import rx.Observable;
 
 /**
@@ -28,17 +29,20 @@ import rx.Observable;
  */
 public interface RemoteObject<Type> {
 
-  Type get() throws DBusException;
+  Type get() throws DBusConnectionNotReachableException, DBusInternalException;
 
   Observable<Type> getObservable();
 
   void registerSignalCallback(Class<? extends DBusSignal> signalClass,
-      DBusSigHandler<DBusSignal> callback) throws DBusException;
+      DBusSigHandler<DBusSignal> callback)
+      throws DBusConnectionNotReachableException, DBusInternalException;
 
   void unregisterSignalCallback(Class<? extends DBusSignal> signalClass,
-      DBusSigHandler<DBusSignal> callback) throws DBusException;
+      DBusSigHandler<DBusSignal> callback)
+      throws DBusConnectionNotReachableException, DBusInternalException;
 
-  void unregisterAllSignalCallbacks() throws DBusException;
+  void unregisterAllSignalCallbacks()
+      throws DBusConnectionNotReachableException, DBusInternalException;
 
   Observable<Void> createSignalObservable(Class<? extends DBusSignal> signalClass);
 

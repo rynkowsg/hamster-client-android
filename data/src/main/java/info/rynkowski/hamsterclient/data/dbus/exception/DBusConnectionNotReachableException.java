@@ -14,19 +14,22 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.domain.exception;
+package info.rynkowski.hamsterclient.data.dbus.exception;
 
-public class NoNetworkConnectionException extends RuntimeException {
+public class DBusConnectionNotReachableException extends Exception {
 
-  public NoNetworkConnectionException() {
-    super();
+  public DBusConnectionNotReachableException() {
   }
 
-  public NoNetworkConnectionException(String message) {
-    super(message);
+  public DBusConnectionNotReachableException(String detailMessage) {
+    super(detailMessage);
   }
 
-  public NoNetworkConnectionException(String message, Throwable cause) {
-    super(message, cause);
+  public DBusConnectionNotReachableException(String detailMessage, Throwable throwable) {
+    super(detailMessage, throwable);
+  }
+
+  public DBusConnectionNotReachableException(Throwable throwable) {
+    super(throwable);
   }
 }

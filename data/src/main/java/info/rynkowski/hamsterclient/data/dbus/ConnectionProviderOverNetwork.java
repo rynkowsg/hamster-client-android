@@ -16,8 +16,8 @@
 
 package info.rynkowski.hamsterclient.data.dbus;
 
+import info.rynkowski.hamsterclient.data.dbus.exception.DBusConnectionNotReachableException;
 import info.rynkowski.hamsterclient.data.utils.PreferencesContainer;
-import info.rynkowski.hamsterclient.domain.exception.NoNetworkConnectionException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -42,15 +42,14 @@ public class ConnectionProviderOverNetwork implements ConnectionProvider {
     this.connection = null;
   }
 
-  @Override public synchronized DBusConnection get() throws NoNetworkConnectionException {
+  @Override public synchronized DBusConnection get() throws DBusConnectionNotReachableException {
     if (connection == null) {
       String address = dbusAddress(preferences.dbusHost(), preferences.dbusPort());
       log.debug("Opening D-Bus connection on address: {}", address);
       try {
         connection = DBusConnection.getConnection(address);
       } catch (DBusException e) {
-        log.error("DBusException!", e);
-        throw new NoNetworkConnectionException("Can not establish D-Bus connection.", e.getCause());
+        throw new DBusConnectionNotReachableException("Can not establish a D-Bus connection.", e);
       }
       log.info("D-Bus connection has been established successfully.");
     }
