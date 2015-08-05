@@ -22,9 +22,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
-@Getter
-public class Activity {
+@Getter @Setter
+public class Category {
 
   @Nonnull private String name;
-  @Nonnull private Category category;
 }

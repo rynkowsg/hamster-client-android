@@ -20,6 +20,7 @@ import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.data.entity.FactEntity;
 import info.rynkowski.hamsterclient.data.utils.Time;
 import info.rynkowski.hamsterclient.domain.entities.Activity;
+import info.rynkowski.hamsterclient.domain.entities.Category;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import java.util.Calendar;
 import javax.annotation.Nonnull;
@@ -41,7 +42,8 @@ public class FactEntityMapper {
   }
 
   public @Nonnull Fact transform(@Nonnull FactEntity factEntity) {
-    Activity activity = new Activity(factEntity.getActivity(), factEntity.getCategory());
+    Category category = new Category(factEntity.getCategory());
+    Activity activity = new Activity(factEntity.getActivity(), category);
 
     Calendar startTime = factEntity.getStartTime().getCalendar();
 
@@ -74,7 +76,7 @@ public class FactEntityMapper {
     return new FactEntity.Builder()
         .id(fact.getId())
         .activity(fact.getActivity().getName())
-        .category(fact.getActivity().getCategory())
+        .category(fact.getActivity().getCategory().getName())
         .startTime(startTime)
         .endTime(endTime)
         .description(fact.getDescription())

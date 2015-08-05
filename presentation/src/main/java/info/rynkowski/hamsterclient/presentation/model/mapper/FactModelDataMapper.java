@@ -17,6 +17,7 @@
 package info.rynkowski.hamsterclient.presentation.model.mapper;
 
 import info.rynkowski.hamsterclient.domain.entities.Activity;
+import info.rynkowski.hamsterclient.domain.entities.Category;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class FactModelDataMapper {
   public @Nonnull Fact transform(@Nonnull FactModel factModel) {
     return new Fact.Builder()
         .id(factModel.getId())
-        .activity(new Activity(factModel.getActivity(), factModel.getCategory()))
+        .activity(new Activity(factModel.getActivity(), new Category(factModel.getCategory())))
         .tags(factModel.getTags())
         .description(factModel.getDescription())
         .startTime(factModel.getStartTime())
@@ -45,7 +46,7 @@ public class FactModelDataMapper {
     return new FactModel.Builder()
         .id(fact.getId())
         .activity(fact.getActivity().getName())
-        .category(fact.getActivity().getCategory())
+        .category(fact.getActivity().getCategory().getName())
         .tags(fact.getTags())
         .description(fact.getDescription())
         .startTime(fact.getStartTime())

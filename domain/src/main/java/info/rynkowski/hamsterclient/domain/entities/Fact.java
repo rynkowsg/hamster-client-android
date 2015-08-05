@@ -53,7 +53,7 @@ public class Fact {
   public static class Builder {
 
     private @Nonnull Optional<Integer> id = Optional.absent();
-    private @Nonnull Activity activity = new Activity("", "");
+    private @Nonnull Activity activity = new Activity("", new Category(""));
     private @Nonnull Calendar startTime = GregorianCalendar.getInstance();
     private @Nonnull Optional<Calendar> endTime = Optional.absent();
     private @Nonnull List<String> tags = new ArrayList<String>();
