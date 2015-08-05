@@ -176,7 +176,7 @@ public class FactListPresenterImpl implements FactListPresenter {
         .flatMap(startFactUseCase::execute)
         .subscribeOn(Schedulers.io())
         .observeOn(postExecuteScheduler)
-        .subscribe(id -> log.info("Started a fact, id={}", id), this::onException);
+        .subscribe(new OnCompletedObserver(() -> log.info("The fact started."), this::onException));
   }
 
   @Override public void onStopFact(@Nonnull FactModel fact) {
@@ -188,7 +188,7 @@ public class FactListPresenterImpl implements FactListPresenter {
         .flatMap(stopFactUseCase::execute)
         .subscribeOn(Schedulers.io())
         .observeOn(postExecuteScheduler)
-        .subscribe(id -> log.info("Stopped a fact, id={}", id), this::onException);
+        .subscribe(new OnCompletedObserver(() -> log.info("The fact stopped."), this::onException));
   }
 
   @Override public void onRemoveFact(@Nonnull FactModel fact) {
@@ -198,7 +198,7 @@ public class FactListPresenterImpl implements FactListPresenter {
         .flatMap(removeFactUseCase::execute)
         .subscribeOn(Schedulers.io())
         .observeOn(postExecuteScheduler)
-        .subscribe(id -> log.info("Removed a fact, id: {}", id), this::onException);
+        .subscribe(new OnCompletedObserver(() -> log.info("The fact removed."), this::onException));
   }
 
   @Override public void onNewFactPrepared(@Nonnull FactModel newFact) {
@@ -208,7 +208,7 @@ public class FactListPresenterImpl implements FactListPresenter {
         .flatMap(addFactUseCase::execute)
         .subscribeOn(Schedulers.io())
         .observeOn(postExecuteScheduler)
-        .subscribe(id -> log.info("Added a new fact, id={}", id), this::onException);
+        .subscribe(new OnCompletedObserver(() -> log.info("The fact added."), this::onException));
   }
 
   @Override public void onEditedFactPrepared(@Nonnull FactModel editedFact) {
@@ -217,6 +217,7 @@ public class FactListPresenterImpl implements FactListPresenter {
         .flatMap(editFactUseCase::execute)
         .subscribeOn(Schedulers.io())
         .observeOn(postExecuteScheduler)
-        .subscribe(id -> log.info("The fact was edited, id={}", id), this::onException);
+        .subscribe(
+            new OnCompletedObserver(() -> log.info("The fact was edited."), this::onException));
   }
 }
