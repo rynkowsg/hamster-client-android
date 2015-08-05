@@ -35,7 +35,7 @@ public class Fact {
   private final @Nonnull Activity activity;
   private final @Nonnull Calendar startTime;
   private final @Nonnull Optional<Calendar> endTime;
-  private final @Nonnull List<String> tags;
+  private final @Nonnull List<Tag> tags;
   private final @Nonnull String description;
 
   private Fact(@Nonnull Builder b) {
@@ -56,7 +56,7 @@ public class Fact {
     private @Nonnull Activity activity = new Activity("", new Category(""));
     private @Nonnull Calendar startTime = GregorianCalendar.getInstance();
     private @Nonnull Optional<Calendar> endTime = Optional.absent();
-    private @Nonnull List<String> tags = new ArrayList<String>();
+    private @Nonnull List<Tag> tags = new ArrayList<Tag>();
     private @Nonnull String description = "";
 
     public Builder(@Nonnull Fact fact) {

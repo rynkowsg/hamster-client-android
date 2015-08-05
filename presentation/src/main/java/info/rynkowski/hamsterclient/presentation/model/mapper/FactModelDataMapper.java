@@ -19,9 +19,11 @@ package info.rynkowski.hamsterclient.presentation.model.mapper;
 import info.rynkowski.hamsterclient.domain.entities.Activity;
 import info.rynkowski.hamsterclient.domain.entities.Category;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
+import info.rynkowski.hamsterclient.domain.entities.Tag;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
@@ -35,7 +37,7 @@ public class FactModelDataMapper {
     return new Fact.Builder()
         .id(factModel.getId())
         .activity(new Activity(factModel.getActivity(), new Category(factModel.getCategory())))
-        .tags(factModel.getTags())
+        .tags(transformToTagList(factModel.getTags()))
         .description(factModel.getDescription())
         .startTime(factModel.getStartTime())
         .endTime(factModel.getEndTime())
@@ -47,7 +49,7 @@ public class FactModelDataMapper {
         .id(fact.getId())
         .activity(fact.getActivity().getName())
         .category(fact.getActivity().getCategory().getName())
-        .tags(fact.getTags())
+        .tags(transformToStringList(fact.getTags()))
         .description(fact.getDescription())
         .startTime(fact.getStartTime())
         .endTime(fact.getEndTime())
@@ -62,5 +64,23 @@ public class FactModelDataMapper {
       factModelList.add(factModel);
     }
     return factModelList;
+  }
+
+  protected List<Tag> transformToTagList(@Nonnull List<String> strTags) {
+    List<Tag> tags = new ArrayList<Tag>(strTags.size());
+    ListIterator<String> stringIterator = strTags.listIterator();
+    while (stringIterator.hasNext()) {
+      tags.add(new Tag(stringIterator.next()));
+    }
+    return tags;
+  }
+
+  protected List<String> transformToStringList(@Nonnull List<Tag> tags) {
+    List<String> strTags = new ArrayList<String>(tags.size());
+    ListIterator<Tag> tagIterator = tags.listIterator();
+    while (tagIterator.hasNext()) {
+      strTags.add(tagIterator.next().getName());
+    }
+    return strTags;
   }
 }

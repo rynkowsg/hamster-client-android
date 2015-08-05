@@ -22,7 +22,11 @@ import info.rynkowski.hamsterclient.data.utils.Time;
 import info.rynkowski.hamsterclient.domain.entities.Activity;
 import info.rynkowski.hamsterclient.domain.entities.Category;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
+import info.rynkowski.hamsterclient.domain.entities.Tag;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.ListIterator;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -58,7 +62,7 @@ public class FactEntityMapper {
         .startTime(startTime)
         .endTime(endTime)
         .description(factEntity.getDescription())
-        .tags(factEntity.getTags())
+        .tags(transformToTagList(factEntity.getTags()))
         .build();
   }
 
@@ -80,7 +84,25 @@ public class FactEntityMapper {
         .startTime(startTime)
         .endTime(endTime)
         .description(fact.getDescription())
-        .tags(fact.getTags())
+        .tags(transformToStringList(fact.getTags()))
         .build();
+  }
+
+  protected List<Tag> transformToTagList(@Nonnull List<String> strTags) {
+    List<Tag> tags = new ArrayList<Tag>(strTags.size());
+    ListIterator<String> stringIterator = strTags.listIterator();
+    while (stringIterator.hasNext()) {
+      tags.add(new Tag(stringIterator.next()));
+    }
+    return tags;
+  }
+
+  protected List<String> transformToStringList(@Nonnull List<Tag> tags) {
+    List<String> strTags = new ArrayList<String>(tags.size());
+    ListIterator<Tag> tagIterator = tags.listIterator();
+    while (tagIterator.hasNext()) {
+      strTags.add(tagIterator.next().getName());
+    }
+    return strTags;
   }
 }

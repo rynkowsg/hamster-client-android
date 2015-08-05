@@ -23,7 +23,7 @@ import lombok.Getter;
 
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
-public class Category {
+public class Tag {
 
   @Nonnull private String name;
 }
