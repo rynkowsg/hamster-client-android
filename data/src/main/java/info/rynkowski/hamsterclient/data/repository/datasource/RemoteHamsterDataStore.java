@@ -117,67 +117,19 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
   }
 
   @Override public @Nonnull Observable<Void> signalActivitiesChanged() {
-    return Observable.<Void>create(subscriber -> {
-      try {
-        hamsterObject.registerSignalActivitiesChanged(dbusSignal -> subscriber.onNext(null));
-      } catch (DBusConnectionNotReachableException | DBusInternalException e) {
-        subscriber.onError(e);
-      }
-    }).doOnUnsubscribe(() -> {
-      try {
-        hamsterObject.unregisterSignalActivitiesChanged();
-      } catch (DBusConnectionNotReachableException | DBusInternalException e) {
-        log.error("Exception thrown during unregistering signal ActivitiesChanged.", e);
-      }
-    });
+    return produceSignal(HamsterRemoteObject.SignalType.ActivitiesChanged);
   }
 
   @Override public @Nonnull Observable<Void> signalFactsChanged() {
-    return Observable.<Void>create(subscriber -> {
-      try {
-        hamsterObject.registerSignalFactsChanged(signal -> subscriber.onNext(null));
-      } catch (DBusConnectionNotReachableException | DBusInternalException e) {
-        subscriber.onError(e);
-      }
-    }).doOnUnsubscribe(() -> {
-      try {
-        hamsterObject.unregisterSignalFactsChanged();
-      } catch (DBusConnectionNotReachableException | DBusInternalException e) {
-        log.error("Exception thrown during unregistering signal ActivitiesChanged.", e);
-      }
-    });
+    return produceSignal(HamsterRemoteObject.SignalType.FactsChanged);
   }
 
   @Override public @Nonnull Observable<Void> signalTagsChanged() {
-    return Observable.<Void>create(subscriber -> {
-      try {
-        hamsterObject.registerSignalTagsChanged(signal -> subscriber.onNext(null));
-      } catch (DBusConnectionNotReachableException | DBusInternalException e) {
-        subscriber.onError(e);
-      }
-    }).doOnUnsubscribe(() -> {
-      try {
-        hamsterObject.unregisterSignalTagsChanged();
-      } catch (DBusConnectionNotReachableException | DBusInternalException e) {
-        log.error("Exception thrown during unregistering signal ActivitiesChanged.", e);
-      }
-    });
+    return produceSignal(HamsterRemoteObject.SignalType.TagsChanged);
   }
 
   @Override public @Nonnull Observable<Void> signalToggleCalled() {
-    return Observable.<Void>create(subscriber -> {
-      try {
-        hamsterObject.registerSignalToggleCalled(signal -> subscriber.onNext(null));
-      } catch (DBusConnectionNotReachableException | DBusInternalException e) {
-        subscriber.onError(e);
-      }
-    }).doOnUnsubscribe(() -> {
-      try {
-        hamsterObject.unregisterSignalToggleCalled();
-      } catch (DBusConnectionNotReachableException | DBusInternalException e) {
-        log.error("Exception thrown during unregistering signal ActivitiesChanged.", e);
-      }
-    });
+    return produceSignal(HamsterRemoteObject.SignalType.ToggleCalled);
   }
 
   private Observable<Hamster> getHamsterObjectObservable() {
@@ -186,6 +138,22 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
         return Observable.just(hamsterObject.get());
       } catch (DBusConnectionNotReachableException | DBusInternalException e) {
         return Observable.error(e);
+      }
+    });
+  }
+
+  private Observable<Void> produceSignal(@Nonnull HamsterRemoteObject.SignalType signalType) {
+    return Observable.<Void>create(subscriber -> {
+      try {
+        hamsterObject.registerSignal(signalType, signal -> subscriber.onNext(null));
+      } catch (DBusConnectionNotReachableException | DBusInternalException e) {
+        subscriber.onError(e);
+      }
+    }).doOnUnsubscribe(() -> {
+      try {
+        hamsterObject.unregisterSignal(signalType);
+      } catch (DBusConnectionNotReachableException | DBusInternalException e) {
+        log.error("Exception thrown during unregistering signal ActivitiesChanged.", e);
       }
     });
   }

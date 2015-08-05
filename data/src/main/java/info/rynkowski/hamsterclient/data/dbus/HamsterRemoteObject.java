@@ -38,43 +38,49 @@ public class HamsterRemoteObject extends RemoteObjectAbstract<Hamster> {
     super(connectionProvider, busName, objectPath, dbusType);
   }
 
-  public void registerSignalActivitiesChanged(DBusSigHandler<DBusSignal> callback)
+  public void registerSignal(SignalType type, DBusSigHandler<DBusSignal> callback)
       throws DBusConnectionNotReachableException, DBusInternalException {
-    registerSignalCallback(Hamster.ActivitiesChanged.class, callback);
+
+    switch (type) {
+      case ActivitiesChanged:
+        registerSignalCallback(Hamster.ActivitiesChanged.class, callback);
+        break;
+      case FactsChanged:
+        registerSignalCallback(Hamster.FactsChanged.class, callback);
+        break;
+      case TagsChanged:
+        registerSignalCallback(Hamster.TagsChanged.class, callback);
+        break;
+      case ToggleCalled:
+        registerSignalCallback(Hamster.ToggleCalled.class, callback);
+        break;
+      default:
+        assert false : "Unknown signal type";
+    }
   }
 
-  public void registerSignalFactsChanged(DBusSigHandler<DBusSignal> callback)
+  public void unregisterSignal(SignalType type)
       throws DBusConnectionNotReachableException, DBusInternalException {
-    registerSignalCallback(Hamster.FactsChanged.class, callback);
+
+    switch (type) {
+      case ActivitiesChanged:
+        unregisterSignalCallbacks(Hamster.ActivitiesChanged.class);
+        break;
+      case FactsChanged:
+        unregisterSignalCallbacks(Hamster.FactsChanged.class);
+        break;
+      case TagsChanged:
+        unregisterSignalCallbacks(Hamster.TagsChanged.class);
+        break;
+      case ToggleCalled:
+        unregisterSignalCallbacks(Hamster.ToggleCalled.class);
+        break;
+      default:
+        assert false : "Unknown signal type";
+    }
   }
 
-  public void registerSignalTagsChanged(DBusSigHandler<DBusSignal> callback)
-      throws DBusConnectionNotReachableException, DBusInternalException {
-    registerSignalCallback(Hamster.TagsChanged.class, callback);
-  }
-
-  public void registerSignalToggleCalled(DBusSigHandler<DBusSignal> callback)
-      throws DBusConnectionNotReachableException, DBusInternalException {
-    registerSignalCallback(Hamster.ToggleCalled.class, callback);
-  }
-
-  public void unregisterSignalActivitiesChanged()
-      throws DBusConnectionNotReachableException, DBusInternalException {
-    unregisterSignalCallbacks(Hamster.ActivitiesChanged.class);
-  }
-
-  public void unregisterSignalFactsChanged()
-      throws DBusConnectionNotReachableException, DBusInternalException {
-    unregisterSignalCallbacks(Hamster.FactsChanged.class);
-  }
-
-  public void unregisterSignalTagsChanged()
-      throws DBusConnectionNotReachableException, DBusInternalException {
-    unregisterSignalCallbacks(Hamster.TagsChanged.class);
-  }
-
-  public void unregisterSignalToggleCalled()
-      throws DBusConnectionNotReachableException, DBusInternalException {
-    unregisterSignalCallbacks(Hamster.ToggleCalled.class);
+  public enum SignalType {
+    ActivitiesChanged, FactsChanged, TagsChanged, ToggleCalled
   }
 }
