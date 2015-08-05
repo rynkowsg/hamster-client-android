@@ -17,6 +17,8 @@
 package info.rynkowski.hamsterclient.data.repository.datasource;
 
 import info.rynkowski.hamsterclient.data.dbus.HamsterRemoteObject;
+import info.rynkowski.hamsterclient.data.dbus.exception.DBusConnectionNotReachableException;
+import info.rynkowski.hamsterclient.data.dbus.exception.DBusInternalException;
 import info.rynkowski.hamsterclient.data.entity.FactEntity;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -40,7 +42,7 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
   }
 
   @Override public @Nonnull Observable<Void> initialize() {
-    return hamsterObject.getObservable()
+    return getHamsterObjectObservable()
         .doOnNext(hamster -> log.debug("Remote data store initialized."))
         .flatMap(object -> Observable.empty());
   }
@@ -55,7 +57,7 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
   }
 
   @Override public @Nonnull Observable<List<FactEntity>> getTodaysFacts() {
-    return Observable.defer(hamsterObject::getObservable)
+    return getHamsterObjectObservable()
         .map(Hamster::GetTodaysFacts)
         .flatMap(Observable::from)
         .map(FactEntity::new)
@@ -70,7 +72,7 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
     int startTime = fact.getStartTime().getTimeInSeconds();
     int endTime = fact.getEndTime().isPresent() ? fact.getEndTime().get().getTimeInSeconds() : 0;
 
-    return Observable.defer(hamsterObject::getObservable).
+    return getHamsterObjectObservable().
         doOnNext(object -> {
           log.debug("Calling AddFact() on remote DBus object:");
           log.debug("    id:             {}",
@@ -83,7 +85,7 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
   }
 
   @Override public @Nonnull Observable<Void> removeFact(@Nonnull Integer id) {
-    return Observable.defer(hamsterObject::getObservable).
+    return getHamsterObjectObservable().
         doOnNext(object -> {
           log.debug("Calling RemoveFact() on remote DBus object:");
           log.debug("    id:             {}", id);
@@ -101,7 +103,7 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
     int startTime = fact.getStartTime().getTimeInSeconds();
     int endTime = fact.getEndTime().isPresent() ? fact.getEndTime().get().getTimeInSeconds() : 0;
 
-    return Observable.defer(hamsterObject::getObservable).
+    return getHamsterObjectObservable().
         doOnNext(object -> {
           log.debug("Calling UpdateFact() on remote DBus object:");
           log.debug("    id:             {}",
@@ -115,18 +117,76 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
   }
 
   @Override public @Nonnull Observable<Void> signalActivitiesChanged() {
-    return hamsterObject.signalActivitiesChanged();
+    return Observable.<Void>create(subscriber -> {
+      try {
+        hamsterObject.registerSignalActivitiesChanged(dbusSignal -> subscriber.onNext(null));
+      } catch (DBusConnectionNotReachableException | DBusInternalException e) {
+        subscriber.onError(e);
+      }
+    }).doOnUnsubscribe(() -> {
+      try {
+        hamsterObject.unregisterSignalActivitiesChanged();
+      } catch (DBusConnectionNotReachableException | DBusInternalException e) {
+        log.error("Exception thrown during unregistering signal ActivitiesChanged.", e);
+      }
+    });
   }
 
   @Override public @Nonnull Observable<Void> signalFactsChanged() {
-    return hamsterObject.signalFactsChanged();
+    return Observable.<Void>create(subscriber -> {
+      try {
+        hamsterObject.registerSignalFactsChanged(signal -> subscriber.onNext(null));
+      } catch (DBusConnectionNotReachableException | DBusInternalException e) {
+        subscriber.onError(e);
+      }
+    }).doOnUnsubscribe(() -> {
+      try {
+        hamsterObject.unregisterSignalFactsChanged();
+      } catch (DBusConnectionNotReachableException | DBusInternalException e) {
+        log.error("Exception thrown during unregistering signal ActivitiesChanged.", e);
+      }
+    });
   }
 
   @Override public @Nonnull Observable<Void> signalTagsChanged() {
-    return hamsterObject.signalTagsChanged();
+    return Observable.<Void>create(subscriber -> {
+      try {
+        hamsterObject.registerSignalTagsChanged(signal -> subscriber.onNext(null));
+      } catch (DBusConnectionNotReachableException | DBusInternalException e) {
+        subscriber.onError(e);
+      }
+    }).doOnUnsubscribe(() -> {
+      try {
+        hamsterObject.unregisterSignalTagsChanged();
+      } catch (DBusConnectionNotReachableException | DBusInternalException e) {
+        log.error("Exception thrown during unregistering signal ActivitiesChanged.", e);
+      }
+    });
   }
 
   @Override public @Nonnull Observable<Void> signalToggleCalled() {
-    return hamsterObject.signalToggleCalled();
+    return Observable.<Void>create(subscriber -> {
+      try {
+        hamsterObject.registerSignalToggleCalled(signal -> subscriber.onNext(null));
+      } catch (DBusConnectionNotReachableException | DBusInternalException e) {
+        subscriber.onError(e);
+      }
+    }).doOnUnsubscribe(() -> {
+      try {
+        hamsterObject.unregisterSignalToggleCalled();
+      } catch (DBusConnectionNotReachableException | DBusInternalException e) {
+        log.error("Exception thrown during unregistering signal ActivitiesChanged.", e);
+      }
+    });
+  }
+
+  private Observable<Hamster> getHamsterObjectObservable() {
+    return Observable.defer(() -> {
+      try {
+        return Observable.just(hamsterObject.get());
+      } catch (DBusConnectionNotReachableException | DBusInternalException e) {
+        return Observable.error(e);
+      }
+    });
   }
 }

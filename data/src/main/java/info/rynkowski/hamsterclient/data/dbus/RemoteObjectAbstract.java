@@ -25,8 +25,6 @@ import org.freedesktop.dbus.DBusConnection;
 import org.freedesktop.dbus.DBusSigHandler;
 import org.freedesktop.dbus.DBusSignal;
 import org.freedesktop.dbus.exceptions.DBusException;
-import rx.Observable;
-import rx.Subscriber;
 
 /**
  * Abstract class that implements common utilities of each {@link RemoteObject}.
@@ -41,7 +39,6 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
   private String objectPath;
   private Class dbusType;
   private volatile Type remoteObject;
-  private Observable<Type> remoteObjectObservable;
 
   private @Nonnull HashMap<DBusSigHandler<DBusSignal>, Class<? extends DBusSignal>>
       registeredSignals = new HashMap<>();
@@ -53,11 +50,11 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
     this.objectPath = objectPath;
     this.dbusType = dbusType;
     this.remoteObject = null;
-    this.remoteObjectObservable = null;
   }
 
   @SuppressWarnings("unchecked") @Override public synchronized Type get()
       throws DBusConnectionNotReachableException, DBusInternalException {
+
     if (remoteObject == null) {
       log.debug("Possesing a D-Bus remote object started:");
       log.debug("    busName:    {}", busName);
@@ -76,26 +73,12 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
     return remoteObject;
   }
 
-  @Override public synchronized Observable<Type> getObservable() {
-    if (remoteObjectObservable == null) {
-      remoteObjectObservable = Observable.create(new Observable.OnSubscribe<Type>() {
-        @Override public void call(Subscriber<? super Type> subscriber) {
-          try {
-            subscriber.onNext(RemoteObjectAbstract.this.get());
-            subscriber.onCompleted();
-          } catch (DBusConnectionNotReachableException | DBusInternalException e) {
-            throw new RuntimeException(e);
-          }
-        }
-      });
-    }
-    return remoteObjectObservable;
-  }
-
   @Override @SuppressWarnings("unchecked")
   public void registerSignalCallback(Class<? extends DBusSignal> signalClass,
       DBusSigHandler<DBusSignal> callback)
       throws DBusConnectionNotReachableException, DBusInternalException {
+
+    log.debug("registerSignalCallback(signalClass={}, callback={})", signalClass, callback);
     try {
       connectionProvider.get().addSigHandler((Class<DBusSignal>) signalClass, callback);
     } catch (DBusException e) {
@@ -108,6 +91,8 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
   public void unregisterSignalCallback(Class<? extends DBusSignal> signalClass,
       DBusSigHandler<DBusSignal> callback)
       throws DBusConnectionNotReachableException, DBusInternalException {
+
+    log.debug("un-registerSignalCallback(signalClass={}, callback={})", signalClass, callback);
     try {
       connectionProvider.get().removeSigHandler((Class<DBusSignal>) signalClass, callback);
     } catch (DBusException e) {
@@ -116,25 +101,25 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
     registeredSignals.remove(callback);
   }
 
+  @Override public void unregisterSignalCallbacks(Class<? extends DBusSignal> signalClass)
+      throws DBusConnectionNotReachableException, DBusInternalException {
+
+    for (HashMap.Entry<DBusSigHandler<DBusSignal>, Class<? extends DBusSignal>> entry : registeredSignals
+        .entrySet()) {
+      if (entry.getValue() == signalClass) {
+        unregisterSignalCallback(entry.getValue(), entry.getKey());
+      }
+    }
+  }
+
   @Override public void unregisterAllSignalCallbacks()
       throws DBusConnectionNotReachableException, DBusInternalException {
+
     for (HashMap.Entry<DBusSigHandler<DBusSignal>, Class<? extends DBusSignal>> entry : registeredSignals
         .entrySet()) {
       unregisterSignalCallback(entry.getValue(), entry.getKey());
     }
   }
-
-  @Override
-  public Observable<Void> createSignalObservable(Class<? extends DBusSignal> signalClass) {
-    return Observable.<Void>create(subscriber -> {
-      try {
-        registerSignalCallback(signalClass, signal -> subscriber.onNext(null));
-      } catch (DBusConnectionNotReachableException | DBusInternalException e) {
-        throw new RuntimeException(e);
-      }
-    });
-  }
-  //TODO: add unregisterSignalCallback to unsubscription
 
   @Override public synchronized void deinit() {
     try {
@@ -143,7 +128,6 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
       log.error("Exception during callbacks' un-registering", e);
     }
     remoteObject = null;
-    remoteObjectObservable = null;
     connectionProvider.close();
     log.info("De-initialized successfully a D-Bus remote object.");
   }

@@ -16,10 +16,13 @@
 
 package info.rynkowski.hamsterclient.data.dbus;
 
+import info.rynkowski.hamsterclient.data.dbus.exception.DBusConnectionNotReachableException;
+import info.rynkowski.hamsterclient.data.dbus.exception.DBusInternalException;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import org.freedesktop.dbus.DBusSigHandler;
+import org.freedesktop.dbus.DBusSignal;
 import org.gnome.Hamster;
-import rx.Observable;
 
 /**
  * Wrapper class for {@link org.gnome.Hamster}'s remote object.
@@ -35,19 +38,43 @@ public class HamsterRemoteObject extends RemoteObjectAbstract<Hamster> {
     super(connectionProvider, busName, objectPath, dbusType);
   }
 
-  public Observable<Void> signalActivitiesChanged() {
-    return this.createSignalObservable(Hamster.ActivitiesChanged.class);
+  public void registerSignalActivitiesChanged(DBusSigHandler<DBusSignal> callback)
+      throws DBusConnectionNotReachableException, DBusInternalException {
+    registerSignalCallback(Hamster.ActivitiesChanged.class, callback);
   }
 
-  public Observable<Void> signalFactsChanged() {
-    return this.createSignalObservable(Hamster.FactsChanged.class);
+  public void registerSignalFactsChanged(DBusSigHandler<DBusSignal> callback)
+      throws DBusConnectionNotReachableException, DBusInternalException {
+    registerSignalCallback(Hamster.FactsChanged.class, callback);
   }
 
-  public Observable<Void> signalTagsChanged() {
-    return this.createSignalObservable(Hamster.TagsChanged.class);
+  public void registerSignalTagsChanged(DBusSigHandler<DBusSignal> callback)
+      throws DBusConnectionNotReachableException, DBusInternalException {
+    registerSignalCallback(Hamster.TagsChanged.class, callback);
   }
 
-  public Observable<Void> signalToggleCalled() {
-    return this.createSignalObservable(Hamster.ToggleCalled.class);
+  public void registerSignalToggleCalled(DBusSigHandler<DBusSignal> callback)
+      throws DBusConnectionNotReachableException, DBusInternalException {
+    registerSignalCallback(Hamster.ToggleCalled.class, callback);
+  }
+
+  public void unregisterSignalActivitiesChanged()
+      throws DBusConnectionNotReachableException, DBusInternalException {
+    unregisterSignalCallbacks(Hamster.ActivitiesChanged.class);
+  }
+
+  public void unregisterSignalFactsChanged()
+      throws DBusConnectionNotReachableException, DBusInternalException {
+    unregisterSignalCallbacks(Hamster.FactsChanged.class);
+  }
+
+  public void unregisterSignalTagsChanged()
+      throws DBusConnectionNotReachableException, DBusInternalException {
+    unregisterSignalCallbacks(Hamster.TagsChanged.class);
+  }
+
+  public void unregisterSignalToggleCalled()
+      throws DBusConnectionNotReachableException, DBusInternalException {
+    unregisterSignalCallbacks(Hamster.ToggleCalled.class);
   }
 }
