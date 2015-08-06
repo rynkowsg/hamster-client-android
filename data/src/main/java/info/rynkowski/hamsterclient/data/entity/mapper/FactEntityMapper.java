@@ -19,25 +19,17 @@ package info.rynkowski.hamsterclient.data.entity.mapper;
 import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.data.entity.FactEntity;
 import info.rynkowski.hamsterclient.data.utils.Time;
-import info.rynkowski.hamsterclient.domain.entities.Activity;
-import info.rynkowski.hamsterclient.domain.entities.Category;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
-import info.rynkowski.hamsterclient.domain.entities.Tag;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
-import java.util.ListIterator;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Class that translates fact representations of two layers: data and domain.
  * Could transform object of {@link info.rynkowski.hamsterclient.domain.entities.Fact} to
  * {@link info.rynkowski.hamsterclient.data.entity.FactEntity} and in the opposite direction.
  */
-@Slf4j
 @Singleton
 public class FactEntityMapper {
 
@@ -46,9 +38,6 @@ public class FactEntityMapper {
   }
 
   public @Nonnull Fact transform(@Nonnull FactEntity factEntity) {
-    Category category = new Category(factEntity.getCategory());
-    Activity activity = new Activity(factEntity.getActivity(), category);
-
     Calendar startTime = factEntity.getStartTime().getCalendar();
 
     Optional<Calendar> endTime = Optional.absent();
@@ -58,11 +47,12 @@ public class FactEntityMapper {
 
     return new Fact.Builder()
         .id(factEntity.getId())
-        .activity(activity)
+        .activity(factEntity.getActivity())
+        .category(factEntity.getCategory())
         .startTime(startTime)
         .endTime(endTime)
         .description(factEntity.getDescription())
-        .tags(transformToTagList(factEntity.getTags()))
+        .tags(factEntity.getTags())
         .build();
   }
 
@@ -79,30 +69,12 @@ public class FactEntityMapper {
 
     return new FactEntity.Builder()
         .id(fact.getId())
-        .activity(fact.getActivity().getName())
-        .category(fact.getActivity().getCategory().getName())
+        .activity(fact.getActivity())
+        .category(fact.getCategory())
         .startTime(startTime)
         .endTime(endTime)
         .description(fact.getDescription())
-        .tags(transformToStringList(fact.getTags()))
+        .tags(fact.getTags())
         .build();
-  }
-
-  protected List<Tag> transformToTagList(@Nonnull List<String> strTags) {
-    List<Tag> tags = new ArrayList<Tag>(strTags.size());
-    ListIterator<String> stringIterator = strTags.listIterator();
-    while (stringIterator.hasNext()) {
-      tags.add(new Tag(stringIterator.next()));
-    }
-    return tags;
-  }
-
-  protected List<String> transformToStringList(@Nonnull List<Tag> tags) {
-    List<String> strTags = new ArrayList<String>(tags.size());
-    ListIterator<Tag> tagIterator = tags.listIterator();
-    while (tagIterator.hasNext()) {
-      strTags.add(tagIterator.next().getName());
-    }
-    return strTags;
   }
 }

@@ -32,15 +32,17 @@ import lombok.experimental.Accessors;
 public class Fact {
 
   private final @Nonnull Optional<Integer> id;
-  private final @Nonnull Activity activity;
+  private final @Nonnull String activity;
+  private final @Nonnull String category;
   private final @Nonnull Calendar startTime;
   private final @Nonnull Optional<Calendar> endTime;
-  private final @Nonnull List<Tag> tags;
+  private final @Nonnull List<String> tags;
   private final @Nonnull String description;
 
   private Fact(@Nonnull Builder b) {
     this.id = b.id;
     this.activity = b.activity;
+    this.category = b.category;
     this.description = b.description;
     this.tags = b.tags;
     this.startTime = b.startTime;
@@ -53,15 +55,17 @@ public class Fact {
   public static class Builder {
 
     private @Nonnull Optional<Integer> id = Optional.absent();
-    private @Nonnull Activity activity = new Activity("", new Category(""));
+    private @Nonnull String activity = "";
+    private @Nonnull String category = "";
     private @Nonnull Calendar startTime = GregorianCalendar.getInstance();
     private @Nonnull Optional<Calendar> endTime = Optional.absent();
-    private @Nonnull List<Tag> tags = new ArrayList<Tag>();
+    private @Nonnull List<String> tags = new ArrayList<String>();
     private @Nonnull String description = "";
 
     public Builder(@Nonnull Fact fact) {
       this.id = fact.getId();
       this.activity = fact.getActivity();
+      this.category = fact.getCategory();
       this.description = fact.getDescription();
       this.tags = fact.getTags();
       this.startTime = fact.getStartTime();
