@@ -34,7 +34,7 @@ public class StopFactUseCase extends UseCase<Fact, Void> {
 
   @Override protected @Nonnull Observable<Void> buildUseCaseObservable(@Nonnull Fact fact) {
     if (fact.getEndTime().isPresent()) {
-      return Observable.error(new AssertionError("The fact is stopped already."));
+      return Observable.error(new AssertionError("The fact has already stopped."));
     }
     return Observable.just(
         new Fact.Builder(fact)
