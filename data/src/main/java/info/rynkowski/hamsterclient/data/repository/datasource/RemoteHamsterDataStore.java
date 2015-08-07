@@ -25,11 +25,13 @@ import info.rynkowski.hamsterclient.data.entity.FactEntity;
 import info.rynkowski.hamsterclient.data.utils.PreferencesAdapter;
 import java.util.List;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.gnome.Hamster;
 import rx.Observable;
+import rx.Subscription;
 
 /**
  * {@link HamsterDataStore} based on a remote D-Bus connection.
@@ -41,12 +43,16 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
   private final @Nonnull HamsterRemoteObject hamsterObject;
   private final @Nonnull PreferencesAdapter preferencesAdapter;
 
+  private @Nullable Subscription subscriptionSignalOnChanged;
+
   @Inject public RemoteHamsterDataStore(@Nonnull HamsterRemoteObject hamsterRemoteObject,
       @Nonnull PreferencesAdapter preferencesAdapter) {
     this.hamsterObject = hamsterRemoteObject;
     this.preferencesAdapter = preferencesAdapter;
 
     setConnectionProvider();
+    subscriptionSignalOnChanged =
+        preferencesAdapter.signalOnChanged().subscribe(key -> setConnectionProvider());
   }
 
   private void setConnectionProvider() {
@@ -66,6 +72,9 @@ public class RemoteHamsterDataStore implements HamsterDataStore {
   @Override public @Nonnull Observable<Void> deinitialize() {
     return Observable.create(subscriber -> {
       hamsterObject.deinit();
+      if (subscriptionSignalOnChanged != null) {
+        subscriptionSignalOnChanged.unsubscribe();
+      }
       log.debug("Remote data store deinitialized.");
       subscriber.onCompleted();
     });
