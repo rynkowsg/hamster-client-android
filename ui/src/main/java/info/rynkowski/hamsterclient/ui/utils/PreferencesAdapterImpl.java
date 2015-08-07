@@ -23,11 +23,22 @@ import android.support.annotation.NonNull;
 import info.rynkowski.hamsterclient.data.utils.PreferencesAdapter;
 import info.rynkowski.hamsterclient.ui.R;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
+import rx.Observable;
+import rx.subjects.PublishSubject;
 
+@Slf4j
 public class PreferencesAdapterImpl implements PreferencesAdapter {
 
-  private @NonNull Context context;
-  private @NonNull SharedPreferences preferences;
+  private final @NonNull Context context;
+  private final @NonNull SharedPreferences preferences;
+  private final @NonNull PublishSubject<String> signalOnChangeSubject =  PublishSubject.create();
+
+  // method called when shared preferences will change
+  private final @NonNull SharedPreferences.OnSharedPreferenceChangeListener
+      onPreferenceChangeListener = (sharedPreferences, key) -> signalOnChangeSubject.onNext(key);
+
+  private int signalOnChangeObserversCounter = 0;
 
   @Inject public PreferencesAdapterImpl(@NonNull Context context) {
     this.context = context;
@@ -51,5 +62,23 @@ public class PreferencesAdapterImpl implements PreferencesAdapter {
     String key = context.getResources().getString(R.string.pref_dbusPort_key);
     String defaultValue = context.getResources().getString(R.string.pref_dbusPort_defaultValue);
     return preferences.getString(key, defaultValue);
+  }
+
+  @Override public @NonNull Observable<String> signalOnChanged() {
+    return signalOnChangeSubject.
+        doOnSubscribe(() -> {
+          // register listener if there is at least one observer
+          if (signalOnChangeObserversCounter++ == 0) {
+            preferences.registerOnSharedPreferenceChangeListener(onPreferenceChangeListener);
+            log.debug("SharedPreferenceChangeListener registered");
+          }
+        }).
+        doOnUnsubscribe(() -> {
+          // un-register the listener if there is no observer
+          if (--signalOnChangeObserversCounter == 0) {
+            preferences.unregisterOnSharedPreferenceChangeListener(onPreferenceChangeListener);
+            log.debug("SharedPreferenceChangeListener un-registered");
+          }
+        });
   }
 }

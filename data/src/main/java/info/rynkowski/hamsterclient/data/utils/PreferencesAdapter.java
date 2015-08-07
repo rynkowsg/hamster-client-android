@@ -17,6 +17,7 @@
 package info.rynkowski.hamsterclient.data.utils;
 
 import javax.annotation.Nonnull;
+import rx.Observable;
 
 public interface PreferencesAdapter {
 
@@ -25,4 +26,11 @@ public interface PreferencesAdapter {
   @Nonnull String dbusHost();
 
   @Nonnull String dbusPort();
+
+  /**
+   * Provides a signal that reports changes in shared preferences.
+   *
+   * @return an {@link Observable} that contains shared preferences' key
+   */
+  @Nonnull Observable<String> signalOnChanged();
 }
