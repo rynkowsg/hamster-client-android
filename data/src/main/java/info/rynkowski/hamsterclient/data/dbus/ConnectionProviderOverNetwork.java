@@ -20,8 +20,6 @@ import info.rynkowski.hamsterclient.data.dbus.exception.DBusConnectionNotReachab
 import info.rynkowski.hamsterclient.data.utils.PreferencesAdapter;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.freedesktop.dbus.DBusConnection;
 import org.freedesktop.dbus.exceptions.DBusException;
@@ -31,20 +29,21 @@ import org.freedesktop.dbus.exceptions.DBusException;
  * over the network.
  */
 @Slf4j
-@Singleton
 public class ConnectionProviderOverNetwork implements ConnectionProvider {
 
+  private final @Nonnull String host;
+  private final @Nonnull String port;
   private @Nullable DBusConnection connection;
-  private final @Nonnull PreferencesAdapter preferences;
 
-  @Inject public ConnectionProviderOverNetwork(@Nonnull PreferencesAdapter preferences) {
-    this.preferences = preferences;
+  public ConnectionProviderOverNetwork(@Nonnull String host, @Nonnull String port) {
+    this.host = host;
+    this.port = port;
     this.connection = null;
   }
 
   @Override public synchronized DBusConnection get() throws DBusConnectionNotReachableException {
     if (connection == null) {
-      String address = dbusAddress(preferences.dbusHost(), preferences.dbusPort());
+      String address = dbusAddress(host, port);
       log.debug("Opening D-Bus connection on address: {}", address);
       try {
         connection = DBusConnection.getConnection(address);

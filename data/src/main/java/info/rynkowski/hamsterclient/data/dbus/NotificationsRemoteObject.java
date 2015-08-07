@@ -26,7 +26,7 @@ public class NotificationsRemoteObject extends RemoteObjectAbstract<Notification
   private static final String objectPath = "/org/freedesktop/Notifications";
   private static final Class dbusType = Notifications.class;
 
-  public NotificationsRemoteObject(ConnectionProvider connectionProvider) {
-    super(connectionProvider, busName, objectPath, dbusType);
+  public NotificationsRemoteObject() {
+    super(busName, objectPath, dbusType);
   }
 }

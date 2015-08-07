@@ -16,6 +16,7 @@
 
 package info.rynkowski.hamsterclient.data.dbus;
 
+import com.google.common.base.Preconditions;
 import info.rynkowski.hamsterclient.data.dbus.exception.DBusConnectionNotReachableException;
 import info.rynkowski.hamsterclient.data.dbus.exception.DBusInternalException;
 import java.util.HashMap;
@@ -34,26 +35,33 @@ import org.freedesktop.dbus.exceptions.DBusException;
 @Slf4j
 public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
 
+  private final String busName;
+  private final String objectPath;
+  private final Class dbusType;
   private ConnectionProvider connectionProvider;
-  private String busName;
-  private String objectPath;
-  private Class dbusType;
+
   private volatile Type remoteObject;
 
   private @Nonnull HashMap<DBusSigHandler<DBusSignal>, Class<? extends DBusSignal>>
       registeredSignals = new HashMap<>();
 
-  public RemoteObjectAbstract(ConnectionProvider connectionProvider, String busName,
-      String objectPath, Class dbusType) {
-    this.connectionProvider = connectionProvider;
+  public RemoteObjectAbstract(String busName, String objectPath, Class dbusType) {
     this.busName = busName;
     this.objectPath = objectPath;
     this.dbusType = dbusType;
+    this.connectionProvider = null;
     this.remoteObject = null;
+  }
+
+  @Override public void setConnectionProvider(ConnectionProvider connectionProvider) {
+    this.connectionProvider = connectionProvider;
   }
 
   @SuppressWarnings("unchecked") @Override public synchronized Type get()
       throws DBusConnectionNotReachableException, DBusInternalException {
+
+    Preconditions.checkNotNull(connectionProvider,
+        "connectionProvider can not be null. You should use setConnectionProvider() earlier.");
 
     if (remoteObject == null) {
       log.debug("Possesing a D-Bus remote object started:");
@@ -79,6 +87,10 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
       throws DBusConnectionNotReachableException, DBusInternalException {
 
     log.debug("registerSignalCallback(signalClass={}, callback={})", signalClass, callback);
+
+    Preconditions.checkNotNull(connectionProvider,
+        "connectionProvider can not be null. You should use setConnectionProvider() earlier.");
+
     try {
       connectionProvider.get().addSigHandler((Class<DBusSignal>) signalClass, callback);
     } catch (DBusException e) {
@@ -93,6 +105,10 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
       throws DBusConnectionNotReachableException, DBusInternalException {
 
     log.debug("un-registerSignalCallback(signalClass={}, callback={})", signalClass, callback);
+
+    Preconditions.checkNotNull(connectionProvider,
+        "connectionProvider can not be null. You should use setConnectionProvider() earlier.");
+
     try {
       connectionProvider.get().removeSigHandler((Class<DBusSignal>) signalClass, callback);
     } catch (DBusException e) {
@@ -122,6 +138,9 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
   }
 
   @Override public synchronized void deinit() {
+    Preconditions.checkNotNull(connectionProvider,
+        "connectionProvider can not be null. You should use setConnectionProvider() earlier.");
+
     try {
       unregisterSignalCallbacks();
     } catch (DBusConnectionNotReachableException | DBusInternalException e) {

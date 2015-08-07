@@ -28,6 +28,8 @@ import org.freedesktop.dbus.DBusSignal;
  */
 public interface RemoteObject<Type> {
 
+  void setConnectionProvider(ConnectionProvider connectionProvider);
+
   Type get() throws DBusConnectionNotReachableException, DBusInternalException;
 
   void registerSignalCallback(Class<? extends DBusSignal> signalClass,

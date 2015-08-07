@@ -16,10 +16,13 @@
 
 package info.rynkowski.hamsterclient.data.repository.datasource;
 
+import info.rynkowski.hamsterclient.data.dbus.ConnectionProvider;
+import info.rynkowski.hamsterclient.data.dbus.ConnectionProviderOverNetwork;
 import info.rynkowski.hamsterclient.data.dbus.HamsterRemoteObject;
 import info.rynkowski.hamsterclient.data.dbus.exception.DBusConnectionNotReachableException;
 import info.rynkowski.hamsterclient.data.dbus.exception.DBusInternalException;
 import info.rynkowski.hamsterclient.data.entity.FactEntity;
+import info.rynkowski.hamsterclient.data.utils.PreferencesAdapter;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
@@ -35,10 +38,22 @@ import rx.Observable;
 @Singleton
 public class RemoteHamsterDataStore implements HamsterDataStore {
 
-  private @Nonnull HamsterRemoteObject hamsterObject;
+  private final @Nonnull HamsterRemoteObject hamsterObject;
+  private final @Nonnull PreferencesAdapter preferencesAdapter;
 
-  @Inject public RemoteHamsterDataStore(@Nonnull HamsterRemoteObject hamsterRemoteObject) {
+  @Inject public RemoteHamsterDataStore(@Nonnull HamsterRemoteObject hamsterRemoteObject,
+      @Nonnull PreferencesAdapter preferencesAdapter) {
     this.hamsterObject = hamsterRemoteObject;
+    this.preferencesAdapter = preferencesAdapter;
+
+    setConnectionProvider();
+  }
+
+  private void setConnectionProvider() {
+    ConnectionProvider connectionProvider =
+        new ConnectionProviderOverNetwork(preferencesAdapter.dbusHost(),
+            preferencesAdapter.dbusPort());
+    hamsterObject.setConnectionProvider(connectionProvider);
   }
 
   @Override public @Nonnull Observable<Void> initialize() {
