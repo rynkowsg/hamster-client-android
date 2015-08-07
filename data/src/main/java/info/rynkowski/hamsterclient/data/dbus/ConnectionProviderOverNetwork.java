@@ -17,7 +17,7 @@
 package info.rynkowski.hamsterclient.data.dbus;
 
 import info.rynkowski.hamsterclient.data.dbus.exception.DBusConnectionNotReachableException;
-import info.rynkowski.hamsterclient.data.utils.PreferencesContainer;
+import info.rynkowski.hamsterclient.data.utils.PreferencesAdapter;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -35,9 +35,9 @@ import org.freedesktop.dbus.exceptions.DBusException;
 public class ConnectionProviderOverNetwork implements ConnectionProvider {
 
   private @Nullable DBusConnection connection;
-  private final @Nonnull PreferencesContainer preferences;
+  private final @Nonnull PreferencesAdapter preferences;
 
-  @Inject public ConnectionProviderOverNetwork(@Nonnull PreferencesContainer preferences) {
+  @Inject public ConnectionProviderOverNetwork(@Nonnull PreferencesAdapter preferences) {
     this.preferences = preferences;
     this.connection = null;
   }

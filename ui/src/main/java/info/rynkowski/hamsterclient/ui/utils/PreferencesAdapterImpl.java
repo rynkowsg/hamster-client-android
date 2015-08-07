@@ -20,16 +20,16 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import info.rynkowski.hamsterclient.data.utils.PreferencesContainer;
+import info.rynkowski.hamsterclient.data.utils.PreferencesAdapter;
 import info.rynkowski.hamsterclient.ui.R;
 import javax.inject.Inject;
 
-public class PreferencesContainerImpl implements PreferencesContainer {
+public class PreferencesAdapterImpl implements PreferencesAdapter {
 
   private @NonNull Context context;
   private @NonNull SharedPreferences preferences;
 
-  @Inject public PreferencesContainerImpl(@NonNull Context context) {
+  @Inject public PreferencesAdapterImpl(@NonNull Context context) {
     this.context = context;
     this.preferences = PreferenceManager.getDefaultSharedPreferences(context);
   }

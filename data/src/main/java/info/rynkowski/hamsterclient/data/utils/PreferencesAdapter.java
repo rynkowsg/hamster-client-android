@@ -18,7 +18,7 @@ package info.rynkowski.hamsterclient.data.utils;
 
 import javax.annotation.Nonnull;
 
-public interface PreferencesContainer {
+public interface PreferencesAdapter {
 
   @Nonnull Boolean isDatabaseRemote();
 
