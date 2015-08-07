@@ -112,7 +112,7 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
     }
   }
 
-  @Override public void unregisterAllSignalCallbacks()
+  @Override public void unregisterSignalCallbacks()
       throws DBusConnectionNotReachableException, DBusInternalException {
 
     for (HashMap.Entry<DBusSigHandler<DBusSignal>, Class<? extends DBusSignal>> entry : registeredSignals
@@ -123,7 +123,7 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
 
   @Override public synchronized void deinit() {
     try {
-      unregisterAllSignalCallbacks();
+      unregisterSignalCallbacks();
     } catch (DBusConnectionNotReachableException | DBusInternalException e) {
       log.error("Exception during callbacks' un-registering", e);
     }

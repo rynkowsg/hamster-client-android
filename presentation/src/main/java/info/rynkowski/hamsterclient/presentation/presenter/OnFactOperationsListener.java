@@ -19,7 +19,7 @@ package info.rynkowski.hamsterclient.presentation.presenter;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import javax.annotation.Nonnull;
 
-public interface OnFactActionListener {
+public interface OnFactOperationsListener {
 
   void onStartFact(@Nonnull FactModel fact);
 

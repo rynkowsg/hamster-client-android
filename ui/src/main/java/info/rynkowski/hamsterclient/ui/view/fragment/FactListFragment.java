@@ -80,7 +80,7 @@ public class FactListFragment extends BaseFragment implements FactListView {
 
     // TODO: Inject FactsAdapter object (ActivityScope)
     factsAdapter = new FactsAdapter(getActivity(), new ArrayList<>());
-    factsAdapter.setOnFactActionListener(factListPresenter);
+    factsAdapter.setOnFactOperationsListener(factListPresenter);
     rv_facts.setAdapter(factsAdapter);
   }
 

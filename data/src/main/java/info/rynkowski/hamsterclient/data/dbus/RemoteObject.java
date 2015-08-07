@@ -41,7 +41,7 @@ public interface RemoteObject<Type> {
   void unregisterSignalCallbacks(Class<? extends DBusSignal> signalClass)
       throws DBusConnectionNotReachableException, DBusInternalException;
 
-  void unregisterAllSignalCallbacks()
+  void unregisterSignalCallbacks()
       throws DBusConnectionNotReachableException, DBusInternalException;
 
   /**

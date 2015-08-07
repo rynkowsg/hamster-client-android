@@ -30,7 +30,7 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
-import info.rynkowski.hamsterclient.presentation.presenter.OnFactActionListener;
+import info.rynkowski.hamsterclient.presentation.presenter.OnFactOperationsListener;
 import info.rynkowski.hamsterclient.ui.R;
 import info.rynkowski.hamsterclient.ui.utils.TimeConverter;
 import java.util.List;
@@ -45,14 +45,14 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
   private final @NonNull Context context;
   private final @NonNull LayoutInflater layoutInflater;
   private @NonNull List<FactModel> factsList;
-  private @Nullable OnFactActionListener onFactActionListener;
+  private @Nullable OnFactOperationsListener onFactOperationsListener;
 
   public FactsAdapter(@NonNull Context context, @NonNull List<FactModel> factsList) {
     this.context = context;
     this.layoutInflater =
         (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     this.factsList = factsList;
-    this.onFactActionListener = null;
+    this.onFactOperationsListener = null;
   }
 
   @Override public int getItemCount() {
@@ -65,7 +65,7 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
   }
 
   @Override public void onBindViewHolder(FactViewHolder holder, final int position) {
-    assert onFactActionListener != null : "onFactActionListener must not be null";
+    assert onFactOperationsListener != null : "onFactOperationsListener must not be null";
 
     final FactModel factModel = factsList.get(position);
     holder.activity_name.setText(factModel.getActivity());
@@ -80,9 +80,9 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
     return position;
   }
 
-  public void setOnFactActionListener(@NonNull OnFactActionListener onFactActionListener) {
-    log.debug("setOnFactActionListener(onFactActionListener = {})", onFactActionListener);
-    this.onFactActionListener = onFactActionListener;
+  public void setOnFactOperationsListener(@NonNull OnFactOperationsListener listener) {
+    log.debug("setOnFactOperationsListener(listener: {})", listener);
+    this.onFactOperationsListener = listener;
   }
 
   public void setFactsList(@NonNull List<FactModel> factsList) {
@@ -91,7 +91,7 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
   }
 
   private void createPopupMenu(@NonNull FactViewHolder holder, @NonNull FactModel fact) {
-    assert onFactActionListener != null : "onFactActionListener must not be null";
+    assert onFactOperationsListener != null : "onFactOperationsListener must not be null";
 
     // creating the instance of PopupMenu
     PopupMenu popupMenu = new PopupMenu(context, holder.overflow);
@@ -103,16 +103,16 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
 
       switch (item.getItemId()) {
         case R.id.start:
-          onFactActionListener.onStartFact(fact);
+          onFactOperationsListener.onStartFact(fact);
           break;
         case R.id.stop:
-          onFactActionListener.onStopFact(fact);
+          onFactOperationsListener.onStopFact(fact);
           break;
         case R.id.edit:
-          onFactActionListener.onEditFact(fact);
+          onFactOperationsListener.onEditFact(fact);
           break;
         case R.id.remove:
-          onFactActionListener.onRemoveFact(fact);
+          onFactOperationsListener.onRemoveFact(fact);
           break;
         default:
           assert false : "Unknown popup menu position, item id: " + item.getItemId() + ", title: "
