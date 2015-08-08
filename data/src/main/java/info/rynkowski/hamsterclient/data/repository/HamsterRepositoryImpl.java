@@ -17,7 +17,7 @@
 package info.rynkowski.hamsterclient.data.repository;
 
 import info.rynkowski.hamsterclient.data.entity.mapper.FactEntityMapper;
-import info.rynkowski.hamsterclient.data.repository.datasource.HamsterDataStore;
+import info.rynkowski.hamsterclient.data.repository.datasource.HamsterDataSource;
 import info.rynkowski.hamsterclient.data.utils.PreferencesAdapter;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
@@ -38,15 +38,15 @@ public class HamsterRepositoryImpl implements HamsterRepository {
 
   private @Nonnull PreferencesAdapter preferencesAdapter;
 
-  private @Nonnull HamsterDataStore localStore;
-  private @Nonnull HamsterDataStore remoteStore;
+  private @Nonnull HamsterDataSource localStore;
+  private @Nonnull HamsterDataSource remoteStore;
 
   private @Nonnull FactEntityMapper factEntityMapper;
 
 
   @Inject public HamsterRepositoryImpl(@Nonnull PreferencesAdapter preferencesAdapter,
-      @Named("local") @Nonnull HamsterDataStore localStore,
-      @Named("remote") @Nonnull HamsterDataStore remoteStore,
+      @Named("local") @Nonnull HamsterDataSource localStore,
+      @Named("remote") @Nonnull HamsterDataSource remoteStore,
       @Nonnull FactEntityMapper factEntityMapper) {
 
     this.preferencesAdapter = preferencesAdapter;
@@ -94,7 +94,7 @@ public class HamsterRepositoryImpl implements HamsterRepository {
     return currentStore().signalToggleCalled();
   }
 
-  protected @Nonnull HamsterDataStore currentStore() {
+  protected @Nonnull HamsterDataSource currentStore() {
     return preferencesAdapter.isDatabaseRemote() ? remoteStore : localStore;
   }
 }

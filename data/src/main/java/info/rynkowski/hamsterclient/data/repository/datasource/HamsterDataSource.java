@@ -22,9 +22,9 @@ import javax.annotation.Nonnull;
 import rx.Observable;
 
 /**
- * Interface that represents a Hamster's {@link DataStore}.
+ * Interface that represents a Hamster's {@link DataSource}.
  */
-public interface HamsterDataStore extends DataStore {
+public interface HamsterDataSource extends DataSource {
 
   /**
    * Get an {@link rx.Observable} which will emit a today's list of {@link FactEntity}.

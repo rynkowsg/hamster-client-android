@@ -34,18 +34,18 @@ import rx.Observable;
 import rx.Subscription;
 
 /**
- * {@link HamsterDataStore} based on a remote D-Bus connection.
+ * {@link HamsterDataSource} based on a remote D-Bus connection.
  */
 @Slf4j
 @Singleton
-public class RemoteHamsterDataStore implements HamsterDataStore {
+public class RemoteHamsterDataSource implements HamsterDataSource {
 
   private final @Nonnull HamsterRemoteObject hamsterObject;
   private final @Nonnull PreferencesAdapter preferencesAdapter;
 
   private @Nullable Subscription subscriptionSignalOnChanged;
 
-  @Inject public RemoteHamsterDataStore(@Nonnull HamsterRemoteObject hamsterRemoteObject,
+  @Inject public RemoteHamsterDataSource(@Nonnull HamsterRemoteObject hamsterRemoteObject,
       @Nonnull PreferencesAdapter preferencesAdapter) {
     this.hamsterObject = hamsterRemoteObject;
     this.preferencesAdapter = preferencesAdapter;

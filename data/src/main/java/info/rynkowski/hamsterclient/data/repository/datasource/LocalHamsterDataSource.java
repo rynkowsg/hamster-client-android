@@ -29,7 +29,7 @@ import rx.subjects.PublishSubject;
 
 @Slf4j
 @Singleton
-public class LocalHamsterDataStore implements HamsterDataStore {
+public class LocalHamsterDataSource implements HamsterDataSource {
 
   private @Nonnull PublishSubject<Void> signalActivitiesChanged = PublishSubject.create();
   private @Nonnull PublishSubject<Void> signalFactsChanged = PublishSubject.create();
@@ -38,7 +38,7 @@ public class LocalHamsterDataStore implements HamsterDataStore {
 
   private @Nonnull Context context;
 
-  @Inject public LocalHamsterDataStore(@Nonnull Context context) {
+  @Inject public LocalHamsterDataSource(@Nonnull Context context) {
     this.context = context;
   }
 

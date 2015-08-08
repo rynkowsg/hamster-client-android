@@ -21,9 +21,9 @@ import dagger.Module;
 import dagger.Provides;
 import info.rynkowski.hamsterclient.data.dbus.HamsterRemoteObject;
 import info.rynkowski.hamsterclient.data.repository.HamsterRepositoryImpl;
-import info.rynkowski.hamsterclient.data.repository.datasource.HamsterDataStore;
-import info.rynkowski.hamsterclient.data.repository.datasource.LocalHamsterDataStore;
-import info.rynkowski.hamsterclient.data.repository.datasource.RemoteHamsterDataStore;
+import info.rynkowski.hamsterclient.data.repository.datasource.HamsterDataSource;
+import info.rynkowski.hamsterclient.data.repository.datasource.LocalHamsterDataSource;
+import info.rynkowski.hamsterclient.data.repository.datasource.RemoteHamsterDataSource;
 import info.rynkowski.hamsterclient.data.utils.PreferencesAdapter;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
 import javax.inject.Named;
@@ -39,14 +39,14 @@ public class DataModule {
     return new HamsterRemoteObject();
   }
 
-  @Provides @Singleton @Named("local") HamsterDataStore provideLocalHamsterDataStore(
+  @Provides @Singleton @Named("local") HamsterDataSource provideLocalHamsterDataSource(
       Context context) {
-    return new LocalHamsterDataStore(context);
+    return new LocalHamsterDataSource(context);
   }
 
-  @Provides @Singleton @Named("remote") HamsterDataStore provideRemoteHamsterDataStore(
+  @Provides @Singleton @Named("remote") HamsterDataSource provideRemoteHamsterDataSource(
       HamsterRemoteObject hamsterRemoteObject, PreferencesAdapter preferences) {
-    return new RemoteHamsterDataStore(hamsterRemoteObject, preferences);
+    return new RemoteHamsterDataSource(hamsterRemoteObject, preferences);
   }
 
   @Provides @Singleton HamsterRepository provideHamsterRepository(

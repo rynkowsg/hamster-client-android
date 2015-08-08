@@ -20,17 +20,17 @@ import javax.annotation.Nonnull;
 import rx.Observable;
 
 /**
- * Root interface for specific data store's interfaces.
+ * Root interface for specific data source's interfaces.
  */
-public interface DataStore {
+public interface DataSource {
 
   /**
-   * Called to initialize data store object.
+   * Called to initialize data source object.
    */
   @Nonnull Observable<Void> initialize();
 
   /**
-   * Called to deinitialize data store object.
+   * Called to deinitialize data source object.
    */
   @Nonnull Observable<Void> deinitialize();
 }
