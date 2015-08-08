@@ -31,12 +31,16 @@ import butterknife.OnClick;
 import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.presentation.model.PresentationFact;
 import info.rynkowski.hamsterclient.ui.R;
+import info.rynkowski.hamsterclient.ui.internal.di.components.DaggerFactListComponent;
+import info.rynkowski.hamsterclient.ui.model.UiFact;
+import info.rynkowski.hamsterclient.ui.model.mapper.UiFactMapper;
 import info.rynkowski.hamsterclient.ui.utils.TimeConverter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -46,6 +50,8 @@ public class FactFormActivity extends BaseActivity {
 
   public static final String INPUT_EXTRAS_KEY_FACT = "INPUT_EXTRAS_KEY_FACT";
   public static final String OUTPUT_EXTRAS_KEY_FACT = "OUTPUT_EXTRAS_KEY_FACT";
+
+  @Inject UiFactMapper mapper;
 
   @Bind(R.id.et_activity) EditText editTextActivity;
   @Bind(R.id.et_category) EditText editTextCategory;
@@ -60,7 +66,7 @@ public class FactFormActivity extends BaseActivity {
   private @NonNull Calendar selectedStartTime = GregorianCalendar.getInstance(Locale.getDefault());
   private @NonNull Calendar selectedEndTime = GregorianCalendar.getInstance(Locale.getDefault());
 
-  private Optional<PresentationFact> fact = Optional.absent();
+  private Optional<UiFact> fact = Optional.absent();
 
   public static @NonNull Intent getCallingIntent(@NonNull Context context) {
     return new Intent(context, FactFormActivity.class);
@@ -70,6 +76,7 @@ public class FactFormActivity extends BaseActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_fact_form);
     ButterKnife.bind(this);
+    injectDependencies();
 
     fact = Optional.fromNullable(getIntent().getParcelableExtra(INPUT_EXTRAS_KEY_FACT));
 
@@ -118,15 +125,15 @@ public class FactFormActivity extends BaseActivity {
   }
 
   @OnClick(R.id.btn_apply) public void onApplyClicked(View view) {
-    PresentationFact fact = readFact();
+    UiFact readFact = readFact();
     Intent intent = FactFormActivity.this.getIntent();
-    intent.putExtra(OUTPUT_EXTRAS_KEY_FACT, fact);
+    intent.putExtra(OUTPUT_EXTRAS_KEY_FACT, readFact);
     setResult(Activity.RESULT_OK, intent);
     finish();
   }
 
-  private @NonNull PresentationFact readFact() {
-    return new PresentationFact.Builder()
+  private @NonNull UiFact readFact() {
+    return new UiFact.Builder() //
         .id(fact.isPresent() ? fact.get().getId() : Optional.absent())
         .activity(editTextActivity.getText().toString())
         .category(editTextCategory.getText().toString())
@@ -181,5 +188,12 @@ public class FactFormActivity extends BaseActivity {
       result.add(StringUtils.trim(i));
     }
     return result;
+  }
+
+  private void injectDependencies() {
+    DaggerFactListComponent.builder()
+        .applicationComponent(getApplicationComponent())
+        .activityModule(getActivityModule())
+        .build();
   }
 }

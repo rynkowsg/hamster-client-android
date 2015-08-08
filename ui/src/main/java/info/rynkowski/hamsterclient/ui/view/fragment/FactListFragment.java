@@ -34,6 +34,8 @@ import info.rynkowski.hamsterclient.presentation.model.PresentationFact;
 import info.rynkowski.hamsterclient.presentation.presenter.FactListPresenter;
 import info.rynkowski.hamsterclient.presentation.view.FactListView;
 import info.rynkowski.hamsterclient.ui.R;
+import info.rynkowski.hamsterclient.ui.model.UiFact;
+import info.rynkowski.hamsterclient.ui.model.mapper.UiFactMapper;
 import info.rynkowski.hamsterclient.ui.view.activity.FactFormActivity;
 import info.rynkowski.hamsterclient.ui.view.adapter.FactsAdapter;
 import info.rynkowski.hamsterclient.ui.view.adapter.FactsLayoutManager;
@@ -50,6 +52,8 @@ public class FactListFragment extends BaseFragment implements FactListView {
 
   private final static int REQUEST_CODE_ADD_FACT = 0;
   private final static int REQUEST_CODE_EDIT_FACT = 1;
+
+  @Inject UiFactMapper mapper;
 
   @Inject FactListPresenter factListPresenter;
 
@@ -129,15 +133,15 @@ public class FactListFragment extends BaseFragment implements FactListView {
     switch (requestCode) {
       case REQUEST_CODE_ADD_FACT:
         if (resultCode == Activity.RESULT_OK) {
-          PresentationFact fact = data.getParcelableExtra(FactFormActivity.OUTPUT_EXTRAS_KEY_FACT);
-          factListPresenter.onNewFactPrepared(fact);
+          UiFact fact = data.getParcelableExtra(FactFormActivity.OUTPUT_EXTRAS_KEY_FACT);
+          factListPresenter.onNewFactPrepared(mapper.transform(fact));
           showToastMessage("New fact:" + fact.getActivity());
         }
         break;
       case REQUEST_CODE_EDIT_FACT:
         if (resultCode == Activity.RESULT_OK) {
-          PresentationFact fact = data.getParcelableExtra(FactFormActivity.OUTPUT_EXTRAS_KEY_FACT);
-          factListPresenter.onEditedFactPrepared(fact);
+          UiFact fact = data.getParcelableExtra(FactFormActivity.OUTPUT_EXTRAS_KEY_FACT);
+          factListPresenter.onEditedFactPrepared(mapper.transform(fact));
         }
         break;
       default:
@@ -149,7 +153,9 @@ public class FactListFragment extends BaseFragment implements FactListView {
     navigator.navigateToFactFormForResult(FactListFragment.this, REQUEST_CODE_ADD_FACT);
   }
 
-  @Override public void navigateToEditFact(@NonNull PresentationFact fact) {
+  @Override public void navigateToEditFact(@NonNull PresentationFact presentationFact) {
+    UiFact fact = mapper.transform(presentationFact);
+
     Intent intentToLaunch = FactFormActivity.getCallingIntent(FactListFragment.this.getActivity());
     intentToLaunch.putExtra(FactFormActivity.INPUT_EXTRAS_KEY_FACT, fact);
     startActivityForResult(intentToLaunch, REQUEST_CODE_EDIT_FACT);

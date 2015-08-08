@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.presentation.model;
+package info.rynkowski.hamsterclient.ui.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.google.common.base.Optional;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,7 +31,17 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 @Getter
-public class PresentationFact {
+public class UiFact implements Parcelable {
+
+  public static final Creator<UiFact> CREATOR = new Creator<UiFact>() {
+    @Override public UiFact createFromParcel(@Nonnull Parcel in) {
+      return new UiFact(in);
+    }
+
+    @Override public @Nonnull UiFact[] newArray(int size) {
+      return new UiFact[size];
+    }
+  };
 
   private final @Nonnull Optional<Integer> id;
   private final @Nonnull String activity;
@@ -39,7 +51,7 @@ public class PresentationFact {
   private final @Nonnull Calendar startTime;
   private final @Nonnull Optional<Calendar> endTime;
 
-  private PresentationFact(@Nonnull Builder b) {
+  private UiFact(@Nonnull Builder b) {
     this.id = b.id;
     this.activity = b.activity;
     this.category = b.category;
@@ -47,6 +59,51 @@ public class PresentationFact {
     this.tags = b.tags;
     this.startTime = b.startTime;
     this.endTime = b.endTime;
+  }
+
+  private UiFact(@Nonnull Parcel in) {
+    this.id = (in.readByte() == 1) ? Optional.of(in.readInt()) : Optional.absent();
+    this.activity = in.readString();
+    this.category = in.readString();
+    this.tags = new ArrayList<>();
+    in.readStringList(this.tags);
+    this.description = in.readString();
+    this.startTime = GregorianCalendar.getInstance();
+    this.startTime.setTimeInMillis(in.readLong());
+
+    Byte isEndTime = in.readByte();
+    if (isEndTime == 1) {
+      this.endTime = Optional.of(GregorianCalendar.getInstance());
+      this.endTime.get().setTimeInMillis(in.readLong());
+    } else if (isEndTime == 0) {
+      this.endTime = Optional.absent();
+    } else {
+      throw new AssertionError("Invalid value: " + isEndTime);
+    }
+  }
+
+  @Override public int describeContents() {
+    return hashCode();
+  }
+
+  @Override public void writeToParcel(@Nonnull Parcel dest, int flags) {
+    if (id.isPresent()) {
+      dest.writeByte((byte) 1);
+      dest.writeInt(id.get());
+    } else {
+      dest.writeByte((byte) 0);
+    }
+    dest.writeString(activity);
+    dest.writeString(category);
+    dest.writeStringList(tags);
+    dest.writeString(description);
+    dest.writeLong(startTime.getTimeInMillis());
+    if (endTime.isPresent()) {
+      dest.writeByte((byte) 1);
+      dest.writeLong(endTime.get().getTimeInMillis());
+    } else {
+      dest.writeByte((byte) 0);
+    }
   }
 
   @NoArgsConstructor(access = AccessLevel.PUBLIC)
@@ -62,8 +119,8 @@ public class PresentationFact {
     private @Nonnull Calendar startTime = GregorianCalendar.getInstance();
     private @Nonnull Optional<Calendar> endTime = Optional.absent();
 
-    public @Nonnull PresentationFact build() {
-      return new PresentationFact(this);
+    public @Nonnull UiFact build() {
+      return new UiFact(this);
     }
   }
 }

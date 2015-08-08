@@ -22,7 +22,14 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+/**
+ * Class that translates a fact between two representations: domain and presentation.
+ * Could transform object of {@link Fact} to
+ * {@link PresentationFact} and in the opposite direction.
+ */
+@Singleton
 public class PresentationFactMapper {
 
   public @Inject PresentationFactMapper() {
@@ -53,13 +60,11 @@ public class PresentationFactMapper {
         .build();
   }
 
-  public @Nonnull List<PresentationFact> transform(@Nonnull List<Fact> factList) {
-    List<PresentationFact> factModelList = new ArrayList<>(factList.size());
-    PresentationFact factModel;
-    for (Fact fact : factList) {
-      factModel = transform(fact);
-      factModelList.add(factModel);
+  public @Nonnull List<PresentationFact> transform(@Nonnull List<Fact> facts) {
+    List<PresentationFact> presentationFacts = new ArrayList<>(facts.size());
+    for (Fact fact : facts) {
+      presentationFacts.add(transform(fact));
     }
-    return factModelList;
+    return presentationFacts;
   }
 }
