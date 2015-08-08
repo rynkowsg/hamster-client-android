@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 Grzegorz Rynkowski
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 buildscript {
   repositories {
     jcenter()
@@ -58,25 +74,22 @@ dependencies {
   compile project(':data')
   compile project(':presentation')
 
-  def uiDependencies = rootProject.ext.uiDependencies
+  compile parent.ext.libAppcompatV7
+  compile parent.ext.libCardViewV7
+  compile parent.ext.libDesign
+  compile parent.ext.libRecyclerViewV7
+  compile parent.ext.libSupportAnnotations
+  compile parent.ext.libSupportV4
 
-  compile uiDependencies.appcompatV7
-  compile uiDependencies.cardViewV7
-  compile uiDependencies.design
-  compile uiDependencies.recyclerViewV7
-  compile uiDependencies.supportAnnotations
-  compile uiDependencies.supportV4
-
-  apt uiDependencies.daggerCompiler
-  apt uiDependencies.lombok
-  compile uiDependencies.androidLogger
-  compile uiDependencies.butterKnife
-  compile uiDependencies.commonsLang3
-  compile uiDependencies.dagger
-  compile uiDependencies.guava
-  compile uiDependencies.rxAndroid
-  compile uiDependencies.rxJava
-  compile uiDependencies.slf4jApi
-  provided uiDependencies.lombok
-
+  apt parent.ext.libDagger2Compiler
+  apt parent.ext.libLombok
+  compile parent.ext.libAndroidLogger
+  compile parent.ext.libButterKnife
+  compile parent.ext.libCommonsLang3
+  compile parent.ext.libDagger2
+  compile parent.ext.libGuava
+  compile parent.ext.libRxAndroid
+  compile parent.ext.libRxJava
+  compile parent.ext.libSlf4jApi
+  provided parent.ext.libLombok
 }

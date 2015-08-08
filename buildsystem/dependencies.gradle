@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 Grzegorz Rynkowski
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 allprojects {
   repositories {
     jcenter()
@@ -33,59 +49,29 @@ ext {
   slf4jTimberVersion = '2.0'
   timberVersion = '3.1.0'
 
-  dataDependencies = [
-      androidLogger:      "com.noveogroup.android:android-logger:${androidLoggerVersion}",
-      commonsLang3:       "org.apache.commons:commons-lang3:${commonsLang3Version}",
-      dagger:             "com.google.dagger:dagger:${daggerVersion}",
-      daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
-      guava:              "com.google.guava:guava:${guavaVersion}",
-      javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
-      lombok:             "org.projectlombok:lombok:${lombokVersion}",
-      rxAndroid:          "io.reactivex:rxandroid:${rxAndroidVersion}",
-      rxJava:             "io.reactivex:rxjava:${rxJavaVersion}",
-      slf4jApi:           "org.slf4j:slf4j-api:${slf4jApiVersion}",
-  ]
 
-  domainDependencies = [
-      dagger:             "com.google.dagger:dagger:${daggerVersion}",
-      daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
-      guava:              "com.google.guava:guava:${guavaVersion}",
-      javaxAnnotation:    "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
-      jsr305:             "com.google.code.findbugs:jsr305:${jsr305Version}",
-      lombok:             "org.projectlombok:lombok:${lombokVersion}",
-      rxJava:             "io.reactivex:rxjava:${rxJavaVersion}",
-      slf4jApi:           "org.slf4j:slf4j-api:${slf4jApiVersion}",
-  ]
+   // Java libraries
+  libCommonsLang3 = "org.apache.commons:commons-lang3:${commonsLang3Version}"
+  libDagger2 = "com.google.dagger:dagger:${daggerVersion}"
+  libDagger2Compiler = "com.google.dagger:dagger-compiler:${daggerVersion}"
+  libGuava = "com.google.guava:guava:${guavaVersion}"
+  libJavaxAnnotation = "org.glassfish:javax.annotation:${javaxAnnotationVersion}"
+  libJsr305 = "com.google.code.findbugs:jsr305:${jsr305Version}"
+  libLombok = "org.projectlombok:lombok:${lombokVersion}"
+  libRxJava = "io.reactivex:rxjava:${rxJavaVersion}"
+  libSlf4jApi = "org.slf4j:slf4j-api:${slf4jApiVersion}"
 
-  presentationDependencies = [
-      androidLogger:      "com.noveogroup.android:android-logger:${androidLoggerVersion}",
-      dagger:             "com.google.dagger:dagger:${daggerVersion}",
-      daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
-      guava:              "com.google.guava:guava:${guavaVersion}",
-      lombok:             "org.projectlombok:lombok:${lombokVersion}",
-      rxJava:             "io.reactivex:rxjava:${rxJavaVersion}",
-      slf4jApi:           "org.slf4j:slf4j-api:${slf4jApiVersion}",
-  ]
+  // Android Libraries
+  libAppcompatV7 = "com.android.support:appcompat-v7:${appcompatV7Version}"
+  libCardViewV7 = "com.android.support:cardview-v7:${cardViewV7Version}"
+  libDesign = "com.android.support:design:${designVersion}"
+  libRecyclerViewV7 = "com.android.support:recyclerview-v7:${recyclerViewV7Version}"
+  libSupportAnnotations = "com.android.support:support-annotations:${supportAnnotationsVersion}"
+  libSupportV4 = "com.android.support:support-v4:${supportV4Version}"
 
-  uiDependencies = [
-      appcompatV7:        "com.android.support:appcompat-v7:${appcompatV7Version}",
-      cardViewV7:         "com.android.support:cardview-v7:${cardViewV7Version}",
-      design:             "com.android.support:design:${designVersion}",
-      recyclerViewV7:     "com.android.support:recyclerview-v7:${recyclerViewV7Version}",
-      supportAnnotations: "com.android.support:support-annotations:${supportAnnotationsVersion}",
-      supportV4:          "com.android.support:support-v4:${supportV4Version}",
-
-      androidLogger:      "com.noveogroup.android:android-logger:${androidLoggerVersion}",
-      butterKnife:        "com.jakewharton:butterknife:${butterKnifeVersion}",
-      commonsLang3:       "org.apache.commons:commons-lang3:${commonsLang3Version}",
-      dagger:             "com.google.dagger:dagger:${daggerVersion}",
-      daggerCompiler:     "com.google.dagger:dagger-compiler:${daggerVersion}",
-      guava:              "com.google.guava:guava:${guavaVersion}",
-      lombok:             "org.projectlombok:lombok:${lombokVersion}",
-      rxAndroid:          "io.reactivex:rxandroid:${rxAndroidVersion}",
-      rxJava:             "io.reactivex:rxjava:${rxJavaVersion}",
-      slf4jApi:           "org.slf4j:slf4j-api:${slf4jApiVersion}",
-//      slf4jTimber:        "com.arcao:slf4j-timber:${slf4jTimberVersion}",
-//      timber:             "com.jakewharton.timber:timber:${timberVersion}",
-  ]
+  libAndroidLogger = "com.noveogroup.android:android-logger:${androidLoggerVersion}"
+  libButterKnife = "com.jakewharton:butterknife:${butterKnifeVersion}"
+  libRxAndroid = "io.reactivex:rxandroid:${rxAndroidVersion}"
+  libSlf4jTimber = "com.arcao:slf4j-timber:${slf4jTimberVersion}"
+  libTimber = "com.jakewharton.timber:timber:${timberVersion}"
 }
