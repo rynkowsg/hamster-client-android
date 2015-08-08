@@ -14,28 +14,26 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.domain.interactor;
+package info.rynkowski.hamsterclient.domain.interactors;
 
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
-import java.util.List;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import rx.Observable;
 
-/**
- * This class is an implementation of {@link UseCase} that represents a use case for
- * retrieving today's {@link info.rynkowski.hamsterclient.domain.entities.Fact}s.
- */
-public class GetTodaysFactsUseCase extends UseCaseNoArgs<List<Fact>> {
+public class RemoveFactUseCase extends UseCase<Fact, Void> {
 
   private @Nonnull HamsterRepository hamsterRepository;
 
-  @Inject public GetTodaysFactsUseCase(@Nonnull HamsterRepository hamsterRepository) {
+  @Inject public RemoveFactUseCase(@Nonnull HamsterRepository hamsterRepository) {
     this.hamsterRepository = hamsterRepository;
   }
 
-  @Override protected @Nonnull Observable<List<Fact>> buildUseCaseObservable() {
-    return hamsterRepository.getTodaysFacts();
+  @Override protected @Nonnull Observable<Void> buildUseCaseObservable(@Nonnull Fact fact) {
+    if (!fact.getId().isPresent()) {
+      return Observable.error(new AssertionError("A Fact has to have an id."));
+    }
+    return hamsterRepository.removeFact(fact.getId().get());
   }
 }

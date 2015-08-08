@@ -14,28 +14,30 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.domain.interactor;
+package info.rynkowski.hamsterclient.domain.interactors;
 
+import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import rx.Observable;
 
-/**
- * This class is an implementation of {@link UseCase} that represents a use case for
- * adding a new {@link info.rynkowski.hamsterclient.domain.entities.Fact}.
- */
-public class AddFactUseCase extends UseCase<Fact, Void> {
+public class StartFactUseCase extends UseCase<Fact, Void> {
 
   private @Nonnull HamsterRepository hamsterRepository;
 
-  @Inject public AddFactUseCase(@Nonnull HamsterRepository hamsterRepository) {
+  @Inject public StartFactUseCase(@Nonnull HamsterRepository hamsterRepository) {
     this.hamsterRepository = hamsterRepository;
   }
 
   @Override protected @Nonnull Observable<Void> buildUseCaseObservable(@Nonnull Fact fact) {
-    return hamsterRepository.addFact(fact).
+    return Observable.just(new Fact.Builder(fact).startTime(GregorianCalendar.getInstance())
+            .endTime(Optional.<Calendar>absent())
+            .build()).
+        flatMap(hamsterRepository::addFact).
         flatMap(id -> Observable.<Void>empty());
   }
 }

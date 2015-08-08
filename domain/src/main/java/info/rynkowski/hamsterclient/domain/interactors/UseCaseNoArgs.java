@@ -15,27 +15,27 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.domain.interactor;
+package info.rynkowski.hamsterclient.domain.interactors;
 
 import javax.annotation.Nonnull;
 import rx.Observable;
 
 /**
- * Abstract class for a Use Case (Interactor in terms of Clean Architecture) with arguments.
+ * Abstract class for a Use Case (Interactor in terms of Clean Architecture) without arguments.
  *
  * By convention each UseCase implementation will return the result using a {@link rx.Observable}.
  */
-public abstract class UseCase<Argument, Result> {
+public abstract class UseCaseNoArgs<Result> {
 
   /**
    * Builds an {@link rx.Observable} which will be used when executing the current {@link UseCase}.
    */
-  protected abstract @Nonnull Observable<Result> buildUseCaseObservable(@Nonnull Argument argument);
+  protected abstract @Nonnull Observable<Result> buildUseCaseObservable();
 
   /**
    * Return a {@link rx.Observable} with result of execution.
    */
-  public @Nonnull Observable<Result> execute(@Nonnull Argument argument) {
-    return this.buildUseCaseObservable(argument);
+  public @Nonnull Observable<Result> execute() {
+    return this.buildUseCaseObservable();
   }
 }

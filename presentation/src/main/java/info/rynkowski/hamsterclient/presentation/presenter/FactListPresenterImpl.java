@@ -17,8 +17,8 @@
 package info.rynkowski.hamsterclient.presentation.presenter;
 
 import info.rynkowski.hamsterclient.domain.entities.Fact;
-import info.rynkowski.hamsterclient.domain.interactor.UseCase;
-import info.rynkowski.hamsterclient.domain.interactor.UseCaseNoArgs;
+import info.rynkowski.hamsterclient.domain.interactors.UseCase;
+import info.rynkowski.hamsterclient.domain.interactors.UseCaseNoArgs;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
 import info.rynkowski.hamsterclient.presentation.model.FactModel;
 import info.rynkowski.hamsterclient.presentation.model.mapper.FactModelDataMapper;

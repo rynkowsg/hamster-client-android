@@ -14,26 +14,33 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.domain.interactor;
+package info.rynkowski.hamsterclient.domain.interactors;
 
+import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
+import java.util.GregorianCalendar;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import rx.Observable;
 
-public class RemoveFactUseCase extends UseCase<Fact, Void> {
+public class StopFactUseCase extends UseCase<Fact, Void> {
 
   private @Nonnull HamsterRepository hamsterRepository;
 
-  @Inject public RemoveFactUseCase(@Nonnull HamsterRepository hamsterRepository) {
+  @Inject public StopFactUseCase(@Nonnull HamsterRepository hamsterRepository) {
     this.hamsterRepository = hamsterRepository;
   }
 
   @Override protected @Nonnull Observable<Void> buildUseCaseObservable(@Nonnull Fact fact) {
-    if (!fact.getId().isPresent()) {
-      return Observable.error(new AssertionError("A Fact has to have an id."));
+    if (fact.getEndTime().isPresent()) {
+      return Observable.error(new AssertionError("The fact has already stopped."));
     }
-    return hamsterRepository.removeFact(fact.getId().get());
+    return Observable.just(
+        new Fact.Builder(fact)
+            .endTime(Optional.of(GregorianCalendar.getInstance()))
+            .build())
+        .flatMap(hamsterRepository::updateFact)
+        .flatMap(id -> Observable.<Void>empty());
   }
 }

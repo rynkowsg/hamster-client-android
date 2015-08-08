@@ -14,33 +14,28 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.domain.interactor;
+package info.rynkowski.hamsterclient.domain.interactors;
 
-import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
-import java.util.GregorianCalendar;
+import java.util.List;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import rx.Observable;
 
-public class StopFactUseCase extends UseCase<Fact, Void> {
+/**
+ * This class is an implementation of {@link UseCase} that represents a use case for
+ * retrieving today's {@link info.rynkowski.hamsterclient.domain.entities.Fact}s.
+ */
+public class GetTodaysFactsUseCase extends UseCaseNoArgs<List<Fact>> {
 
   private @Nonnull HamsterRepository hamsterRepository;
 
-  @Inject public StopFactUseCase(@Nonnull HamsterRepository hamsterRepository) {
+  @Inject public GetTodaysFactsUseCase(@Nonnull HamsterRepository hamsterRepository) {
     this.hamsterRepository = hamsterRepository;
   }
 
-  @Override protected @Nonnull Observable<Void> buildUseCaseObservable(@Nonnull Fact fact) {
-    if (fact.getEndTime().isPresent()) {
-      return Observable.error(new AssertionError("The fact has already stopped."));
-    }
-    return Observable.just(
-        new Fact.Builder(fact)
-            .endTime(Optional.of(GregorianCalendar.getInstance()))
-            .build())
-        .flatMap(hamsterRepository::updateFact)
-        .flatMap(id -> Observable.<Void>empty());
+  @Override protected @Nonnull Observable<List<Fact>> buildUseCaseObservable() {
+    return hamsterRepository.getTodaysFacts();
   }
 }
