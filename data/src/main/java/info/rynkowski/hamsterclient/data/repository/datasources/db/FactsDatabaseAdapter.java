@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.data.db;
+package info.rynkowski.hamsterclient.data.repository.datasources.db;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -22,7 +22,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.google.common.base.Optional;
-import info.rynkowski.hamsterclient.data.entity.FactEntity;
+import info.rynkowski.hamsterclient.data.repository.datasources.db.entities.DbFact;
 import info.rynkowski.hamsterclient.data.utils.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class FactsDbAdapter {
+public class FactsDatabaseAdapter {
 
   private static final int DB_VERSION = 1;
   private static final String DB_NAME = "database.db";
@@ -101,11 +101,11 @@ public class FactsDbAdapter {
     }
   }
 
-  public FactsDbAdapter(Context context) {
+  public FactsDatabaseAdapter(Context context) {
     this.context = context;
   }
 
-  public FactsDbAdapter open(){
+  public FactsDatabaseAdapter open() {
     dbHelper = new DatabaseHelper(context, DB_NAME, null, DB_VERSION);
     try {
       db = dbHelper.getWritableDatabase();
@@ -119,7 +119,7 @@ public class FactsDbAdapter {
     dbHelper.close();
   }
 
-  public int insertFact(@Nonnull FactEntity factEntity) {
+  public int insertFact(@Nonnull DbFact factEntity) {
     ContentValues newTodoValues = new ContentValues();
     newTodoValues.put(KEY_ACTIVITY, factEntity.getActivity());
     newTodoValues.put(KEY_CATEGORY, factEntity.getCategory());
@@ -133,7 +133,7 @@ public class FactsDbAdapter {
     return (int) db.insert(DB_FACTS_TABLE, null, newTodoValues);
   }
 
-  public boolean updateFact(@Nonnull FactEntity factEntity) {
+  public boolean updateFact(@Nonnull DbFact factEntity) {
     if (!factEntity.getId().isPresent()) {
       throw new AssertionError("Update is not possible without id.");
     }
@@ -159,8 +159,8 @@ public class FactsDbAdapter {
     return db.delete(DB_FACTS_TABLE, where, null) > 0;
   }
 
-  public @Nonnull List<FactEntity> getFacts() {
-    List<FactEntity> result = new ArrayList<>();
+  public @Nonnull List<DbFact> getFacts() {
+    List<DbFact> result = new ArrayList<>();
 
     Cursor cursor = db.query(DB_FACTS_TABLE, null, null, null, null, null, null);
 
@@ -175,12 +175,12 @@ public class FactsDbAdapter {
     return result;
   }
 
-  private @Nonnull FactEntity takeFact(@NonNull Cursor cursor) {
+  private @Nonnull DbFact takeFact(@NonNull Cursor cursor) {
     Time startTime = Time.getInstance(Timestamp.valueOf(cursor.getString(START_TIME_COLUMN)));
     Optional<Time> endTime = cursor.isNull(END_TIME_COLUMN) ? Optional.absent()
         : Optional.of(Time.getInstance(Timestamp.valueOf(cursor.getString(END_TIME_COLUMN))));
 
-    return new FactEntity.Builder()
+    return new DbFact.Builder() //
         .id(Optional.of(cursor.getInt(ID_COLUMN)))
         .activity(cursor.getString(ACTIVITY_COLUMN))
         .category(cursor.getString(CATEGORY_COLUMN))

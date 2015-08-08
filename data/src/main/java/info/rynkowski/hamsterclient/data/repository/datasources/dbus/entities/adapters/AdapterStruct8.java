@@ -14,41 +14,33 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.data.dbus.adapters;
+package info.rynkowski.hamsterclient.data.repository.datasources.dbus.entities.adapters;
 
-import org.gnome.Struct1;
+import org.gnome.Struct8;
 
 // used in:
-//   public List<Struct1> GetTags(boolean only_autocomplete);
+//   public List<Struct8> GetActivities(String search)
 
-public class AdapterStruct1 {
-  private Struct1 object;
+public class AdapterStruct8 {
+  private Struct8 object;
 
-  public AdapterStruct1(Struct1 object) {
+  public AdapterStruct8(Struct8 object) {
     this.object = object;
   }
 
-  public static int id(Struct1 object) {
+  public static String name(Struct8 object) {
     return object.a;
   }
 
-  public static String name(Struct1 object) {
+  public static String category(Struct8 object) {
     return object.b;
-  }
-
-  public static boolean autocomplete(Struct1 object) {
-    return object.c;
-  }
-
-  public int id() {
-    return id(object);
   }
 
   public String name() {
     return name(object);
   }
 
-  public boolean autocomplete() {
-    return autocomplete(object);
+  public String category() {
+    return category(object);
   }
 }

@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.data.dbus;
+package info.rynkowski.hamsterclient.data.repository.datasources.dbus;
 
+import info.rynkowski.hamsterclient.data.dbus.RemoteObjectAbstract;
 import info.rynkowski.hamsterclient.data.dbus.exception.DBusConnectionNotReachableException;
 import info.rynkowski.hamsterclient.data.dbus.exception.DBusInternalException;
 import javax.inject.Inject;

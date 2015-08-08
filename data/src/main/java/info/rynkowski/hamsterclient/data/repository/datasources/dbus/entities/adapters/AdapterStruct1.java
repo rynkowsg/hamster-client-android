@@ -14,26 +14,30 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.data.dbus.adapters;
+package info.rynkowski.hamsterclient.data.repository.datasources.dbus.entities.adapters;
 
-import org.gnome.Struct6;
+import org.gnome.Struct1;
 
 // used in:
-//   public List<Struct6> GetCategories();
+//   public List<Struct1> GetTags(boolean only_autocomplete);
 
-public class AdapterStruct6 {
-  private Struct6 object;
+public class AdapterStruct1 {
+  private Struct1 object;
 
-  public AdapterStruct6(Struct6 object) {
+  public AdapterStruct1(Struct1 object) {
     this.object = object;
   }
 
-  public static int id(Struct6 object) {
+  public static int id(Struct1 object) {
     return object.a;
   }
 
-  public static String name(Struct6 object) {
+  public static String name(Struct1 object) {
     return object.b;
+  }
+
+  public static boolean autocomplete(Struct1 object) {
+    return object.c;
   }
 
   public int id() {
@@ -42,5 +46,9 @@ public class AdapterStruct6 {
 
   public String name() {
     return name(object);
+  }
+
+  public boolean autocomplete() {
+    return autocomplete(object);
   }
 }

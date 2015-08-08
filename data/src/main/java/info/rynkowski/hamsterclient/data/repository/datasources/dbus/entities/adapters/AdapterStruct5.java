@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.data.dbus.adapters;
+package info.rynkowski.hamsterclient.data.repository.datasources.dbus.entities.adapters;
 
 import java.util.List;
 import org.gnome.Struct5;

@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.data.repository.datasources;
+package info.rynkowski.hamsterclient.data.repository.datasources.dbus;
 
 import info.rynkowski.hamsterclient.data.dbus.ConnectionProvider;
 import info.rynkowski.hamsterclient.data.dbus.ConnectionProviderOverNetwork;
-import info.rynkowski.hamsterclient.data.dbus.HamsterRemoteObject;
 import info.rynkowski.hamsterclient.data.dbus.exception.DBusConnectionNotReachableException;
 import info.rynkowski.hamsterclient.data.dbus.exception.DBusInternalException;
-import info.rynkowski.hamsterclient.data.entity.FactEntity;
+import info.rynkowski.hamsterclient.data.repository.datasources.HamsterDataSource;
+import info.rynkowski.hamsterclient.data.repository.datasources.dbus.entities.DbusFact;
+import info.rynkowski.hamsterclient.data.repository.datasources.dbus.entities.mapper.DbusFactMapper;
 import info.rynkowski.hamsterclient.data.utils.PreferencesAdapter;
+import info.rynkowski.hamsterclient.domain.entities.Fact;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -38,17 +40,19 @@ import rx.Subscription;
  */
 @Slf4j
 @Singleton
-public class RemoteHamsterDataSource implements HamsterDataSource {
+public class DbusHamsterDataSource implements HamsterDataSource {
 
   private final @Nonnull HamsterRemoteObject hamsterObject;
   private final @Nonnull PreferencesAdapter preferencesAdapter;
+  private final @Nonnull DbusFactMapper mapper;
 
   private @Nullable Subscription subscriptionSignalOnChanged;
 
-  @Inject public RemoteHamsterDataSource(@Nonnull HamsterRemoteObject hamsterRemoteObject,
-      @Nonnull PreferencesAdapter preferencesAdapter) {
+  @Inject public DbusHamsterDataSource(@Nonnull HamsterRemoteObject hamsterRemoteObject,
+      @Nonnull PreferencesAdapter preferencesAdapter, @Nonnull DbusFactMapper mapper) {
     this.hamsterObject = hamsterRemoteObject;
     this.preferencesAdapter = preferencesAdapter;
+    this.mapper = mapper;
 
     setConnectionProvider();
     subscriptionSignalOnChanged =
@@ -63,7 +67,7 @@ public class RemoteHamsterDataSource implements HamsterDataSource {
   }
 
   @Override public @Nonnull Observable<Void> initialize() {
-    return getHamsterObjectObservable()
+    return getHamsterObjectObservable() //
         .doOnNext(hamster -> log.debug("Remote data store initialized."))
         .flatMap(object -> Observable.empty());
   }
@@ -80,27 +84,31 @@ public class RemoteHamsterDataSource implements HamsterDataSource {
     });
   }
 
-  @Override public @Nonnull Observable<List<FactEntity>> getTodaysFacts() {
-    return getHamsterObjectObservable()
+  @Override public @Nonnull Observable<List<Fact>> getTodaysFacts() {
+    return getHamsterObjectObservable() //
         .map(Hamster::GetTodaysFacts)
         .flatMap(Observable::from)
-        .map(FactEntity::new)
-        .map(FactEntity::timeFixRemoteToLocal)
+        .map(DbusFact::new)
+        .map(DbusFact::timeFixRemoteToLocal)
+        .map(mapper::transform)
         .toList();
   }
 
-  @Override public @Nonnull Observable<Integer> addFact(@Nonnull FactEntity fact) {
-    String serializedName = fact.serializedName();
+  @Override public @Nonnull Observable<Integer> addFact(@Nonnull Fact fact) {
+    DbusFact dbusFact = mapper.transform(fact);
 
-    fact.timeFixLocalToRemote();
-    int startTime = fact.getStartTime().getTimeInSeconds();
-    int endTime = fact.getEndTime().isPresent() ? fact.getEndTime().get().getTimeInSeconds() : 0;
+    String serializedName = dbusFact.serializedName();
+
+    dbusFact.timeFixLocalToRemote();
+    int startTime = dbusFact.getStartTime().getTimeInSeconds();
+    int endTime =
+        dbusFact.getEndTime().isPresent() ? dbusFact.getEndTime().get().getTimeInSeconds() : 0;
 
     return getHamsterObjectObservable().
         doOnNext(object -> {
           log.debug("Calling AddFact() on remote DBus object:");
           log.debug("    id:             {}",
-              fact.getId().isPresent() ? fact.getId().get() : "absent");
+              dbusFact.getId().isPresent() ? dbusFact.getId().get() : "absent");
           log.debug("    serializedName: \"{}\"", serializedName);
           log.debug("    startTime:      {}", startTime);
           log.debug("    endTime:        {}", endTime);
@@ -109,35 +117,38 @@ public class RemoteHamsterDataSource implements HamsterDataSource {
   }
 
   @Override public @Nonnull Observable<Void> removeFact(@Nonnull Integer id) {
-    return getHamsterObjectObservable().
-        doOnNext(object -> {
+    return getHamsterObjectObservable() //
+        .doOnNext(object -> {
           log.debug("Calling RemoveFact() on remote DBus object:");
           log.debug("    id:             {}", id);
-        }).
-        flatMap(remoteObject -> {
+        }) //
+        .flatMap(remoteObject -> {
           remoteObject.RemoveFact(id);
           return Observable.<Void>empty();
         });
   }
 
-  @Override public @Nonnull Observable<Integer> updateFact(@Nonnull FactEntity fact) {
-    String serializedName = fact.serializedName();
+  @Override public @Nonnull Observable<Integer> updateFact(@Nonnull Fact fact) {
+    DbusFact dbusFact = mapper.transform(fact);
 
-    fact.timeFixLocalToRemote();
-    int startTime = fact.getStartTime().getTimeInSeconds();
-    int endTime = fact.getEndTime().isPresent() ? fact.getEndTime().get().getTimeInSeconds() : 0;
+    String serializedName = dbusFact.serializedName();
 
-    return getHamsterObjectObservable().
-        doOnNext(object -> {
+    dbusFact.timeFixLocalToRemote();
+    int startTime = dbusFact.getStartTime().getTimeInSeconds();
+    int endTime =
+        dbusFact.getEndTime().isPresent() ? dbusFact.getEndTime().get().getTimeInSeconds() : 0;
+
+    return getHamsterObjectObservable() //
+        .doOnNext(object -> {
           log.debug("Calling UpdateFact() on remote DBus object:");
           log.debug("    id:             {}",
-              fact.getId().isPresent() ? fact.getId().get() : "absent");
+              dbusFact.getId().isPresent() ? dbusFact.getId().get() : "absent");
           log.debug("    serializedName: \"{}\"", serializedName);
           log.debug("    startTime:      {}", startTime);
           log.debug("    endTime:        {}", endTime);
-        }).
-        map(remoteObject -> remoteObject.UpdateFact(fact.getId().get(), serializedName, startTime,
-            endTime, false, false));
+        })
+        .map(remoteObject -> remoteObject.UpdateFact(dbusFact.getId().get(), serializedName,
+            startTime, endTime, false, false));
   }
 
   @Override public @Nonnull Observable<Void> signalActivitiesChanged() {

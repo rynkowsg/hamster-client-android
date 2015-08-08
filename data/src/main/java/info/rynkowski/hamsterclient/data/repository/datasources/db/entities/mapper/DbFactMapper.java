@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.data.entity.mapper;
+package info.rynkowski.hamsterclient.data.repository.datasources.db.entities.mapper;
 
 import com.google.common.base.Optional;
-import info.rynkowski.hamsterclient.data.entity.FactEntity;
+import info.rynkowski.hamsterclient.data.repository.datasources.db.entities.DbFact;
 import info.rynkowski.hamsterclient.data.utils.Time;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import java.util.Calendar;
@@ -26,37 +26,37 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
- * Class that translates fact representations of two layers: data and domain.
- * Could transform object of {@link info.rynkowski.hamsterclient.domain.entities.Fact} to
- * {@link info.rynkowski.hamsterclient.data.entity.FactEntity} and in the opposite direction.
+ * Class that translates a fact between two representations: db and domain.
+ * Could transform object of {@link Fact} to
+ * {@link DbFact} and in the opposite direction.
  */
 @Singleton
-public class FactEntityMapper {
+public class DbFactMapper {
 
-  public @Inject FactEntityMapper() {
+  public @Inject DbFactMapper() {
     //empty
   }
 
-  public @Nonnull Fact transform(@Nonnull FactEntity factEntity) {
-    Calendar startTime = factEntity.getStartTime().getCalendar();
+  public @Nonnull Fact transform(@Nonnull DbFact dbusFact) {
+    Calendar startTime = dbusFact.getStartTime().getCalendar();
 
     Optional<Calendar> endTime = Optional.absent();
-    if (factEntity.getEndTime().isPresent()) {
-      endTime = Optional.of(factEntity.getEndTime().get().getCalendar());
+    if (dbusFact.getEndTime().isPresent()) {
+      endTime = Optional.of(dbusFact.getEndTime().get().getCalendar());
     }
 
-    return new Fact.Builder()
-        .id(factEntity.getId())
-        .activity(factEntity.getActivity())
-        .category(factEntity.getCategory())
+    return new Fact.Builder() //
+        .id(dbusFact.getId())
+        .activity(dbusFact.getActivity())
+        .category(dbusFact.getCategory())
         .startTime(startTime)
         .endTime(endTime)
-        .description(factEntity.getDescription())
-        .tags(factEntity.getTags())
+        .description(dbusFact.getDescription())
+        .tags(dbusFact.getTags())
         .build();
   }
 
-  public @Nonnull FactEntity transform(@Nonnull Fact fact) {
+  public @Nonnull DbFact transform(@Nonnull Fact fact) {
 
     Time startTime = Time.getInstance(fact.getStartTime());
     startTime.roundToMinutes(); // Hamster Time Tracker doesn't operate on seconds and millis.
@@ -67,7 +67,7 @@ public class FactEntityMapper {
       endTime.get().roundToMinutes(); // Hamster Time Tracker doesn't operate on seconds and millis.
     }
 
-    return new FactEntity.Builder()
+    return new DbFact.Builder() //
         .id(fact.getId())
         .activity(fact.getActivity())
         .category(fact.getCategory())

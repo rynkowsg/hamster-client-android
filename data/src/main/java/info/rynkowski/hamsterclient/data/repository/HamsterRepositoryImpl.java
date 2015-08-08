@@ -16,7 +16,6 @@
 
 package info.rynkowski.hamsterclient.data.repository;
 
-import info.rynkowski.hamsterclient.data.entity.mapper.FactEntityMapper;
 import info.rynkowski.hamsterclient.data.repository.datasources.HamsterDataSource;
 import info.rynkowski.hamsterclient.data.utils.PreferencesAdapter;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
@@ -26,45 +25,34 @@ import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
-import lombok.extern.slf4j.Slf4j;
 import rx.Observable;
 
 /**
  * Implementation of {@link info.rynkowski.hamsterclient.domain.repository.HamsterRepository}.
  */
-@Slf4j
 @Singleton
 public class HamsterRepositoryImpl implements HamsterRepository {
 
   private @Nonnull PreferencesAdapter preferencesAdapter;
 
-  private @Nonnull HamsterDataSource localStore;
-  private @Nonnull HamsterDataSource remoteStore;
-
-  private @Nonnull FactEntityMapper factEntityMapper;
-
+  private @Nonnull HamsterDataSource dbDataSource;
+  private @Nonnull HamsterDataSource dbusDataSource;
 
   @Inject public HamsterRepositoryImpl(@Nonnull PreferencesAdapter preferencesAdapter,
-      @Named("local") @Nonnull HamsterDataSource localStore,
-      @Named("remote") @Nonnull HamsterDataSource remoteStore,
-      @Nonnull FactEntityMapper factEntityMapper) {
+      @Named("db") @Nonnull HamsterDataSource dbDataSource,
+      @Named("dbus") @Nonnull HamsterDataSource dbusDataSource) {
 
     this.preferencesAdapter = preferencesAdapter;
-    this.localStore = localStore;
-    this.remoteStore = remoteStore;
-    this.factEntityMapper = factEntityMapper;
+    this.dbDataSource = dbDataSource;
+    this.dbusDataSource = dbusDataSource;
   }
 
   @Override public @Nonnull Observable<List<Fact>> getTodaysFacts() {
-    return currentStore().getTodaysFacts()
-        .flatMap(Observable::from)
-        .map(factEntityMapper::transform)
-        .toList();
+    return currentStore().getTodaysFacts();
   }
 
   @Override public @Nonnull Observable<Integer> addFact(@Nonnull Fact fact) {
-    return Observable.just(fact)
-        .map(factEntityMapper::transform)
+    return Observable.just(fact) //
         .flatMap(currentStore()::addFact);
   }
 
@@ -73,8 +61,7 @@ public class HamsterRepositoryImpl implements HamsterRepository {
   }
 
   @Override public @Nonnull Observable<Integer> updateFact(@Nonnull Fact fact) {
-    return Observable.just(fact)
-        .map(factEntityMapper::transform)
+    return Observable.just(fact) //
         .flatMap(currentStore()::updateFact);
   }
 
@@ -95,6 +82,9 @@ public class HamsterRepositoryImpl implements HamsterRepository {
   }
 
   protected @Nonnull HamsterDataSource currentStore() {
-    return preferencesAdapter.isDatabaseRemote() ? remoteStore : localStore;
+    return preferencesAdapter.isDatabaseRemote() ? dbusDataSource : dbDataSource;
   }
+
+  //TODO: Add listening of preferencesAdapter to change source when preferences will change.
+  //      In addition it should be proper place to init and deinit each dataSource objectes.
 }

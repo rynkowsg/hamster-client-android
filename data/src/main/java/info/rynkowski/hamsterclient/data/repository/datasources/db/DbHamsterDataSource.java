@@ -14,22 +14,24 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.data.repository.datasources;
+package info.rynkowski.hamsterclient.data.repository.datasources.db;
 
 import android.content.Context;
-import info.rynkowski.hamsterclient.data.db.FactsDbAdapter;
-import info.rynkowski.hamsterclient.data.entity.FactEntity;
+import info.rynkowski.hamsterclient.data.repository.datasources.HamsterDataSource;
+import info.rynkowski.hamsterclient.data.repository.datasources.db.entities.DbFact;
+import info.rynkowski.hamsterclient.data.repository.datasources.db.entities.mapper.DbFactMapper;
+import info.rynkowski.hamsterclient.domain.entities.Fact;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.extern.slf4j.Slf4j;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
-@Slf4j
 @Singleton
-public class LocalHamsterDataSource implements HamsterDataSource {
+public class DbHamsterDataSource implements HamsterDataSource {
+
+  private final @Nonnull DbFactMapper mapper;
 
   private @Nonnull PublishSubject<Void> signalActivitiesChanged = PublishSubject.create();
   private @Nonnull PublishSubject<Void> signalFactsChanged = PublishSubject.create();
@@ -38,24 +40,26 @@ public class LocalHamsterDataSource implements HamsterDataSource {
 
   private @Nonnull Context context;
 
-  @Inject public LocalHamsterDataSource(@Nonnull Context context) {
+  @Inject public DbHamsterDataSource(@Nonnull Context context, @Nonnull DbFactMapper mapper) {
     this.context = context;
+    this.mapper = mapper;
   }
 
-  @Override public @Nonnull Observable<List<FactEntity>> getTodaysFacts() {
-    FactsDbAdapter factsDbAdapter = new FactsDbAdapter(context).open();
-    List<FactEntity> list = factsDbAdapter.getFacts();
+  @Override public @Nonnull Observable<List<Fact>> getTodaysFacts() {
+    FactsDatabaseAdapter factsDbAdapter = new FactsDatabaseAdapter(context).open();
+    List<DbFact> list = factsDbAdapter.getFacts();
     factsDbAdapter.close();
 
-    return Observable.just(list);
+    return Observable.just(list) //
+        .flatMap(Observable::from).map(mapper::transform).toList();
   }
 
-  @Override public @Nonnull Observable<Integer> addFact(@Nonnull FactEntity factEntity) {
-    FactsDbAdapter factsDbAdapter = new FactsDbAdapter(context).open();
-    int id = factsDbAdapter.insertFact(factEntity);
+  @Override public @Nonnull Observable<Integer> addFact(@Nonnull Fact fact) {
+    FactsDatabaseAdapter factsDbAdapter = new FactsDatabaseAdapter(context).open();
+    int id = factsDbAdapter.insertFact(mapper.transform(fact));
     factsDbAdapter.close();
 
-    if(id == -1) {
+    if (id == -1) {
       return Observable.error(new RuntimeException("Inserting a fact to database failed"));
     }
 
@@ -65,7 +69,7 @@ public class LocalHamsterDataSource implements HamsterDataSource {
   }
 
   @Override public @Nonnull Observable<Void> removeFact(@Nonnull Integer id) {
-    FactsDbAdapter factsDbAdapter = new FactsDbAdapter(context).open();
+    FactsDatabaseAdapter factsDbAdapter = new FactsDatabaseAdapter(context).open();
     boolean resultValue = factsDbAdapter.deleteFact(id);
     factsDbAdapter.close();
 
@@ -78,9 +82,9 @@ public class LocalHamsterDataSource implements HamsterDataSource {
     return Observable.empty();
   }
 
-  @Override public @Nonnull Observable<Integer> updateFact(@Nonnull FactEntity fact) {
-    FactsDbAdapter factsDbAdapter = new FactsDbAdapter(context).open();
-    boolean resultValue = factsDbAdapter.updateFact(fact);
+  @Override public @Nonnull Observable<Integer> updateFact(@Nonnull Fact fact) {
+    FactsDatabaseAdapter factsDbAdapter = new FactsDatabaseAdapter(context).open();
+    boolean resultValue = factsDbAdapter.updateFact(mapper.transform(fact));
     factsDbAdapter.close();
 
     if (!resultValue) {

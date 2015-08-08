@@ -16,7 +16,7 @@
 
 package info.rynkowski.hamsterclient.data.repository.datasources;
 
-import info.rynkowski.hamsterclient.data.entity.FactEntity;
+import info.rynkowski.hamsterclient.domain.entities.Fact;
 import java.util.List;
 import javax.annotation.Nonnull;
 import rx.Observable;
@@ -27,17 +27,17 @@ import rx.Observable;
 public interface HamsterDataSource extends DataSource {
 
   /**
-   * Get an {@link rx.Observable} which will emit a today's list of {@link FactEntity}.
+   * Get an {@link rx.Observable} which will emit a today's list of {@link Fact}.
    */
-  @Nonnull Observable<List<FactEntity>> getTodaysFacts();
+  @Nonnull Observable<List<Fact>> getTodaysFacts();
 
   /**
-   * Get an {@link rx.Observable} which will add a {@link FactEntity} and emits its id.
+   * Get an {@link rx.Observable} which will add a {@link Fact} and emits its id.
    *
    * @param fact The entity to add to store.
-   * @return The id of added {@link FactEntity}.
+   * @return The id of added {@link Fact}.
    */
-  @Nonnull Observable<Integer> addFact(@Nonnull FactEntity fact);
+  @Nonnull Observable<Integer> addFact(@Nonnull Fact fact);
 
   /**
    * Get an {@link rx.Observable} that removes a fact.
@@ -51,9 +51,9 @@ public interface HamsterDataSource extends DataSource {
    * Get an {@link rx.Observable} which will update a fact and emits its id.
    *
    * @param fact The entity to update at the store.
-   * @return The id of updated {@link FactEntity}.
+   * @return The id of updated {@link Fact}.
    */
-  @Nonnull Observable<Integer> updateFact(@Nonnull FactEntity fact);
+  @Nonnull Observable<Integer> updateFact(@Nonnull Fact fact);
 
   @Nonnull Observable<Void> signalActivitiesChanged();
 
@@ -62,4 +62,9 @@ public interface HamsterDataSource extends DataSource {
   @Nonnull Observable<Void> signalTagsChanged();
 
   @Nonnull Observable<Void> signalToggleCalled();
+
+  // TODO: Consider changing signals into one - Observable<Event>,
+  //           where events will be enum values: FactsChanged, TagsChanged, etc.
+  //       Question: If I do that will I could unregister a signal during unsubscribing?
+  //       Answer: Yes, I jast need other counters. But it smells bad.
 }

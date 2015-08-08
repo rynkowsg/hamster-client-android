@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.data.entity;
+package info.rynkowski.hamsterclient.data.repository.datasources.dbus.entities;
 
 import com.google.common.base.Optional;
-import info.rynkowski.hamsterclient.data.dbus.adapters.AdapterStruct4;
-import info.rynkowski.hamsterclient.data.dbus.adapters.AdapterStruct5;
-import info.rynkowski.hamsterclient.data.dbus.adapters.AdapterStruct7;
+import info.rynkowski.hamsterclient.data.repository.datasources.dbus.entities.adapters.AdapterStruct4;
+import info.rynkowski.hamsterclient.data.repository.datasources.dbus.entities.adapters.AdapterStruct5;
+import info.rynkowski.hamsterclient.data.repository.datasources.dbus.entities.adapters.AdapterStruct7;
 import info.rynkowski.hamsterclient.data.utils.Time;
 import info.rynkowski.hamsterclient.data.utils.TimeDifferenceConverter;
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ import org.gnome.Struct7;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class FactEntity {
+public class DbusFact {
 
   private @Nonnull Optional<Integer> id;
   private @Nonnull String activity;
@@ -51,7 +51,7 @@ public class FactEntity {
   private @Nonnull Time startTime;
   private @Nonnull Optional<Time> endTime;
 
-  public FactEntity(@Nonnull Struct4 struct) {
+  public DbusFact(@Nonnull Struct4 struct) {
     this.id = Optional.of(AdapterStruct4.id(struct));
     this.activity = AdapterStruct4.name(struct);
     this.category = AdapterStruct4.category(struct);
@@ -63,7 +63,7 @@ public class FactEntity {
         : Optional.of(Time.getInstance(AdapterStruct4.end_time(struct)));
   }
 
-  public FactEntity(@Nonnull Struct5 struct) {
+  public DbusFact(@Nonnull Struct5 struct) {
     this.id = Optional.of(AdapterStruct5.id(struct));
     this.activity = AdapterStruct5.name(struct);
     this.category = AdapterStruct5.category(struct);
@@ -75,7 +75,7 @@ public class FactEntity {
         : Optional.of(Time.getInstance(AdapterStruct5.end_time(struct)));
   }
 
-  public FactEntity(@Nonnull Struct7 struct) {
+  public DbusFact(@Nonnull Struct7 struct) {
     this.id = Optional.of(AdapterStruct7.id(struct));
     this.activity = AdapterStruct7.name(struct);
     this.category = AdapterStruct7.category(struct);
@@ -87,7 +87,7 @@ public class FactEntity {
         : Optional.of(Time.getInstance(AdapterStruct7.end_time(struct)));
   }
 
-  private FactEntity(@Nonnull Builder b) {
+  private DbusFact(@Nonnull Builder b) {
     this.id = b.id;
     this.activity = b.activity;
     this.category = b.category;
@@ -115,9 +115,10 @@ public class FactEntity {
 
   /**
    * Method that corrects time values retrieved from remote host.
-   * @return a reference to current {@link FactEntity} after changing startTime and endTime values
+   *
+   * @return a reference to current {@link DbusFact} after changing startTime and endTime values
    */
-  public @Nonnull FactEntity timeFixRemoteToLocal() {
+  public @Nonnull DbusFact timeFixRemoteToLocal() {
     this.setStartTime(TimeDifferenceConverter.remoteToLocal(this.getStartTime()));
     if (this.getEndTime().isPresent()) {
       this.setEndTime(Optional.of(TimeDifferenceConverter.remoteToLocal(this.getEndTime().get())));
@@ -127,9 +128,10 @@ public class FactEntity {
 
   /**
    * Method that corrects times values before sending them to remote host.
-   * @return a reference to current {@link FactEntity} after changing startTime and endTime values
+   *
+   * @return a reference to current {@link DbusFact} after changing startTime and endTime values
    */
-  public @Nonnull FactEntity timeFixLocalToRemote() {
+  public @Nonnull DbusFact timeFixLocalToRemote() {
     this.setStartTime(TimeDifferenceConverter.localToRemote(this.getStartTime()));
     if (this.getEndTime().isPresent()) {
       this.setEndTime(Optional.of(TimeDifferenceConverter.localToRemote(this.getEndTime().get())));
@@ -150,8 +152,8 @@ public class FactEntity {
     private @Nonnull Time startTime = Time.getInstance();
     private @Nonnull Optional<Time> endTime = Optional.absent();
 
-    public @Nonnull FactEntity build() {
-      return new FactEntity(this);
+    public @Nonnull DbusFact build() {
+      return new DbusFact(this);
     }
   }
 }

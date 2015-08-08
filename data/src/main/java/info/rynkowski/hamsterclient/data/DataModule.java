@@ -19,11 +19,13 @@ package info.rynkowski.hamsterclient.data;
 import android.content.Context;
 import dagger.Module;
 import dagger.Provides;
-import info.rynkowski.hamsterclient.data.dbus.HamsterRemoteObject;
 import info.rynkowski.hamsterclient.data.repository.HamsterRepositoryImpl;
 import info.rynkowski.hamsterclient.data.repository.datasources.HamsterDataSource;
-import info.rynkowski.hamsterclient.data.repository.datasources.LocalHamsterDataSource;
-import info.rynkowski.hamsterclient.data.repository.datasources.RemoteHamsterDataSource;
+import info.rynkowski.hamsterclient.data.repository.datasources.db.DbHamsterDataSource;
+import info.rynkowski.hamsterclient.data.repository.datasources.db.entities.mapper.DbFactMapper;
+import info.rynkowski.hamsterclient.data.repository.datasources.dbus.DbusHamsterDataSource;
+import info.rynkowski.hamsterclient.data.repository.datasources.dbus.HamsterRemoteObject;
+import info.rynkowski.hamsterclient.data.repository.datasources.dbus.entities.mapper.DbusFactMapper;
 import info.rynkowski.hamsterclient.data.utils.PreferencesAdapter;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
 import javax.inject.Named;
@@ -39,14 +41,15 @@ public class DataModule {
     return new HamsterRemoteObject();
   }
 
-  @Provides @Singleton @Named("local") HamsterDataSource provideLocalHamsterDataSource(
-      Context context) {
-    return new LocalHamsterDataSource(context);
+  @Provides @Singleton @Named("db") HamsterDataSource provideDbHamsterDataSource(Context context,
+      DbFactMapper mapper) {
+    return new DbHamsterDataSource(context, mapper);
   }
 
-  @Provides @Singleton @Named("remote") HamsterDataSource provideRemoteHamsterDataSource(
-      HamsterRemoteObject hamsterRemoteObject, PreferencesAdapter preferences) {
-    return new RemoteHamsterDataSource(hamsterRemoteObject, preferences);
+  @Provides @Singleton @Named("dbus") HamsterDataSource provideDbusHamsterDataSource(
+      HamsterRemoteObject hamsterRemoteObject, PreferencesAdapter preferences,
+      DbusFactMapper mapper) {
+    return new DbusHamsterDataSource(hamsterRemoteObject, preferences, mapper);
   }
 
   @Provides @Singleton HamsterRepository provideHamsterRepository(

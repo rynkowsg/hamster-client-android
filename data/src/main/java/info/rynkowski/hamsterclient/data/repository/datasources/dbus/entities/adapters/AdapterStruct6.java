@@ -14,34 +14,26 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.data.dbus.adapters;
+package info.rynkowski.hamsterclient.data.repository.datasources.dbus.entities.adapters;
 
-import org.gnome.Struct2;
+import org.gnome.Struct6;
 
 // used in:
-//   public List<Struct2> GetCategoryActivities(int category_id);
+//   public List<Struct6> GetCategories();
 
-public class AdapterStruct2 {
-  private Struct2 object;
+public class AdapterStruct6 {
+  private Struct6 object;
 
-  public AdapterStruct2(Struct2 object) {
+  public AdapterStruct6(Struct6 object) {
     this.object = object;
   }
 
-  public static int id(Struct2 object) {
+  public static int id(Struct6 object) {
     return object.a;
   }
 
-  public static String name(Struct2 object) {
+  public static String name(Struct6 object) {
     return object.b;
-  }
-
-  public static int category_id(Struct2 object) {
-    return object.c;
-  }
-
-  public static String category(Struct2 object) {
-    return object.d;
   }
 
   public int id() {
@@ -50,13 +42,5 @@ public class AdapterStruct2 {
 
   public String name() {
     return name(object);
-  }
-
-  public int category_id() {
-    return category_id(object);
-  }
-
-  public String category() {
-    return category(object);
   }
 }

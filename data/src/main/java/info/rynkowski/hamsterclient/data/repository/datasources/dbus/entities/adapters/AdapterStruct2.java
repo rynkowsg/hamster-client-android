@@ -14,30 +14,34 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.data.dbus.adapters;
+package info.rynkowski.hamsterclient.data.repository.datasources.dbus.entities.adapters;
 
-import org.gnome.Struct3;
+import org.gnome.Struct2;
 
 // used in:
-//   public List<Struct3> GetTagIds(List<String> tags);
+//   public List<Struct2> GetCategoryActivities(int category_id);
 
-public class AdapterStruct3 {
-  private Struct3 object;
+public class AdapterStruct2 {
+  private Struct2 object;
 
-  public AdapterStruct3(Struct3 object) {
+  public AdapterStruct2(Struct2 object) {
     this.object = object;
   }
 
-  public static int id(Struct3 object) {
+  public static int id(Struct2 object) {
     return object.a;
   }
 
-  public static String name(Struct3 object) {
+  public static String name(Struct2 object) {
     return object.b;
   }
 
-  public static boolean autocomplete(Struct3 object) {
+  public static int category_id(Struct2 object) {
     return object.c;
+  }
+
+  public static String category(Struct2 object) {
+    return object.d;
   }
 
   public int id() {
@@ -48,7 +52,11 @@ public class AdapterStruct3 {
     return name(object);
   }
 
-  public boolean autocomplete() {
-    return autocomplete(object);
+  public int category_id() {
+    return category_id(object);
+  }
+
+  public String category() {
+    return category(object);
   }
 }
