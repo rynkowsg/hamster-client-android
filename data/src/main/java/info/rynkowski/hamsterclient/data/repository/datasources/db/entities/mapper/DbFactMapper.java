@@ -20,7 +20,9 @@ import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.data.repository.datasources.db.entities.DbFact;
 import info.rynkowski.hamsterclient.data.utils.Time;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -37,22 +39,22 @@ public class DbFactMapper {
     //empty
   }
 
-  public @Nonnull Fact transform(@Nonnull DbFact dbusFact) {
-    Calendar startTime = dbusFact.getStartTime().getCalendar();
+  public @Nonnull Fact transform(@Nonnull DbFact dbFact) {
+    Calendar startTime = dbFact.getStartTime().getCalendar();
 
     Optional<Calendar> endTime = Optional.absent();
-    if (dbusFact.getEndTime().isPresent()) {
-      endTime = Optional.of(dbusFact.getEndTime().get().getCalendar());
+    if (dbFact.getEndTime().isPresent()) {
+      endTime = Optional.of(dbFact.getEndTime().get().getCalendar());
     }
 
     return new Fact.Builder() //
-        .id(dbusFact.getId())
-        .activity(dbusFact.getActivity())
-        .category(dbusFact.getCategory())
+        .id(dbFact.getId())
+        .activity(dbFact.getActivity())
+        .category(dbFact.getCategory())
         .startTime(startTime)
         .endTime(endTime)
-        .description(dbusFact.getDescription())
-        .tags(dbusFact.getTags())
+        .description(dbFact.getDescription())
+        .tags(dbFact.getTags())
         .build();
   }
 
@@ -76,5 +78,14 @@ public class DbFactMapper {
         .description(fact.getDescription())
         .tags(fact.getTags())
         .build();
+  }
+
+  public @Nonnull List<Fact> transform(@Nonnull List<DbFact> dbFacts) {
+    List<Fact> facts = new ArrayList<>(dbFacts.size());
+    for (DbFact dbFact : dbFacts) {
+      Fact newFact = this.transform(dbFact);
+      facts.add(newFact);
+    }
+    return facts;
   }
 }

@@ -37,7 +37,7 @@ public class PresentationFactMapper {
   }
 
   public @Nonnull Fact transform(@Nonnull PresentationFact factModel) {
-    return new Fact.Builder()
+    return new Fact.Builder() //
         .id(factModel.getId())
         .activity(factModel.getActivity())
         .category(factModel.getCategory())
@@ -49,7 +49,7 @@ public class PresentationFactMapper {
   }
 
   public @Nonnull PresentationFact transform(@Nonnull Fact fact) {
-    return new PresentationFact.Builder()
+    return new PresentationFact.Builder() //
         .id(fact.getId())
         .activity(fact.getActivity())
         .category(fact.getCategory())

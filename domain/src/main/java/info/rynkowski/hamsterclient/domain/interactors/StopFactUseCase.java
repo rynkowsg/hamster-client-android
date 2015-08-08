@@ -36,9 +36,10 @@ public class StopFactUseCase extends UseCase<Fact, Void> {
     if (fact.getEndTime().isPresent()) {
       return Observable.error(new AssertionError("The fact has already stopped."));
     }
-    return Observable.just(
-        new Fact.Builder(fact)
-            .endTime(Optional.of(GregorianCalendar.getInstance()))
+
+    return Observable.just( //
+        new Fact.Builder(fact) //
+            .endTime(Optional.of(GregorianCalendar.getInstance())) //
             .build())
         .flatMap(hamsterRepository::updateFact)
         .flatMap(id -> Observable.<Void>empty());

@@ -34,10 +34,10 @@ public class Fact {
   private final @Nonnull Optional<Integer> id;
   private final @Nonnull String activity;
   private final @Nonnull String category;
-  private final @Nonnull Calendar startTime;
-  private final @Nonnull Optional<Calendar> endTime;
   private final @Nonnull List<String> tags;
   private final @Nonnull String description;
+  private final @Nonnull Calendar startTime;
+  private final @Nonnull Optional<Calendar> endTime;
 
   private Fact(@Nonnull Builder b) {
     this.id = b.id;
@@ -57,10 +57,10 @@ public class Fact {
     private @Nonnull Optional<Integer> id = Optional.absent();
     private @Nonnull String activity = "";
     private @Nonnull String category = "";
-    private @Nonnull Calendar startTime = GregorianCalendar.getInstance();
-    private @Nonnull Optional<Calendar> endTime = Optional.absent();
     private @Nonnull List<String> tags = new ArrayList<String>();
     private @Nonnull String description = "";
+    private @Nonnull Calendar startTime = GregorianCalendar.getInstance();
+    private @Nonnull Optional<Calendar> endTime = Optional.absent();
 
     public Builder(@Nonnull Fact fact) {
       this.id = fact.getId();

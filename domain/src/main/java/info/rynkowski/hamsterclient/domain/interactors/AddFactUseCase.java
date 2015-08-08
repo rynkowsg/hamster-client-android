@@ -35,7 +35,7 @@ public class AddFactUseCase extends UseCase<Fact, Void> {
   }
 
   @Override protected @Nonnull Observable<Void> buildUseCaseObservable(@Nonnull Fact fact) {
-    return hamsterRepository.addFact(fact).
-        flatMap(id -> Observable.<Void>empty());
+    return hamsterRepository.addFact(fact) //
+        .flatMap(id -> Observable.<Void>empty());
   }
 }

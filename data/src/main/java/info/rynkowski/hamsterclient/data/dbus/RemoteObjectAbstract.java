@@ -99,9 +99,10 @@ public abstract class RemoteObjectAbstract<Type> implements RemoteObject<Type> {
     registeredSignals.put(callback, signalClass);
   }
 
-  @Override @SuppressWarnings("unchecked")
-  public void unregisterSignalCallback(Class<? extends DBusSignal> signalClass,
-      DBusSigHandler<DBusSignal> callback)
+  //TODO: Rewrite to unregisterSignalCallback(DBusSigHandler<DBusSignal> callback)
+  //      In fact, the callback is a key in the hashmap (registeredSignals)
+  @Override @SuppressWarnings("unchecked") public void unregisterSignalCallback(
+      Class<? extends DBusSignal> signalClass, DBusSigHandler<DBusSignal> callback)
       throws DBusConnectionNotReachableException, DBusInternalException {
 
     log.debug("un-registerSignalCallback(signalClass={}, callback={})", signalClass, callback);

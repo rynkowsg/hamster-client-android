@@ -17,7 +17,6 @@
 package info.rynkowski.hamsterclient.data.dbus;
 
 import info.rynkowski.hamsterclient.data.dbus.exception.DBusConnectionNotReachableException;
-import info.rynkowski.hamsterclient.data.utils.PreferencesAdapter;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;

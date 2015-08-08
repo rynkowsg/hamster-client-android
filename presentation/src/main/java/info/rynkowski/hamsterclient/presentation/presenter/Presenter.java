@@ -24,7 +24,6 @@ import info.rynkowski.hamsterclient.presentation.view.FactListView;
  */
 public interface Presenter {
 
-
   void setView(FactListView view);
 
   /**

@@ -34,10 +34,12 @@ public class StartFactUseCase extends UseCase<Fact, Void> {
   }
 
   @Override protected @Nonnull Observable<Void> buildUseCaseObservable(@Nonnull Fact fact) {
-    return Observable.just(new Fact.Builder(fact).startTime(GregorianCalendar.getInstance())
+    return Observable.just( //
+        new Fact.Builder(fact) //
+            .startTime(GregorianCalendar.getInstance())
             .endTime(Optional.<Calendar>absent())
-            .build()).
-        flatMap(hamsterRepository::addFact).
-        flatMap(id -> Observable.<Void>empty());
+            .build()) //
+        .flatMap(hamsterRepository::addFact) //
+        .flatMap(id -> Observable.<Void>empty());
   }
 }

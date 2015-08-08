@@ -28,8 +28,8 @@ public interface ConnectionProvider {
    * Returns {@link org.freedesktop.dbus.DBusConnection}s.
    *
    * @return a {@link org.freedesktop.dbus.DBusConnection}.
-   * @throws DBusConnectionNotReachableException is an exception thrown when D-Bus connection is not
-   * reachable.
+   * @throws DBusConnectionNotReachableException is an exception
+   * thrown when D-Bus connection is not reachable.
    */
   DBusConnection get() throws DBusConnectionNotReachableException;
 

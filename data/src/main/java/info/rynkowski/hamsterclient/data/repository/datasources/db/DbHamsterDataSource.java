@@ -51,7 +51,7 @@ public class DbHamsterDataSource implements HamsterDataSource {
     factsDbAdapter.close();
 
     return Observable.just(list) //
-        .flatMap(Observable::from).map(mapper::transform).toList();
+        .map(mapper::transform);
   }
 
   @Override public @Nonnull Observable<Integer> addFact(@Nonnull Fact fact) {
