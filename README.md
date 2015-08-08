@@ -20,8 +20,13 @@ At the project I have applied [The Clean Architecture][the-clean-architecture]
 proposed by Robert C. Martin.
 
 About Android approaches of The Clean Architecture you can read [here][the-clean-way]
-and [there][progmag-ca]. You can also look at two another existed implementations
-made by [Fernando Cejas][android-cleanarchitecture] and [Michał Charmas][shoppinglist].
+and [there][progmag-ca].
+
+You can also look at other existed implementations:
+
+ * [Android-CleanArchitecture][android-cleanarchitecture] by Fernando Cejas
+ * [shoppinglist-clean-architecture-example][shoppinglist] by Michał Charmas
+ * [Clean-Contacts][clean-contacts] by Christian Panadero
 
 
 
@@ -41,6 +46,7 @@ Libraries
  * [Dagger 2][dagger2]
  * [Lombok][lombok]
  * [RxJava][rxjava]
+ * *and [others][dependencies.gradle]*
 
 Project provides communication with host by D-Bus. In order to do that I used:
 
@@ -88,3 +94,5 @@ License
  [shoppinglist]: https://github.com/mcharmas/shoppinglist-clean-architecture-example
  [shoppinglist-mvp]: https://github.com/mcharmas/shoppinglist-clean-architecture-example/tree/master/presentation/src/main/java/pl/charmas/shoppinglist/presentation/base
  [yt-rest-implementation]: https://www.youtube.com/watch?v=xHXn3Kg2IQE
+ [clean-contacts]: https://github.com/PaNaVTEC/Clean-Contacts
+ [dependencies.gradle]: https://github.com/rynkowsg/hamster-client-android/blob/master/buildsystem/dependencies.gradle
