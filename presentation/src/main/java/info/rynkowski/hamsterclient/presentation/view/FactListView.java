@@ -16,13 +16,13 @@
 
 package info.rynkowski.hamsterclient.presentation.view;
 
-import info.rynkowski.hamsterclient.presentation.model.FactModel;
+import info.rynkowski.hamsterclient.presentation.model.PresentationFact;
 import java.util.List;
 import javax.annotation.Nonnull;
 
 /**
  * Interface representing a View in a model view presenter (MVP) pattern.
- * In this case is used as a view representing a list of {@link FactModel}.
+ * In this case is used as a view representing a list of {@link PresentationFact}.
  */
 public interface FactListView extends LoadDataView {
 
@@ -34,12 +34,12 @@ public interface FactListView extends LoadDataView {
   /**
    * Opens a view that allows modification of picked fact.
    */
-  void navigateToEditFact(@Nonnull FactModel fact);
+  void navigateToEditFact(@Nonnull PresentationFact fact);
 
   /**
    * Render a fact list in the UI.
    *
-   * @param facts The collection of {@link FactModel} that will be shown.
+   * @param facts The collection of {@link PresentationFact} that will be shown.
    */
-  void showFactList(@Nonnull List<FactModel> facts);
+  void showFactList(@Nonnull List<PresentationFact> facts);
 }

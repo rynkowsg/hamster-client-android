@@ -22,7 +22,7 @@ import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.interactors.UseCase;
 import info.rynkowski.hamsterclient.domain.interactors.UseCaseNoArgs;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
-import info.rynkowski.hamsterclient.presentation.model.mapper.FactModelDataMapper;
+import info.rynkowski.hamsterclient.presentation.model.mapper.PresentationFactMapper;
 import info.rynkowski.hamsterclient.presentation.presenter.FactListPresenter;
 import info.rynkowski.hamsterclient.presentation.presenter.FactListPresenterImpl;
 import java.util.List;
@@ -38,7 +38,7 @@ import rx.Scheduler;
 public class PresentationModule {
 
   @Provides @Singleton FactListPresenter provideFactListPresenter(
-      @Nonnull HamsterRepository hamsterRepository, @Nonnull FactModelDataMapper mapper,
+      @Nonnull HamsterRepository hamsterRepository, @Nonnull PresentationFactMapper mapper,
       @Named("PresenterPostExecute") @Nonnull Scheduler postExecuteScheduler,
       @Named("AddFact") @Nonnull UseCase<Fact, Void> addFactUseCase,
       @Named("EditFact") @Nonnull UseCase<Fact, Void> editFactUseCase,

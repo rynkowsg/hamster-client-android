@@ -30,7 +30,7 @@ import android.widget.ProgressBar;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import info.rynkowski.hamsterclient.presentation.model.FactModel;
+import info.rynkowski.hamsterclient.presentation.model.PresentationFact;
 import info.rynkowski.hamsterclient.presentation.presenter.FactListPresenter;
 import info.rynkowski.hamsterclient.presentation.view.FactListView;
 import info.rynkowski.hamsterclient.ui.R;
@@ -129,14 +129,14 @@ public class FactListFragment extends BaseFragment implements FactListView {
     switch (requestCode) {
       case REQUEST_CODE_ADD_FACT:
         if (resultCode == Activity.RESULT_OK) {
-          FactModel fact = data.getParcelableExtra(FactFormActivity.OUTPUT_EXTRAS_KEY_FACT);
+          PresentationFact fact = data.getParcelableExtra(FactFormActivity.OUTPUT_EXTRAS_KEY_FACT);
           factListPresenter.onNewFactPrepared(fact);
           showToastMessage("New fact:" + fact.getActivity());
         }
         break;
       case REQUEST_CODE_EDIT_FACT:
         if (resultCode == Activity.RESULT_OK) {
-          FactModel fact = data.getParcelableExtra(FactFormActivity.OUTPUT_EXTRAS_KEY_FACT);
+          PresentationFact fact = data.getParcelableExtra(FactFormActivity.OUTPUT_EXTRAS_KEY_FACT);
           factListPresenter.onEditedFactPrepared(fact);
         }
         break;
@@ -149,14 +149,14 @@ public class FactListFragment extends BaseFragment implements FactListView {
     navigator.navigateToFactFormForResult(FactListFragment.this, REQUEST_CODE_ADD_FACT);
   }
 
-  @Override public void navigateToEditFact(@NonNull FactModel fact) {
+  @Override public void navigateToEditFact(@NonNull PresentationFact fact) {
     Intent intentToLaunch = FactFormActivity.getCallingIntent(FactListFragment.this.getActivity());
     intentToLaunch.putExtra(FactFormActivity.INPUT_EXTRAS_KEY_FACT, fact);
     startActivityForResult(intentToLaunch, REQUEST_CODE_EDIT_FACT);
     //navigator.navigateToFactFormForResult(FactListFragment.this, REQUEST_CODE_EDIT_FACT);
   }
 
-  @Override public void showFactList(@NonNull List<FactModel> facts) {
+  @Override public void showFactList(@NonNull List<PresentationFact> facts) {
     log.debug("showFactList()");
     this.factsAdapter.setFactsList(facts);
   }

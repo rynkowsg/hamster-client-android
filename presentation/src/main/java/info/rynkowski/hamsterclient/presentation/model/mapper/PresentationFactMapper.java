@@ -17,19 +17,19 @@
 package info.rynkowski.hamsterclient.presentation.model.mapper;
 
 import info.rynkowski.hamsterclient.domain.entities.Fact;
-import info.rynkowski.hamsterclient.presentation.model.FactModel;
+import info.rynkowski.hamsterclient.presentation.model.PresentationFact;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
-public class FactModelDataMapper {
+public class PresentationFactMapper {
 
-  public @Inject FactModelDataMapper() {
+  public @Inject PresentationFactMapper() {
     //empty
   }
 
-  public @Nonnull Fact transform(@Nonnull FactModel factModel) {
+  public @Nonnull Fact transform(@Nonnull PresentationFact factModel) {
     return new Fact.Builder()
         .id(factModel.getId())
         .activity(factModel.getActivity())
@@ -41,8 +41,8 @@ public class FactModelDataMapper {
         .build();
   }
 
-  public @Nonnull FactModel transform(@Nonnull Fact fact) {
-    return new FactModel.Builder()
+  public @Nonnull PresentationFact transform(@Nonnull Fact fact) {
+    return new PresentationFact.Builder()
         .id(fact.getId())
         .activity(fact.getActivity())
         .category(fact.getCategory())
@@ -53,9 +53,9 @@ public class FactModelDataMapper {
         .build();
   }
 
-  public @Nonnull List<FactModel> transform(@Nonnull List<Fact> factList) {
-    List<FactModel> factModelList = new ArrayList<>(factList.size());
-    FactModel factModel;
+  public @Nonnull List<PresentationFact> transform(@Nonnull List<Fact> factList) {
+    List<PresentationFact> factModelList = new ArrayList<>(factList.size());
+    PresentationFact factModel;
     for (Fact fact : factList) {
       factModel = transform(fact);
       factModelList.add(factModel);

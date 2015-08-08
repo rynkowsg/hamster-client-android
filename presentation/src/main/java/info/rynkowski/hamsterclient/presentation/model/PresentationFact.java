@@ -31,15 +31,15 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 @Getter
-public class FactModel implements Parcelable {
+public class PresentationFact implements Parcelable {
 
-  public static final Creator<FactModel> CREATOR = new Creator<FactModel>() {
-    @Override public FactModel createFromParcel(@Nonnull Parcel in) {
-      return new FactModel(in);
+  public static final Creator<PresentationFact> CREATOR = new Creator<PresentationFact>() {
+    @Override public PresentationFact createFromParcel(@Nonnull Parcel in) {
+      return new PresentationFact(in);
     }
 
-    @Override public @Nonnull FactModel[] newArray(int size) {
-      return new FactModel[size];
+    @Override public @Nonnull PresentationFact[] newArray(int size) {
+      return new PresentationFact[size];
     }
   };
 
@@ -51,7 +51,7 @@ public class FactModel implements Parcelable {
   private final @Nonnull Calendar startTime;
   private final @Nonnull Optional<Calendar> endTime;
 
-  private FactModel(@Nonnull Builder b) {
+  private PresentationFact(@Nonnull Builder b) {
     this.id = b.id;
     this.activity = b.activity;
     this.category = b.category;
@@ -61,7 +61,7 @@ public class FactModel implements Parcelable {
     this.endTime = b.endTime;
   }
 
-  private FactModel(@Nonnull Parcel in) {
+  private PresentationFact(@Nonnull Parcel in) {
     this.id = (in.readByte() == 1) ? Optional.of(in.readInt()) : Optional.absent();
     this.activity = in.readString();
     this.category = in.readString();
@@ -119,8 +119,8 @@ public class FactModel implements Parcelable {
     private @Nonnull Calendar startTime = GregorianCalendar.getInstance();
     private @Nonnull Optional<Calendar> endTime = Optional.absent();
 
-    public @Nonnull FactModel build() {
-      return new FactModel(this);
+    public @Nonnull PresentationFact build() {
+      return new PresentationFact(this);
     }
   }
 }

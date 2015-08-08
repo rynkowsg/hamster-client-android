@@ -20,8 +20,8 @@ import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.interactors.UseCase;
 import info.rynkowski.hamsterclient.domain.interactors.UseCaseNoArgs;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
-import info.rynkowski.hamsterclient.presentation.model.FactModel;
-import info.rynkowski.hamsterclient.presentation.model.mapper.FactModelDataMapper;
+import info.rynkowski.hamsterclient.presentation.model.PresentationFact;
+import info.rynkowski.hamsterclient.presentation.model.mapper.PresentationFactMapper;
 import info.rynkowski.hamsterclient.presentation.view.FactListView;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -44,7 +44,7 @@ import rx.schedulers.Schedulers;
 public class FactListPresenterImpl implements FactListPresenter {
 
   private final @Nonnull HamsterRepository hamsterRepository;
-  private final @Nonnull FactModelDataMapper mapper;
+  private final @Nonnull PresentationFactMapper mapper;
 
   private final @Nonnull UseCase<Fact, Void> addFactUseCase;
   private final @Nonnull UseCase<Fact, Void> editFactUseCase;
@@ -60,7 +60,7 @@ public class FactListPresenterImpl implements FactListPresenter {
   private @Nullable Subscription signalFactsChangedSubscription;
 
   @Inject public FactListPresenterImpl(@Nonnull HamsterRepository hamsterRepository,
-      @Nonnull FactModelDataMapper mapper,
+      @Nonnull PresentationFactMapper mapper,
       @Named("PresenterPostExecute") @Nonnull Scheduler postExecuteScheduler,
       @Named("AddFact") @Nonnull UseCase<Fact, Void> addFactUseCase,
       @Named("EditFact") @Nonnull UseCase<Fact, Void> editFactUseCase,
@@ -162,14 +162,14 @@ public class FactListPresenterImpl implements FactListPresenter {
     }
   }
 
-  @Override public void onEditFact(@Nonnull FactModel fact) {
+  @Override public void onEditFact(@Nonnull PresentationFact fact) {
     log.debug("onEditFact()");
     if (viewListView != null) {
       viewListView.navigateToEditFact(fact);
     }
   }
 
-  @Override public void onStartFact(@Nonnull FactModel fact) {
+  @Override public void onStartFact(@Nonnull PresentationFact fact) {
     log.debug("onStartFact()");
     Observable.just(fact)
         .map(mapper::transform)
@@ -179,7 +179,7 @@ public class FactListPresenterImpl implements FactListPresenter {
         .subscribe(new OnCompletedObserver(() -> log.info("The fact started."), this::onException));
   }
 
-  @Override public void onStopFact(@Nonnull FactModel fact) {
+  @Override public void onStopFact(@Nonnull PresentationFact fact) {
     log.debug("onStopFact()");
     log.debug("    id:             {}", fact.getId().isPresent() ? fact.getId().get() : "absent");
     log.debug("    activity:       \"{}\"", fact.getActivity());
@@ -191,7 +191,7 @@ public class FactListPresenterImpl implements FactListPresenter {
         .subscribe(new OnCompletedObserver(() -> log.info("The fact stopped."), this::onException));
   }
 
-  @Override public void onRemoveFact(@Nonnull FactModel fact) {
+  @Override public void onRemoveFact(@Nonnull PresentationFact fact) {
     log.debug("onRemoveFact()");
     Observable.just(fact)
         .map(mapper::transform)
@@ -201,7 +201,7 @@ public class FactListPresenterImpl implements FactListPresenter {
         .subscribe(new OnCompletedObserver(() -> log.info("The fact removed."), this::onException));
   }
 
-  @Override public void onNewFactPrepared(@Nonnull FactModel newFact) {
+  @Override public void onNewFactPrepared(@Nonnull PresentationFact newFact) {
     log.debug("onAddFact()");
     Observable.just(newFact)
         .map(mapper::transform)
@@ -211,7 +211,7 @@ public class FactListPresenterImpl implements FactListPresenter {
         .subscribe(new OnCompletedObserver(() -> log.info("The fact added."), this::onException));
   }
 
-  @Override public void onEditedFactPrepared(@Nonnull FactModel editedFact) {
+  @Override public void onEditedFactPrepared(@Nonnull PresentationFact editedFact) {
     Observable.just(editedFact)
         .map(mapper::transform)
         .flatMap(editFactUseCase::execute)

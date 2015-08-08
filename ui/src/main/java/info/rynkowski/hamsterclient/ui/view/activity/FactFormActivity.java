@@ -29,7 +29,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.google.common.base.Optional;
-import info.rynkowski.hamsterclient.presentation.model.FactModel;
+import info.rynkowski.hamsterclient.presentation.model.PresentationFact;
 import info.rynkowski.hamsterclient.ui.R;
 import info.rynkowski.hamsterclient.ui.utils.TimeConverter;
 import java.util.ArrayList;
@@ -60,7 +60,7 @@ public class FactFormActivity extends BaseActivity {
   private @NonNull Calendar selectedStartTime = GregorianCalendar.getInstance(Locale.getDefault());
   private @NonNull Calendar selectedEndTime = GregorianCalendar.getInstance(Locale.getDefault());
 
-  private Optional<FactModel> fact = Optional.absent();
+  private Optional<PresentationFact> fact = Optional.absent();
 
   public static @NonNull Intent getCallingIntent(@NonNull Context context) {
     return new Intent(context, FactFormActivity.class);
@@ -118,15 +118,15 @@ public class FactFormActivity extends BaseActivity {
   }
 
   @OnClick(R.id.btn_apply) public void onApplyClicked(View view) {
-    FactModel fact = readFact();
+    PresentationFact fact = readFact();
     Intent intent = FactFormActivity.this.getIntent();
     intent.putExtra(OUTPUT_EXTRAS_KEY_FACT, fact);
     setResult(Activity.RESULT_OK, intent);
     finish();
   }
 
-  private @NonNull FactModel readFact() {
-    return new FactModel.Builder()
+  private @NonNull PresentationFact readFact() {
+    return new PresentationFact.Builder()
         .id(fact.isPresent() ? fact.get().getId() : Optional.absent())
         .activity(editTextActivity.getText().toString())
         .category(editTextCategory.getText().toString())

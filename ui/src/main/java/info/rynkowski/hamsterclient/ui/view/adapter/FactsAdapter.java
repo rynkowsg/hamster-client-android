@@ -29,7 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import info.rynkowski.hamsterclient.presentation.model.FactModel;
+import info.rynkowski.hamsterclient.presentation.model.PresentationFact;
 import info.rynkowski.hamsterclient.presentation.presenter.OnFactOperationsListener;
 import info.rynkowski.hamsterclient.ui.R;
 import info.rynkowski.hamsterclient.ui.utils.TimeConverter;
@@ -37,17 +37,17 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Adapter that manages a collection of {@link FactModel}.
+ * Adapter that manages a collection of {@link PresentationFact}.
  */
 @Slf4j
 public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHolder> {
 
   private final @NonNull Context context;
   private final @NonNull LayoutInflater layoutInflater;
-  private @NonNull List<FactModel> factsList;
+  private @NonNull List<PresentationFact> factsList;
   private @Nullable OnFactOperationsListener onFactOperationsListener;
 
-  public FactsAdapter(@NonNull Context context, @NonNull List<FactModel> factsList) {
+  public FactsAdapter(@NonNull Context context, @NonNull List<PresentationFact> factsList) {
     this.context = context;
     this.layoutInflater =
         (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -67,13 +67,13 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
   @Override public void onBindViewHolder(FactViewHolder holder, final int position) {
     assert onFactOperationsListener != null : "onFactOperationsListener must not be null";
 
-    final FactModel factModel = factsList.get(position);
-    holder.activity_name.setText(factModel.getActivity());
-    holder.category_name.setText(factModel.getCategory());
-    holder.start_time.setText(TimeConverter.toString(factModel.getStartTime(), "HH:mm"));
-    holder.end_time.setText(TimeConverter.toString(factModel.getEndTime(), "HH:mm"));
+    final PresentationFact fact = factsList.get(position);
+    holder.activity_name.setText(fact.getActivity());
+    holder.category_name.setText(fact.getCategory());
+    holder.start_time.setText(TimeConverter.toString(fact.getStartTime(), "HH:mm"));
+    holder.end_time.setText(TimeConverter.toString(fact.getEndTime(), "HH:mm"));
 
-    createPopupMenu(holder, factModel);
+    createPopupMenu(holder, fact);
   }
 
   @Override public long getItemId(int position) {
@@ -85,12 +85,12 @@ public class FactsAdapter extends RecyclerView.Adapter<FactsAdapter.FactViewHold
     this.onFactOperationsListener = listener;
   }
 
-  public void setFactsList(@NonNull List<FactModel> factsList) {
+  public void setFactsList(@NonNull List<PresentationFact> factsList) {
     this.factsList = factsList;
     notifyDataSetChanged();
   }
 
-  private void createPopupMenu(@NonNull FactViewHolder holder, @NonNull FactModel fact) {
+  private void createPopupMenu(@NonNull FactViewHolder holder, @NonNull PresentationFact fact) {
     assert onFactOperationsListener != null : "onFactOperationsListener must not be null";
 
     // creating the instance of PopupMenu

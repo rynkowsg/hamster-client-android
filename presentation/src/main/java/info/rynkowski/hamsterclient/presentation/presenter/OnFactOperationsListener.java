@@ -16,16 +16,16 @@
 
 package info.rynkowski.hamsterclient.presentation.presenter;
 
-import info.rynkowski.hamsterclient.presentation.model.FactModel;
+import info.rynkowski.hamsterclient.presentation.model.PresentationFact;
 import javax.annotation.Nonnull;
 
 public interface OnFactOperationsListener {
 
-  void onStartFact(@Nonnull FactModel fact);
+  void onStartFact(@Nonnull PresentationFact fact);
 
-  void onStopFact(@Nonnull FactModel fact);
+  void onStopFact(@Nonnull PresentationFact fact);
 
-  void onEditFact(@Nonnull FactModel fact);
+  void onEditFact(@Nonnull PresentationFact fact);
 
-  void onRemoveFact(@Nonnull FactModel fact);
+  void onRemoveFact(@Nonnull PresentationFact fact);
 }
