@@ -17,7 +17,7 @@
 package info.rynkowski.hamsterclient.data.repository;
 
 import info.rynkowski.hamsterclient.data.entity.mapper.FactEntityMapper;
-import info.rynkowski.hamsterclient.data.repository.datasource.HamsterDataSource;
+import info.rynkowski.hamsterclient.data.repository.datasources.HamsterDataSource;
 import info.rynkowski.hamsterclient.data.utils.PreferencesAdapter;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;

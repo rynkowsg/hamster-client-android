@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.data.repository.datasource;
+package info.rynkowski.hamsterclient.data.repository.datasources;
 
 import android.content.Context;
 import info.rynkowski.hamsterclient.data.db.FactsDbAdapter;

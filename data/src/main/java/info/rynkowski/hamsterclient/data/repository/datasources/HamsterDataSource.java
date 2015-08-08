@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.data.repository.datasource;
+package info.rynkowski.hamsterclient.data.repository.datasources;
 
 import info.rynkowski.hamsterclient.data.entity.FactEntity;
 import java.util.List;
