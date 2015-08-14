@@ -55,8 +55,11 @@ public class DbusHamsterDataSource implements HamsterDataSource {
     this.mapper = mapper;
 
     setConnectionProvider();
-    subscriptionSignalOnChanged =
-        preferences.signalOnChanged().subscribe(key -> setConnectionProvider());
+    subscriptionSignalOnChanged = preferences.signalOnChanged()
+        .filter(type -> type == Preferences.Type.DbusHost
+            || type == Preferences.Type.DbusPort)
+        .doOnNext(type -> log.debug("Received signalOnChanged, changedType: {}", type))
+        .subscribe(type -> setConnectionProvider());
   }
 
   private void setConnectionProvider() {

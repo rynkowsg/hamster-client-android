@@ -32,5 +32,9 @@ public interface Preferences {
    *
    * @return an {@link Observable} that contains a preference key
    */
-  @Nonnull Observable<String> signalOnChanged();
+  @Nonnull Observable<Type> signalOnChanged();
+
+  enum Type {
+    DbusHost, DbusPort, IsDatabaseRemote
+  }
 }

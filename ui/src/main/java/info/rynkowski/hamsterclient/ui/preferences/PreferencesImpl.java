@@ -32,17 +32,34 @@ public class PreferencesImpl implements Preferences {
 
   private final @NonNull Context context;
   private final @NonNull SharedPreferences preferences;
-  private final @NonNull PublishSubject<String> signalOnChangeSubject =  PublishSubject.create();
+  private final @NonNull PublishSubject<Type> signalOnChangeSubject = PublishSubject.create();
 
   // method called when shared preferences will change
-  private final @NonNull SharedPreferences.OnSharedPreferenceChangeListener
-      onPreferenceChangeListener = (sharedPreferences, key) -> signalOnChangeSubject.onNext(key);
-
+  private @NonNull SharedPreferences.OnSharedPreferenceChangeListener onPreferenceChangeListener;
+  // counter of signalOnChanged' observers
   private int signalOnChangeObserversCounter = 0;
 
   @Inject public PreferencesImpl(@NonNull Context context) {
     this.context = context;
     this.preferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+    this.onPreferenceChangeListener = (sharedPreferences, key) -> {
+      log.debug("onPreferenceChangeListener called, key: {}", key);
+      switch (context.getResources().getIdentifier(key, "string", context.getPackageName())) {
+        // below list of cases should be consistent to nodes at preferences.xml
+        case R.string.pref_dbusHost_key:
+          signalOnChangeSubject.onNext(Type.DbusHost);
+          break;
+        case R.string.pref_dbusPort_key:
+          signalOnChangeSubject.onNext(Type.DbusPort);
+          break;
+        case R.string.pref_isDatabaseRemote_key:
+          signalOnChangeSubject.onNext(Type.IsDatabaseRemote);
+          break;
+        default:
+          assert false : "Unknown preference key. Check your preferences.xml.";
+      }
+    };
   }
 
   @Override public @NonNull Boolean isDatabaseRemote() {
@@ -64,7 +81,7 @@ public class PreferencesImpl implements Preferences {
     return preferences.getString(key, defaultValue);
   }
 
-  @Override public @NonNull Observable<String> signalOnChanged() {
+  @Override public @NonNull Observable<Type> signalOnChanged() {
     return signalOnChangeSubject.
         doOnSubscribe(() -> {
           // register listener if there is at least one observer
