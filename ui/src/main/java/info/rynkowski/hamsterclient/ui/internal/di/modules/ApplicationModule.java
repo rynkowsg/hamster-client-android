@@ -20,10 +20,10 @@ package info.rynkowski.hamsterclient.ui.internal.di.modules;
 import android.content.Context;
 import dagger.Module;
 import dagger.Provides;
-import info.rynkowski.hamsterclient.data.utils.PreferencesAdapter;
+import info.rynkowski.hamsterclient.data.preferences.Preferences;
 import info.rynkowski.hamsterclient.ui.AndroidApplication;
 import info.rynkowski.hamsterclient.ui.navigation.Navigator;
-import info.rynkowski.hamsterclient.ui.utils.PreferencesAdapterImpl;
+import info.rynkowski.hamsterclient.ui.preferences.PreferencesImpl;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import rx.Scheduler;
@@ -49,8 +49,8 @@ public class ApplicationModule {
     return new Navigator();
   }
 
-  @Provides @Singleton PreferencesAdapter providePreferencesContainer(Context context) {
-    return new PreferencesAdapterImpl(context);
+  @Provides @Singleton Preferences providePreferences(Context context) {
+    return new PreferencesImpl(context);
   }
 
   @Provides @Singleton @Named("PresenterPostExecute") Scheduler getPresenterPostExecuteScheduler() {

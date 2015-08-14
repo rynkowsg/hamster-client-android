@@ -26,7 +26,7 @@ import info.rynkowski.hamsterclient.data.repository.datasources.db.entities.mapp
 import info.rynkowski.hamsterclient.data.repository.datasources.dbus.DbusHamsterDataSource;
 import info.rynkowski.hamsterclient.data.repository.datasources.dbus.HamsterRemoteObject;
 import info.rynkowski.hamsterclient.data.repository.datasources.dbus.entities.mapper.DbusFactMapper;
-import info.rynkowski.hamsterclient.data.utils.PreferencesAdapter;
+import info.rynkowski.hamsterclient.data.preferences.Preferences;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -47,8 +47,7 @@ public class DataModule {
   }
 
   @Provides @Singleton @Named("dbus") HamsterDataSource provideDbusHamsterDataSource(
-      HamsterRemoteObject hamsterRemoteObject, PreferencesAdapter preferences,
-      DbusFactMapper mapper) {
+      HamsterRemoteObject hamsterRemoteObject, Preferences preferences, DbusFactMapper mapper) {
     return new DbusHamsterDataSource(hamsterRemoteObject, preferences, mapper);
   }
 

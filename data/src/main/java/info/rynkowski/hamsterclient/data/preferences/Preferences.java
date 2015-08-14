@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.data.utils;
+package info.rynkowski.hamsterclient.data.preferences;
 
 import javax.annotation.Nonnull;
 import rx.Observable;
 
-public interface PreferencesAdapter {
+public interface Preferences {
 
   @Nonnull Boolean isDatabaseRemote();
 

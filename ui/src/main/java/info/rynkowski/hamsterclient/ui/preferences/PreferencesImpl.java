@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.ui.utils;
+package info.rynkowski.hamsterclient.ui.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import info.rynkowski.hamsterclient.data.utils.PreferencesAdapter;
+import info.rynkowski.hamsterclient.data.preferences.Preferences;
 import info.rynkowski.hamsterclient.ui.R;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ import rx.Observable;
 import rx.subjects.PublishSubject;
 
 @Slf4j
-public class PreferencesAdapterImpl implements PreferencesAdapter {
+public class PreferencesImpl implements Preferences {
 
   private final @NonNull Context context;
   private final @NonNull SharedPreferences preferences;
@@ -40,7 +40,7 @@ public class PreferencesAdapterImpl implements PreferencesAdapter {
 
   private int signalOnChangeObserversCounter = 0;
 
-  @Inject public PreferencesAdapterImpl(@NonNull Context context) {
+  @Inject public PreferencesImpl(@NonNull Context context) {
     this.context = context;
     this.preferences = PreferenceManager.getDefaultSharedPreferences(context);
   }

@@ -17,7 +17,7 @@
 package info.rynkowski.hamsterclient.data.repository;
 
 import info.rynkowski.hamsterclient.data.repository.datasources.HamsterDataSource;
-import info.rynkowski.hamsterclient.data.utils.PreferencesAdapter;
+import info.rynkowski.hamsterclient.data.preferences.Preferences;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
 import java.util.List;
@@ -33,16 +33,16 @@ import rx.Observable;
 @Singleton
 public class HamsterRepositoryImpl implements HamsterRepository {
 
-  private @Nonnull PreferencesAdapter preferencesAdapter;
+  private @Nonnull Preferences preferences;
 
   private @Nonnull HamsterDataSource dbDataSource;
   private @Nonnull HamsterDataSource dbusDataSource;
 
-  @Inject public HamsterRepositoryImpl(@Nonnull PreferencesAdapter preferencesAdapter,
+  @Inject public HamsterRepositoryImpl(@Nonnull Preferences preferences,
       @Named("db") @Nonnull HamsterDataSource dbDataSource,
       @Named("dbus") @Nonnull HamsterDataSource dbusDataSource) {
 
-    this.preferencesAdapter = preferencesAdapter;
+    this.preferences = preferences;
     this.dbDataSource = dbDataSource;
     this.dbusDataSource = dbusDataSource;
   }
@@ -82,9 +82,9 @@ public class HamsterRepositoryImpl implements HamsterRepository {
   }
 
   protected @Nonnull HamsterDataSource currentStore() {
-    return preferencesAdapter.isDatabaseRemote() ? dbusDataSource : dbDataSource;
+    return preferences.isDatabaseRemote() ? dbusDataSource : dbDataSource;
   }
 
-  //TODO: Add listening of preferencesAdapter to change source when preferences will change.
+  //TODO: Add listening of preferences to change source when preferences will change.
   //      In addition it should be proper place to init and deinit each dataSource objectes.
 }

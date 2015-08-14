@@ -23,7 +23,7 @@ import info.rynkowski.hamsterclient.data.dbus.exception.DBusInternalException;
 import info.rynkowski.hamsterclient.data.repository.datasources.HamsterDataSource;
 import info.rynkowski.hamsterclient.data.repository.datasources.dbus.entities.DbusFact;
 import info.rynkowski.hamsterclient.data.repository.datasources.dbus.entities.mapper.DbusFactMapper;
-import info.rynkowski.hamsterclient.data.utils.PreferencesAdapter;
+import info.rynkowski.hamsterclient.data.preferences.Preferences;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -43,26 +43,25 @@ import rx.Subscription;
 public class DbusHamsterDataSource implements HamsterDataSource {
 
   private final @Nonnull HamsterRemoteObject hamsterObject;
-  private final @Nonnull PreferencesAdapter preferencesAdapter;
+  private final @Nonnull Preferences preferences;
   private final @Nonnull DbusFactMapper mapper;
 
   private @Nullable Subscription subscriptionSignalOnChanged;
 
   @Inject public DbusHamsterDataSource(@Nonnull HamsterRemoteObject hamsterRemoteObject,
-      @Nonnull PreferencesAdapter preferencesAdapter, @Nonnull DbusFactMapper mapper) {
+      @Nonnull Preferences preferences, @Nonnull DbusFactMapper mapper) {
     this.hamsterObject = hamsterRemoteObject;
-    this.preferencesAdapter = preferencesAdapter;
+    this.preferences = preferences;
     this.mapper = mapper;
 
     setConnectionProvider();
     subscriptionSignalOnChanged =
-        preferencesAdapter.signalOnChanged().subscribe(key -> setConnectionProvider());
+        preferences.signalOnChanged().subscribe(key -> setConnectionProvider());
   }
 
   private void setConnectionProvider() {
     ConnectionProvider connectionProvider =
-        new ConnectionProviderOverNetwork(preferencesAdapter.dbusHost(),
-            preferencesAdapter.dbusPort());
+        new ConnectionProviderOverNetwork(preferences.dbusHost(), preferences.dbusPort());
     hamsterObject.setConnectionProvider(connectionProvider);
   }
 
