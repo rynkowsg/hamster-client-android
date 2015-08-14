@@ -50,6 +50,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FactListFragment extends BaseFragment implements FactListView {
 
+  //TODO: move those consts to FactFormActivity according to article:
+  //      http://bottega.com.pl/pdf/materialy/android/ThereIsNoApp.pdf, paragraph: Porządek w kodzie
   private final static int REQUEST_CODE_ADD_FACT = 0;
   private final static int REQUEST_CODE_EDIT_FACT = 1;
 

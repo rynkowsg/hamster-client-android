@@ -30,7 +30,7 @@ public interface PreferencesAdapter {
   /**
    * Provides a signal that reports changes in shared preferences.
    *
-   * @return an {@link Observable} that contains shared preferences' key
+   * @return an {@link Observable} that contains a preference key
    */
   @Nonnull Observable<String> signalOnChanged();
 }

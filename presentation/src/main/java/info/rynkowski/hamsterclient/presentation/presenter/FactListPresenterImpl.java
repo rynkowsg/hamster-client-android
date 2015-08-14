@@ -117,10 +117,12 @@ public class FactListPresenterImpl implements FactListPresenter {
         .map(mapper::transform)
         .subscribeOn(Schedulers.io())
         .observeOn(postExecuteScheduler)
-        .subscribe(factModels -> {
-          viewListView.hideLoading();
-          viewListView.showFactList(factModels);
-        }, this::onException);
+        .subscribe( //
+            presentationFacts -> {
+              viewListView.hideLoading();
+              viewListView.showFactList(presentationFacts);
+            }, //
+            this::onException);
   }
 
   private void registerSignals() {

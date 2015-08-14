@@ -30,6 +30,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+//TODO: Extend from PresentationFacts
+//TODO: Rename to ParcelableFact
 @Getter
 public class UiFact implements Parcelable {
 
