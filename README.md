@@ -83,8 +83,8 @@ License
  [rxjava]: https://github.com/ReactiveX/RxJava
  [lombok]: https://projectlombok.org
  [dbus-java]: https://github.com/rynkowsg/dbus-java
- [libmatthew-java-1]: http://www.java2s.com/Code/JarDownload/libmatthew/libmatthew-0.8-x86_64-sources.jar.zip
- [libmatthew-java-2]: https://speakerdeck.com/jakewharton/android-apps-with-dagger-devoxx-2013
+ [libmatthew-java-1]: http://www.java2s.com/Code/Jar/l/Downloadlibmatthew08x86sourcesjar.htm
+ [libmatthew-java-2]: http://www.java2s.com/Code/Jar/l/Downloadlibmatthewjava08jar.htm
  [libmatthew-java-3]: https://github.com/rynkowsg/libmatthew-java
  [libmatthew-java-4]: https://bitbucket.org/rynkowsg/libmatthew-java
  [the-clean-architecture]: http://blog.8thlight.com/uncle-bob/2012/08/13/the-clean-architecture.html
