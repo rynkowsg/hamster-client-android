@@ -13,9 +13,10 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.data.utils;
+package info.rynkowski.hamsterclient.data.repository.datasources.dbus.entities;
 
 import com.google.common.base.Optional;
+import info.rynkowski.hamsterclient.data.utils.Time;
 import java.util.TimeZone;
 import javax.annotation.Nonnull;
 

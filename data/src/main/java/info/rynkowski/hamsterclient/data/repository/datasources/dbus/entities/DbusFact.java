@@ -21,7 +21,6 @@ import info.rynkowski.hamsterclient.data.repository.datasources.dbus.entities.ad
 import info.rynkowski.hamsterclient.data.repository.datasources.dbus.entities.adapters.AdapterStruct5;
 import info.rynkowski.hamsterclient.data.repository.datasources.dbus.entities.adapters.AdapterStruct7;
 import info.rynkowski.hamsterclient.data.utils.Time;
-import info.rynkowski.hamsterclient.data.utils.TimeDifferenceConverter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
