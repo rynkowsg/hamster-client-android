@@ -84,7 +84,7 @@ public class PreferencesImpl implements Preferences {
   @Override public @NonNull Observable<Type> signalOnChanged() {
     return signalOnChangeSubject.
         doOnSubscribe(() -> {
-          // register listener if there is at least one observer
+          // register the listener when a first observer will appear
           if (signalOnChangeObserversCounter++ == 0) {
             preferences.registerOnSharedPreferenceChangeListener(onPreferenceChangeListener);
             log.debug("SharedPreferenceChangeListener registered");

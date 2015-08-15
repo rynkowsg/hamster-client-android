@@ -48,40 +48,40 @@ public class HamsterRepositoryImpl implements HamsterRepository {
   }
 
   @Override public @Nonnull Observable<List<Fact>> getTodaysFacts() {
-    return currentStore().getTodaysFacts();
+    return currentDataSource().getTodaysFacts();
   }
 
   @Override public @Nonnull Observable<Integer> addFact(@Nonnull Fact fact) {
     return Observable.just(fact) //
-        .flatMap(currentStore()::addFact);
+        .flatMap(currentDataSource()::addFact);
   }
 
   @Override public @Nonnull Observable<Void> removeFact(@Nonnull Integer id) {
-    return currentStore().removeFact(id);
+    return currentDataSource().removeFact(id);
   }
 
   @Override public @Nonnull Observable<Integer> updateFact(@Nonnull Fact fact) {
     return Observable.just(fact) //
-        .flatMap(currentStore()::updateFact);
+        .flatMap(currentDataSource()::updateFact);
   }
 
   @Override public @Nonnull Observable<Void> signalActivitiesChanged() {
-    return currentStore().signalActivitiesChanged();
+    return currentDataSource().signalActivitiesChanged();
   }
 
   @Override public @Nonnull Observable<Void> signalFactsChanged() {
-    return currentStore().signalFactsChanged();
+    return currentDataSource().signalFactsChanged();
   }
 
   @Override public @Nonnull Observable<Void> signalTagsChanged() {
-    return currentStore().signalTagsChanged();
+    return currentDataSource().signalTagsChanged();
   }
 
   @Override public @Nonnull Observable<Void> signalToggleCalled() {
-    return currentStore().signalToggleCalled();
+    return currentDataSource().signalToggleCalled();
   }
 
-  protected @Nonnull HamsterDataSource currentStore() {
+  protected @Nonnull HamsterDataSource currentDataSource() {
     return preferences.isDatabaseRemote() ? dbusDataSource : dbDataSource;
   }
 
