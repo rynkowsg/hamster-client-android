@@ -22,7 +22,7 @@ import dagger.Module;
 import dagger.Provides;
 import info.rynkowski.hamsterclient.data.preferences.Preferences;
 import info.rynkowski.hamsterclient.ui.AndroidApplication;
-import info.rynkowski.hamsterclient.ui.navigation.Navigator;
+import info.rynkowski.hamsterclient.ui.view.Navigator;
 import info.rynkowski.hamsterclient.ui.preferences.PreferencesImpl;
 import javax.inject.Named;
 import javax.inject.Singleton;

@@ -24,7 +24,7 @@ import info.rynkowski.hamsterclient.domain.repository.HamsterRepository;
 import info.rynkowski.hamsterclient.presentation.PresentationModule;
 import info.rynkowski.hamsterclient.ui.internal.di.modules.ApplicationModule;
 import info.rynkowski.hamsterclient.ui.internal.di.modules.FactListModule;
-import info.rynkowski.hamsterclient.ui.navigation.Navigator;
+import info.rynkowski.hamsterclient.ui.view.Navigator;
 import info.rynkowski.hamsterclient.ui.view.activity.BaseActivity;
 import info.rynkowski.hamsterclient.ui.view.fragment.BaseFragment;
 import info.rynkowski.hamsterclient.ui.view.fragment.FactListFragment;

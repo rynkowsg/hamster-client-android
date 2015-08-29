@@ -23,7 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import info.rynkowski.hamsterclient.ui.AndroidApplication;
 import info.rynkowski.hamsterclient.ui.internal.di.components.ApplicationComponent;
 import info.rynkowski.hamsterclient.ui.internal.di.modules.ActivityModule;
-import info.rynkowski.hamsterclient.ui.navigation.Navigator;
+import info.rynkowski.hamsterclient.ui.view.Navigator;
 import javax.inject.Inject;
 
 /**

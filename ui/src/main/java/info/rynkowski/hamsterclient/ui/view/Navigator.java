@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package info.rynkowski.hamsterclient.ui.navigation;
+package info.rynkowski.hamsterclient.ui.view;
 
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import info.rynkowski.hamsterclient.ui.view.activity.FactFormActivity;
-import info.rynkowski.hamsterclient.ui.view.activity.FactListActivity;
 import info.rynkowski.hamsterclient.ui.view.activity.SettingsActivity;
 import javax.inject.Inject;
 import javax.inject.Singleton;
