@@ -20,10 +20,10 @@ import info.rynkowski.hamsterclient.data.dbus.ConnectionProvider;
 import info.rynkowski.hamsterclient.data.dbus.ConnectionProviderOverNetwork;
 import info.rynkowski.hamsterclient.data.dbus.exception.DBusConnectionNotReachableException;
 import info.rynkowski.hamsterclient.data.dbus.exception.DBusInternalException;
+import info.rynkowski.hamsterclient.data.preferences.Preferences;
 import info.rynkowski.hamsterclient.data.repository.datasources.HamsterDataSource;
 import info.rynkowski.hamsterclient.data.repository.datasources.dbus.entities.DbusFact;
 import info.rynkowski.hamsterclient.data.repository.datasources.dbus.entities.mapper.DbusFactMapper;
-import info.rynkowski.hamsterclient.data.preferences.Preferences;
 import info.rynkowski.hamsterclient.domain.entities.Fact;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -54,15 +54,19 @@ public class DbusHamsterDataSource implements HamsterDataSource {
     this.preferences = preferences;
     this.mapper = mapper;
 
-    setConnectionProvider();
+    updateConnectionProvider();
+    registerOnAddressChangedHandler();
+  }
+
+  private void registerOnAddressChangedHandler() {
     subscriptionSignalOnChanged = preferences.signalOnChanged()
         .filter(type -> type == Preferences.Type.DbusHost
             || type == Preferences.Type.DbusPort)
         .doOnNext(type -> log.debug("Received signalOnChanged, changedType: {}", type))
-        .subscribe(type -> setConnectionProvider());
+        .subscribe(type -> updateConnectionProvider());
   }
 
-  private void setConnectionProvider() {
+  private void updateConnectionProvider() {
     ConnectionProvider connectionProvider =
         new ConnectionProviderOverNetwork(preferences.dbusHost(), preferences.dbusPort());
     hamsterObject.setConnectionProvider(connectionProvider);
@@ -97,11 +101,10 @@ public class DbusHamsterDataSource implements HamsterDataSource {
   }
 
   @Override public @Nonnull Observable<Integer> addFact(@Nonnull Fact fact) {
-    DbusFact dbusFact = mapper.transform(fact);
+    DbusFact dbusFact = mapper.transform(fact).timeFixLocalToRemote();
 
     String serializedName = dbusFact.serializedName();
 
-    dbusFact.timeFixLocalToRemote();
     int startTime = dbusFact.getStartTime().getTimeInSeconds();
     int endTime =
         dbusFact.getEndTime().isPresent() ? dbusFact.getEndTime().get().getTimeInSeconds() : 0;
@@ -180,18 +183,20 @@ public class DbusHamsterDataSource implements HamsterDataSource {
   }
 
   private Observable<Void> produceSignal(@Nonnull HamsterRemoteObject.SignalType signalType) {
-    return Observable.<Void>create(subscriber -> {
-      try {
-        hamsterObject.registerSignal(signalType, signal -> subscriber.onNext(null));
-      } catch (DBusConnectionNotReachableException | DBusInternalException e) {
-        subscriber.onError(e);
-      }
-    }).doOnUnsubscribe(() -> {
-      try {
-        hamsterObject.unregisterSignal(signalType);
-      } catch (DBusConnectionNotReachableException | DBusInternalException e) {
-        log.error("Exception thrown during unregistering signal ActivitiesChanged.", e);
-      }
-    });
+    return Observable.<Void>create(//
+        subscriber -> {
+          try {
+            hamsterObject.registerSignal(signalType, signal -> subscriber.onNext(null));
+          } catch (DBusConnectionNotReachableException | DBusInternalException e) {
+            subscriber.onError(e);
+          }
+        })//
+        .doOnUnsubscribe(() -> {
+          try {
+            hamsterObject.unregisterSignal(signalType);
+          } catch (DBusConnectionNotReachableException | DBusInternalException e) {
+            log.error("Exception thrown during unregistering signal.", e);
+          }
+        });
   }
 }

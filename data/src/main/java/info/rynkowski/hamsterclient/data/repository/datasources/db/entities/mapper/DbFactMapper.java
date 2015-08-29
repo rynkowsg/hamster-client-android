@@ -65,7 +65,7 @@ public class DbFactMapper {
 
     Optional<Time> endTime = Optional.absent();
     if (fact.getEndTime().isPresent()) {
-      endTime = Optional.of(Time.getInstance(fact.getEndTime().get()).roundToMinutes());
+      endTime = Optional.of(Time.getInstance(fact.getEndTime().get()));
       endTime.get().roundToMinutes(); // Hamster Time Tracker doesn't operate on seconds and millis.
     }
 
