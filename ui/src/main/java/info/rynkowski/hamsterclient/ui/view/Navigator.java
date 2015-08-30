@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import info.rynkowski.hamsterclient.ui.model.UiFact;
 import info.rynkowski.hamsterclient.ui.view.activity.FactFormActivity;
 import info.rynkowski.hamsterclient.ui.view.activity.SettingsActivity;
 import javax.inject.Inject;
@@ -38,13 +39,24 @@ public class Navigator {
   }
 
   /**
-   * Goes to the fact form screen from fragment.
+   * Goes to a {@link FactFormActivity} to allow entering a new fact.
    *
-   * @param fragment A Fragment that opens the activity for result.
+   * @param fragment A {@link Fragment} that opens the {@link FactFormActivity}.
    */
-  public void navigateToFactFormForResult(@NonNull Fragment fragment, int requestCode) {
+  public void navigateToFactAdditionForm(@NonNull Fragment fragment) {
     Intent intentToLaunch = FactFormActivity.getCallingIntent(fragment.getActivity());
-    fragment.startActivityForResult(intentToLaunch, requestCode);
+    fragment.startActivityForResult(intentToLaunch, FactFormActivity.REQUEST_CODE_ADD_FACT);
+  }
+
+  /**
+   * Goes to a {@link FactFormActivity} to allow modification an existing fact.
+   *
+   * @param fragment A {@link Fragment} that opens the {@link FactFormActivity}.
+   */
+  public void navigateToFactEditionForm(@NonNull Fragment fragment, @NonNull UiFact fact) {
+    Intent intentToLaunch = FactFormActivity.getCallingIntent(fragment.getActivity());
+    intentToLaunch.putExtra(FactFormActivity.INPUT_EXTRAS_KEY_FACT, fact);
+    fragment.startActivityForResult(intentToLaunch, FactFormActivity.REQUEST_CODE_EDIT_FACT);
   }
 
   /**

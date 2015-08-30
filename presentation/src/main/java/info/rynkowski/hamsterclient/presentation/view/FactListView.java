@@ -29,12 +29,12 @@ public interface FactListView extends LoadDataView {
   /**
    * Opens a view that allows entering a data of new fact.
    */
-  void navigateToAddFact();
+  void navigateToAdditionForm();
 
   /**
    * Opens a view that allows modification of picked fact.
    */
-  void navigateToEditFact(@Nonnull PresentationFact fact);
+  void navigateToEditionForm(@Nonnull PresentationFact fact);
 
   /**
    * Render a fact list in the UI.

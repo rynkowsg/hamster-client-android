@@ -160,14 +160,14 @@ public class FactListPresenterImpl implements FactListPresenter {
 
   @Override public void onAddFact() {
     if (viewListView != null) {
-      viewListView.navigateToAddFact();
+      viewListView.navigateToAdditionForm();
     }
   }
 
   @Override public void onEditFact(@Nonnull PresentationFact fact) {
     log.debug("onEditFact()");
     if (viewListView != null) {
-      viewListView.navigateToEditFact(fact);
+      viewListView.navigateToEditionForm(fact);
     }
   }
 

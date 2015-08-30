@@ -29,7 +29,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.google.common.base.Optional;
-import info.rynkowski.hamsterclient.presentation.model.PresentationFact;
 import info.rynkowski.hamsterclient.ui.R;
 import info.rynkowski.hamsterclient.ui.internal.di.components.DaggerFactListComponent;
 import info.rynkowski.hamsterclient.ui.model.UiFact;
@@ -48,8 +47,11 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class FactFormActivity extends BaseActivity {
 
-  public static final String INPUT_EXTRAS_KEY_FACT = "INPUT_EXTRAS_KEY_FACT";
-  public static final String OUTPUT_EXTRAS_KEY_FACT = "OUTPUT_EXTRAS_KEY_FACT";
+  public final static String INPUT_EXTRAS_KEY_FACT = "INPUT_EXTRAS_KEY_FACT";
+  public final static String OUTPUT_EXTRAS_KEY_FACT = "OUTPUT_EXTRAS_KEY_FACT";
+
+  public final static int REQUEST_CODE_ADD_FACT = 0;
+  public final static int REQUEST_CODE_EDIT_FACT = 1;
 
   @Inject UiFactMapper mapper;
 

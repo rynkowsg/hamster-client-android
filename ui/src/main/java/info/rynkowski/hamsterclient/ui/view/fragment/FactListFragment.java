@@ -50,11 +50,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FactListFragment extends BaseFragment implements FactListView {
 
-  //TODO: move those consts to FactFormActivity according to article:
-  //      http://bottega.com.pl/pdf/materialy/android/ThereIsNoApp.pdf, paragraph: Porządek w kodzie
-  private final static int REQUEST_CODE_ADD_FACT = 0;
-  private final static int REQUEST_CODE_EDIT_FACT = 1;
-
   @Inject UiFactMapper mapper;
 
   @Inject FactListPresenter factListPresenter;
@@ -133,14 +128,14 @@ public class FactListFragment extends BaseFragment implements FactListView {
             : (resultCode == Activity.RESULT_CANCELED ? "cancelled" : "unknown result code"));
 
     switch (requestCode) {
-      case REQUEST_CODE_ADD_FACT:
+      case FactFormActivity.REQUEST_CODE_ADD_FACT:
         if (resultCode == Activity.RESULT_OK) {
           UiFact fact = data.getParcelableExtra(FactFormActivity.OUTPUT_EXTRAS_KEY_FACT);
           factListPresenter.onNewFactPrepared(mapper.transform(fact));
           showToastMessage("New fact:" + fact.getActivity());
         }
         break;
-      case REQUEST_CODE_EDIT_FACT:
+      case FactFormActivity.REQUEST_CODE_EDIT_FACT:
         if (resultCode == Activity.RESULT_OK) {
           UiFact fact = data.getParcelableExtra(FactFormActivity.OUTPUT_EXTRAS_KEY_FACT);
           factListPresenter.onEditedFactPrepared(mapper.transform(fact));
@@ -151,17 +146,13 @@ public class FactListFragment extends BaseFragment implements FactListView {
     }
   }
 
-  @Override public void navigateToAddFact() {
-    navigator.navigateToFactFormForResult(FactListFragment.this, REQUEST_CODE_ADD_FACT);
+  @Override public void navigateToAdditionForm() {
+    navigator.navigateToFactAdditionForm(this);
   }
 
-  @Override public void navigateToEditFact(@NonNull PresentationFact presentationFact) {
+  @Override public void navigateToEditionForm(@NonNull PresentationFact presentationFact) {
     UiFact fact = mapper.transform(presentationFact);
-
-    Intent intentToLaunch = FactFormActivity.getCallingIntent(FactListFragment.this.getActivity());
-    intentToLaunch.putExtra(FactFormActivity.INPUT_EXTRAS_KEY_FACT, fact);
-    startActivityForResult(intentToLaunch, REQUEST_CODE_EDIT_FACT);
-    //navigator.navigateToFactFormForResult(FactListFragment.this, REQUEST_CODE_EDIT_FACT);
+    navigator.navigateToFactEditionForm(this, fact);
   }
 
   @Override public void showFactList(@NonNull List<PresentationFact> facts) {
