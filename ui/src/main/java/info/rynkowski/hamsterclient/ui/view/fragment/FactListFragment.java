@@ -30,6 +30,7 @@ import android.widget.ProgressBar;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dagger.Lazy;
 import info.rynkowski.hamsterclient.presentation.model.PresentationFact;
 import info.rynkowski.hamsterclient.presentation.presenter.FactListPresenter;
 import info.rynkowski.hamsterclient.presentation.view.FactListView;
@@ -50,7 +51,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FactListFragment extends BaseFragment implements FactListView {
 
-  @Inject UiFactMapper mapper;
+  @Inject Lazy<UiFactMapper> mapper;
 
   @Inject FactListPresenter factListPresenter;
 
@@ -131,14 +132,14 @@ public class FactListFragment extends BaseFragment implements FactListView {
       case FactFormActivity.REQUEST_CODE_ADD_FACT:
         if (resultCode == Activity.RESULT_OK) {
           UiFact fact = data.getParcelableExtra(FactFormActivity.OUTPUT_EXTRAS_KEY_FACT);
-          factListPresenter.onNewFactPrepared(mapper.transform(fact));
+          factListPresenter.onNewFactPrepared(mapper.get().transform(fact));
           showToastMessage("New fact:" + fact.getActivity());
         }
         break;
       case FactFormActivity.REQUEST_CODE_EDIT_FACT:
         if (resultCode == Activity.RESULT_OK) {
           UiFact fact = data.getParcelableExtra(FactFormActivity.OUTPUT_EXTRAS_KEY_FACT);
-          factListPresenter.onEditedFactPrepared(mapper.transform(fact));
+          factListPresenter.onEditedFactPrepared(mapper.get().transform(fact));
         }
         break;
       default:
@@ -147,12 +148,12 @@ public class FactListFragment extends BaseFragment implements FactListView {
   }
 
   @Override public void navigateToAdditionForm() {
-    navigator.navigateToFactAdditionForm(this);
+    getNavigator().navigateToFactAdditionForm(this);
   }
 
   @Override public void navigateToEditionForm(@NonNull PresentationFact presentationFact) {
-    UiFact fact = mapper.transform(presentationFact);
-    navigator.navigateToFactEditionForm(this, fact);
+    UiFact fact = mapper.get().transform(presentationFact);
+    getNavigator().navigateToFactEditionForm(this, fact);
   }
 
   @Override public void showFactList(@NonNull List<PresentationFact> facts) {
@@ -189,7 +190,7 @@ public class FactListFragment extends BaseFragment implements FactListView {
         })
         .setNeutralButton("Settings", new AlertDialog.OnClickListener() {
           @Override public void onClick(DialogInterface dialog, int which) {
-            navigator.navigateToSettings(getActivity());
+            getNavigator().navigateToSettings(getActivity());
           }
         })
         .create();

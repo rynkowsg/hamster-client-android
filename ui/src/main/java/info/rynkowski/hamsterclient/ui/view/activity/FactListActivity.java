@@ -62,7 +62,7 @@ public class FactListActivity extends BaseActivity implements HasComponent<FactL
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case R.id.action_settings:
-        navigator.navigateToSettings(this);
+        getNavigator().navigateToSettings(this);
         return true;
       default:
         return super.onOptionsItemSelected(item);

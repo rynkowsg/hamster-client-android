@@ -22,6 +22,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
+import dagger.Lazy;
 import info.rynkowski.hamsterclient.ui.AndroidApplication;
 import info.rynkowski.hamsterclient.ui.internal.di.HasComponent;
 import info.rynkowski.hamsterclient.ui.internal.di.components.ApplicationComponent;
@@ -33,7 +34,7 @@ import javax.inject.Inject;
  */
 public class BaseFragment extends Fragment {
 
-  @Inject Navigator navigator;
+  @Inject Lazy<Navigator> navigator;
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -64,6 +65,15 @@ public class BaseFragment extends Fragment {
   @SuppressWarnings("unchecked")
   protected @NonNull <C> C getComponent(@NonNull Class<C> componentType) {
     return componentType.cast(((HasComponent<C>) getActivity()).getComponent());
+  }
+
+  /**
+   * A method that provides a {@link Navigator}'s object for derivatives of BaseFragment.
+   *
+   * @return an object of a {@link Navigator}
+   */
+  protected @NonNull Navigator getNavigator() {
+    return navigator.get();
   }
 
   private void injectDependencies() {

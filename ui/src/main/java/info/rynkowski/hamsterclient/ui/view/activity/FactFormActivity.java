@@ -32,14 +32,12 @@ import com.google.common.base.Optional;
 import info.rynkowski.hamsterclient.ui.R;
 import info.rynkowski.hamsterclient.ui.internal.di.components.DaggerFactListComponent;
 import info.rynkowski.hamsterclient.ui.model.UiFact;
-import info.rynkowski.hamsterclient.ui.model.mapper.UiFactMapper;
 import info.rynkowski.hamsterclient.ui.utils.TimeConverter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
-import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -52,8 +50,6 @@ public class FactFormActivity extends BaseActivity {
 
   public final static int REQUEST_CODE_ADD_FACT = 0;
   public final static int REQUEST_CODE_EDIT_FACT = 1;
-
-  @Inject UiFactMapper mapper;
 
   @Bind(R.id.et_activity) EditText editTextActivity;
   @Bind(R.id.et_category) EditText editTextCategory;
