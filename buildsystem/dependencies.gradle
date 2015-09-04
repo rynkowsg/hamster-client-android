@@ -22,29 +22,29 @@ allprojects {
 
 ext {
   //Android
-  androidBuildToolsVersion = "22.0.1"
-  androidCompileSdkVersion = 22
+  androidBuildToolsVersion = "23.0.1"
+  androidCompileSdkVersion = 23
   androidMinSdkVersion = 15
-  androidTargetSdkVersion = 22
+  androidTargetSdkVersion = 23
 
   //Libraries
-  appcompatV7Version = '22.2.1'
-  cardViewV7Version = '22.2.1'
-  designVersion = '22.2.1'
-  recyclerViewV7Version = '22.2.1'
-  supportAnnotationsVersion = '22.2.1'
-  supportV4Version = '22.2.1'
+  appcompatV7Version = '23.0.1'
+  cardViewV7Version = '23.0.1'
+  designVersion = '23.0.1'
+  recyclerViewV7Version = '23.0.1'
+  supportAnnotationsVersion = '23.0.1'
+  supportV4Version = '23.0.1'
 
   androidLoggerVersion = '1.3.5'
   butterKnifeVersion = '7.0.1'
   commonsLang3Version = '3.4'
   daggerVersion = '2.0.1'
-  lombokVersion = '1.16.4'
+  lombokVersion = '1.16.6'
   javaxAnnotationVersion = '10.0-b28'
   jsr305Version = '3.0.0'
   guavaVersion = '18.0'
-  rxAndroidVersion = '0.25.0'
-  rxJavaVersion = '1.0.13'
+  rxAndroidVersion = '1.0.1'
+  rxJavaVersion = '1.0.14'
   slf4jApiVersion = '1.7.12'
   slf4jTimberVersion = '2.0'
   timberVersion = '3.1.0'
